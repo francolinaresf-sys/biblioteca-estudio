@@ -188,14 +188,18 @@ table.hm .dim{opacity:.28}
 
 /* Tarjetas */
 .cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr)); gap:14px}
-.card{perspective:900px; background:none; border:none; padding:0; font:inherit; color:inherit; text-align:left; cursor:pointer; min-height:190px}
-.card .inner{position:relative; width:100%; height:100%; min-height:190px; transition:transform .45s; transform-style:preserve-3d}
-.card[aria-pressed="true"] .inner{transform:rotateY(180deg)}
-.card .face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--line); overflow:auto}
+.card{display:block; width:100%; background:none; border:none; padding:0; margin:0; font:inherit; color:inherit; text-align:left; cursor:pointer; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation}
+.card .inner{display:block}
+.card .face{min-height:190px; border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--line)}
+.card .back{display:none}
+.card[aria-pressed="true"] .front{display:none}
+.card[aria-pressed="true"] .back{display:flex; animation:cardIn .28s ease-out}
+@keyframes cardIn{from{opacity:0; transform:scale(.97)} to{opacity:1; transform:none}}
 .card .front{background:var(--surface)}
 .card .front .q{font-family:var(--f-display); font-weight:700; font-size:1.08rem; font-stretch:92%}
 .card .front .hint{margin-top:auto; font-size:.76rem; color:var(--muted); font-family:var(--f-mono)}
-.card .back{background:var(--accent); color:var(--h3-ink); transform:rotateY(180deg); font-size:.9rem}
+.card .back{background:var(--accent); color:var(--h3-ink); font-size:.9rem}
+.card .back .hint{margin-top:auto; font-size:.76rem; opacity:.8; font-family:var(--f-mono)}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card .back{color:#0f1418} }
 :root[data-theme="dark"] .card .back{color:#0f1418}
 .cards-actions{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap}
@@ -1207,7 +1211,7 @@ const WINDOWS = [
   function renderCards(){
     $("#cards").innerHTML = order.map(i=>{const c=CARDS[i]; return `<button type="button" class="card" aria-pressed="false" aria-label="Tarjeta: ${esc(c.q)}">
       <span class="inner"><span class="face front"><span class="q">${esc(c.q)}</span><span class="hint">Toca para ver la respuesta</span></span>
-      <span class="face back">${esc(c.a)}</span></span></button>`;}).join("");
+      <span class="face back"><span>${esc(c.a)}</span><span class="hint">Toca para volver a la pregunta</span></span></span></button>`;}).join("");
   }
   renderCards();
   $("#cards").addEventListener("click",e=>{const b=e.target.closest(".card"); if(!b) return; b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});
