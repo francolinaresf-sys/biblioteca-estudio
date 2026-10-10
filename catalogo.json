@@ -74,6 +74,17 @@
         "cardiotóxicos en urgencia"
       ],
       "fecha": "2026-10-10"
+    },
+    {
+      "id": "antibacterianos-en-urgencia",
+      "titulo": "Antibacterianos en Urgencia",
+      "tema": "farmacologia",
+      "archivo": "farmacologia/antibacterianos-en-urgencia.html",
+      "descripcion": "PK/PD, dianas, 15 familias y 40 fármacos con dosis (adulto, renal, pediatría, embarazo, obesidad), resistencias con contexto chileno, toxicidad, esquemas empíricos, mapa de espectro y tarjetas de repaso.",
+      "etiquetas": [
+        "antibióticos"
+      ],
+      "fecha": "2026-10-10"
     }
   ]
 }

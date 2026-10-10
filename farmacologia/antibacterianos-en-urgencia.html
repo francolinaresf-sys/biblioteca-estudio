@@ -1,0 +1,1425 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Antibacterianos en Urgencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: guía de estudio de una columna con navegación fija; color semántico tomado de la tinción de Gram (violeta = Gram+, safranina = Gram−) y escala tipo agar para el espectro. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f5f7f9; --ink:#17202b; --muted:#566170; --line:#d5dbe3;
+  --accent:#0f6f66; --accent-soft:#dcefec;
+  --gpos:#5a3ea6; --gneg:#b8325f; --ana:#7a6528; --ati:#2f6690; --res:#3d4652;
+  --h0:#eef1f4; --h1:#cde6e1; --h2:#5fae9f; --h3:#0f6f66; --h-ink:#17202b; --h2-ink:#0d1f1c; --h3-ink:#ffffff;
+  --ok:#2c7a4b; --ok-bg:#e2f1e7; --warn:#9a5900; --warn-bg:#fbefd9; --bad:#b3261e; --bad-bg:#fbe4e1;
+  --t-pared:#5a3ea6; --t-ribo:#0f6f66; --t-adn:#9a5900; --t-mem:#b8325f; --t-fol:#2f6690;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1418; --surface:#172027; --surface-2:#1c262e; --ink:#e4e9ee; --muted:#9aa6b2; --line:#2a3640;
+  --accent:#4cc2b2; --accent-soft:#173a36;
+  --gpos:#a891f0; --gneg:#f0799f; --ana:#d1bb7f; --ati:#86b9e2; --res:#b5c0cc;
+  --h0:#1a242b; --h1:#1d4540; --h2:#2b8a7d; --h3:#5fd3c2; --h-ink:#e4e9ee; --h2-ink:#0f1418; --h3-ink:#0f1418;
+  --ok:#6cc58f; --ok-bg:#16301f; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714;
+  --t-pared:#a891f0; --t-ribo:#4cc2b2; --t-adn:#e3a94f; --t-mem:#f0799f; --t-fol:#86b9e2;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1418; --surface:#172027; --surface-2:#1c262e; --ink:#e4e9ee; --muted:#9aa6b2; --line:#2a3640;
+  --accent:#4cc2b2; --accent-soft:#173a36;
+  --gpos:#a891f0; --gneg:#f0799f; --ana:#d1bb7f; --ati:#86b9e2; --res:#b5c0cc;
+  --h0:#1a242b; --h1:#1d4540; --h2:#2b8a7d; --h3:#5fd3c2; --h-ink:#e4e9ee; --h2-ink:#0f1418; --h3-ink:#0f1418;
+  --ok:#6cc58f; --ok-bg:#16301f; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714;
+  --t-pared:#a891f0; --t-ribo:#4cc2b2; --t-adn:#e3a94f; --t-mem:#f0799f; --t-fol:#86b9e2;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important; animation:none!important} }
+body{background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px; margin:0 auto; padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3,h4{font-family:var(--f-display); text-wrap:balance; line-height:1.15; margin:0}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem); font-weight:800; font-stretch:88%; letter-spacing:-.01em}
+h3{font-size:1.2rem; font-weight:700; font-stretch:95%}
+h4{font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+p{margin:0}
+.mono{font-family:var(--f-mono); font-size:.88em}
+.muted{color:var(--muted)}
+.prose{max-width:68ch}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+
+/* Hero */
+header.hero{padding-block:44px 28px; border-bottom:1px solid var(--line); background:var(--surface)}
+.hero .eyebrow{font-family:var(--f-mono); font-size:.8rem; color:var(--accent); letter-spacing:.04em}
+.hero h1{font-size:clamp(2.3rem,6.4vw,4.4rem); font-weight:800; font-stretch:72%; letter-spacing:-.02em; margin-top:8px}
+.hero h1 .pos{color:var(--gpos)} .hero h1 .neg{color:var(--gneg)}
+.hero .lede{margin-top:14px; max-width:62ch; color:var(--muted); font-size:1.05rem}
+.legend-row{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:20px; font-size:.86rem}
+.legend-row span{display:inline-flex; align-items:center; gap:7px}
+.dot{width:11px; height:11px; border-radius:50%; display:inline-block; flex:none}
+
+/* Nav */
+nav.toc{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex; gap:4px; overflow-x:auto; padding-block:8px; scrollbar-width:none}
+nav.toc .wrap::-webkit-scrollbar{display:none}
+nav.toc a{flex:none; text-decoration:none; color:var(--muted); font-size:.86rem; padding:6px 11px; border-radius:999px; white-space:nowrap}
+nav.toc a:hover{color:var(--ink); background:var(--surface)}
+nav.toc a .n{font-family:var(--f-mono); font-size:.75rem; color:var(--accent); margin-right:5px}
+
+section.block{padding-block:52px 12px}
+.sec-head{display:grid; gap:10px; margin-bottom:26px}
+.sec-head .num{font-family:var(--f-mono); color:var(--accent); font-size:.85rem}
+.sec-head p{color:var(--muted); max-width:68ch}
+
+.grid{display:grid; gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; min-width:0}
+.panel h3{margin-bottom:8px}
+.panel p+p{margin-top:8px}
+ul.tight{margin:6px 0 0; padding-left:1.1em} ul.tight li{margin:3px 0}
+.callout{border-left:3px solid var(--accent); background:var(--accent-soft); padding:12px 16px; border-radius:0 var(--radius) var(--radius) 0; margin-top:16px}
+.callout b{font-family:var(--f-display)}
+
+/* Tablas */
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:.9rem}
+th,td{padding:9px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display); font-weight:700; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--surface-2)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:700}
+
+/* PK/PD */
+.pk-fig{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px; overflow-x:auto}
+.pk-fig svg{display:block; width:100%; min-width:520px; height:auto}
+.idx{display:grid; gap:4px}
+.idx .k{font-family:var(--f-mono); font-size:1.05rem; color:var(--accent); font-weight:500}
+
+/* Dianas */
+.mech-fig{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px; overflow-x:auto}
+.mech-fig svg{display:block; width:100%; min-width:640px; height:auto}
+
+/* Familias */
+.controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px}
+.search{flex:1 1 240px; min-width:0; padding:10px 14px; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--ink); font:inherit}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:5px 11px; border-radius:999px; font:inherit; font-size:.82rem; cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.fam{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:18px; overflow:hidden}
+.fam-head{padding:18px 20px 14px; display:grid; gap:10px; border-bottom:1px solid var(--line); position:relative}
+.fam-head::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--tc)}
+.fam-head .top{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline}
+.fam-head h3{font-size:1.45rem; font-stretch:85%}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{font-size:.74rem; padding:3px 8px; border-radius:6px; background:var(--surface-2); border:1px solid var(--line); color:var(--muted); white-space:nowrap}
+.tag.t{color:var(--tc); border-color:color-mix(in srgb,var(--tc) 40%,var(--line))}
+.fam-body{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:14px 22px; padding:14px 20px 18px}
+.fam-body > div{min-width:0}
+.fam-body p{font-size:.92rem; margin-top:4px}
+.perla{grid-column:1/-1; background:var(--surface-2); border-radius:8px; padding:10px 14px; font-size:.92rem}
+.perla b{color:var(--accent)}
+details.drug{border-top:1px solid var(--line)}
+details.drug summary{list-style:none; cursor:pointer; padding:12px 20px; display:grid; grid-template-columns:1fr auto; gap:6px 14px; align-items:center}
+details.drug summary::-webkit-details-marker{display:none}
+details.drug summary:hover{background:var(--surface-2)}
+.dn{font-weight:700; display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; min-width:0}
+.dn .via{font-family:var(--f-mono); font-size:.74rem; color:var(--muted); font-weight:400}
+.dn .tm{font-family:var(--f-mono); font-size:.74rem; color:var(--accent); font-weight:400}
+.mini{display:flex; gap:2px}
+.mini i{width:10px; height:14px; border-radius:2px; display:block}
+.chev{transition:transform .2s; color:var(--muted); font-size:.8rem}
+details[open] .chev{transform:rotate(90deg)}
+.sum-right{display:flex; align-items:center; gap:12px}
+.drug-body{padding:4px 20px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:12px 22px}
+.drug-body > div{min-width:0}
+.drug-body p{font-size:.9rem; margin-top:3px}
+.drug-body .wide{grid-column:1/-1}
+.dose{font-family:var(--f-mono); font-size:.84rem; background:var(--surface-2); padding:8px 10px; border-radius:6px; margin-top:4px}
+.preg{display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:700; padding:2px 8px; border-radius:999px}
+.preg.s{color:var(--ok); background:var(--ok-bg)} .preg.p{color:var(--warn); background:var(--warn-bg)} .preg.e{color:var(--bad); background:var(--bad-bg)}
+.empty{padding:28px; text-align:center; color:var(--muted)}
+
+/* Espectro */
+.spec-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; min-width:0; border-top:3px solid var(--sc)}
+.spec-card h3{font-size:1.05rem; color:var(--sc)}
+.spec-card p{font-size:.88rem; color:var(--muted); margin-top:6px}
+.pills{display:flex; flex-wrap:wrap; gap:5px; margin-top:10px}
+.pill{font-size:.78rem; padding:3px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line)}
+
+/* Esquemas */
+.emp{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; display:grid; gap:10px; min-width:0}
+.emp .hd{display:flex; justify-content:space-between; gap:10px; align-items:baseline; flex-wrap:wrap}
+.emp h3{font-size:1.08rem}
+.emp .lbl{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; font-family:var(--f-display)}
+.emp p{font-size:.9rem}
+.emp .note{font-size:.86rem; color:var(--muted); border-top:1px dashed var(--line); padding-top:8px}
+.etag{font-size:.72rem; padding:2px 8px; border-radius:999px; font-weight:700}
+.etag.crit{background:var(--bad-bg); color:var(--bad)} .etag.resp{background:var(--accent-soft); color:var(--accent)}
+.etag.uri{background:var(--warn-bg); color:var(--warn)} .etag.piel{background:color-mix(in srgb,var(--gpos) 14%,var(--surface)); color:var(--gpos)}
+.etag.abd{background:color-mix(in srgb,var(--ana) 16%,var(--surface)); color:var(--ana)}
+.emp-filter{margin-bottom:16px}
+
+/* Heatmap */
+.hm-controls{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-bottom:14px}
+.hm-controls label{font-size:.9rem; color:var(--muted)}
+select{font:inherit; padding:8px 12px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); max-width:100%}
+.hm-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table.hm{font-size:.82rem; min-width:760px}
+table.hm th, table.hm td{padding:0; border-bottom:1px solid var(--line); text-align:center; vertical-align:middle}
+table.hm thead th{padding:10px 4px; font-size:.7rem; position:sticky; top:0}
+table.hm thead th.pos{color:var(--gpos)} table.hm thead th.neg{color:var(--gneg)} table.hm thead th.ana{color:var(--ana)} table.hm thead th.ati{color:var(--ati)}
+table.hm th.rowh{text-align:left; padding:6px 12px; font-family:var(--f-body); text-transform:none; letter-spacing:0; font-size:.84rem; font-weight:700; color:var(--ink); background:var(--surface); position:sticky; left:0; z-index:1; white-space:nowrap; border-right:1px solid var(--line)}
+table.hm tr.fam-row td{background:var(--surface-2); text-align:left; padding:6px 12px; font-family:var(--f-display); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+table.hm td.c{width:64px; height:34px; border-left:2px solid var(--surface)}
+.c0{background:var(--h0); color:var(--muted)} .c1{background:var(--h1); color:var(--h-ink)} .c2{background:var(--h2); color:var(--h2-ink)} .c3{background:var(--h3); color:var(--h3-ink); font-weight:700}
+table.hm td.c span{font-family:var(--f-mono); font-size:.78rem}
+table.hm .dim{opacity:.28}
+.hm-legend{display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:12px; font-size:.84rem; align-items:center}
+.hm-legend i{display:inline-block; width:22px; height:14px; border-radius:3px; vertical-align:middle; margin-right:6px; border:1px solid var(--line)}
+.colkey{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:4px 18px; margin-top:12px; font-size:.82rem; color:var(--muted)}
+.colkey b{font-family:var(--f-mono); color:var(--ink); font-weight:500}
+
+/* Tarjetas */
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr)); gap:14px}
+.card{perspective:900px; background:none; border:none; padding:0; font:inherit; color:inherit; text-align:left; cursor:pointer; min-height:190px}
+.card .inner{position:relative; width:100%; height:100%; min-height:190px; transition:transform .45s; transform-style:preserve-3d}
+.card[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+.card .face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--line); overflow:auto}
+.card .front{background:var(--surface)}
+.card .front .q{font-family:var(--f-display); font-weight:700; font-size:1.08rem; font-stretch:92%}
+.card .front .hint{margin-top:auto; font-size:.76rem; color:var(--muted); font-family:var(--f-mono)}
+.card .back{background:var(--accent); color:var(--h3-ink); transform:rotateY(180deg); font-size:.9rem}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card .back{color:#0f1418} }
+:root[data-theme="dark"] .card .back{color:#0f1418}
+.cards-actions{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap}
+.btn{border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:7px 14px; border-radius:8px; font:inherit; font-size:.86rem; cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+
+footer{margin-top:56px; padding-block:28px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:.86rem}
+footer .grid{gap:20px}
+footer ul{padding-left:1.1em; margin:6px 0 0}
+.badge-res{display:inline-block; font-family:var(--f-mono); font-size:.72rem; padding:1px 6px; border-radius:4px; background:var(--surface-2); border:1px solid var(--line); margin-right:4px}
+@media (max-width:520px){
+  details.drug summary{grid-template-columns:1fr; }
+  .sum-right{justify-content:space-between}
+}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Farmacología clínica · Medicina de urgencia · Adulto, pediatría, embarazo, obesidad y ERC</div>
+    <h1>Antibacterianos en <span class="pos">Ur</span><span class="neg">gencia</span></h1>
+    <p class="lede">Una guía de estudio por familias y por espectro: dónde actúa cada fármaco, cuánto dura, cuánto se da, quién lo resiste y en qué paciente se complica. Al final, el mapa de espectro y tarjetas para repasar.</p>
+    <div class="legend-row">
+      <span><i class="dot" style="background:var(--gpos)"></i>Gram positivos</span>
+      <span><i class="dot" style="background:var(--gneg)"></i>Gram negativos</span>
+      <span><i class="dot" style="background:var(--ana)"></i>Anaerobios</span>
+      <span><i class="dot" style="background:var(--ati)"></i>Atípicos</span>
+      <span><span class="preg s">Seguro</span><span class="preg p">Precaución</span><span class="preg e">Evitar</span> en el embarazo</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <div class="wrap">
+    <a href="#pkpd"><span class="n">1</span>PK/PD</a>
+    <a href="#dianas"><span class="n">2</span>Dianas</a>
+    <a href="#familias"><span class="n">3</span>Familias y dosis</a>
+    <a href="#espectro"><span class="n">4</span>Por espectro</a>
+    <a href="#resistencias"><span class="n">5</span>Resistencias</a>
+    <a href="#toxicidad"><span class="n">6</span>Toxicidad e interacciones</a>
+    <a href="#poblaciones"><span class="n">7</span>Poblaciones especiales</a>
+    <a href="#empiricos"><span class="n">8</span>Esquemas empíricos</a>
+    <a href="#resumen"><span class="n">9</span>Resumen visual</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 PK/PD -->
+<section class="block" id="pkpd">
+  <div class="sec-head">
+    <span class="num">01 · Fundamentos</span>
+    <h2>Farmacocinética y farmacodinamia: la dosis es una estrategia</h2>
+    <p>La CMI dice cuánto antibiótico necesita la bacteria. La PK dice cuánto le llega. La PD dice qué patrón de exposición la mata. En el paciente séptico las tres cambian a la vez.</p>
+  </div>
+
+  <div class="pk-fig" aria-label="Curva concentración-tiempo con índices PK/PD">
+    <svg id="pkSvg" viewBox="0 0 640 300" role="img" aria-labelledby="pkT"><title id="pkT">Curva concentración-tiempo: Cmax, AUC y tiempo sobre la CMI</title></svg>
+  </div>
+
+  <div class="grid g3" style="margin-top:16px">
+    <div class="panel idx">
+      <span class="k">%fT &gt; CMI</span>
+      <h3>Tiempo-dependientes</h3>
+      <p>Betalactámicos. Importa cuánto tiempo la fracción libre supera la CMI: penicilinas ≥50%, cefalosporinas 60–70%, carbapenémicos ≥40%. En el crítico se apunta al 100% fT&gt;CMI.</p>
+      <p class="muted">Estrategia: dosis frecuentes e infusión extendida (3–4 h) o continua tras una dosis de carga.</p>
+    </div>
+    <div class="panel idx">
+      <span class="k">Cmax / CMI</span>
+      <h3>Concentración-dependientes</h3>
+      <p>Aminoglucósidos (≥8–10), daptomicina, metronidazol. Matan más cuanto más alto es el pico y tienen efecto postantibiótico prolongado.</p>
+      <p class="muted">Estrategia: dosis única diaria alta y valle bajo para no dañar riñón ni oído.</p>
+    </div>
+    <div class="panel idx">
+      <span class="k">AUC / CMI</span>
+      <h3>Exposición total</h3>
+      <p>Fluoroquinolonas (≥125 en Gram−; 30–40 en neumococo), vancomicina (400–600), linezolid, azitromicina, tetraciclinas, colistina.</p>
+      <p class="muted">Estrategia: dosis diaria total suficiente; vancomicina guiada por AUC.</p>
+    </div>
+  </div>
+
+  <h3 style="margin:30px 0 12px">Volumen de distribución: hidrófilos frente a lipófilos</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Propiedad</th><th>Hidrófilos</th><th>Lipófilos</th></tr></thead>
+      <tbody>
+        <tr><td>Ejemplos</td><td>Betalactámicos, aminoglucósidos, glicopéptidos, colistina, daptomicina</td><td>Fluoroquinolonas, macrólidos, tetraciclinas, linezolid, clindamicina, rifampicina, TMP-SMX, metronidazol</td></tr>
+        <tr><td>Vd</td><td>Bajo, limitado al extracelular</td><td>Alto, con penetración intracelular</td></tr>
+        <tr><td>Eliminación</td><td>Renal mayoritaria</td><td>Hepática mayoritaria</td></tr>
+        <tr><td>Efecto de la sepsis</td><td>La fuga capilar y la reanimación con volumen aumentan el Vd: <b>riesgo de subdosis en la 1ª dosis</b></td><td>Poco cambio en el Vd</td></tr>
+        <tr><td>Conducta en urgencia</td><td>Dosis de carga completa sin ajuste renal; ajustar desde la 2ª dosis o después de 24–48 h</td><td>Dosis estándar; cambio precoz a VO</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel">
+      <h3>Tres trampas del paciente crítico</h3>
+      <ul class="tight">
+        <li><b>Aclaramiento renal aumentado</b> (ClCr &gt;130 mL/min): joven, politrauma, TEC, quemado, sepsis precoz. Los betalactámicos se eliminan antes de tiempo: usa la dosis máxima o infusión extendida.</li>
+        <li><b>Hipoalbuminemia:</b> los fármacos con alta unión a proteínas (ceftriaxona, ertapenem, daptomicina, teicoplanina) tienen más fracción libre y se eliminan más rápido.</li>
+        <li><b>Terapia de reemplazo renal continua:</b> elimina como un ClCr de 25–50 mL/min. No dosifiques como en anuria.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Biodisponibilidad oral: el comprimido que vale como un suero</h3>
+      <p><b>≥90%:</b> fluoroquinolonas, linezolid, TMP-SMX, metronidazol, doxiciclina, clindamicina, rifampicina.</p>
+      <p><b>Moderada:</b> amoxicilina (~80%), cefadroxilo (~90%), cefuroxima axetil (~50%), cloxacilina oral (errática).</p>
+      <p class="muted">Pasa de EV a VO cuando hay estabilidad hemodinámica, tolerancia oral y tubo digestivo funcional.</p>
+    </div>
+    <div class="panel">
+      <h3>Penetración en el SNC</h3>
+      <p><b>Buena (con meninges inflamadas):</b> ceftriaxona, cefotaxima, cefepime, meropenem, ampicilina, penicilina G, vancomicina (variable), linezolid, metronidazol, TMP-SMX, rifampicina, fluoroquinolonas.</p>
+      <p><b>Mala:</b> cefazolina, cefalosporinas de 1ª y 2ª, clindamicina, aminoglucósidos, macrólidos, tigeciclina, daptomicina.</p>
+    </div>
+    <div class="panel">
+      <h3>Bactericida o bacteriostático</h3>
+      <p>La diferencia importa sobre todo en endocarditis, meningitis y neutropenia, donde se prefieren bactericidas. En el resto de los cuadros, la eficacia clínica es comparable.</p>
+      <p class="muted">Algunos fármacos cambian según el microorganismo: linezolid es bactericida frente a estreptococos y bacteriostático frente a estafilococos.</p>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel">
+      <h3>Alergia a betalactámicos: desmontando la etiqueta</h3>
+      <ul class="tight">
+        <li>Más del 90% de los pacientes etiquetados como alérgicos a penicilina toleran el fármaco.</li>
+        <li>La reactividad cruzada depende de la <b>cadena lateral R1</b>, no del anillo. Penicilina y cefalosporinas de 3ª y 4ª: ~1–2%. Carbapenémicos: &lt;1%.</li>
+        <li><b>Cefazolina</b> tiene cadena lateral única. <b>Aztreonam</b> solo comparte cadena con ceftazidima.</li>
+        <li><b>PEN-FAST</b> &lt;3 puntos = bajo riesgo: puedes usar cefalosporina con cadena distinta o hacer prueba de provocación oral directa.</li>
+        <li>Anafilaxia, SJS/NET o DRESS previos: evita la familia y consulta a alergología.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Duraciones cortas con evidencia</h3>
+      <div class="tbl-wrap" style="border:none">
+      <table>
+        <tbody>
+          <tr><td>NAC</td><td class="mono">5 días*</td></tr>
+          <tr><td>Cistitis</td><td class="mono">Fosfomicina 1 dosis · nitrofurantoína 5 d</td></tr>
+          <tr><td>Pielonefritis</td><td class="mono">7 d (FQ) · 7–10 d (BL)</td></tr>
+          <tr><td>Intraabdominal con control de foco</td><td class="mono">4 d (STOP-IT)</td></tr>
+          <tr><td>Bacteriemia por Gram− no complicada</td><td class="mono">7 d (BALANCE)</td></tr>
+          <tr><td>Celulitis</td><td class="mono">5–6 d</td></tr>
+          <tr><td>Bacteriemia por S. aureus</td><td class="mono">≥14 d (no complicada) · 4–6 sem</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="muted" style="margin-top:6px;font-size:.84rem">*Con estabilidad clínica durante 48 h. Desescala a las 48–72 h con cultivos.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 Dianas -->
+<section class="block" id="dianas">
+  <div class="sec-head">
+    <span class="num">02 · Mecanismos de acción</span>
+    <h2>Seis dianas en una bacteria</h2>
+    <p>Cada familia ataca una estructura distinta. Saber dónde actúa explica su espectro (sin pared no hay betalactámico que valga), su sinergia (pared más 30S en la endocarditis por enterococo) y su toxicidad.</p>
+  </div>
+  <div class="mech-fig">
+    <svg viewBox="0 0 760 420" role="img" aria-labelledby="mT">
+      <title id="mT">Dianas bacterianas de los antibacterianos</title>
+      <!-- célula -->
+      <rect x="30" y="60" width="400" height="290" rx="145" fill="var(--surface-2)" stroke="var(--t-pared)" stroke-width="10"/>
+      <rect x="50" y="80" width="360" height="250" rx="125" fill="none" stroke="var(--t-mem)" stroke-width="3" stroke-dasharray="7 5"/>
+      <!-- ADN -->
+      <path d="M110 205 C 120 160, 160 150, 175 180 S 220 240, 235 200 S 200 140, 160 160 S 110 250, 150 255 S 210 225, 200 190" fill="none" stroke="var(--t-adn)" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- ribosoma -->
+      <ellipse cx="320" cy="160" rx="34" ry="24" fill="var(--t-ribo)" opacity=".85"/>
+      <ellipse cx="320" cy="196" rx="25" ry="16" fill="var(--t-ribo)" opacity=".5"/>
+      <text x="320" y="165" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="var(--surface)">50S</text>
+      <text x="320" y="201" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--ink)">30S</text>
+      <!-- folato -->
+      <text x="262" y="282" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--t-fol)">PABA → DHF → THF</text>
+      <line x1="196" y1="290" x2="328" y2="290" stroke="var(--t-fol)" stroke-width="1.5"/>
+      <!-- leaders -->
+      <g stroke="var(--muted)" stroke-width="1" fill="none">
+        <path d="M352 82 L470 52"/>
+        <path d="M405 140 L470 128"/>
+        <path d="M354 160 L470 204"/>
+        <path d="M345 198 L470 270"/>
+        <path d="M232 204 L470 336"/>
+        <path d="M300 292 L470 392"/>
+      </g>
+      <g font-family="Atkinson Hyperlegible,system-ui,sans-serif" font-size="13" fill="var(--ink)">
+        <text x="478" y="44" font-weight="700" fill="var(--t-pared)">PARED · peptidoglicano</text>
+        <text x="478" y="61">Betalactámicos (PBP) · vancomicina</text>
+        <text x="478" y="76" fill="var(--muted)">(D-Ala-D-Ala) · fosfomicina (MurA)</text>
+        <text x="478" y="122" font-weight="700" fill="var(--t-mem)">MEMBRANA</text>
+        <text x="478" y="139">Daptomicina (Gram+) · colistina</text>
+        <text x="478" y="154" fill="var(--muted)">(LPS de la membrana externa, Gram−)</text>
+        <text x="478" y="198" font-weight="700" fill="var(--t-ribo)">RIBOSOMA 50S</text>
+        <text x="478" y="215">Macrólidos · clindamicina · linezolid</text>
+        <text x="478" y="230" fill="var(--muted)">(y cloranfenicol)</text>
+        <text x="478" y="264" font-weight="700" fill="var(--t-ribo)">RIBOSOMA 30S</text>
+        <text x="478" y="281">Aminoglucósidos · tetraciclinas</text>
+        <text x="478" y="296" fill="var(--muted)">· tigeciclina</text>
+        <text x="478" y="330" font-weight="700" fill="var(--t-adn)">ÁCIDOS NUCLEICOS</text>
+        <text x="478" y="347">Quinolonas (girasa, topo IV) · metronidazol</text>
+        <text x="478" y="362" fill="var(--muted)">· nitrofurantoína · rifampicina (ARN pol)</text>
+        <text x="478" y="390" font-weight="700" fill="var(--t-fol)">SÍNTESIS DE FOLATO</text>
+        <text x="478" y="407">Sulfametoxazol (DHPS) + trimetoprim (DHFR)</text>
+      </g>
+      <text x="230" y="385" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="var(--muted)">Mnemotecnia: «a los 30 me hice AT, a los 50 MaCLiL»</text>
+    </svg>
+  </div>
+</section>
+
+<!-- 3 Familias -->
+<section class="block" id="familias">
+  <div class="sec-head">
+    <span class="num">03 · Revisión por familia</span>
+    <h2>Familias, fármacos y dosis</h2>
+    <p>Cada familia muestra su mecanismo, resistencias y perla clínica. Abre un fármaco para ver vida media, dosis de adulto, ajuste renal, pediatría, embarazo, obesidad y toxicidad. La barrita de colores resume su espectro con el mismo orden del mapa final.</p>
+  </div>
+  <div class="controls">
+    <input id="q" class="search" type="search" placeholder="Buscar fármaco, bacteria o efecto adverso…" aria-label="Buscar">
+    <div class="chips" id="famChips" role="group" aria-label="Filtrar por familia"></div>
+  </div>
+  <div id="famList"></div>
+</section>
+
+<!-- 4 Espectro -->
+<section class="block" id="espectro">
+  <div class="sec-head">
+    <span class="num">04 · Agrupación por espectro</span>
+    <h2>El mismo arsenal, ordenado por a quién cubre</h2>
+    <p>Para elegir de forma empírica conviene pensar al revés: primero el microorganismo probable, después el fármaco más estrecho que lo cubre.</p>
+  </div>
+  <div class="grid g2" id="specGrid"></div>
+  <div class="callout"><b>Escalera de las cefalosporinas.</b> 1ª generación: Gram positivos (cefazolina). 2ª: más Gram negativos. 3ª: Gram negativos y SNC (ceftriaxona); ceftazidima suma Pseudomonas. 4ª: recupera Gram positivos y suma Pseudomonas y AmpC (cefepime). 5ª: SAMR (ceftarolina). Ninguna cubre Enterococcus ni Listeria.</div>
+</section>
+
+<!-- 5 Resistencias -->
+<section class="block" id="resistencias">
+  <div class="sec-head">
+    <span class="num">05 · Resistencia</span>
+    <h2>Intrínseca o adquirida: la bacteria nace o se hace</h2>
+    <p>La resistencia intrínseca es estable y predecible: se memoriza. La adquirida depende de la epidemiología y cambia cada año: se consulta en el antibiograma local.</p>
+  </div>
+
+  <div class="grid g2">
+    <div class="panel"><h3>1 · Inactivación enzimática</h3>
+      <p>Betalactamasas (clasificación de Ambler):</p>
+      <ul class="tight">
+        <li><b>Clase A:</b> penicilinasas, BLEE (CTX-M, SHV, TEM), KPC.</li>
+        <li><b>Clase B (metalo, dependientes de zinc):</b> NDM, VIM, IMP. No las inhibe avibactam.</li>
+        <li><b>Clase C:</b> AmpC cromosómica inducible o plasmídica.</li>
+        <li><b>Clase D:</b> OXA-48 (Enterobacterales) y OXA-23/24 (Acinetobacter).</li>
+      </ul>
+      <p>Además: enzimas modificadoras de aminoglucósidos (AAC, APH, ANT).</p></div>
+    <div class="panel"><h3>2 · Modificación de la diana</h3>
+      <ul class="tight">
+        <li>PBP2a por <b>mecA</b>: SAMR, resistente a todos los betalactámicos clásicos.</li>
+        <li>PBP mosaico en neumococo: resistencia a penicilina relevante en meningitis.</li>
+        <li><b>vanA/vanB:</b> D-Ala-D-Lac en Enterococcus (ERV).</li>
+        <li>Mutaciones en <b>gyrA/parC</b>: quinolonas.</li>
+        <li>Metilación ribosomal <b>erm</b>: fenotipo MLSB (macrólidos, lincosamidas, estreptograminas).</li>
+        <li>Modificación del lípido A (<b>mgrB</b>, <b>mcr-1</b>): colistina.</li>
+      </ul></div>
+    <div class="panel"><h3>3 · Menor permeabilidad</h3>
+      <p>Pérdida de porinas. El ejemplo clásico es la pérdida de <b>OprD</b> en Pseudomonas, que causa resistencia a imipenem sin enzima. Combinada con BLEE o AmpC, la pérdida de porinas en Enterobacterales también produce resistencia a carbapenémicos.</p></div>
+    <div class="panel"><h3>4 · Bombas de eflujo</h3>
+      <p>MexAB-OprM en Pseudomonas (multirresistencia), <b>tet</b> (tetraciclinas), <b>mef(A)</b> (macrólidos de bajo nivel en neumococo). Suelen sumarse a otros mecanismos.</p>
+      <p class="muted">Otros: protección de la diana (qnr, tetM), vía metabólica alternativa (sul, dfr) y biopelícula en dispositivos.</p></div>
+  </div>
+
+  <h3 style="margin:30px 0 12px">Resistencias intrínsecas que hay que saber de memoria</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Microorganismo</th><th>Intrínsecamente resistente a</th><th>Implicancia en urgencia</th></tr></thead>
+      <tbody>
+        <tr><td>Enterococcus spp.</td><td>Todas las cefalosporinas, aminoglucósidos (bajo nivel), clindamicina, TMP-SMX (in vivo)</td><td>ITU o endocarditis por enterococo: ampicilina. Ceftriaxona sola no sirve.</td></tr>
+        <tr><td>Listeria monocytogenes</td><td>Cefalosporinas</td><td>Meningitis en >50 años, embarazo o inmunosupresión: añade ampicilina.</td></tr>
+        <tr><td>Pseudomonas aeruginosa</td><td>Ampicilina, amoxicilina-clavulánico, cefazolina, ceftriaxona, ertapenem, tigeciclina, TMP-SMX, tetraciclinas</td><td>Solo sirven los antipseudomónicos (sección 4).</td></tr>
+        <tr><td>Grupo HECK-Yes (Enterobacter, C. freundii, K. aerogenes, Serratia, Morganella)</td><td>Ampicilina, amoxicilina-clavulánico, cefazolina; AmpC inducible frente a cefalosporinas de 3ª</td><td>Prefiere cefepime o carbapenémico en infección grave.</td></tr>
+        <tr><td>Klebsiella pneumoniae</td><td>Ampicilina (SHV-1)</td><td>No uses aminopenicilinas solas.</td></tr>
+        <tr><td>Proteus, Providencia, Morganella, Serratia</td><td>Colistina, nitrofurantoína; tigeciclina (Proteus, Morganella, Providencia)</td><td>En ITU por Proteus, la nitrofurantoína no sirve.</td></tr>
+        <tr><td>Stenotrophomonas maltophilia</td><td>Carbapenémicos (L1), aminoglucósidos</td><td>Tratamiento: TMP-SMX.</td></tr>
+        <tr><td>Acinetobacter baumannii</td><td>Aztreonam, ertapenem, ampicilina, fosfomicina</td><td>El sulbactam tiene actividad propia.</td></tr>
+        <tr><td>Anaerobios</td><td>Aminoglucósidos; B. fragilis también a penicilina</td><td>Abdomen: metronidazol, BL/IBL o carbapenémico.</td></tr>
+        <tr><td>Atípicos (Mycoplasma, Chlamydophila, Legionella)</td><td>Todos los betalactámicos (sin pared o intracelulares)</td><td>NAC grave: añade macrólido o FQ.</td></tr>
+        <tr><td>Gram negativos en general</td><td>Vancomicina, daptomicina, linezolid, clindamicina</td><td>Las moléculas grandes o hidrofóbicas no cruzan la membrana externa.</td></tr>
+        <tr><td>S. saprophyticus</td><td>Fosfomicina</td><td>Cistitis en mujer joven: prefiere nitrofurantoína.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin:30px 0 12px">Resistencias adquiridas de mayor impacto</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Fenotipo</th><th>Mecanismo</th><th>Tratamiento de elección</th></tr></thead>
+      <tbody>
+        <tr><td>SAMR</td><td>mecA → PBP2a</td><td>Vancomicina, linezolid, daptomicina (no en pulmón). Comunitario en piel: TMP-SMX o doxiciclina.</td></tr>
+        <tr><td>Enterococo resistente a vancomicina (ERV)</td><td>vanA/vanB</td><td>Linezolid o daptomicina (dosis altas).</td></tr>
+        <tr><td>Enterobacterales BLEE</td><td>CTX-M plasmídica</td><td>Carbapenémico en infección grave o bacteriemia. Cistitis: nitrofurantoína o fosfomicina. Alternativa: amikacina.</td></tr>
+        <tr><td>EPC tipo KPC</td><td>Carbapenemasa clase A</td><td>Ceftazidima-avibactam o meropenem-vaborbactam.</td></tr>
+        <tr><td>EPC tipo NDM/VIM</td><td>Metalo-betalactamasa clase B</td><td>Ceftazidima-avibactam + aztreonam, o cefiderocol.</td></tr>
+        <tr><td>EPC tipo OXA-48</td><td>Carbapenemasa clase D</td><td>Ceftazidima-avibactam.</td></tr>
+        <tr><td>Pseudomonas DTR</td><td>Pérdida de OprD, eflujo, AmpC; a veces carbapenemasa</td><td>Ceftolozano-tazobactam o CAZ-AVI; colistina como rescate.</td></tr>
+        <tr><td>Acinetobacter resistente a carbapenémicos</td><td>OXA-23/24</td><td>Sulbactam en dosis altas (o sulbactam-durlobactam) ± colistina o tigeciclina, según infectología.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>Contexto chileno</h3>
+    <ul class="tight">
+      <li><b>Carbapenemasas al alza.</b> Según el ISP, entre 2014 y 2019 los aislados con carbapenemasa confirmada pasaron de 15 a 1.303 por año. Predominó KPC (74%), seguida de VIM (14%) y NDM (11%), con 83% de los aislados en la Región Metropolitana. Después de la pandemia se ha descrito aumento de NDM y de cepas con doble carbapenemasa (KPC + NDM), lo que limita el uso de ceftazidima-avibactam en monoterapia.</li>
+      <li><b>E. coli urinaria comunitaria.</b> Las series nacionales muestran resistencia alta a ampicilina (~50–60%) y por sobre el umbral del 20% a TMP-SMX y ciprofloxacino. Nitrofurantoína y fosfomicina conservan actividad sobre el 90%. Por eso no se recomiendan quinolonas ni cotrimoxazol empíricos en cistitis.</li>
+      <li><b>BLEE en la comunidad:</b> más frecuente en el adulto mayor, residentes de ELEAM, pacientes con hospitalización o antibiótico reciente y con sonda.</li>
+      <li><b>SAMR:</b> predomina el clon hospitalario. El SAMR comunitario existe pero es menos frecuente que en Norteamérica; considéralo en abscesos recurrentes o forunculosis familiar.</li>
+      <li><b>Gonococo:</b> resistencia alta a quinolonas; ceftriaxona sigue siendo el pilar.</li>
+      <li><b>Arsenal:</b> ceftazidima-avibactam, ceftolozano-tazobactam, colistina y tigeciclina suelen requerir visación de infectología o del PROA local. Su disponibilidad varía entre hospitales.</li>
+    </ul>
+    <p class="muted" style="margin-top:10px">Los porcentajes son referenciales y cambian por región y año. Para decidir, usa el antibiograma acumulado de tu hospital.</p>
+  </div>
+</section>
+
+<!-- 6 Toxicidad -->
+<section class="block" id="toxicidad">
+  <div class="sec-head">
+    <span class="num">06 · Seguridad</span>
+    <h2>Toxicidad e interacciones que aparecen en urgencia</h2>
+  </div>
+  <div class="grid g2">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Órgano</th><th>Culpables principales</th></tr></thead>
+        <tbody>
+          <tr><td>Riñón</td><td>Aminoglucósidos, vancomicina (más con pip-tazo), colistina, nefritis intersticial por betalactámicos</td></tr>
+          <tr><td>Oído</td><td>Aminoglucósidos (irreversible), macrólidos en dosis altas (reversible)</td></tr>
+          <tr><td>SNC</td><td>Cefepime (encefalopatía), imipenem (convulsiones), FQ (delirium), metronidazol (cerebelo), penicilina en dosis altas</td></tr>
+          <tr><td>Corazón (QT)</td><td>Macrólidos, fluoroquinolonas (moxi más que levo, y levo más que cipro)</td></tr>
+          <tr><td>Hígado</td><td>Amoxicilina-clavulánico (colestasis tardía), tetraciclinas, tigeciclina, cloxacilina, rifampicina</td></tr>
+          <tr><td>Médula ósea</td><td>Linezolid (plaquetas), TMP-SMX, betalactámicos en cursos largos (neutropenia)</td></tr>
+          <tr><td>Músculo y tendón</td><td>Daptomicina (CPK), fluoroquinolonas (tendón de Aquiles)</td></tr>
+          <tr><td>Piel</td><td>Sulfas (SJS/NET), aminopenicilinas (rash en mononucleosis), vancomicina (flushing)</td></tr>
+          <tr><td>Colon (C. difficile)</td><td>Clindamicina, FQ, cefalosporinas de 3ª, amoxicilina-clavulánico</td></tr>
+          <tr><td>Electrolitos</td><td>TMP-SMX (hiperkalemia), pip-tazo (hipokalemia), fosfomicina EV (sodio)</td></tr>
+          <tr><td>Glicemia</td><td>Fluoroquinolonas (hipo e hiperglicemia, sobre todo en diabéticos y adultos mayores)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Interacción</th><th>Consecuencia y conducta</th></tr></thead>
+        <tbody>
+          <tr><td>Carbapenémico + ácido valproico</td><td>El valproato cae en 24 h y hay riesgo de crisis. Cambia el anticonvulsivante.</td></tr>
+          <tr><td>Claritromicina o eritromicina + colchicina, estatinas, BCC, tacrolimus, ACOD</td><td>Inhiben el CYP3A4: toxicidad. Usa azitromicina.</td></tr>
+          <tr><td>Linezolid + ISRS, IRSN, tramadol, meperidina</td><td>Síndrome serotoninérgico.</td></tr>
+          <tr><td>TMP-SMX + IECA, ARA II, espironolactona</td><td>Hiperkalemia grave.</td></tr>
+          <tr><td>TMP-SMX + metotrexato</td><td>Mielosupresión.</td></tr>
+          <tr><td>Warfarina + TMP-SMX, metronidazol, FQ, macrólidos</td><td>Sube el INR: controla a los 3–5 días.</td></tr>
+          <tr><td>FQ o tetraciclinas + Ca, Mg, Fe, Al, Zn</td><td>Quelación: separa las tomas.</td></tr>
+          <tr><td>Ciprofloxacino + tizanidina o teofilina</td><td>Inhibe el CYP1A2: toxicidad.</td></tr>
+          <tr><td>QT + QT (macrólido o FQ + ondansetrón, haloperidol, antiarrítmicos)</td><td>Torsade de pointes: ECG y corrección de K y Mg.</td></tr>
+          <tr><td>Ceftriaxona + calcio EV en neonatos</td><td>Precipitados letales: usa cefotaxima.</td></tr>
+          <tr><td>Rifampicina + casi todo</td><td>Inductor potente: anticoagulantes, anticonceptivos, antirretrovirales, inmunosupresores.</td></tr>
+          <tr><td>Daptomicina + estatina</td><td>Miopatía: suspende la estatina.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 7 Poblaciones -->
+<section class="block" id="poblaciones">
+  <div class="sec-head">
+    <span class="num">07 · Poblaciones especiales</span>
+    <h2>Riñón, peso, embarazo y niños</h2>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>Insuficiencia renal y diálisis</h3>
+      <p class="mono" style="background:var(--surface-2);padding:8px 10px;border-radius:6px">ClCr (Cockcroft-Gault) = (140 − edad) × peso / (72 × Cr) × 0,85 si mujer</p>
+      <ul class="tight">
+        <li><b>Regla de oro:</b> la 1ª dosis va completa. Ajusta las siguientes.</li>
+        <li><b>Sin ajuste renal:</b> ceftriaxona, cloxacilina, clindamicina, doxiciclina, tigeciclina, linezolid, moxifloxacino, azitromicina, metronidazol.</li>
+        <li><b>Se eliminan en hemodiálisis</b> (dar después de la sesión): la mayoría de los betalactámicos, aminoglucósidos, vancomicina (con filtros de alto flujo), TMP-SMX.</li>
+        <li><b>Poco dializables:</b> ceftriaxona, doxiciclina, clindamicina, azitromicina, moxifloxacino.</li>
+        <li><b>TRRC:</b> dosifica como ClCr 25–50 mL/min. Ejemplos: meropenem 1 g c/8 h, pip-tazo 4,5 g c/8 h, cefepime 2 g c/12 h, vancomicina por niveles.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Obesidad: ¿qué peso uso?</h3>
+      <div class="tbl-wrap" style="border:none">
+      <table>
+        <tbody>
+          <tr><td>Peso total (PT)</td><td>Carga de vancomicina (máx 3 g), daptomicina (o ajustado si IMC &gt;40)</td></tr>
+          <tr><td>Peso ajustado</td><td>Aminoglucósidos y TMP-SMX en mg/kg. PA = PI + 0,4 × (PT − PI)</td></tr>
+          <tr><td>Dosis fija alta</td><td>Betalactámicos: cefazolina 2 g (3 g si ≥120 kg), pip-tazo 4,5 g c/6 h o infusión extendida, meropenem 2 g c/8 h en grave, ceftriaxona 2 g</td></tr>
+          <tr><td>Dosis estándar</td><td>FQ, linezolid, macrólidos, doxiciclina; carga fija de colistina</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="muted" style="font-size:.84rem;margin-top:6px">Peso ideal (Devine): 50 kg (hombre) o 45,5 kg (mujer) + 0,91 × (talla en cm − 152,4).</p>
+    </div>
+    <div class="panel">
+      <h3>Embarazo</h3>
+      <p><span class="preg s">Seguro</span> Penicilinas, cefalosporinas, azitromicina, eritromicina (no estolato), clindamicina, fosfomicina, aztreonam, meropenem, metronidazol.</p>
+      <p><span class="preg p">Precaución</span> Nitrofurantoína (evitar a término), aminoglucósidos (solo si es necesario), vancomicina (con niveles), linezolid, daptomicina, imipenem, nuevos BL/IBL, colistina.</p>
+      <p><span class="preg e">Evitar</span> Fluoroquinolonas, tetraciclinas (desde el 2º trimestre), tigeciclina, claritromicina, TMP-SMX (1er trimestre y término), cloranfenicol («síndrome gris»).</p>
+      <p class="muted">El Vd y el filtrado glomerular aumentan en el embarazo: usa dosis plenas. La bacteriuria asintomática se trata en la embarazada.</p>
+    </div>
+    <div class="panel">
+      <h3>Pediatría</h3>
+      <ul class="tight">
+        <li>Dosis en mg/kg/día, sin superar la dosis máxima de adulto.</li>
+        <li><b>Neonatos:</b> cefotaxima en lugar de ceftriaxona (bilirrubina y calcio). Ampicilina + gentamicina o cefotaxima cubre Listeria y SGB.</li>
+        <li><b>Sulfas:</b> evitar en menores de 2 meses (kernicterus).</li>
+        <li><b>FQ:</b> solo con indicación precisa (ITU complicada, carbunco, fibrosis quística).</li>
+        <li><b>Doxiciclina:</b> cursos de ≤21 días aceptables a cualquier edad (AAP 2018); de elección en rickettsiosis.</li>
+        <li><b>Amoxicilina en dosis altas</b> (80–90 mg/kg/día) para superar la resistencia intermedia del neumococo en OMA y NAC.</li>
+        <li><b>Eritromicina o azitromicina en menores de 6 semanas:</b> riesgo de estenosis hipertrófica del píloro.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 Empíricos -->
+<section class="block" id="empiricos">
+  <div class="sec-head">
+    <span class="num">08 · Aplicación</span>
+    <h2>Esquemas empíricos del adulto en urgencia</h2>
+    <p>Son puntos de partida. Ajústalos a tu antibiograma local, a la gravedad, a los factores de riesgo de MDR y a la alergia documentada. La dosis pediátrica de cada fármaco está en la sección 3.</p>
+  </div>
+  <div class="chips emp-filter" id="empChips" role="group" aria-label="Filtrar por sistema"></div>
+  <div class="grid g2" id="empGrid"></div>
+</section>
+
+<!-- 9 Resumen -->
+<section class="block" id="resumen">
+  <div class="sec-head">
+    <span class="num">09 · Resumen visual</span>
+    <h2>Mapa de espectro</h2>
+    <p>Cada celda es la actividad clínica esperable frente al grupo, asumiendo sensibilidad habitual. Usa el selector para ver solo lo que cubre un grupo concreto.</p>
+  </div>
+  <div class="hm-controls">
+    <label for="hmCol">Mostrar fármacos activos frente a</label>
+    <select id="hmCol"><option value="">Todos los grupos</option></select>
+  </div>
+  <div class="hm-wrap"><table class="hm" id="hm"></table></div>
+  <div class="hm-legend" id="hmLegend"></div>
+  <div class="colkey" id="colKey"></div>
+
+  <h2 style="margin:44px 0 8px">Tarjetas de repaso</h2>
+  <p class="muted" style="margin-bottom:16px">Piensa la respuesta y toca la tarjeta para darla vuelta.</p>
+  <div class="cards-actions">
+    <button class="btn" id="shuffle" type="button">Barajar</button>
+    <button class="btn" id="flipAll" type="button">Dar vuelta todas</button>
+    <button class="btn" id="resetAll" type="button">Ocultar respuestas</button>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap grid g2">
+    <div>
+      <h4>Advertencia</h4>
+      <p style="margin-top:6px">Material de estudio. Las dosis corresponden a función hepática normal salvo que se indique otra cosa, y deben verificarse con el formulario de tu institución, el antibiograma local y las fichas técnicas vigentes antes de prescribir.</p>
+    </div>
+    <div>
+      <h4>Referencias principales</h4>
+      <ul>
+        <li>Surviving Sepsis Campaign 2021 (Evans L, et al. Crit Care Med 2021).</li>
+        <li>Rybak MJ, et al. Vancomycin AUC monitoring. Am J Health Syst Pharm 2020.</li>
+        <li>IDSA Guidance on Treatment of Antimicrobial-Resistant Gram-Negative Infections, 2024.</li>
+        <li>Harris PNA, et al. MERINO. JAMA 2018 · Sawyer RG, et al. STOP-IT. NEJM 2015 · BALANCE Investigators. NEJM 2025.</li>
+        <li>Dequin PF, et al. CAPE COD. NEJM 2023 · Roberts JA, et al. BLING III. JAMA 2024.</li>
+        <li>Trubiano JA, et al. PEN-FAST. JAMA Intern Med 2020.</li>
+        <li>Instituto de Salud Pública de Chile: vigilancia de carbapenemasas 2014–2019; Carrasco-Anabalón S, et al. Microbiol Spectr 2023.</li>
+        <li>The Sanford Guide to Antimicrobial Therapy · Lexicomp / Pediatric Dosage Handbook.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Datos: columnas del mapa de espectro ===== */
+const COLS = [
+  {k:"strep", s:"Strep", l:"Streptococcus (S. pyogenes, neumococo)", g:"pos"},
+  {k:"mssa",  s:"SAMS",  l:"S. aureus meticilino-sensible", g:"pos"},
+  {k:"mrsa",  s:"SAMR",  l:"S. aureus meticilino-resistente", g:"pos"},
+  {k:"efc",   s:"E. fc", l:"Enterococcus faecalis", g:"pos"},
+  {k:"ent",   s:"Enterob.", l:"Enterobacterales sin BLEE (E. coli, Klebsiella, Proteus)", g:"neg"},
+  {k:"blee",  s:"BLEE", l:"Enterobacterales productoras de BLEE", g:"neg"},
+  {k:"cre",   s:"EPC", l:"Enterobacterales productoras de carbapenemasa (KPC/NDM/OXA-48)", g:"neg"},
+  {k:"pae",   s:"P. aer", l:"Pseudomonas aeruginosa", g:"neg"},
+  {k:"ana",   s:"Anaer.", l:"Anaerobios (incluye B. fragilis)", g:"ana"},
+  {k:"atip",  s:"Atíp.", l:"Atípicos (Mycoplasma, Chlamydophila, Legionella)", g:"ati"}
+];
+const LEVELS = ["Sin actividad útil","Variable / limitada / sinergia","Activo","Elección o muy activo"];
+
+/* ===== Familias ===== */
+const FAMS = [
+ {id:"pen", n:"Penicilinas", grp:"Betalactámicos", tg:"pared", pk:"fT>CMI ≥ 50%", cid:"Bactericida",
+  mec:"Se unen a las PBP (transpeptidasas) e impiden el entrecruzamiento del peptidoglicano; la autolisis termina el trabajo. Los inhibidores de betalactamasa (clavulánico, sulbactam, tazobactam) actúan como señuelo suicida.",
+  intr:"Atípicos (no tienen pared). Klebsiella frente a ampicilina (SHV-1 cromosómica). Pseudomonas frente a todas, salvo piperacilina. B. fragilis frente a penicilina sola.",
+  adq:"Penicilinasas en ~90% de S. aureus. SAMR por mecA, que codifica PBP2a. Neumococo con PBP de baja afinidad. Enterobacterales con BLEE, AmpC o carbapenemasas.",
+  perla:"El inhibidor amplía el espectro solo hacia lo que resiste por betalactamasa, nunca hacia el SAMR."},
+ {id:"cef", n:"Cefalosporinas", grp:"Betalactámicos", tg:"pared", pk:"fT>CMI 60–70%", cid:"Bactericida",
+  mec:"Mismo blanco que las penicilinas (PBP). Al subir de generación ganan Gram negativos y pierden algo de Gram positivos; la 4ª recupera ambos y suma Pseudomonas. Las nuevas combinaciones con inhibidor (avibactam, tazobactam) atacan BLEE, KPC y Pseudomonas difícil.",
+  intr:"Enterococcus (todas), Listeria, atípicos, SAMR (salvo ceftarolina y ceftobiprol). AmpC inducible en el grupo «HECK-Yes»: Hafnia, Enterobacter, Citrobacter freundii, Klebsiella aerogenes, Yersinia (y Serratia, Morganella).",
+  adq:"BLEE tipo CTX-M (predomina en Chile), AmpC desreprimida o plasmídica, carbapenemasas. Ceftazidima-avibactam no cubre metalo-betalactamasas (NDM, VIM).",
+  perla:"En Enterobacter o C. freundii, la 3ª generación puede fallar en pleno tratamiento aunque el antibiograma diga «S». Prefiere cefepime."},
+ {id:"carb", n:"Carbapenémicos", grp:"Betalactámicos", tg:"pared", pk:"fT>CMI ≥ 40%", cid:"Bactericida",
+  mec:"Betalactámicos muy estables frente a BLEE y AmpC, con gran afinidad por PBP2. Son el espectro más amplio del grupo.",
+  intr:"SAMR, E. faecium, Stenotrophomonas maltophilia (metalo-betalactamasa L1), atípicos. Ertapenem tampoco cubre Pseudomonas, Acinetobacter ni Enterococcus.",
+  adq:"Carbapenemasas KPC (clase A), NDM/VIM/IMP (clase B) y OXA-48 (clase D). En Pseudomonas: pérdida de la porina OprD más bombas de eflujo.",
+  perla:"Reducen los niveles de ácido valproico a niveles subterapéuticos en 24 h. Paciente epiléptico con meropenem: cambia el anticonvulsivante."},
+ {id:"mono", n:"Monobactámicos", grp:"Betalactámicos", tg:"pared", pk:"fT>CMI 50–60%", cid:"Bactericida",
+  mec:"Aztreonam se une a la PBP3 de los Gram negativos aerobios. Es estable frente a las metalo-betalactamasas (NDM, VIM).",
+  intr:"Todos los Gram positivos y anaerobios. Acinetobacter.",
+  adq:"Lo hidrolizan BLEE, AmpC y KPC. Por eso, frente a NDM se combina con ceftazidima-avibactam: el avibactam protege al aztreonam de las otras enzimas.",
+  perla:"Útil en alergia IgE grave a penicilinas. Solo comparte cadena lateral con ceftazidima."},
+ {id:"glico", n:"Glicopéptidos y lipopéptidos", grp:"Pared y membrana", tg:"pared", pk:"AUC/CMI (vancomicina) · Cmax/CMI (daptomicina)", cid:"Bactericida lenta (vancomicina) · rápida (daptomicina)",
+  mec:"Vancomicina se une al extremo D-Ala-D-Ala del precursor y bloquea la transglicosilación. Daptomicina se inserta en la membrana de forma dependiente de calcio, la despolariza y causa muerte rápida sin lisis.",
+  intr:"Gram negativos: la membrana externa impide el paso de moléculas grandes. Leuconostoc, Pediococcus y Lactobacillus frente a vancomicina.",
+  adq:"vanA/vanB (D-Ala-D-Lac) en Enterococcus (ERV). VISA/hVISA por engrosamiento de la pared. Mutaciones mprF frente a daptomicina.",
+  perla:"El surfactante pulmonar inactiva la daptomicina: nunca la uses en neumonía."},
+ {id:"oxa", n:"Oxazolidinonas", grp:"Síntesis proteica 50S", tg:"50S", pk:"AUC/CMI", cid:"Bacteriostático (bactericida frente a estreptococos)",
+  mec:"Linezolid se une al ARNr 23S de la subunidad 50S e impide formar el complejo de inicio 70S. También inhibe la producción de toxinas.",
+  intr:"Gram negativos (eflujo).",
+  adq:"Mutaciones del ARNr 23S, gen cfr (metiltransferasa), optrA y poxtA. Son raros, pero aumentan con el uso prolongado.",
+  perla:"Biodisponibilidad oral cercana al 100%: el comprimido equivale a la dosis EV."},
+ {id:"amg", n:"Aminoglucósidos", grp:"Síntesis proteica 30S", tg:"30S", pk:"Cmax/CMI ≥ 8–10 · EPA prolongado", cid:"Bactericida concentración-dependiente",
+  mec:"Se unen a la subunidad 30S, causan lectura errónea del ARNm y dañan la membrana. Para entrar necesitan transporte dependiente de oxígeno.",
+  intr:"Anaerobios (sin O₂ no entran). Estreptococos y enterococos (bajo nivel; sirven solo como sinergia con betalactámico). Stenotrophomonas y Burkholderia.",
+  adq:"Enzimas modificadoras (AAC, APH, ANT), metilasas del ARNr 16S (frecuentes junto a NDM) y eflujo.",
+  perla:"Dosis única diaria: un pico alto mata y el valle bajo protege el riñón y el oído. No los uses solos fuera de la vía urinaria."},
+ {id:"fq", n:"Fluoroquinolonas", grp:"ADN", tg:"ADN", pk:"AUC/CMI (≥125 Gram−; ≥30–40 neumococo)", cid:"Bactericida concentración-dependiente",
+  mec:"Inhiben la ADN girasa (topoisomerasa II, blanco principal en Gram negativos) y la topoisomerasa IV (blanco principal en Gram positivos). El resultado es la ruptura del ADN.",
+  intr:"Anaerobios (cipro y levo). Enterococcus (actividad pobre).",
+  adq:"Mutaciones escalonadas en gyrA/parC, genes plasmídicos qnr, aac(6')-Ib-cr y eflujo. Generan resistencia cruzada en toda la familia.",
+  perla:"Cipro no cubre bien neumococo; moxi no se concentra en orina. Cada FQ tiene su órgano."},
+ {id:"mac", n:"Macrólidos", grp:"Síntesis proteica 50S", tg:"50S", pk:"AUC/CMI (azitromicina)", cid:"Bacteriostático",
+  mec:"Se unen al ARNr 23S y bloquean el túnel de salida del péptido naciente. También tienen efecto inmunomodulador, útil en NAC grave y EPOC.",
+  intr:"Enterobacterales y Pseudomonas (por eflujo y permeabilidad).",
+  adq:"erm: metilación ribosomal con fenotipo MLSB, de alto nivel. mef: eflujo de bajo nivel. Mutaciones del 23S en Mycoplasma.",
+  perla:"Claritromicina inhibe fuerte el CYP3A4: con colchicina o simvastatina puede ser letal. Azitromicina es la más limpia."},
+ {id:"lin", n:"Lincosamidas", grp:"Síntesis proteica 50S", tg:"50S", pk:"AUC/CMI · T>CMI", cid:"Bacteriostático",
+  mec:"Clindamicina se une al 50S, comparte sitio con los macrólidos e inhibe la síntesis de toxinas y proteína M.",
+  intr:"Gram negativos aerobios, Enterococcus.",
+  adq:"erm inducible: el D-test positivo predice fracaso aunque el antibiograma diga «S». B. fragilis con resistencia creciente (>20–30%).",
+  perla:"En fascitis necrotizante o shock tóxico se añade como «antitoxina», aunque haya otro fármaco cubriendo."},
+ {id:"tet", n:"Tetraciclinas y glicilciclinas", grp:"Síntesis proteica 30S", tg:"30S", pk:"AUC/CMI", cid:"Bacteriostático",
+  mec:"Se unen a la subunidad 30S y bloquean la entrada del aminoacil-ARNt al sitio A. Tigeciclina evade casi todas las bombas tet.",
+  intr:"Pseudomonas (todas). Proteus, Morganella y Providencia (tigeciclina).",
+  adq:"Bombas de eflujo (tetA/B) y protección ribosomal (tetM).",
+  perla:"Doxiciclina cubre atípicos, rickettsias, leptospira y SAMR comunitario. Es la navaja suiza oral."},
+ {id:"sul", n:"Sulfonamidas + trimetoprim", grp:"Folato", tg:"folato", pk:"AUC/CMI", cid:"Bactericida en combinación",
+  mec:"Bloqueo secuencial de la síntesis de folato: el sulfametoxazol inhibe la dihidropteroato sintetasa y el trimetoprim la dihidrofolato reductasa.",
+  intr:"Pseudomonas, anaerobios. Enterococcus (in vivo usa folato exógeno).",
+  adq:"Genes sul1/sul2 y dfr en plásmidos e integrones. Muy frecuentes en E. coli comunitaria.",
+  perla:"Fármaco de elección en Stenotrophomonas y Nocardia, y para tratar o prevenir Pneumocystis."},
+ {id:"nitro", n:"Nitroimidazoles", grp:"ADN", tg:"ADN", pk:"Cmax/CMI", cid:"Bactericida",
+  mec:"Metronidazol es un profármaco: lo reducen las ferredoxinas de los anaerobios y genera radicales que fragmentan el ADN.",
+  intr:"Todos los aerobios. Anaerobios Gram positivos no esporulados: Actinomyces, Cutibacterium.",
+  adq:"Rara (genes nim). B. fragilis sigue siendo >95% sensible.",
+  perla:"Sirve para Bacteroides, Clostridium, Trichomonas, Giardia y amebas. Un fármaco, cuatro reinos de problemas."},
+ {id:"poli", n:"Polimixinas", grp:"Membrana", tg:"membrana", pk:"AUC/CMI", cid:"Bactericida",
+  mec:"Colistina, catiónica, desplaza el Ca²⁺ y el Mg²⁺ del LPS y rompe la membrana externa como un detergente.",
+  intr:"Todos los Gram positivos. Proteus, Providencia, Morganella, Serratia, Burkholderia y Neisseria.",
+  adq:"Modificación del lípido A (inactivación de mgrB en K. pneumoniae) y gen plasmídico mcr-1.",
+  perla:"Es el último recurso: nefrotóxica, de ventana terapéutica estrecha y casi siempre en combinación."},
+ {id:"uri", n:"Antisépticos urinarios", grp:"Varios", tg:"pared", pk:"Concentración urinaria", cid:"Bactericida",
+  mec:"Nitrofurantoína: las nitrorreductasas bacterianas la convierten en intermediarios que dañan ADN y ribosomas. Fosfomicina: inhibe MurA, el primer paso de la síntesis del peptidoglicano.",
+  intr:"Nitrofurantoína: Proteus, Pseudomonas, Serratia, Providencia. Fosfomicina: Acinetobacter y S. saprophyticus.",
+  adq:"Poco frecuente. Fosfomicina: fosA y mutaciones de los transportadores GlpT/UhpT.",
+  perla:"Conservan actividad frente a la E. coli BLEE comunitaria. Sirven solo para la vejiga: no para pielonefritis ni bacteriemia (salvo fosfomicina EV)."}
+];
+
+/* ===== Fármacos =====
+ sp: [strep, mssa, mrsa, efc, ent, blee, cre, pae, ana, atip]  0..3
+ emb: s=seguro, p=precaución, e=evitar */
+const DRUGS = [
+ // PENICILINAS
+ {f:"pen", n:"Penicilina G sódica", via:"EV", t:"0,5 h",
+  d:"2–4 MUI c/4 h EV (meningitis/endocarditis: 24 MUI/día)",
+  r:"ClCr 10–50: 75% de la dosis · <10: 20–50% · HD: dosis post-diálisis",
+  p:"100.000–300.000 U/kg/día ÷ c/4–6 h (meningitis 300.000–400.000)",
+  e:"s", et:"Segura en todo el embarazo.",
+  o:"Dosis fija alta; no requiere ajuste.",
+  tox:"Neurotoxicidad (convulsiones) con dosis altas e insuficiencia renal; reacción de Jarisch-Herxheimer en sífilis.",
+  pe:"Elección en S. pyogenes, sífilis neurológica, actinomicosis y clostridios.",
+  sp:[3,0,0,2,0,0,0,0,1,0]},
+ {f:"pen", n:"Penicilina benzatina", via:"IM", t:"Depósito: niveles 2–4 sem",
+  d:"2,4 MUI IM dosis única (sífilis precoz) · semanal ×3 (latente tardía) · 1,2 MUI (faringitis)",
+  r:"Sin ajuste",
+  p:"50.000 U/kg IM dosis única (máx 2,4 MUI); faringitis <27 kg: 600.000 U",
+  e:"s", et:"Único tratamiento validado de sífilis en el embarazo: si hay alergia, se desensibiliza.",
+  o:"Sin ajuste; aguja larga para asegurar depósito IM.",
+  tox:"Síndrome de Hoigné (embolia oleosa), dolor local, Jarisch-Herxheimer.",
+  pe:"Nunca EV: inyección intravascular accidental = paro.",
+  sp:[3,0,0,0,0,0,0,0,0,0]},
+ {f:"pen", n:"Ampicilina", via:"EV", t:"1 h",
+  d:"1–2 g c/4–6 h EV (meningitis/endocarditis: 2 g c/4 h)",
+  r:"ClCr 10–50: c/6–12 h · <10: c/12–24 h",
+  p:"100–200 mg/kg/día ÷ c/6 h · meningitis 300–400 mg/kg/día",
+  e:"s", et:"Segura.",
+  o:"Usar dosis altas (2 g).",
+  tox:"Rash no alérgico en mononucleosis (~80%); diarrea.",
+  pe:"Cubre Listeria y E. faecalis: añádela en meningitis de >50 años, embarazadas o inmunosuprimidos.",
+  sp:[3,0,0,3,1,0,0,0,1,0]},
+ {f:"pen", n:"Amoxicilina", via:"VO", t:"1–1,3 h",
+  d:"500 mg–1 g c/8 h VO (NAC: 1 g c/8 h)",
+  r:"ClCr 10–30: 500 mg c/12 h · <10: 500 mg c/24 h",
+  p:"50 mg/kg/día ÷ c/8–12 h · OMA/NAC: 80–90 mg/kg/día (máx 4 g)",
+  e:"s", et:"Segura.",
+  o:"Dosis estándar alta.",
+  tox:"Diarrea, rash, colitis por C. difficile (menos que otros).",
+  pe:"Biodisponibilidad ~80%. Sigue siendo el fármaco de la NAC ambulatoria en Chile.",
+  sp:[3,0,0,3,1,0,0,0,1,0]},
+ {f:"pen", n:"Amoxicilina-clavulánico", via:"VO/EV", t:"1 h (ambos)",
+  d:"875/125 mg c/12 h o 500/125 c/8 h VO · EV 1 g/200 mg c/8 h",
+  r:"ClCr <30: no usar 875 mg; 500/125 c/12 h · <10: c/24 h",
+  p:"45–90 mg/kg/día de amoxicilina ÷ c/12 h (formulación 7:1 o 14:1)",
+  e:"s", et:"Segura. Evitar en rotura prematura de membranas pretérmino (asociación con enterocolitis necrotizante, ORACLE I).",
+  o:"Estándar; considerar 1 g c/8 h.",
+  tox:"Principal causa de hepatotoxicidad colestásica por fármacos (por el clavulánico; puede aparecer semanas después). Diarrea.",
+  pe:"Elección en mordeduras: cubre Pasteurella, Eikenella y anaerobios.",
+  sp:[3,2,0,3,2,0,0,0,3,0]},
+ {f:"pen", n:"Ampicilina-sulbactam", via:"EV", t:"1 h",
+  d:"1,5–3 g c/6 h EV (A. baumannii: hasta 9–12 g/día de sulbactam)",
+  r:"ClCr 15–29: c/12 h · 5–14: c/24 h",
+  p:"100–200 mg/kg/día de ampicilina ÷ c/6 h",
+  e:"s", et:"Segura.",
+  o:"3 g c/6 h.",
+  tox:"Similar a ampicilina.",
+  pe:"El sulbactam tiene actividad intrínseca frente a Acinetobacter: dato que aparece en el examen y en la UCI.",
+  sp:[3,2,0,3,2,0,0,0,3,0]},
+ {f:"pen", n:"Cloxacilina", via:"EV/VO", t:"0,5–1 h",
+  d:"1–2 g c/4–6 h EV (bacteriemia/endocarditis SAMS: 2 g c/4 h) · VO 500 mg c/6 h",
+  r:"Sin ajuste (eliminación hepática y renal)",
+  p:"100–200 mg/kg/día ÷ c/6 h",
+  e:"s", et:"Segura.",
+  o:"2 g c/4 h en infecciones graves.",
+  tox:"Flebitis, hepatitis, nefritis intersticial, neutropenia en cursos largos.",
+  pe:"En bacteriemia por SAMS supera a vancomicina: si es SAMS, cambia apenas tengas el resultado.",
+  sp:[2,3,0,0,0,0,0,0,0,0]},
+ {f:"pen", n:"Piperacilina-tazobactam", via:"EV", t:"0,7–1,2 h",
+  d:"4,5 g c/6–8 h EV · infusión extendida: 4,5 g en 4 h c/8 h",
+  r:"ClCr 20–40: 3,375 g c/6 h · <20: 2,25 g c/6 h · TRRC: 4,5 g c/8 h",
+  p:"300–400 mg/kg/día de piperacilina ÷ c/6–8 h (máx 16 g/día)",
+  e:"s", et:"Segura.",
+  o:"4,5 g c/6 h o infusión extendida.",
+  tox:"Con vancomicina aumenta la lesión renal aguda (más en creatinina que en daño real). Trombocitopenia. Hipokalemia.",
+  pe:"No es tratamiento definitivo de bacteriemia por E. coli/Klebsiella BLEE: en el MERINO hubo más mortalidad que con meropenem.",
+  sp:[2,2,0,2,2,1,0,3,3,0]},
+ // CEFALOSPORINAS
+ {f:"cef", n:"Cefazolina (1ª)", via:"EV", t:"1,8 h",
+  d:"1–2 g c/8 h EV (bacteriemia SAMS: 2 g c/8 h)",
+  r:"ClCr 11–34: c/12 h · ≤10: c/24 h · HD: 2 g post-HD",
+  p:"50–100 mg/kg/día ÷ c/8 h",
+  e:"s", et:"Segura.",
+  o:"Profilaxis: 2 g; 3 g si ≥120 kg.",
+  tox:"Bien tolerada.",
+  pe:"Igual de eficaz que cloxacilina en SAMS y con menos toxicidad. Su cadena lateral es única: sirve en alergia no grave a penicilina.",
+  sp:[2,3,0,0,1,0,0,0,0,0]},
+ {f:"cef", n:"Cefadroxilo (1ª)", via:"VO", t:"1,5 h",
+  d:"500 mg–1 g c/12 h VO",
+  r:"ClCr 25–50: c/12 h · 10–25: c/24 h · <10: c/36 h",
+  p:"30 mg/kg/día ÷ c/12 h",
+  e:"s", et:"Segura.",
+  o:"1 g c/12 h.",
+  tox:"Gastrointestinal.",
+  pe:"Opción oral en celulitis no purulenta y en el paso de EV a VO.",
+  sp:[2,2,0,0,1,0,0,0,0,0]},
+ {f:"cef", n:"Cefuroxima (2ª)", via:"EV/VO", t:"1,3 h",
+  d:"EV 750 mg–1,5 g c/8 h · VO (axetil) 250–500 mg c/12 h",
+  r:"ClCr 10–20: c/12 h · <10: c/24 h",
+  p:"EV 75–150 mg/kg/día ÷ c/8 h · VO 30 mg/kg/día ÷ c/12 h",
+  e:"s", et:"Segura.",
+  o:"1,5 g c/8 h.",
+  tox:"Bien tolerada.",
+  pe:"Biodisponibilidad oral ~50%: la VO no equivale a la EV.",
+  sp:[2,2,0,0,2,0,0,0,0,0]},
+ {f:"cef", n:"Ceftriaxona (3ª)", via:"EV/IM", t:"6–9 h",
+  d:"1–2 g c/24 h · meningitis 2 g c/12 h · gonorrea 500 mg IM (1 g si ≥150 kg)",
+  r:"Sin ajuste (eliminación biliar ~40%)",
+  p:"50–75 mg/kg/día c/24 h · meningitis 100 mg/kg/día ÷ c/12–24 h (máx 4 g)",
+  e:"s", et:"Segura. En neonatos: evitar si hay hiperbilirrubinemia o se infunde calcio EV (usar cefotaxima).",
+  o:"2 g c/24 h.",
+  tox:"Pseudolitiasis biliar, precipitados con calcio en neonatos, colitis por C. difficile.",
+  pe:"Alta unión a proteínas: en hipoalbuminemia grave aumenta su eliminación. Considera 2 g en el paciente crítico.",
+  sp:[3,1,0,0,3,0,0,0,0,0]},
+ {f:"cef", n:"Cefotaxima (3ª)", via:"EV", t:"1 h",
+  d:"1–2 g c/6–8 h · meningitis 2 g c/4–6 h",
+  r:"ClCr <20: 50% de la dosis",
+  p:"150–200 mg/kg/día ÷ c/6–8 h · meningitis 300 mg/kg/día",
+  e:"s", et:"Segura.",
+  o:"2 g c/6 h.",
+  tox:"Bien tolerada.",
+  pe:"La 3ª generación de los neonatos.",
+  sp:[3,1,0,0,3,0,0,0,0,0]},
+ {f:"cef", n:"Ceftazidima (3ª antipseudomónica)", via:"EV", t:"2 h",
+  d:"2 g c/8 h EV",
+  r:"ClCr 31–50: c/12 h · 16–30: c/24 h · 6–15: 1 g c/24 h",
+  p:"100–150 mg/kg/día ÷ c/8 h",
+  e:"s", et:"Segura.",
+  o:"2 g c/8 h; infusión extendida.",
+  tox:"Neurotoxicidad si no se ajusta en insuficiencia renal.",
+  pe:"Débil frente a Gram positivos: no la uses sola si sospechas neumococo o S. aureus.",
+  sp:[1,0,0,0,2,0,0,3,0,0]},
+ {f:"cef", n:"Cefepime (4ª)", via:"EV", t:"2 h",
+  d:"1–2 g c/8–12 h · neutropenia febril/Pseudomonas: 2 g c/8 h",
+  r:"ClCr 30–60: 2 g c/12 h · 11–29: 2 g c/24 h · <11: 1 g c/24 h",
+  p:"50 mg/kg c/8–12 h (máx 2 g)",
+  e:"s", et:"Segura.",
+  o:"2 g c/8 h.",
+  tox:"Encefalopatía y estado epiléptico no convulsivo, sobre todo si no se ajusta a función renal. Ante compromiso de conciencia con cefepime, pide EEG.",
+  pe:"Estable frente a AmpC: buena elección en Enterobacter.",
+  sp:[2,2,0,0,3,1,0,3,0,0]},
+ {f:"cef", n:"Ceftazidima-avibactam", via:"EV", t:"2,7 h",
+  d:"2,5 g c/8 h en infusión de 2 h",
+  r:"ClCr 31–50: 1,25 g c/8 h · 16–30: 0,94 g c/12 h · 6–15: 0,94 g c/24 h",
+  p:"≥3 meses: 62,5 mg/kg c/8 h (máx 2,5 g)",
+  e:"p", et:"Datos limitados; usar si el beneficio lo justifica.",
+  o:"Dosis estándar.",
+  tox:"Similar a ceftazidima.",
+  pe:"Cubre KPC y OXA-48, no NDM/VIM. Frente a metalo-betalactamasa: CAZ-AVI más aztreonam. Uso restringido (visación de infectología/PROA).",
+  sp:[1,0,0,0,3,3,3,2,0,0]},
+ {f:"cef", n:"Ceftolozano-tazobactam", via:"EV", t:"2,5–3 h",
+  d:"1,5 g c/8 h · neumonía nosocomial/NAV: 3 g c/8 h",
+  r:"ClCr 30–50: 750 mg c/8 h · 15–29: 375 mg c/8 h",
+  p:"Datos pediátricos limitados (20 mg/kg de ceftolozano c/8 h)",
+  e:"p", et:"Datos limitados.",
+  o:"Dosis estándar.",
+  tox:"Bien tolerado.",
+  pe:"Es el anti-Pseudomonas por excelencia frente a cepas DTR (resistentes a todo lo habitual). Sin actividad frente a carbapenemasas.",
+  sp:[1,0,0,0,3,2,0,3,0,0]},
+ // CARBAPENEMS
+ {f:"carb", n:"Ertapenem", via:"EV/IM", t:"4 h",
+  d:"1 g c/24 h",
+  r:"ClCr ≤30: 500 mg c/24 h",
+  p:"3 meses–12 años: 15 mg/kg c/12 h (máx 1 g/día)",
+  e:"s", et:"Probablemente seguro; datos limitados.",
+  o:"Dosis estándar. Riesgo de subexposición en obesidad mórbida e hipoalbuminemia (alta unión a proteínas): prefiere meropenem en el paciente crítico.",
+  tox:"Convulsiones (menos que imipenem). Interacción con valproato.",
+  pe:"Carbapenémico «de la comunidad»: BLEE sin Pseudomonas, dosis única diaria y conserva meropenem.",
+  sp:[2,2,0,0,3,3,0,0,3,0]},
+ {f:"carb", n:"Meropenem", via:"EV", t:"1 h",
+  d:"1 g c/8 h · meningitis/Pseudomonas: 2 g c/8 h · infusión extendida 3 h",
+  r:"ClCr 26–50: 1 g c/12 h · 10–25: 500 mg c/12 h · <10: 500 mg c/24 h · TRRC: 1 g c/8 h",
+  p:"20 mg/kg c/8 h · meningitis 40 mg/kg c/8 h (máx 2 g)",
+  e:"s", et:"Se usa cuando está indicado; datos tranquilizadores.",
+  o:"2 g c/8 h en infección grave.",
+  tox:"Menor riesgo convulsivo que imipenem. Reduce el valproato (riesgo de crisis).",
+  pe:"Penetra bien en el SNC: es el carbapenémico de la meningitis.",
+  sp:[2,2,0,0,3,3,0,3,3,0]},
+ {f:"carb", n:"Imipenem-cilastatina", via:"EV", t:"1 h",
+  d:"500 mg c/6 h (hasta 1 g c/6–8 h)",
+  r:"Ajustar por ClCr; evitar si <15 sin diálisis",
+  p:"15–25 mg/kg c/6 h",
+  e:"p", et:"Precaución; preferir meropenem.",
+  o:"Dosis alta con cautela (convulsiones).",
+  tox:"Mayor riesgo convulsivo de la familia, sobre todo con daño renal o lesión del SNC.",
+  pe:"La cilastatina inhibe la dehidropeptidasa renal que degradaría el imipenem.",
+  sp:[2,2,0,1,3,3,0,2,3,0]},
+ // MONOBACTAM
+ {f:"mono", n:"Aztreonam", via:"EV", t:"1,7–2 h",
+  d:"1–2 g c/8 h EV",
+  r:"ClCr 10–30: 50% · <10: 25%",
+  p:"30 mg/kg c/6–8 h",
+  e:"s", et:"Segura.",
+  o:"2 g c/8 h.",
+  tox:"Bien tolerado.",
+  pe:"Alergia a betalactámicos: es seguro salvo alergia a ceftazidima.",
+  sp:[0,0,0,0,2,0,1,2,0,0]},
+ // GLICOPEPTIDOS / LIPOPEPTIDOS
+ {f:"glico", n:"Vancomicina", via:"EV (VO solo para C. difficile)", t:"4–6 h (prolongada en ERC)",
+  d:"Carga 20–35 mg/kg (máx 3 g) en el crítico · mantención 15–20 mg/kg c/8–12 h · objetivo AUC/CMI 400–600",
+  r:"Ajustar por niveles/AUC; en HD, dosis post-diálisis con niveles prediálisis",
+  p:"60 mg/kg/día ÷ c/6 h (15 mg/kg c/6 h)",
+  e:"p", et:"Usar si está indicada; monitorizar niveles.",
+  o:"Carga por peso total (máx 3 g); mantención guiada por AUC.",
+  tox:"Nefrotoxicidad (mayor con piperacilina-tazobactam). Síndrome de infusión o «flushing» (infundir ≤1 g/h). Ototoxicidad rara.",
+  pe:"El valle de 15–20 ya no es el objetivo: la guía ASHP/IDSA 2020 apunta a AUC. Es inferior a los betalactámicos en SAMS.",
+  sp:[2,2,3,2,0,0,0,0,0,0]},
+ {f:"glico", n:"Daptomicina", via:"EV", t:"8–9 h",
+  d:"Piel: 4–6 mg/kg/día · bacteriemia/endocarditis: 8–10 mg/kg/día",
+  r:"ClCr <30: c/48 h",
+  p:"5–10 mg/kg/día según edad (más en menores)",
+  e:"p", et:"Datos limitados.",
+  o:"Peso real; considerar peso ajustado si IMC >40.",
+  tox:"Miopatía y rabdomiólisis (CPK semanal; suspender estatinas), neumonía eosinofílica.",
+  pe:"Inactivada por el surfactante: no sirve en neumonía.",
+  sp:[2,3,3,2,0,0,0,0,0,0]},
+ // OXAZOLIDINONAS
+ {f:"oxa", n:"Linezolid", via:"VO/EV", t:"5–7 h",
+  d:"600 mg c/12 h (VO = EV)",
+  r:"Sin ajuste (metabolitos se acumulan en ERC: más mielotoxicidad)",
+  p:"<12 años: 10 mg/kg c/8 h · ≥12: 600 mg c/12 h",
+  e:"p", et:"Datos limitados.",
+  o:"Dosis estándar; en obesidad extrema considerar niveles.",
+  tox:"Trombocitopenia (más después de 14 días), síndrome serotoninérgico con ISRS (es un IMAO débil), neuropatía óptica y periférica, acidosis láctica.",
+  pe:"En neumonía por SAMR es igual o mejor que vancomicina, sin nefrotoxicidad.",
+  sp:[2,2,3,2,0,0,0,0,0,0]},
+ // AMINOGLUCOSIDOS
+ {f:"amg", n:"Gentamicina", via:"EV/IM", t:"2–3 h",
+  d:"5–7 mg/kg c/24 h · sinergia en endocarditis: 1 mg/kg c/8 h",
+  r:"Extender intervalo por nomograma (Hartford) o niveles",
+  p:"5–7,5 mg/kg/día c/24 h",
+  e:"p", et:"Riesgo de ototoxicidad fetal. Aceptada cuando es necesaria (corioamnionitis, pielonefritis grave).",
+  o:"Peso ajustado = PI + 0,4 × (PT − PI).",
+  tox:"Nefrotoxicidad (tubular, reversible), ototoxicidad (irreversible, vestibular), bloqueo neuromuscular (cuidado en miastenia).",
+  pe:"Dosis única diaria: máxima eficacia y mínima toxicidad.",
+  sp:[0,1,0,1,3,1,1,2,0,0]},
+ {f:"amg", n:"Amikacina", via:"EV/IM", t:"2–3 h",
+  d:"15–20 mg/kg c/24 h (crítico: 25–30 mg/kg)",
+  r:"Extender intervalo; niveles valle <2–5 mg/L",
+  p:"15–20 mg/kg/día c/24 h",
+  e:"p", et:"Riesgo de ototoxicidad fetal; solo si es indispensable.",
+  o:"Peso ajustado.",
+  tox:"Igual que gentamicina; ototoxicidad coclear.",
+  pe:"Buena actividad frente a E. coli BLEE: alternativa útil en pielonefritis grave para ahorrar carbapenémicos.",
+  sp:[0,1,0,0,3,2,1,3,0,0]},
+ // FLUOROQUINOLONAS
+ {f:"fq", n:"Ciprofloxacino", via:"VO/EV", t:"4 h",
+  d:"VO 500–750 mg c/12 h · EV 400 mg c/8–12 h",
+  r:"ClCr 30–50: 250–500 mg c/12 h · <30: c/18–24 h",
+  p:"10–15 mg/kg c/12 h VO (máx 750) en indicaciones seleccionadas (ITU complicada, carbunco)",
+  e:"e", et:"Evitar (artropatía en modelos animales); usar solo sin alternativa.",
+  o:"Dosis estándar.",
+  tox:"Tendinopatía o rotura del Aquiles, aneurisma o disección aórtica, QT largo, disglucemia, delirium, neuropatía. Alerta FDA.",
+  pe:"Los cationes (Ca, Mg, Fe, Al, Zn) reducen su absorción hasta un 90%: sepáralos 2 h antes o 6 h después. Contraindicada con tizanidina.",
+  sp:[0,1,0,0,2,1,0,2,0,1]},
+ {f:"fq", n:"Levofloxacino", via:"VO/EV", t:"6–8 h",
+  d:"750 mg c/24 h",
+  r:"ClCr 20–49: 750 mg c/48 h · 10–19: 750 mg y luego 500 mg c/48 h",
+  p:"6 meses–5 años: 10 mg/kg c/12 h · ≥5 años: 10 mg/kg c/24 h (máx 750)",
+  e:"e", et:"Evitar.",
+  o:"Dosis estándar.",
+  tox:"Igual que la clase.",
+  pe:"FQ respiratoria que además se concentra en orina. Cubre neumococo, atípicos y Pseudomonas (a 750 mg).",
+  sp:[3,2,0,1,2,1,0,2,0,3]},
+ {f:"fq", n:"Moxifloxacino", via:"VO/EV", t:"12 h",
+  d:"400 mg c/24 h",
+  r:"Sin ajuste renal",
+  p:"No recomendado de rutina",
+  e:"e", et:"Evitar.",
+  o:"Dosis estándar.",
+  tox:"Mayor prolongación de QT de la familia; hepatotoxicidad.",
+  pe:"No sirve en ITU (baja excreción renal) ni en Pseudomonas. Cubre anaerobios de forma variable.",
+  sp:[3,2,0,1,2,1,0,0,1,3]},
+ // MACROLIDOS
+ {f:"mac", n:"Azitromicina", via:"VO/EV", t:"~68 h (tisular)",
+  d:"500 mg c/24 h ×3 días, o 500 mg día 1 y 250 mg días 2–5 · NAC hospitalizada 500 mg c/24 h EV",
+  r:"Sin ajuste",
+  p:"10 mg/kg c/24 h ×3 días (máx 500), o 10 mg/kg el día 1 y 5 mg/kg días 2–5",
+  e:"s", et:"Segura.",
+  o:"Sin ajuste.",
+  tox:"QT largo, intolerancia digestiva (menor que eritromicina).",
+  pe:"Interacciones mínimas con el CYP3A4. Su vida media tisular explica por qué 3 días equivalen a 5.",
+  sp:[1,1,0,0,0,0,0,0,0,3]},
+ {f:"mac", n:"Claritromicina", via:"VO/EV", t:"3–7 h",
+  d:"500 mg c/12 h",
+  r:"ClCr <30: 50% de la dosis",
+  p:"15 mg/kg/día ÷ c/12 h",
+  e:"e", et:"Evitar (efectos adversos en estudios animales); preferir azitromicina.",
+  o:"Sin ajuste.",
+  tox:"QT largo, disgeusia. Inhibidor potente del CYP3A4.",
+  pe:"Con colchicina, simvastatina/lovastatina, antagonistas del calcio, tacrolimus o anticoagulantes directos: revisa la interacción antes de indicarla.",
+  sp:[1,1,0,0,0,0,0,0,0,3]},
+ {f:"mac", n:"Eritromicina", via:"VO/EV", t:"1,5–2 h",
+  d:"500 mg c/6 h · procinético: 250 mg EV 30–90 min antes de endoscopía en HDA",
+  r:"Sin ajuste",
+  p:"40–50 mg/kg/día ÷ c/6 h",
+  e:"s", et:"Segura (evitar la sal estolato).",
+  o:"Sin ajuste.",
+  tox:"Intolerancia digestiva intensa (agonista de motilina), QT, estenosis pilórica en lactantes <6 semanas.",
+  pe:"En urgencia hoy se usa más como procinético en hemorragia digestiva alta que como antibiótico.",
+  sp:[1,1,0,0,0,0,0,0,0,2]},
+ // LINCOSAMIDAS
+ {f:"lin", n:"Clindamicina", via:"VO/EV", t:"2–3 h",
+  d:"EV 600–900 mg c/8 h · VO 300–450 mg c/6–8 h",
+  r:"Sin ajuste (ajustar en insuficiencia hepática grave)",
+  p:"20–40 mg/kg/día ÷ c/6–8 h",
+  e:"s", et:"Segura.",
+  o:"900 mg c/8 h.",
+  tox:"Alto riesgo de C. difficile. Sabor metálico.",
+  pe:"Antitoxina en fascitis necrotizante y shock tóxico. Pide D-test si es S. aureus resistente a eritromicina.",
+  sp:[2,2,1,0,0,0,0,0,2,0]},
+ // TETRACICLINAS
+ {f:"tet", n:"Doxiciclina", via:"VO/EV", t:"18–22 h",
+  d:"100 mg c/12 h (carga 200 mg)",
+  r:"Sin ajuste",
+  p:"2,2 mg/kg c/12 h (máx 100). Cursos ≤21 días aceptables a cualquier edad (AAP)",
+  e:"e", et:"Evitar desde el 2º trimestre (tinción dental, alteración ósea).",
+  o:"Sin ajuste.",
+  tox:"Esofagitis (tomar con abundante agua y no acostarse), fotosensibilidad, hipertensión endocraneana.",
+  pe:"Cubre atípicos, rickettsias, leptospira, Lyme, Chlamydia y SAMR comunitario.",
+  sp:[1,2,2,0,1,0,0,0,1,3]},
+ {f:"tet", n:"Tigeciclina", via:"EV", t:"27–42 h",
+  d:"Carga 100 mg y luego 50 mg c/12 h (dosis alta en MDR: 200 mg y luego 100 mg c/12 h)",
+  r:"Sin ajuste renal · Child C: 25 mg c/12 h",
+  p:"≥8 años: 1,2 mg/kg c/12 h (máx 50)",
+  e:"e", et:"Evitar.",
+  o:"Sin ajuste.",
+  tox:"Náuseas intensas, pancreatitis, hipofibrinogenemia. Aumento de mortalidad global (alerta FDA).",
+  pe:"Niveles séricos bajos (gran volumen de distribución): no la uses en bacteriemia ni en ITU.",
+  sp:[2,2,3,2,2,2,2,0,2,2]},
+ // SULFAS
+ {f:"sul", n:"Cotrimoxazol (TMP-SMX)", via:"VO/EV", t:"TMP 8–11 h · SMX 10 h",
+  d:"160/800 mg c/12 h · SAMR en piel: 1–2 comprimidos forte c/12 h · Pneumocystis: 15–20 mg/kg/día de TMP ÷ c/6–8 h",
+  r:"ClCr 15–30: 50% · <15: evitar o 50% con monitoreo",
+  p:">6 semanas: 8–12 mg/kg/día de TMP ÷ c/12 h",
+  e:"e", et:"Evitar en el 1er trimestre (antifolato) y a término (kernicterus).",
+  o:"Peso ajustado para indicaciones en mg/kg.",
+  tox:"Hiperkalemia (efecto tipo amilorida), alza de creatinina sin caída real del filtrado (bloquea la secreción tubular), SJS/NET, mielosupresión.",
+  pe:"Combinado con IECA, ARA II o espironolactona en el adulto mayor puede causar hiperkalemia y muerte súbita. Aumenta el INR con warfarina.",
+  sp:[1,2,2,0,1,1,0,0,0,0]},
+ // NITROIMIDAZOLES
+ {f:"nitro", n:"Metronidazol", via:"VO/EV", t:"8 h",
+  d:"500 mg c/8 h (VO o EV)",
+  r:"Sin ajuste renal · reducir 50% en insuficiencia hepática grave",
+  p:"30 mg/kg/día ÷ c/6–8 h",
+  e:"s", et:"Aceptado; tradicionalmente se evita en el 1er trimestre si hay alternativa.",
+  o:"Sin ajuste.",
+  tox:"Sabor metálico, neuropatía y encefalopatía cerebelosa con uso prolongado, efecto antabus (evidencia débil, pero se advierte).",
+  pe:"Biodisponibilidad oral ~100%: la vía EV rara vez es necesaria si el paciente tolera la oral.",
+  sp:[0,0,0,0,0,0,0,0,3,0]},
+ // POLIMIXINAS
+ {f:"poli", n:"Colistina (colistimetato)", via:"EV/inhalada", t:"9–14 h (colistina formada)",
+  d:"Carga 9 MUI y luego 4,5 MUI c/12 h (ClCr normal)",
+  r:"Ajustar mantención por ClCr; la carga no se modifica",
+  p:"2,5–5 mg CBA/kg/día ÷ c/8–12 h",
+  e:"p", et:"Solo si no hay alternativa.",
+  o:"Carga fija; no escalar por peso total.",
+  tox:"Nefrotoxicidad (hasta 30–60%) y neurotoxicidad (parestesias, bloqueo neuromuscular).",
+  pe:"Siempre en combinación y con visación de infectología.",
+  sp:[0,0,0,0,2,2,2,2,0,0]},
+ // URINARIOS
+ {f:"uri", n:"Nitrofurantoína", via:"VO", t:"20 min",
+  d:"100 mg c/12 h (liberación modificada) o 50–100 mg c/6 h (macrocristales) ×5 días",
+  r:"Evitar si ClCr <30 (Beers 2019)",
+  p:">1 mes: 5–7 mg/kg/día ÷ c/6 h",
+  e:"p", et:"Segura en el 2º trimestre; evitar a término (38–42 semanas) por anemia hemolítica neonatal y en déficit de G6PD.",
+  o:"Sin ajuste.",
+  tox:"Fibrosis pulmonar (uso crónico), neumonitis aguda, hepatitis, neuropatía.",
+  pe:"Solo para cistitis: no alcanza tejido renal ni sangre.",
+  sp:[0,0,0,2,2,2,1,0,0,0]},
+ {f:"uri", n:"Fosfomicina trometamol", via:"VO (EV disódica)", t:"4–8 h",
+  d:"3 g VO dosis única (cistitis) · ITU complicada: 3 g c/48–72 h ×3 dosis · EV 4–8 g c/6–8 h",
+  r:"Evitar VO si ClCr <10",
+  p:"≥12 años: 3 g; experiencia limitada en menores",
+  e:"s", et:"Segura.",
+  o:"Sin ajuste.",
+  tox:"Diarrea. La forma EV aporta mucho sodio (~14 mEq/g): hipernatremia e hipokalemia.",
+  pe:"Dosis única con buena adherencia; conserva actividad frente a BLEE.",
+  sp:[0,1,1,2,2,2,1,1,0,0]}
+];
+
+/* ===== Agrupación por espectro ===== */
+const SPECTRUM = [
+ {t:"Reducido · Gram positivos", c:"pos", d:"Estreptococos y estafilococos. Úsalos cuando sabes lo que tratas.", m:["Penicilina G","Cloxacilina","Cefazolina","Cefadroxilo","Vancomicina","Daptomicina","Linezolid","Clindamicina"]},
+ {t:"Reducido · Gram negativos aerobios", c:"neg", d:"Sin Gram positivos ni anaerobios relevantes.", m:["Aztreonam","Gentamicina","Amikacina","Ciprofloxacino","Colistina"]},
+ {t:"Amplio (Gram+, Gram− y anaerobios)", c:"amp", d:"Cubren comunidad mixta y polimicrobiana.", m:["Amoxicilina-clavulánico","Ampicilina-sulbactam","Ceftriaxona (sin anaerobios)","Ertapenem","Moxifloxacino","Tigeciclina"]},
+ {t:"Antipseudomónicos", c:"neg", d:"Piensa en ellos ante paciente institucionalizado, hospitalización reciente, bronquiectasias, neutropenia o colonización conocida.", m:["Piperacilina-tazobactam","Ceftazidima","Cefepime","Meropenem","Imipenem","Aztreonam","Ciprofloxacino","Levofloxacino 750","Amikacina","Ceftolozano-tazobactam","Ceftazidima-avibactam","Colistina"]},
+ {t:"Anti-SAMR", c:"pos", d:"Hospitalario: vancomicina o linezolid. Comunitario en piel: TMP-SMX, doxiciclina o clindamicina.", m:["Vancomicina","Linezolid","Daptomicina","Cotrimoxazol","Doxiciclina","Clindamicina (D-test)","Tigeciclina","Ceftarolina"]},
+ {t:"Antianaerobios", c:"ana", d:"Infradiafragmático = B. fragilis: metronidazol, BL/IBL o carbapenémico.", m:["Metronidazol","Amoxicilina-clavulánico","Piperacilina-tazobactam","Carbapenémicos","Clindamicina (supradiafragmático)","Tigeciclina"]},
+ {t:"Atípicos e intracelulares", c:"ati", d:"Sin pared: los betalactámicos no sirven.", m:["Azitromicina","Claritromicina","Doxiciclina","Levofloxacino","Moxifloxacino"]},
+ {t:"Reserva frente a MDR", c:"res", d:"Uso restringido por PROA. El mecanismo de resistencia define el fármaco.", m:["Ceftazidima-avibactam (KPC, OXA-48)","CAZ-AVI + aztreonam (NDM/VIM)","Ceftolozano-tazobactam (Pseudomonas DTR)","Meropenem-vaborbactam (KPC)","Cefiderocol","Colistina","Tigeciclina","Fosfomicina EV"]}
+];
+
+/* ===== Tarjetas de repaso ===== */
+const CARDS = [
+ {q:"¿Qué tiene de especial la 1ª dosis en sepsis?", a:"Va completa y sin ajuste renal: el volumen de distribución está aumentado. El ajuste por ClCr empieza en la 2ª dosis (y muchas veces recién a las 24–48 h)."},
+ {q:"Betalactámicos: ¿pico o tiempo?", a:"Tiempo. Lo que importa es el %fT>CMI. En el crítico, la infusión extendida o continua mejora la exposición (BLING III, SSC 2021)."},
+ {q:"Aminoglucósidos: ¿pico o tiempo?", a:"Pico (Cmax/CMI ≥ 8–10) más efecto postantibiótico. Por eso se dan una vez al día, con peso ajustado en obesidad."},
+ {q:"¿Enterobacter con ceftriaxona «S»?", a:"Cuidado: tiene AmpC inducible (HECK-Yes) y la 3ª generación puede fallar. Prefiere cefepime; usa carbapenémico si es grave."},
+ {q:"Bacteriemia por E. coli BLEE: ¿pip-tazo o mero?", a:"Meropenem o ertapenem. En el ensayo MERINO, pip-tazo tuvo más mortalidad a 30 días."},
+ {q:"¿KPC o NDM?", a:"KPC (clase A): ceftazidima-avibactam o meropenem-vaborbactam. NDM (metalo, clase B): CAZ-AVI más aztreonam, o cefiderocol."},
+ {q:"¿Dónde no llegan?", a:"Dapto → pulmón. Tigeciclina → sangre y orina. Moxi → orina. Nitrofurantoína → riñón y sangre. Ertapenem → Pseudomonas."},
+ {q:"30S y 50S", a:"«A los 30 me hice AT»: Aminoglucósidos, Tetraciclinas. A los 50, MaCLiL: Macrólidos, Clindamicina, Linezolid (y cloranfenicol)."},
+ {q:"Paciente con valproato y meropenem", a:"El valproato cae a niveles subterapéuticos en 24 h y no se corrige subiendo la dosis. Cambia el anticonvulsivante o el antibiótico."},
+ {q:"Alergia a penicilina: ¿y la cefazolina?", a:"Tiene cadena lateral R1 única: la reactividad cruzada es <1%. Usa PEN-FAST (<3 = bajo riesgo). Más del 90% de las etiquetas de alergia son falsas."},
+ {q:"TMP-SMX + IECA en adulto mayor", a:"Riesgo de hiperkalemia. El alza de creatinina puede ser pseudo (bloqueo de la secreción tubular), pero el potasio es real."},
+ {q:"Fascitis necrotizante: ¿por qué clindamicina?", a:"Inhibe la síntesis de toxinas sin depender de la fase de crecimiento (efecto Eagle). Se suma a la cirugía y al amplio espectro."},
+ {q:"Linezolid + sertralina", a:"Síndrome serotoninérgico: linezolid es un IMAO débil. Vigila clonus, hipertermia y agitación."},
+ {q:"Meningitis en >50 años", a:"Ceftriaxona 2 g c/12 h + vancomicina + ampicilina 2 g c/4 h (Listeria) + dexametasona antes o junto con la 1ª dosis."},
+ {q:"Vancomicina: ¿valle o AUC?", a:"AUC/CMI 400–600 (ASHP/IDSA 2020). El valle de 15–20 aumentaba la nefrotoxicidad sin mejorar la eficacia."},
+ {q:"Hipoalbuminemia y ceftriaxona", a:"Más fracción libre implica más eliminación y riesgo de subdosis. Lo mismo vale para ertapenem y daptomicina."}
+];
+
+/* ===== Esquemas empíricos (adulto) ===== */
+const EMP = [
+ {s:"Sepsis o shock séptico sin foco claro", tag:"crit",
+  a:"Comunidad sin factores de riesgo: ceftriaxona 2 g EV. Riesgo de MDR (hospitalización <90 días, BLEE previo, institucionalizado): meropenem 1–2 g c/8 h. Añadir vancomicina (carga 25–30 mg/kg) si hay riesgo de SAMR (catéter, piel, colonización).",
+  b:"Alergia grave: aztreonam + vancomicina ± metronidazol, o amikacina.",
+  n:"Antes de 1 h si hay shock o sepsis probable (SSC 2021). Toma hemocultivos sin retrasar la dosis. Primera dosis completa; considera infusión extendida desde la 2ª."},
+ {s:"NAC ambulatoria (sin comorbilidad)", tag:"resp",
+  a:"Amoxicilina 1 g c/8 h VO ×5 días.",
+  b:"Alergia: levofloxacino 750 mg c/24 h o doxiciclina 100 mg c/12 h.",
+  n:"Duración mínima de 5 días con estabilidad clínica 48 h. Con comorbilidad: amoxicilina-clavulánico ± macrólido."},
+ {s:"NAC hospitalizada en sala", tag:"resp",
+  a:"Ceftriaxona 1–2 g c/24 h + azitromicina 500 mg c/24 h (o claritromicina).",
+  b:"Levofloxacino 750 mg c/24 h en monoterapia.",
+  n:"Suspende el macrólido a las 48–72 h si el antígeno urinario de Legionella es negativo y la evolución es buena."},
+ {s:"NAC grave (UCI)", tag:"crit",
+  a:"Ceftriaxona 2 g c/24 h + azitromicina 500 mg EV. Con riesgo de Pseudomonas: pip-tazo o cefepime + azitromicina o levofloxacino. Con riesgo de SAMR: + vancomicina o linezolid.",
+  b:"Levofloxacino + aztreonam.",
+  n:"Hidrocortisona 200 mg/día en NAC grave sin shock refractario (CAPE COD, 2023)."},
+ {s:"Cistitis aguda no complicada (mujer)", tag:"uri",
+  a:"Nitrofurantoína 100 mg c/12 h ×5 días, o fosfomicina 3 g VO dosis única.",
+  b:"Cefadroxilo 500 mg c/12 h ×5–7 días.",
+  n:"Evita ciprofloxacino y TMP-SMX empíricos: la resistencia de E. coli comunitaria en Chile supera el 20%."},
+ {s:"Pielonefritis aguda", tag:"uri",
+  a:"Ambulatoria: ceftriaxona 1 g EV/IM dosis inicial y luego VO según urocultivo. Hospitalizada: ceftriaxona 1–2 g c/24 h. Si hay BLEE previo o shock: ertapenem 1 g c/24 h o meropenem.",
+  b:"Amikacina 15 mg/kg c/24 h (buena actividad frente a BLEE en Chile).",
+  n:"7 días con FQ (si es sensible) o 7–10 días con betalactámico. Embarazo: ceftriaxona; evita FQ."},
+ {s:"Meningitis bacteriana del adulto", tag:"crit",
+  a:"Ceftriaxona 2 g c/12 h + vancomicina 15–20 mg/kg c/8–12 h. Si >50 años, inmunosupresión, embarazo o alcoholismo: + ampicilina 2 g c/4 h. Dexametasona 0,15 mg/kg c/6 h ×4 días, antes o junto con la 1ª dosis.",
+  b:"Alergia grave: meropenem (cruzada <1%) o vancomicina + moxifloxacino; para Listeria, TMP-SMX.",
+  n:"No retrases el antibiótico por la TC o la punción lumbar. Neumococo 10–14 días, meningococo 7 días, Listeria ≥21 días."},
+ {s:"Celulitis no purulenta", tag:"piel",
+  a:"VO: cefadroxilo 1 g c/12 h. EV: cefazolina 1–2 g c/8 h o cloxacilina 1–2 g c/6 h.",
+  b:"Clindamicina 300–450 mg c/6–8 h VO.",
+  n:"5–6 días. Eleva la extremidad y trata la puerta de entrada (intertrigo)."},
+ {s:"Absceso cutáneo / SAMR comunitario", tag:"piel",
+  a:"Drenaje (es el tratamiento principal). Antibiótico si es >2 cm, hay celulitis extensa o compromiso sistémico: TMP-SMX 1–2 forte c/12 h o doxiciclina 100 mg c/12 h.",
+  b:"Clindamicina (si el D-test es negativo).",
+  n:"5–10 días según extensión."},
+ {s:"Fascitis necrotizante", tag:"crit",
+  a:"Cirugía urgente + meropenem o pip-tazo + vancomicina + clindamicina 900 mg c/8 h.",
+  b:"Linezolid en lugar de vancomicina + clindamicina (también inhibe toxinas).",
+  n:"El antibiótico no sustituye al bisturí. Calcula LRINEC, pero no te fíes de un puntaje bajo."},
+ {s:"Infección intraabdominal comunitaria", tag:"abd",
+  a:"Leve o moderada: ceftriaxona 2 g + metronidazol 500 mg c/8 h. Grave o nosocomial: pip-tazo 4,5 g c/6 h o meropenem.",
+  b:"Alergia: aztreonam o amikacina + metronidazol.",
+  n:"4 días después de un control de foco adecuado (STOP-IT)."},
+ {s:"Neutropenia febril", tag:"crit",
+  a:"Cefepime 2 g c/8 h o pip-tazo 4,5 g c/6 h. Meropenem si hay BLEE previo o compromiso grave. + Vancomicina si hay inestabilidad, infección de catéter o de piel, mucositis grave o SAMR.",
+  b:"Aztreonam + vancomicina.",
+  n:"Antes de 60 min desde el triage. Calcula MASCC para definir manejo ambulatorio."},
+ {s:"Mordedura (perro, gato, humana)", tag:"piel",
+  a:"Amoxicilina-clavulánico 875/125 mg c/12 h ×3–5 días (profilaxis) o 7–14 días (infección).",
+  b:"Doxiciclina o TMP-SMX + metronidazol o clindamicina.",
+  n:"Profilaxis en gato, mano o cara, herida profunda e inmunosupresión. Revisa vacuna antitetánica y antirrábica."},
+ {s:"Faringoamigdalitis estreptocócica", tag:"resp",
+  a:"Penicilina benzatina 1,2 MUI IM dosis única, o amoxicilina 50 mg/kg/día (máx 1 g) ×10 días.",
+  b:"Azitromicina 12 mg/kg/día ×5 días (o cefadroxilo si la alergia no es grave).",
+  n:"El objetivo principal es prevenir la fiebre reumática."},
+ {s:"Uretritis / cervicitis", tag:"uri",
+  a:"Ceftriaxona 500 mg IM (1 g si ≥150 kg) + doxiciclina 100 mg c/12 h ×7 días.",
+  b:"Azitromicina 1 g dosis única en lugar de doxiciclina (embarazo).",
+  n:"No uses quinolonas para gonococo (resistencia alta). Notifica y trata a los contactos."},
+ {s:"C. difficile", tag:"abd",
+  a:"Vancomicina 125 mg VO c/6 h ×10 días, o fidaxomicina 200 mg c/12 h.",
+  b:"Fulminante: vancomicina 500 mg VO o SNG c/6 h + metronidazol 500 mg EV c/8 h.",
+  n:"Suspende el antibiótico causante y los IBP si no son imprescindibles."}
+];
+
+</script>
+<script>
+(function(){
+  const $ = (s,el=document)=>el.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const TARGET = {pared:{l:"Pared",v:"--t-pared"},"50S":{l:"Ribosoma 50S",v:"--t-ribo"},"30S":{l:"Ribosoma 30S",v:"--t-ribo"},ADN:{l:"Ácidos nucleicos",v:"--t-adn"},membrana:{l:"Membrana",v:"--t-mem"},folato:{l:"Folato",v:"--t-fol"}};
+  const PREG = {s:"Seguro",p:"Precaución",e:"Evitar"};
+  const famById = Object.fromEntries(FAMS.map(f=>[f.id,f]));
+
+  /* ---------- PK/PD figure ---------- */
+  (function pk(){
+    const svg = $("#pkSvg"); if(!svg) return;
+    const W=640,H=300,L=56,R=24,T=24,B=64, w=W-L-R, h=H-T-B;
+    const ka=1.6, ke=0.28, D=10.5, tmax=12;
+    const C=t=> D*(Math.exp(-ke*t)-Math.exp(-ka*t));
+    let peak=0,tp=0; for(let t=0;t<=tmax;t+=0.01){const c=C(t); if(c>peak){peak=c;tp=t;}}
+    const ymax=Math.ceil(peak+1);
+    const X=t=>L+t/tmax*w, Y=c=>T+h-c/ymax*h;
+    const mic=2.2;
+    let pts=[]; for(let t=0;t<=tmax+1e-9;t+=0.1) pts.push([X(t),Y(C(t))]);
+    const path="M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L");
+    const area=path+` L${X(tmax).toFixed(1)} ${Y(0)} L${X(0)} ${Y(0)} Z`;
+    // T>MIC bounds
+    let t1=null,t2=null; for(let t=0;t<=tmax;t+=0.01){const c=C(t); if(c>=mic&&t1===null)t1=t; if(c>=mic)t2=t;}
+    const ns="http://www.w3.org/2000/svg";
+    let g=`<rect x="${L}" y="${T}" width="${w}" height="${h}" fill="var(--surface)"/>`;
+    for(let i=0;i<=ymax;i+=2){g+=`<line x1="${L}" x2="${L+w}" y1="${Y(i)}" y2="${Y(i)}" stroke="var(--line)" stroke-width="1"/>`;}
+    g+=`<path d="${area}" fill="var(--accent)" opacity=".13"/>`;
+    g+=`<rect x="${X(t1)}" y="${Y(0)+6}" width="${X(t2)-X(t1)}" height="8" rx="3" fill="var(--gneg)" opacity=".85"/>`;
+    g+=`<line x1="${X(t1)}" x2="${X(t1)}" y1="${Y(mic)}" y2="${Y(0)+6}" stroke="var(--gneg)" stroke-dasharray="3 3"/>`;
+    g+=`<line x1="${X(t2)}" x2="${X(t2)}" y1="${Y(mic)}" y2="${Y(0)+6}" stroke="var(--gneg)" stroke-dasharray="3 3"/>`;
+    g+=`<line x1="${L}" x2="${L+w}" y1="${Y(mic)}" y2="${Y(mic)}" stroke="var(--gpos)" stroke-width="2" stroke-dasharray="7 5"/>`;
+    g+=`<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="3"/>`;
+    g+=`<circle cx="${X(tp)}" cy="${Y(peak)}" r="5" fill="var(--accent)"/>`;
+    const tx=(x,y,s,a="start",fill="var(--ink)",fw="400",fs=13)=>`<text x="${x}" y="${y}" text-anchor="${a}" fill="${fill}" font-weight="${fw}" font-size="${fs}" font-family="Atkinson Hyperlegible,system-ui,sans-serif">${s}</text>`;
+    g+=tx(X(tp)+10,Y(peak)+4,"Cmax","start","var(--accent)","700");
+    g+=tx(L+w-4,Y(mic)-8,"CMI","end","var(--gpos)","700");
+    g+=tx((X(t1)+X(t2))/2,Y(0)+32,"T &gt; CMI","middle","var(--gneg)","700");
+    g+=tx(X(2.4),Y(1.1),"AUC","middle","var(--accent)","700",14);
+    g+=`<line x1="${L}" x2="${L}" y1="${T}" y2="${T+h}" stroke="var(--muted)"/><line x1="${L}" x2="${L+w}" y1="${T+h}" y2="${T+h}" stroke="var(--muted)"/>`;
+    for(let t=0;t<=tmax;t+=2) g+=tx(X(t),T+h+54,t+" h","middle","var(--muted)","400",11);
+    g+=`<text transform="translate(18 ${T+h/2}) rotate(-90)" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Atkinson Hyperlegible,system-ui,sans-serif">Concentración libre</text>`;
+    svg.insertAdjacentHTML("beforeend", g);
+  })();
+
+  /* ---------- helpers ---------- */
+  const heatVar = v => ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"][v];
+  const mini = sp => `<span class="mini" aria-label="Espectro">${sp.map((v,i)=>`<i style="background:${heatVar(v)};outline:1px solid var(--line)" title="${esc(COLS[i].s)}: ${esc(LEVELS[v])}"></i>`).join("")}</span>`;
+
+  /* ---------- Familias ---------- */
+  let famFilter = "all", query = "";
+  const chipBox = $("#famChips");
+  const chipData = [{id:"all",n:"Todas"}].concat(FAMS.map(f=>({id:f.id,n:f.n})));
+  chipBox.innerHTML = chipData.map(c=>`<button type="button" class="chip" data-f="${c.id}" aria-pressed="${c.id==='all'}">${esc(c.n)}</button>`).join("");
+  chipBox.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(!b) return; famFilter=b.dataset.f; chipBox.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderFams();});
+  $("#q").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase(); renderFams();});
+
+  function drugHTML(d, open){
+    return `<details class="drug"${open?" open":""}>
+      <summary>
+        <span class="dn">${esc(d.n)} <span class="via">${esc(d.via)}</span> <span class="tm">t½ ${esc(d.t)}</span></span>
+        <span class="sum-right">${mini(d.sp)}<span class="preg ${d.e}">${PREG[d.e]}</span><span class="chev" aria-hidden="true">▶</span></span>
+      </summary>
+      <div class="drug-body">
+        <div class="wide"><h4>Dosis adulto</h4><div class="dose">${esc(d.d)}</div></div>
+        <div><h4>Ajuste renal</h4><p>${esc(d.r)}</p></div>
+        <div><h4>Pediatría</h4><p>${esc(d.p)}</p></div>
+        <div><h4>Embarazo</h4><p><span class="preg ${d.e}">${PREG[d.e]}</span> ${esc(d.et)}</p></div>
+        <div><h4>Obesidad</h4><p>${esc(d.o)}</p></div>
+        <div><h4>Toxicidad</h4><p>${esc(d.tox)}</p></div>
+        <div><h4>Perla de urgencia</h4><p>${esc(d.pe)}</p></div>
+      </div>
+    </details>`;
+  }
+  function renderFams(){
+    const out=[];
+    FAMS.forEach(f=>{
+      if(famFilter!=="all" && famFilter!==f.id) return;
+      let drugs = DRUGS.filter(d=>d.f===f.id);
+      const famText = (f.n+" "+f.mec+" "+f.intr+" "+f.adq+" "+f.perla).toLowerCase();
+      let famMatch = !query || famText.includes(query);
+      if(query){
+        const dm = drugs.filter(d=>Object.values(d).join(" ").toLowerCase().includes(query));
+        if(!famMatch && !dm.length) return;
+        if(!famMatch) drugs = dm;
+      }
+      const tg = TARGET[f.tg];
+      const openDrugs = !!query && !famMatch;
+      out.push(`<article class="fam" style="--tc:var(${tg.v})">
+        <div class="fam-head">
+          <div class="top"><h3>${esc(f.n)}</h3><span class="muted" style="font-size:.88rem">${esc(f.grp)}</span></div>
+          <div class="tags"><span class="tag t">Diana: ${tg.l}</span><span class="tag">${esc(f.pk)}</span><span class="tag">${esc(f.cid)}</span></div>
+        </div>
+        <div class="fam-body">
+          <div><h4>Mecanismo de acción</h4><p>${esc(f.mec)}</p></div>
+          <div><h4>Resistencia intrínseca</h4><p>${esc(f.intr)}</p></div>
+          <div><h4>Resistencia adquirida</h4><p>${esc(f.adq)}</p></div>
+          <div class="perla"><b>Perla:</b> ${esc(f.perla)}</div>
+        </div>
+        ${drugs.map(d=>drugHTML(d, openDrugs)).join("")}
+      </article>`);
+    });
+    $("#famList").innerHTML = out.length? out.join("") : `<div class="empty">No hay coincidencias para «${esc(query)}».</div>`;
+  }
+  renderFams();
+
+  /* ---------- Espectro ---------- */
+  const SC = {pos:"var(--gpos)",neg:"var(--gneg)",amp:"var(--accent)",ana:"var(--ana)",ati:"var(--ati)",res:"var(--res)"};
+  $("#specGrid").innerHTML = SPECTRUM.map(s=>`<div class="spec-card" style="--sc:${SC[s.c]}"><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p><div class="pills">${s.m.map(m=>`<span class="pill">${esc(m)}</span>`).join("")}</div></div>`).join("");
+
+  /* ---------- Empíricos ---------- */
+  const ET = {all:"Todos",crit:"Crítico",resp:"Respiratorio",uri:"Urinario / ITS",piel:"Piel y partes blandas",abd:"Abdominal"};
+  let empF="all";
+  const ec=$("#empChips");
+  ec.innerHTML=Object.entries(ET).map(([k,v])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${k==='all'}">${v}</button>`).join("");
+  ec.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(!b) return; empF=b.dataset.k; ec.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderEmp();});
+  function renderEmp(){
+    $("#empGrid").innerHTML = EMP.filter(x=>empF==="all"||x.tag===empF).map(x=>`<article class="emp">
+      <div class="hd"><h3>${esc(x.s)}</h3><span class="etag ${x.tag}">${ET[x.tag]}</span></div>
+      <div><div class="lbl">Primera línea</div><p>${esc(x.a)}</p></div>
+      <div><div class="lbl">Alternativa / alergia</div><p>${esc(x.b)}</p></div>
+      <p class="note">${esc(x.n)}</p>
+    </article>`).join("");
+  }
+  renderEmp();
+
+  /* ---------- Heatmap ---------- */
+  const sel=$("#hmCol");
+  COLS.forEach((c,i)=>sel.insertAdjacentHTML("beforeend",`<option value="${i}">${esc(c.l)}</option>`));
+  sel.addEventListener("change",renderHM);
+  const SYM=["–","±","+","++"];
+  function renderHM(){
+    const ci = sel.value===""? null : +sel.value;
+    let h=`<thead><tr><th class="rowh" style="z-index:2;background:var(--surface-2)">Fármaco</th>${COLS.map((c,i)=>`<th class="${c.g}" title="${esc(c.l)}" style="${ci===i?'background:var(--accent-soft)':''}">${esc(c.s)}</th>`).join("")}</tr></thead><tbody>`;
+    FAMS.forEach(f=>{
+      let ds = DRUGS.filter(d=>d.f===f.id);
+      if(ci!==null) ds = ds.filter(d=>d.sp[ci]>=2).sort((a,b)=>b.sp[ci]-a.sp[ci]);
+      if(!ds.length) return;
+      h+=`<tr class="fam-row"><td colspan="${COLS.length+1}">${esc(f.n)}</td></tr>`;
+      ds.forEach(d=>{
+        h+=`<tr><th class="rowh" scope="row">${esc(d.n.replace(/ \(.*\)$/,""))}</th>${d.sp.map((v,i)=>`<td class="c c${v}${ci!==null&&ci!==i?' dim':''}" title="${esc(COLS[i].l)}: ${esc(LEVELS[v])}"><span>${SYM[v]}</span></td>`).join("")}</tr>`;
+      });
+    });
+    h+="</tbody>";
+    $("#hm").innerHTML=h;
+  }
+  renderHM();
+  $("#hmLegend").innerHTML = LEVELS.map((l,i)=>`<span><i class="c${i}"></i><b class="mono">${SYM[i]}</b> ${esc(l)}</span>`).join("");
+  $("#colKey").innerHTML = COLS.map(c=>`<span><b>${esc(c.s)}</b> ${esc(c.l)}</span>`).join("");
+
+  /* ---------- Tarjetas ---------- */
+  let order = CARDS.map((_,i)=>i);
+  function renderCards(){
+    $("#cards").innerHTML = order.map(i=>{const c=CARDS[i]; return `<button type="button" class="card" aria-pressed="false" aria-label="Tarjeta: ${esc(c.q)}">
+      <span class="inner"><span class="face front"><span class="q">${esc(c.q)}</span><span class="hint">Toca para ver la respuesta</span></span>
+      <span class="face back">${esc(c.a)}</span></span></button>`;}).join("");
+  }
+  renderCards();
+  $("#cards").addEventListener("click",e=>{const b=e.target.closest(".card"); if(!b) return; b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});
+  $("#shuffle").addEventListener("click",()=>{for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} renderCards();});
+  $("#flipAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","true")));
+  $("#resetAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","false")));
+})();
+</script>
+
+</body>
+</html>
