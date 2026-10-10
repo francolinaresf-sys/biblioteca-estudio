@@ -63,6 +63,17 @@
         "toxídromes"
       ],
       "fecha": "2026-10-10"
+    },
+    {
+      "id": "cardiotoxicos-en-urgencia",
+      "titulo": "Cardiotóxicos en Urgencia",
+      "tema": "toxicologia",
+      "archivo": "toxicologia/cardiotoxicos-en-urgencia.html",
+      "descripcion": "β-bloqueadores, BCC, digoxina, bloqueadores de Na/K y clonidina en 5 escalones (estudiante a experto): fisiopatología, HIET, Fab, calculadora de dosis, tarjetas de repaso, preguntas y casos de tutoría.",
+      "etiquetas": [
+        "cardiotóxicos en urgencia"
+      ],
+      "fecha": "2026-10-10"
     }
   ]
 }

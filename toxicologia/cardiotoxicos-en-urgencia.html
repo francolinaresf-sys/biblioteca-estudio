@@ -1,0 +1,2097 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cardiotóxicos en Urgencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: papel de ECG — cabecera con trazado, pestañas fijas por módulo, contenido en columna de lectura con tablas y esquemas desplazables */
+:root{
+  --bg:#F6F8F9; --surface:#FFFFFF; --surface-2:#EEF2F4; --ink:#14212B; --muted:#56656F; --line:#D9E1E6;
+  --grid:rgba(194,24,58,.07); --grid-strong:rgba(194,24,58,.13);
+  --accent:#C2183A; --accent-soft:#FBE7EB;
+  --rx:#0D7472; --rx-soft:#E1F3F2;
+  --warn:#A65F00; --warn-soft:#FDF0DC;
+  --ok:#1D7A3A; --ok-soft:#E3F4E8;
+  --n0:#4A7A1F; --n1:#2F6FB0; --n2:#7A4FB5; --n3:#C2183A; --n4:#2F3E4C;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151A; --surface:#151F26; --surface-2:#1B2730; --ink:#E4ECF0; --muted:#97A7B1; --line:#2A3943;
+  --grid:rgba(255,92,120,.05); --grid-strong:rgba(255,92,120,.10);
+  --accent:#FF6B84; --accent-soft:#3A1720;
+  --rx:#4FD1C5; --rx-soft:#123331;
+  --warn:#F2B24C; --warn-soft:#3A2A10;
+  --ok:#6FD38F; --ok-soft:#14301E;
+  --n0:#9BD46A; --n1:#79AEE8; --n2:#B898E8; --n3:#FF6B84; --n4:#C9D6E0; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151A; --surface:#151F26; --surface-2:#1B2730; --ink:#E4ECF0; --muted:#97A7B1; --line:#2A3943;
+  --grid:rgba(255,92,120,.05); --grid-strong:rgba(255,92,120,.10);
+  --accent:#FF6B84; --accent-soft:#3A1720;
+  --rx:#4FD1C5; --rx-soft:#123331;
+  --warn:#F2B24C; --warn-soft:#3A2A10;
+  --ok:#6FD38F; --ok-soft:#14301E;
+  --n0:#9BD46A; --n1:#79AEE8; --n2:#B898E8; --n3:#FF6B84; --n4:#C9D6E0; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.2vw,2.3rem);font-weight:700;letter-spacing:.01em}
+h3{font-size:1.35rem;font-weight:600;letter-spacing:.01em;margin-top:.4rem}
+h4{font-size:1.08rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+p{margin:0;max-width:72ch}
+ul,ol{margin:0;padding-left:1.25rem;max-width:72ch}
+li+li{margin-top:.25rem}
+strong{font-weight:700}
+code,.mono{font-family:var(--mono);font-size:.9em}
+a{color:var(--rx)}
+:focus-visible{outline:3px solid var(--rx);outline-offset:2px;border-radius:4px}
+
+/* Header */
+header.top{background:
+  linear-gradient(var(--grid) 1px,transparent 1px) 0 0/8px 8px,
+  linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/8px 8px,
+  linear-gradient(var(--grid-strong) 1px,transparent 1px) 0 0/40px 40px,
+  linear-gradient(90deg,var(--grid-strong) 1px,transparent 1px) 0 0/40px 40px,
+  var(--surface);border-bottom:1px solid var(--line)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;padding-block:28px 18px}
+.eyebrow{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-size:.9rem;color:var(--accent);font-weight:600}
+.hero h1{font-size:clamp(2.3rem,6vw,3.8rem);font-weight:700}
+.hero p.lead{font-size:1.08rem;color:var(--muted)}
+.trace{width:100%;height:70px;display:block}
+.trace path{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.trace .lbl{fill:var(--muted);font-family:var(--mono);font-size:11px}
+@media (prefers-reduced-motion:no-preference){
+  .trace path{stroke-dasharray:1600;stroke-dashoffset:1600;animation:draw 3.2s ease-out .2s forwards}
+  @keyframes draw{to{stroke-dashoffset:0}}
+}
+@media (prefers-reduced-motion:reduce){.trace path{stroke-dashoffset:0}}
+.legend-lv{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.92rem;color:var(--muted)}
+
+/* Nav */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.tabs-in{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;padding-block:6px}
+.tab{appearance:none;border:0;background:transparent;color:var(--muted);font-family:var(--display);font-size:1.02rem;font-weight:600;letter-spacing:.03em;padding:8px 12px;border-radius:6px;white-space:nowrap;cursor:pointer}
+.tab:hover{background:var(--surface-2);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--surface)}
+.tab .k{font-family:var(--mono);font-size:.72rem;opacity:.7;margin-right:4px}
+
+main{padding-block:26px 60px}
+section.mod{display:grid;gap:22px}
+.sec-head{display:grid;gap:8px;border-bottom:2px solid var(--ink);padding-bottom:12px}
+.sec-head p{color:var(--muted)}
+.block{display:grid;gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.grid2>*,.grid3>*{min-width:0}
+
+/* Chips */
+.lv{display:inline-flex;align-items:center;gap:5px;font-family:var(--display);font-weight:600;font-size:.82rem;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid currentColor;border-radius:999px;padding:1px 9px;white-space:nowrap}
+.lv.n0{color:var(--n0)} .lv.n1{color:var(--n1)} .lv.n2{color:var(--n2)} .lv.n3{color:var(--n3)} .lv.n4{color:var(--n4)}
+.lv.cx{color:var(--warn);border-style:dashed}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* Panels */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.panel.rx{border-color:color-mix(in srgb,var(--rx) 45%,var(--line));background:linear-gradient(var(--rx-soft),var(--rx-soft)) top/100% 4px no-repeat,var(--surface)}
+.panel.alert{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));background:linear-gradient(var(--accent-soft),var(--accent-soft)) top/100% 4px no-repeat,var(--surface)}
+.panel.warn{border-color:color-mix(in srgb,var(--warn) 45%,var(--line));background:linear-gradient(var(--warn-soft),var(--warn-soft)) top/100% 4px no-repeat,var(--surface)}
+.perla{border-left:4px solid var(--rx);background:var(--rx-soft);padding:10px 14px;border-radius:0 8px 8px 0;max-width:80ch}
+.perla b.t{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;color:var(--rx);margin-right:6px}
+.pitfall{border-left:4px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 8px 8px 0;max-width:80ch}
+.pitfall b.t{font-family:var(--display);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-right:6px}
+.note{font-size:.88rem;color:var(--muted)}
+
+/* Tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.95rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+thead th{font-family:var(--display);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:.88rem;background:var(--surface-2);color:var(--ink);white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+td.dose{font-family:var(--mono);font-size:.86rem;color:var(--rx);white-space:nowrap}
+td.dose.wrap-ok{white-space:normal}
+.y{color:var(--ok);font-weight:700}.n{color:var(--muted)}
+
+/* Diagrams */
+.fig{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px}
+.fig svg{display:block;min-width:640px;width:100%;height:auto}
+.fig figcaption{font-size:.88rem;color:var(--muted);padding:6px 4px 0}
+svg .bx{fill:var(--surface-2);stroke:var(--line);stroke-width:1.2}
+svg .bx.tg{fill:var(--accent-soft);stroke:var(--accent)}
+svg .bx.th{fill:var(--rx-soft);stroke:var(--rx)}
+svg .t{fill:var(--ink);font-family:var(--body);font-size:13px}
+svg .ts{fill:var(--muted);font-family:var(--body);font-size:11.5px}
+svg .tr{fill:var(--accent);font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.04em}
+svg .tx{fill:var(--rx);font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.04em}
+svg .ar{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ar.r{stroke:var(--accent)} svg .ar.x{stroke:var(--rx);stroke-dasharray:4 3}
+svg .ap{fill:none;stroke:var(--ink);stroke-width:2.6}
+svg .axis{stroke:var(--line);stroke-width:1}
+svg .gridl{stroke:var(--grid-strong);stroke-width:1}
+svg .mem{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:2 0}
+svg .cellbg{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}
+
+/* Staged algorithm */
+.stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px;counter-reset:st}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0}
+.stage .sn{font-family:var(--display);font-weight:700;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;color:var(--surface);background:var(--ink);padding:2px 10px;border-radius:4px;justify-self:start}
+.stage.s2 .sn{background:var(--n2)} .stage.s3 .sn{background:var(--accent)}
+.stage ul{padding-left:1.1rem}
+.phen{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.phen .panel h4{color:var(--ink)}
+
+/* Dose calculator */
+.calc{display:grid;gap:14px}
+.inputs{display:flex;flex-wrap:wrap;gap:14px;align-items:end}
+.field{display:grid;gap:4px}
+.field label{font-family:var(--display);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:.85rem;color:var(--muted)}
+.field input{font-family:var(--mono);font-size:1.05rem;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:150px}
+.field input:focus{border-color:var(--rx);outline:none}
+.calc td.out{font-family:var(--mono);font-size:.88rem;color:var(--rx);font-weight:600}
+.calc td.out small{display:block;font-weight:400;color:var(--muted);font-family:var(--body);font-size:.82rem}
+.grp td{background:var(--surface-2);font-family:var(--display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.88rem}
+
+/* Quiz */
+.qbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.fbtn{appearance:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 12px;font-family:var(--display);font-weight:600;font-size:.92rem;letter-spacing:.04em;cursor:pointer}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.score{font-family:var(--mono);font-size:.95rem}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:grid;gap:10px}
+.q .qh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.q .qn{font-family:var(--mono);color:var(--muted);font-size:.85rem}
+.q .qt{font-weight:600;max-width:80ch}
+.opts{display:grid;gap:6px}
+.opt{appearance:none;text-align:left;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:9px 12px;font:inherit;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--rx)}
+.opt[disabled]{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--accent);background:var(--accent-soft)}
+.expl{border-top:1px dashed var(--line);padding-top:10px;max-width:80ch}
+.expl b.v{font-family:var(--display);letter-spacing:.06em;text-transform:uppercase}
+.expl b.v.ok{color:var(--ok)} .expl b.v.ko{color:var(--accent)}
+.btn{appearance:none;border:0;background:var(--ink);color:var(--surface);font-family:var(--display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem;padding:8px 16px;border-radius:8px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+.btn.rx{background:var(--rx);color:var(--surface)}
+
+/* Tutoría */
+.mode{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:var(--display);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.switch input{width:20px;height:20px;accent-color:var(--rx)}
+.case{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.case>summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.case>summary::-webkit-details-marker{display:none}
+.case>summary .cn{font-family:var(--mono);color:var(--accent);font-weight:600}
+.case>summary h3{margin:0}
+.case>summary .sub{color:var(--muted);font-size:.95rem;flex-basis:100%}
+.case[open]>summary{border-bottom:1px solid var(--line)}
+.cbody{padding:16px 18px;display:grid;gap:14px}
+.vitals{display:flex;flex-wrap:wrap;gap:8px}
+.vital{font-family:var(--mono);font-size:.85rem;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+.vital.bad{border-color:var(--accent);color:var(--accent)}
+.cstage{border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:8px}
+.cstage .st{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.9rem;color:var(--n2)}
+.ask{font-weight:600}
+.ask::before{content:"Pregunta → ";font-family:var(--display);color:var(--accent);letter-spacing:.05em;text-transform:uppercase;font-weight:700}
+.tutor{display:none;background:var(--rx-soft);border-radius:8px;padding:10px 12px;gap:6px}
+body.tutor-on .tutor{display:grid}
+.tutor .tl{font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--rx);font-size:.85rem}
+.res-key{display:grid;gap:6px;background:var(--surface-2);border-radius:8px;padding:10px 12px}
+.res-key .tl{font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-size:.85rem}
+.stagenav{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stagenav .prog{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+
+.foot{border-top:1px solid var(--line);padding-block:20px;color:var(--muted);font-size:.9rem}
+.mt{margin-top:4px}
+dl.kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+dl.kv dt{font-family:var(--display);font-weight:600;letter-spacing:.04em;color:var(--muted)}
+dl.kv dd{margin:0;min-width:0}
+@media (max-width:520px){dl.kv{grid-template-columns:1fr} dl.kv dt{margin-top:6px}}
+
+/* Ruta de aprendizaje */
+.ruta{display:grid;gap:14px;counter-reset:esc}
+.esc{display:grid;grid-template-columns:56px minmax(0,1fr);gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;position:relative}
+.esc .num{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.5rem;color:var(--surface);background:var(--c)}
+.esc .body{display:grid;gap:10px;min-width:0}
+.esc .who{font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.85rem;color:var(--c)}
+.esc h3{margin:0}
+.esc .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px}
+.esc .cols>*{min-width:0}
+.goto{appearance:none;border:1.5px solid var(--c);color:var(--c);background:transparent;border-radius:999px;padding:3px 11px;font-family:var(--display);font-weight:600;font-size:.9rem;letter-spacing:.03em;cursor:pointer}
+.goto:hover{background:var(--surface-2)}
+.chk{display:grid;gap:6px;list-style:none;padding:0}
+.chk label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.chk input{margin-top:4px;width:17px;height:17px;accent-color:var(--rx);flex:none}
+.meter{height:8px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.meter>i{display:block;height:100%;background:var(--c);width:0;transition:width .3s}
+.esc .prog{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+@media (max-width:520px){.esc{grid-template-columns:1fr}.esc .num{width:40px;height:40px;font-size:1.2rem}}
+
+/* Para llevar y autoevaluación */
+.llevar{border:2px solid var(--ink);border-radius:12px;padding:14px 18px;display:grid;gap:8px;background:var(--surface)}
+.llevar .tl{font-family:var(--display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.95rem}
+.check{display:grid;gap:8px}
+.check details{background:var(--surface);border:1px dashed var(--line);border-radius:8px;padding:8px 12px}
+.check summary{cursor:pointer;font-weight:600}
+.check summary::before{content:"¿Lo sabes? ";font-family:var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--n2);font-weight:700}
+.check details p{margin-top:6px;color:var(--ink)}
+
+/* Flashcards */
+.fcbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.fcwrap{display:grid;gap:12px;justify-items:center}
+.fcard{appearance:none;width:100%;max-width:640px;min-height:220px;border:1.5px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:22px 24px;display:grid;align-content:center;gap:10px;text-align:left;cursor:pointer;font:inherit;box-shadow:0 1px 0 var(--line)}
+.fcard .side{font-family:var(--display);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.8rem;color:var(--muted)}
+.fcard .txt{font-size:1.15rem;line-height:1.45}
+.fcard.back{background:var(--rx-soft);border-color:var(--rx)}
+.fcard.back .side{color:var(--rx)}
+.fcctl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.btn.ok{background:var(--ok);color:var(--surface)}
+.btn.ko{background:var(--accent);color:var(--surface)}
+.fcstat{font-family:var(--mono);font-size:.88rem;color:var(--muted);text-align:center}
+.mnemo{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.mnemo .panel{align-content:start}
+.mnemo .big{font-family:var(--display);font-weight:700;font-size:2rem;letter-spacing:.06em;color:var(--accent);line-height:1}
+.spaced{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:10px}
+.spaced .d{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
+.spaced .d b{font-family:var(--display);font-size:1.3rem;color:var(--rx)}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap hero">
+    <div class="eyebrow">Toxicología de urgencia · Programa de especialidad</div>
+    <h1>Cardiotóxicos en Urgencia</h1>
+    <p class="lead">Intoxicación por fármacos cardiovasculares en cinco escalones: del estudiante que entiende el miocito al urgenciólogo experto que lidera un shock refractario y diseña el protocolo de su unidad. Con dosis, tarjetas de repaso, preguntas y casos para tutoría.</p>
+    <svg class="trace" viewBox="0 0 1000 70" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 42 H110 l8 -4 8 4 H150 l6 6 8 -34 8 40 6 -8 H230 q20 -14 40 0 H420 l8 -4 8 4 H470 l8 6 10 -30 14 36 8 -12 H560 q22 -16 44 0 H760 l8 -4 8 4 H810 l10 8 14 -26 18 34 10 -16 H910 q20 -14 40 0 H1000"/>
+      <text class="lbl" x="6" y="12">DII · 25 mm/s · bradicardia con QRS que se ensancha</text>
+    </svg>
+    <div class="legend-lv">Escalones: <span class="lv n0">1 Estudiante</span><span class="lv n1">2 Interno</span><span class="lv n2">3 Residente</span><span class="lv n3">4 Urgenciólogo</span><span class="lv n4">5 Experto en toxicología</span></div>
+    <div class="legend-lv"><span class="lv cx">Complementario</span><span>= contenido fuera de los 3 artículos base; verificar con protocolo local o CITUC</span></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Módulos">
+  <div class="wrap tabs-in" role="tablist">
+    <button class="tab" role="tab" data-tab="inicio" aria-selected="true"><span class="k">00</span>Ruta</button>
+    <button class="tab" role="tab" data-tab="base"><span class="k">01</span>Conceptos base</button>
+    <button class="tab" role="tab" data-tab="fisio"><span class="k">02</span>Fisiología</button>
+    <button class="tab" role="tab" data-tab="enfoque"><span class="k">03</span>Enfoque general</button>
+    <button class="tab" role="tab" data-tab="bbbcc"><span class="k">04</span>β-bloq. y BCC</button>
+    <button class="tab" role="tab" data-tab="tto"><span class="k">05</span>Tratamiento BB/BCC</button>
+    <button class="tab" role="tab" data-tab="digoxina"><span class="k">06</span>Digoxina</button>
+    <button class="tab" role="tab" data-tab="sodio"><span class="k">07</span>Canal Na / K</button>
+    <button class="tab" role="tab" data-tab="otros"><span class="k">08</span>Clonidina y otros</button>
+    <button class="tab" role="tab" data-tab="experto"><span class="k">09</span>Nivel experto</button>
+    <button class="tab" role="tab" data-tab="dosis"><span class="k">10</span>Dosis</button>
+    <button class="tab" role="tab" data-tab="controv"><span class="k">11</span>Controversias</button>
+    <button class="tab" role="tab" data-tab="repaso"><span class="k">12</span>Repaso</button>
+    <button class="tab" role="tab" data-tab="quiz"><span class="k">13</span>Preguntas</button>
+    <button class="tab" role="tab" data-tab="tutoria"><span class="k">14</span>Tutoría clínica</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ===================== 00 MAPA ===================== -->
+<section class="mod" id="inicio" data-sec>
+  <div class="sec-head">
+    <h2>Ruta de aprendizaje</h2>
+    <p>Cinco escalones que construyen el tema paso a paso. Cada escalón dice qué debes poder hacer, qué módulos estudiar y tiene una prueba de paso. Marca lo que ya dominas; el avance queda guardado en este dispositivo.</p>
+  </div>
+
+  <div class="ruta" id="ruta">
+    <article class="esc" style="--c:var(--n0)" data-esc="0">
+      <div class="num">1</div>
+      <div class="body">
+        <span class="who">Estudiante de medicina · Entender la máquina</span>
+        <h3>¿Por qué un fármaco cardiovascular puede matar?</h3>
+        <div class="cols">
+          <div>
+            <h4>Debes poder</h4>
+            <ul class="chk">
+              <li><label><input type="checkbox" data-k="e0a">Explicar qué hace cada receptor autonómico (α1, α2, β1, β2, M2) en corazón y vasos.</label></li>
+              <li><label><input type="checkbox" data-k="e0b">Dibujar el potencial de acción y nombrar la corriente de cada fase.</label></li>
+              <li><label><input type="checkbox" data-k="e0c">Clasificar los antiarrítmicos según Vaughan-Williams.</label></li>
+              <li><label><input type="checkbox" data-k="e0d">Explicar el acoplamiento excitación-contracción y el papel del Ca²⁺.</label></li>
+              <li><label><input type="checkbox" data-k="e0e">Definir cronotropismo, inotropismo, dromotropismo y lusitropismo.</label></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Estudia</h4>
+            <div class="chiprow"><button class="goto" data-goto="base">01 Conceptos base</button><button class="goto" data-goto="fisio">02 Fisiología (1 y 2)</button><button class="goto" data-goto="repaso">Tarjetas «Estudiante»</button></div>
+            <h4 class="mt">Prueba de paso</h4>
+            <div class="chiprow"><button class="goto" data-goto="quiz" data-qf="0">Preguntas nivel Estudiante</button></div>
+          </div>
+        </div>
+        <div class="meter"><i></i></div><span class="prog"></span>
+      </div>
+    </article>
+
+    <article class="esc" style="--c:var(--n1)" data-esc="1">
+      <div class="num">2</div>
+      <div class="body">
+        <span class="who">Interno · Reconocer y avisar</span>
+        <h3>Llega un paciente con bradicardia e hipotensión</h3>
+        <div class="cols">
+          <div>
+            <h4>Debes poder</h4>
+            <ul class="chk">
+              <li><label><input type="checkbox" data-k="e1a">Plantear intoxicación ante bradicardia + hipotensión y enumerar el diferencial (4C + B + O).</label></li>
+              <li><label><input type="checkbox" data-k="e1b">Ejecutar los primeros 10 minutos: monitor, parches, 2 vías, ECG, glicemia.</label></li>
+              <li><label><input type="checkbox" data-k="e1c">Preguntar lo que cambia el manejo: fármaco, dosis, hora y formulación.</label></li>
+              <li><label><input type="checkbox" data-k="e1d">Saber cuánto observar (6 h o 24 h) y cuándo dar carbón activado.</label></li>
+              <li><label><input type="checkbox" data-k="e1e">Reconocer el ECG de BB/BCC y el de digoxina.</label></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Estudia</h4>
+            <div class="chiprow"><button class="goto" data-goto="enfoque">03 Enfoque general</button><button class="goto" data-goto="bbbcc">04 β-bloq. y BCC</button><button class="goto" data-goto="digoxina">06 Digoxina (clínica y ECG)</button></div>
+            <h4 class="mt">Prueba de paso</h4>
+            <div class="chiprow"><button class="goto" data-goto="quiz" data-qf="1">Preguntas nivel Interno</button></div>
+          </div>
+        </div>
+        <div class="meter"><i></i></div><span class="prog"></span>
+      </div>
+    </article>
+
+    <article class="esc" style="--c:var(--n2)" data-esc="2">
+      <div class="num">3</div>
+      <div class="body">
+        <span class="who">Residente · Tratar con dosis exactas</span>
+        <h3>Indicar sin mirar el libro</h3>
+        <div class="cols">
+          <div>
+            <h4>Debes poder</h4>
+            <ul class="chk">
+              <li><label><input type="checkbox" data-k="e2a">Dosificar calcio (cloruro y gluconato) y explicar la diferencia.</label></li>
+              <li><label><input type="checkbox" data-k="e2b">Indicar HIET completo («1-1-10») con dextrosa, K⁺ y controles.</label></li>
+              <li><label><input type="checkbox" data-k="e2c">Calcular viales de Fab antidigoxina por nivel y por dosis ingerida.</label></li>
+              <li><label><input type="checkbox" data-k="e2d">Tratar el QRS ancho con bicarbonato hipertónico y la TdP con magnesio.</label></li>
+              <li><label><input type="checkbox" data-k="e2e">Manejar clonidina y antihipertensivos menores.</label></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Estudia</h4>
+            <div class="chiprow"><button class="goto" data-goto="tto">05 Tratamiento BB/BCC</button><button class="goto" data-goto="digoxina">06 Digoxina (Fab)</button><button class="goto" data-goto="sodio">07 Canal Na / K</button><button class="goto" data-goto="otros">08 Clonidina</button><button class="goto" data-goto="dosis">10 Calculadora</button></div>
+            <h4 class="mt">Prueba de paso</h4>
+            <div class="chiprow"><button class="goto" data-goto="quiz" data-qf="2">Preguntas nivel Residente</button><button class="goto" data-goto="tutoria">Casos 1, 3 y 5</button></div>
+          </div>
+        </div>
+        <div class="meter"><i></i></div><span class="prog"></span>
+      </div>
+    </article>
+
+    <article class="esc" style="--c:var(--n3)" data-esc="3">
+      <div class="num">4</div>
+      <div class="body">
+        <span class="who">Urgenciólogo · Rescatar y liderar</span>
+        <h3>El shock que no responde</h3>
+        <div class="cols">
+          <div>
+            <h4>Debes poder</h4>
+            <ul class="chk">
+              <li><label><input type="checkbox" data-k="e3a">Clasificar el fenotipo con POCUS y elegir terapia según él.</label></li>
+              <li><label><input type="checkbox" data-k="e3b">Usar rescates (azul de metileno, hidroxocobalamina, lípidos) conociendo sus riesgos.</label></li>
+              <li><label><input type="checkbox" data-k="e3c">Definir y activar precozmente ECMO VA o VV.</label></li>
+              <li><label><input type="checkbox" data-k="e3d">Liderar al equipo: doble chequeo de insulina, roles, comunicación en asa cerrada.</label></li>
+              <li><label><input type="checkbox" data-k="e3e">Explicar dónde discrepan las guías y por qué.</label></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Estudia</h4>
+            <div class="chiprow"><button class="goto" data-goto="tto">05 Fenotipo y rescate</button><button class="goto" data-goto="controv">11 Controversias</button></div>
+            <h4 class="mt">Prueba de paso</h4>
+            <div class="chiprow"><button class="goto" data-goto="quiz" data-qf="3">Preguntas nivel Urgenciólogo</button><button class="goto" data-goto="tutoria">Casos 2 y 4</button></div>
+          </div>
+        </div>
+        <div class="meter"><i></i></div><span class="prog"></span>
+      </div>
+    </article>
+
+    <article class="esc" style="--c:var(--n4)" data-esc="4">
+      <div class="num">5</div>
+      <div class="body">
+        <span class="who">Urgenciólogo experto en toxicología · Pensar como toxicólogo</span>
+        <h3>Ver el caso, el sistema y la evidencia</h3>
+        <div class="cols">
+          <div>
+            <h4>Debes poder</h4>
+            <ul class="chk">
+              <li><label><input type="checkbox" data-k="e4a">Anticipar la toxicocinética de la sobredosis: absorción prolongada, bezoares, toxicidad diferida.</label></li>
+              <li><label><input type="checkbox" data-k="e4b">Ajustar el manejo en embarazo, pediatría, adulto mayor y portadores de dispositivos.</label></li>
+              <li><label><input type="checkbox" data-k="e4c">Diseñar el stock de antídotos y el protocolo HIET de la UEH.</label></li>
+              <li><label><input type="checkbox" data-k="e4d">Leer críticamente la evidencia (modelos animales, series de casos, consensos).</label></li>
+              <li><label><input type="checkbox" data-k="e4e">Enseñar el tema con casos y debriefing.</label></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Estudia</h4>
+            <div class="chiprow"><button class="goto" data-goto="experto">09 Nivel experto</button><button class="goto" data-goto="controv">11 Controversias</button><button class="goto" data-goto="tutoria">14 Tutoría clínica</button></div>
+            <h4 class="mt">Prueba de paso</h4>
+            <div class="chiprow"><button class="goto" data-goto="quiz" data-qf="4">Preguntas nivel Experto</button></div>
+          </div>
+        </div>
+        <div class="meter"><i></i></div><span class="prog"></span>
+      </div>
+    </article>
+  </div>
+
+  <div class="panel alert">
+    <h3>Las 6 ideas que no se olvidan</h3>
+    <ol>
+      <li><strong>Vía final común BB/BCC: falta de Ca²⁺ intracelular.</strong> Calcio, insulina y catecolaminas atacan el mismo cuello de botella desde distintos ángulos.</li>
+      <li><strong>HIET «1-1-10»:</strong> bolo 1 U/kg, infusión 1 U/kg/h, techo 10 U/kg/h. Partir junto con noradrenalina en dosis baja.</li>
+      <li><strong>Liberación prolongada = observar 24 h.</strong> Liberación inmediata asintomática: 6 h. Sotalol: observación prolongada.</li>
+      <li><strong>Un vial de Fab (40 mg) neutraliza ~0,5 mg de digoxina.</strong> Hiperkalemia en intoxicación aguda es indicación de Fab y marcador pronóstico.</li>
+      <li><strong>QRS ancho = canal de Na:</strong> bicarbonato hipertónico en bolos. Evitar antiarrítmicos IA/IC.</li>
+      <li><strong>ECMO VA es el rescate más eficaz en shock cardiogénico tóxico refractario.</strong> Llamar temprano al centro con ECMO y a CITUC.</li>
+    </ol>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h4>Recursos en Chile</h4>
+      <dl class="kv">
+        <dt>CITUC</dt><dd>Centro de Información Toxicológica UC, 24/7: <span class="mono">+56 2 2635 3800</span> (verificar número vigente)</dd>
+        <dt>Arsenal</dt><dd>Confirmar con farmacia: Fab antidigoxina, glucagón (kits de 1 mg), emulsión lipídica 20 %, azul de metileno 1 %, hidroxocobalamina.</dd>
+        <dt>ECMO</dt><dd>Identificar el centro de referencia con ECMO VA y su vía de contacto antes de necesitarlo.</dd>
+      </dl>
+    </div>
+    <div class="panel">
+      <h4>Cómo usar esta página</h4>
+      <ul>
+        <li><strong>Estudio:</strong> sigue la ruta escalón por escalón; al final de cada módulo hay un bloque «Para llevar» y preguntas rápidas de autoevaluación.</li>
+        <li><strong>Repaso:</strong> tarjetas con volteo y marcado «La sé / Repasar», mnemotecnias, hoja de una página y plan de repaso espaciado.</li>
+        <li><strong>Turno:</strong> calculadora de dosis por peso.</li>
+        <li><strong>Docencia:</strong> 5 casos con revelado por etapas y «Modo tutor».</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ===================== 01 CONCEPTOS BASE ===================== -->
+<section class="mod" id="base" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n0">Estudiante</span></div>
+    <h2>Conceptos base</h2>
+    <p>El vocabulario y la farmacología mínima para entender el resto. Si vienes de clínica y lo tienes claro, pasa directo a Fisiología.</p>
+  </div>
+
+  <div class="block">
+    <h3>Glosario esencial</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Término</th><th>Qué significa</th><th>Por qué importa aquí</th></tr></thead>
+        <tbody>
+          <tr><td>Cronotropismo</td><td>Frecuencia de disparo del nodo sinusal</td><td>Bradicardia por BB, BCC no DHP, digoxina, clonidina</td></tr>
+          <tr><td>Inotropismo</td><td>Fuerza de contracción</td><td>Cae en BB/BCC; la insulina la recupera</td></tr>
+          <tr><td>Dromotropismo</td><td>Velocidad de conducción (sobre todo nodo AV)</td><td>PR largo y bloqueos AV</td></tr>
+          <tr><td>Lusitropismo</td><td>Capacidad de relajación diastólica</td><td>Depende de SERCA2a, regulada por cAMP</td></tr>
+          <tr><td>Toxídromo</td><td>Conjunto de signos que orienta a un grupo de tóxicos</td><td>Bradicardia + hipotensión = toxídromo cardiovascular depresor</td></tr>
+          <tr><td>Antídoto</td><td>Sustancia que revierte o contrarresta un tóxico</td><td>Específico (Fab antidigoxina) o funcional (calcio, insulina)</td></tr>
+          <tr><td>Volumen de distribución (Vd)</td><td>Cuánto se reparte el fármaco fuera del plasma</td><td>Vd alto (amlodipino 21 L/kg, digoxina) = no dializable</td></tr>
+          <tr><td>Unión a proteínas</td><td>Fracción ligada a albúmina u otras</td><td>Alta en BCC: tampoco se dializan</td></tr>
+          <tr><td>Liberación prolongada (SR, ER, LP)</td><td>Formulación que libera el fármaco en horas</td><td>Toxicidad diferida hasta 24 h; cambia la observación y la descontaminación</td></tr>
+          <tr><td>Estabilización de membrana (MSA)</td><td>Bloqueo de canales de Na («efecto quinidínico»)</td><td>QRS ancho con propranolol y acebutolol</td></tr>
+          <tr><td>Actividad simpaticomimética intrínseca (ASI)</td><td>Agonismo β parcial</td><td>Pindolol, acebutolol: menos bradicardia</td></tr>
+          <tr><td>Dihidropiridina (DHP)</td><td>BCC con afinidad vascular</td><td>Vasoplejia con taquicardia refleja</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="block">
+      <h3>Receptores que hay que conocer</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Receptor</th><th>Proteína G</th><th>Efecto cardiovascular</th></tr></thead>
+          <tbody>
+            <tr><td>α1</td><td>Gq</td><td>Vasoconstricción</td></tr>
+            <tr><td>α2 presináptico / central</td><td>Gi</td><td>↓ liberación de noradrenalina → ↓ FC y PA</td></tr>
+            <tr><td>α2 postsináptico periférico</td><td>Gi</td><td>Vasoconstricción (HTA precoz de la clonidina)</td></tr>
+            <tr><td>β1</td><td>Gs</td><td>↑ FC, contractilidad, conducción, relajación</td></tr>
+            <tr><td>β2</td><td>Gs</td><td>Vasodilatación, broncodilatación, entrada de K⁺ al músculo</td></tr>
+            <tr><td>M2 (muscarínico)</td><td>Gi</td><td>↓ FC y conducción AV (tono vagal)</td></tr>
+            <tr><td>Glucagón</td><td>Gs</td><td>↑ cAMP sin receptor β</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="block">
+      <h3>Clasificación de Vaughan-Williams</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Clase</th><th>Bloquea</th><th>Ejemplos</th><th>En sobredosis</th></tr></thead>
+          <tbody>
+            <tr><td>I (IA, IB, IC)</td><td>Canal de Na</td><td>Procainamida, lidocaína, flecainida</td><td>QRS ancho, TV</td></tr>
+            <tr><td>II</td><td>Receptor β</td><td>Propranolol, metoprolol</td><td>Bradicardia, hipotensión</td></tr>
+            <tr><td>III</td><td>Canal de K</td><td>Amiodarona, sotalol</td><td>QT largo, TdP</td></tr>
+            <tr><td>IV</td><td>Canal de Ca L</td><td>Verapamilo, diltiazem</td><td>Bradicardia, BAV, shock</td></tr>
+            <tr><td>Otros</td><td>Na⁺/K⁺-ATPasa</td><td>Digoxina</td><td>Arritmias, hiperkalemia</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>De dosis terapéutica a dosis tóxica</h3>
+    <ul>
+      <li><strong>Pérdida de selectividad:</strong> en sobredosis, el β1-selectivo bloquea también β2, y la DHP bloquea también el canal L cardíaco.</li>
+      <li><strong>Saturación:</strong> el metabolismo hepático (CYP3A4 en los BCC) se satura y la vida media se alarga.</li>
+      <li><strong>Formulación:</strong> la liberación prolongada mantiene la absorción por horas; el pico tóxico puede llegar tarde.</li>
+      <li><strong>Terreno:</strong> cardiopatía previa, falla renal, coingesta de otro cardiovascular y edad extrema empeoran el pronóstico.</li>
+    </ul>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>FC × volumen sistólico = gasto; resistencia vascular × gasto = presión. Todo cardiotóxico ataca uno o más de estos términos.</li>
+      <li>Vd alto y unión a proteínas alta = la diálisis no sirve.</li>
+      <li>En sobredosis la selectividad desaparece.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Qué receptor explica la hiperkalemia leve del β-bloqueo?</summary><p>β2: media la entrada de K⁺ al músculo esquelético.</p></details>
+    <details><summary>¿A qué clase de Vaughan-Williams pertenece el verapamilo?</summary><p>Clase IV (bloqueador del canal de calcio L).</p></details>
+  </div>
+</section>
+
+
+<!-- ===================== 02 FISIOLOGÍA ===================== -->
+<section class="mod" id="fisio" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n0">Estudiante</span><span class="lv n2">Residente</span></div>
+    <h2>Fisiología y fisiopatología</h2>
+    <p>Cada cardiotóxico secuestra un engranaje distinto de la misma máquina. Entender la máquina permite predecir el ECG, la hemodinamia y el antídoto.</p>
+  </div>
+
+  <div class="block">
+    <h3>1. Potencial de acción y dónde actúa cada tóxico</h3>
+    <figure class="fig" style="margin:0">
+      <svg viewBox="0 0 720 300" role="img" aria-label="Potencial de acción ventricular con las fases 0 a 4 y los fármacos que bloquean cada corriente">
+        <g>
+          <line class="gridl" x1="40" y1="60" x2="700" y2="60"/><line class="gridl" x1="40" y1="120" x2="700" y2="120"/><line class="gridl" x1="40" y1="180" x2="700" y2="180"/><line class="gridl" x1="40" y1="230" x2="700" y2="230"/>
+          <text class="ts" x="4" y="64">+20</text><text class="ts" x="10" y="124">0</text><text class="ts" x="0" y="184">−50</text><text class="ts" x="0" y="234">−90</text>
+          <text class="ts" x="4" y="22">mV</text>
+        </g>
+        <path class="ap" d="M50 230 H120 L132 58 L150 92 C170 96 200 100 250 104 C300 110 330 118 360 140 C390 175 410 215 440 228 L450 230 H690"/>
+        <!-- phase labels -->
+        <text class="t" x="108" y="150" font-weight="700">0</text>
+        <text class="t" x="150" y="80" font-weight="700">1</text>
+        <text class="t" x="245" y="94" font-weight="700">2</text>
+        <text class="t" x="400" y="170" font-weight="700">3</text>
+        <text class="t" x="560" y="222" font-weight="700">4</text>
+        <!-- annotations -->
+        <text class="ts" x="60" y="268">Fase 0 · INa (Nav1.5)</text>
+        <text class="tr" x="60" y="286">CLASE IA/IC · PROPRANOLOL (MSA)</text>
+        <text class="ts" x="210" y="40">Fase 2 meseta · ICa-L (Cav1.2)</text>
+        <text class="tr" x="210" y="24">BCC · (β-BLOQ. ↓ apertura vía cAMP)</text>
+        <text class="ts" x="420" y="120">Fase 3 · IKr (hERG), IKs</text>
+        <text class="tr" x="420" y="104">SOTALOL · AMIODARONA · CLASE IA</text>
+        <text class="ts" x="470" y="268">Fase 4 · Na⁺/K⁺-ATPasa, IK1</text>
+        <text class="tr" x="470" y="286">DIGOXINA</text>
+        <line class="ar r" x1="125" y1="255" x2="126" y2="200"/>
+        <line class="ar r" x1="250" y1="44" x2="250" y2="98"/>
+        <line class="ar r" x1="410" y1="124" x2="385" y2="155"/>
+        <line class="ar r" x1="520" y1="255" x2="520" y2="234"/>
+      </svg>
+      <figcaption>Potencial de acción del miocito ventricular. En las células nodales (SA y AV) la fase 0 depende de ICa-L, no de INa: por eso verapamilo y diltiazem producen bradicardia y bloqueo AV, y las dihidropiridinas casi no lo hacen en dosis terapéuticas.</figcaption>
+    </figure>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Fase / corriente</th><th>Función normal</th><th>Si se bloquea</th><th>Expresión en ECG</th></tr></thead>
+        <tbody>
+          <tr><td>0 · INa rápida</td><td>Despolarización veloz, conducción intraventricular</td><td>Conducción lenta, reentrada, depresión inotrópica</td><td>QRS ancho, R terminal en aVR, patrón Brugada</td></tr>
+          <tr><td>2 · ICa-L</td><td>Meseta, entrada de Ca²⁺ que gatilla la contracción; fase 0 en nodos</td><td>Menor contractilidad, bradicardia sinusal, bloqueo AV, vasodilatación</td><td>PR largo, BAV, ritmo de la unión</td></tr>
+          <tr><td>3 · IKr (hERG)</td><td>Repolarización</td><td>Potencial de acción prolongado, posdespolarizaciones precoces</td><td>QT largo, torsión de puntas</td></tr>
+          <tr><td>4 · Na⁺/K⁺-ATPasa</td><td>Mantiene gradientes (3 Na⁺ fuera, 2 K⁺ dentro)</td><td>Na⁺ intracelular ↑ → Ca²⁺ ↑ por menor salida vía NCX; K⁺ sérico ↑</td><td>ST «en cubeta», QT corto, ectopia, TV bidireccional</td></tr>
+          <tr><td>4 nodal · If, ICa-T</td><td>Automatismo, modulado por cAMP (β1) y acetilcolina (M2)</td><td>Bradicardia (β-bloqueo, tono vagal ↑ por digoxina)</td><td>Bradicardia sinusal, pausas</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>2. El miocito: la cascada β1 → cAMP → Ca²⁺ y sus antídotos</h3>
+    <figure class="fig" style="margin:0">
+      <svg viewBox="0 0 800 440" role="img" aria-label="Esquema del miocito con dianas tóxicas en rojo y terapias en verde azulado">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--muted)"/></marker>
+          <marker id="ahx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--rx)"/></marker>
+        </defs>
+        <rect class="cellbg" x="20" y="60" width="770" height="360" rx="26"/>
+        <text class="ts" x="34" y="410">Miocito (citoplasma)</text>
+        <text class="ts" x="34" y="14">Espacio extracelular</text>
+        <!-- receptors on top membrane -->
+        <rect class="bx tg" x="50" y="44" width="140" height="40" rx="6"/><text class="t" x="62" y="69">Receptor β1</text>
+        <text class="tr" x="52" y="36">✕ β-BLOQUEADORES</text>
+        <rect class="bx th" x="215" y="44" width="150" height="40" rx="6"/><text class="t" x="225" y="69">Receptor glucagón</text>
+        <text class="tx" x="217" y="36">+ GLUCAGÓN (vía no β)</text>
+        <rect class="bx tg" x="390" y="44" width="160" height="40" rx="6"/><text class="t" x="400" y="69">Canal Ca-L (Cav1.2)</text>
+        <text class="tr" x="392" y="36">✕ BCC</text><text class="tx" x="444" y="36">+ CALCIO IV</text>
+        <rect class="bx tg" x="575" y="44" width="150" height="40" rx="6"/><text class="t" x="585" y="69">Na⁺/K⁺-ATPasa</text>
+        <text class="tr" x="577" y="36">✕ DIGOXINA</text>
+        <!-- Gs/AC -->
+        <rect class="bx" x="110" y="130" width="190" height="40" rx="6"/><text class="t" x="122" y="155">Gs → adenilato ciclasa</text>
+        <path class="ar" d="M120 84 V128" marker-end="url(#ah)"/><path class="ar" d="M290 84 V128" marker-end="url(#ah)"/>
+        <rect class="bx" x="140" y="200" width="130" height="38" rx="6"/><text class="t" x="185" y="224">cAMP</text>
+        <path class="ar" d="M205 170 V198" marker-end="url(#ah)"/>
+        <rect class="bx th" x="40" y="200" width="88" height="38" rx="6"/><text class="t" x="52" y="224">PDE3</text>
+        <path class="ar x" d="M140 219 H130" marker-end="url(#ahx)"/>
+        <text class="tx" x="36" y="256">MILRINONA inhibe</text>
+        <rect class="bx" x="140" y="268" width="130" height="38" rx="6"/><text class="t" x="165" y="292">PKA</text>
+        <path class="ar" d="M205 238 V266" marker-end="url(#ah)"/>
+        <text class="ts" x="40" y="334">PKA fosforila: canal Ca-L,</text>
+        <text class="ts" x="40" y="350">fosfolamban (SERCA2a), RyR2,</text>
+        <text class="ts" x="40" y="366">troponina I → ino, crono, lusitropía</text>
+        <path class="ar" d="M270 287 H378 V64 H388" marker-end="url(#ah)"/>
+        <!-- Ca path -->
+        <rect class="bx" x="400" y="140" width="150" height="38" rx="6"/><text class="t" x="410" y="164">Ca²⁺ citosólico ↑</text>
+        <path class="ar" d="M470 84 V138" marker-end="url(#ah)"/>
+        <rect class="bx" x="400" y="206" width="150" height="38" rx="6"/><text class="t" x="410" y="230">RyR2 → liberación RS</text>
+        <path class="ar" d="M475 178 V204" marker-end="url(#ah)"/>
+        <rect class="bx" x="400" y="272" width="168" height="38" rx="6"/><text class="t" x="410" y="296">Troponina C → contracción</text>
+        <path class="ar" d="M475 244 V270" marker-end="url(#ah)"/>
+        <!-- NCX -->
+        <rect class="bx" x="590" y="140" width="135" height="38" rx="6"/><text class="t" x="600" y="164">NCX (3 Na⁺ : 1 Ca²⁺)</text>
+        <path class="ar" d="M650 84 V138" marker-end="url(#ah)"/>
+        <path class="ar" d="M590 159 H552" marker-end="url(#ah)"/>
+        <text class="ts" x="586" y="196">Na⁺ᵢ ↑ → sale menos Ca²⁺</text>
+        <text class="ts" x="586" y="212">→ sobrecarga de Ca²⁺, DADs</text>
+        <!-- Nav -->
+        <rect class="bx tg" x="590" y="236" width="135" height="38" rx="6"/><text class="t" x="600" y="260">Canal Na rápido</text>
+        <text class="tr" x="580" y="292">✕ CLASE I · PROPRANOLOL</text>
+        <text class="tx" x="580" y="310">+ BICARBONATO Na⁺</text>
+        <!-- insulin -->
+        <rect class="bx th" x="400" y="340" width="190" height="40" rx="6"/><text class="t" x="410" y="365">Receptor de insulina (HIET)</text>
+        <path class="ar x" d="M475 340 V312" marker-end="url(#ahx)"/>
+        <text class="ts" x="600" y="352">Captación de glucosa,</text>
+        <text class="ts" x="600" y="368">manejo de Ca²⁺ (PI3K),</text>
+        <text class="ts" x="600" y="384">vasodilatación capilar</text>
+      </svg>
+      <figcaption>En rojo, dianas de los tóxicos; en verde azulado, terapias. Glucagón y milrinona elevan cAMP sin pasar por el receptor β; el calcio aumenta el gradiente para forzar la entrada por los canales que quedan libres; la insulina mejora el sustrato energético y el manejo de Ca²⁺.</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <span class="lv n2">Residente</span>
+      <h3>3. El músculo liso vascular</h3>
+      <ul>
+        <li>Contracción: Ca²⁺ entra por canales L → calmodulina → cinasa de cadena ligera de miosina.</li>
+        <li>Relajación: óxido nítrico → guanilato ciclasa soluble → cGMP → PKG.</li>
+        <li><strong>Dihidropiridinas</strong> (amlodipino, nifedipino) tienen afinidad vascular: vasoplejia con taquicardia refleja inicial.</li>
+        <li><strong>Amlodipino</strong> además estimula la liberación de NO: vasoplejia más resistente a vasopresores. Por eso el azul de metileno (inhibe NOS y guanilato ciclasa) tiene lógica en este fármaco.</li>
+        <li>Receptores α1 (vasoconstricción) y α2 postsinápticos; α2 presinápticos y centrales reducen la liberación de noradrenalina.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <span class="lv n2">Residente</span>
+      <h3>4. El metabolismo: por qué la glicemia orienta</h3>
+      <ul>
+        <li>Célula β pancreática: la entrada de Ca²⁺ por canales L gatilla la exocitosis de insulina. <strong>BCC → hipoinsulinemia + resistencia periférica → hiperglicemia.</strong> Más marcada con verapamilo/diltiazem y proporcional a la gravedad.</li>
+        <li><strong>β-bloqueadores</strong> reducen glucogenólisis y gluconeogénesis: hipoglicemia (rara en adultos, más en niños) y enmascaran sus síntomas adrenérgicos.</li>
+        <li>β2 media la entrada de K⁺ al músculo: β-bloqueo → hiperkalemia leve.</li>
+        <li>En shock, el miocardio cambia de ácidos grasos a glucosa como sustrato preferente, pero sin insulina no puede usarla. HIET corrige ese «hambre en la abundancia».</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="perla"><b class="t">Perla</b>Gasto cardíaco = FC × volumen sistólico. La atropina sube solo la FC (y a menudo ni eso); la insulina sube sobre todo el volumen sistólico; la noradrenalina sube la resistencia vascular. Elegir según cuál de los tres términos está fallando.</div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>En el ventrículo la fase 0 es sodio; en los nodos SA y AV es calcio. Por eso verapamilo y diltiazem dan bloqueo AV.</li>
+      <li>β1 → Gs → cAMP → PKA → abre canales L: el β-bloqueo termina en falta de Ca²⁺, igual que el BCC.</li>
+      <li>Digoxina: bomba Na⁺/K⁺ bloqueada → Na⁺ᵢ ↑ → Ca²⁺ᵢ ↑ (inotropía y, en exceso, arritmias) y K⁺ sérico ↑.</li>
+      <li>Glucagón y milrinona suben cAMP sin pasar por el receptor β.</li>
+      <li>Gasto cardíaco = FC × volumen sistólico: elegir la terapia según cuál falla.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Por qué las dihidropiridinas casi no producen bradicardia en dosis terapéuticas?</summary><p>Porque tienen afinidad por el canal L vascular. El nodo depende del canal L cardíaco, que bloquean verapamilo y diltiazem. En sobredosis se pierde la selectividad y sí aparece bradicardia.</p></details>
+    <details><summary>¿Qué fase del potencial de acción bloquea el sotalol y qué se ve en el ECG?</summary><p>Fase 3 (IKr, canal hERG): QT largo y riesgo de torsión de puntas.</p></details>
+    <details><summary>¿Por qué el BCC produce hiperglicemia?</summary><p>La célula β necesita la entrada de Ca²⁺ por canales L para liberar insulina; además aparece resistencia periférica.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 02 ENFOQUE ===================== -->
+<section class="mod" id="enfoque" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n1">Interno</span></div>
+    <h2>Enfoque general del paciente cardiointoxicado</h2>
+    <p>Todo paciente con bradicardia e hipotensión sin causa evidente es un intoxicado por cardiotóxico hasta demostrar lo contrario.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Diferencial de bradicardia + hipotensión</h3>
+      <h4>Tóxicos</h4>
+      <ul>
+        <li>β-bloqueadores</li>
+        <li>BCC (sobre todo verapamilo y diltiazem)</li>
+        <li>Esteroides cardioactivos: digoxina, adelfa amarilla, lirio de los valles, «nuez de la India» adulterada</li>
+        <li>Agonistas α2: clonidina, tizanidina, brimonidina; imidazolinas (oximetazolina, tetrahidrozolina)</li>
+        <li>Colinérgicos: organofosforados, carbamatos, hongos (Clitocybe, Inocybe)</li>
+        <li>Opioides; abstinencia de simpaticomiméticos</li>
+      </ul>
+      <h4>No tóxicos</h4>
+      <ul>
+        <li>SCA (infarto inferior con bloqueo AV)</li>
+        <li>Hiperkalemia, hipotiroidismo, hipotermia</li>
+        <li>Shock de otra causa: sepsis, hemorragia, trauma</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Toxídromo comparado</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th></th><th>FC</th><th>PA</th><th>Conciencia</th><th>Glicemia</th><th>Pupila</th></tr></thead>
+          <tbody>
+            <tr><td>BCC</td><td>↓</td><td>↓</td><td>Conservada*</td><td>↑</td><td>Normal</td></tr>
+            <tr><td>β-bloq.</td><td>↓</td><td>↓</td><td>Deprimida (propranolol: convulsiones)</td><td>↓ / normal</td><td>Normal</td></tr>
+            <tr><td>Digoxina</td><td>↓ o arritmia</td><td>↓ / normal</td><td>Confusión (crónica)</td><td>Normal</td><td>Normal</td></tr>
+            <tr><td>Clonidina</td><td>↓</td><td>↓ (HTA precoz)</td><td>Deprimida</td><td>Normal</td><td>Miosis</td></tr>
+            <tr><td>Colinérgico</td><td>↓</td><td>↓</td><td>Variable</td><td>Normal</td><td>Miosis + secreciones</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">*Hasta que la hipoperfusión cerebral la deprime. Un paciente lúcido con PAS 70 y FC 35 sugiere BCC.</p>
+      <div class="pitfall"><b class="t">Trampa</b>No usar la glicemia para decidir entre BB y BCC: los hallazgos son inconstantes y el tratamiento es el mismo. Sí usarla como marcador de gravedad en BCC no dihidropiridínicos.</div>
+    </div>
+  </div>
+
+  <div class="stages">
+    <div class="stage">
+      <span class="sn">Primeros 10 min</span>
+      <ul>
+        <li>ABC, monitor, oximetría, capnografía si somnoliento</li>
+        <li>2 vías venosas gruesas (intraósea si falla); planificar CVC</li>
+        <li>Parches de marcapaso colocados</li>
+        <li>ECG de 12 derivaciones y glicemia capilar</li>
+        <li>Historia dirigida: qué, cuánto, cuándo, formulación (inmediata o prolongada), coingestas</li>
+        <li>Pedir a SAMU/familia los envases</li>
+      </ul>
+    </div>
+    <div class="stage">
+      <span class="sn">Laboratorio</span>
+      <ul>
+        <li>Gases con lactato, electrolitos con Ca iónico, Mg, P</li>
+        <li>Creatinina, hemograma, coagulación</li>
+        <li>Digoxinemia (≥ 6 h postingesta aguda)</li>
+        <li>Paracetamol, salicilatos, etanol, osmolalidad si alteración de conciencia</li>
+        <li>β-hCG en mujeres en edad fértil</li>
+        <li>Niveles de BB/BCC: no disponibles ni útiles</li>
+        <li>Screening de drogas en orina: utilidad limitada</li>
+      </ul>
+    </div>
+    <div class="stage">
+      <span class="sn">POCUS</span>
+      <ul>
+        <li>Contractilidad del VI (cualitativa, FEVI estimada)</li>
+        <li>VCI y líneas B antes de cada bolo de volumen</li>
+        <li>VTI del TSVI para seguir el volumen sistólico durante HIET</li>
+        <li>Clasificar el fenotipo: cardiogénico, vasopléjico, bradicárdico o mixto</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel rx">
+      <h3>Descontaminación gastrointestinal</h3>
+      <dl class="kv">
+        <dt>Carbón activado</dt><dd><span class="mono">50–100 g</span> VO (25–100 g según fuente; niños ~1 g/kg). Ideal dentro de 1 h; hasta 2 h en liberación prolongada. Solo si vía aérea protegida o paciente alerta y cooperador. El balance riesgo-beneficio en cardiotóxicos lo favorece si es razonable que quede fármaco en el estómago.</dd>
+        <dt>Irrigación intestinal total</dt><dd>Polietilenglicol <span class="mono">1.500–2.000 mL/h</span> por SNG hasta efluente claro. Considerar en liberación prolongada con paciente <strong>hemodinámicamente estable</strong> y peristaltismo conservado. En el inestable con vía aérea no asegurada se asoció a aspiración y muerte.</dd>
+        <dt>Emesis / catárticos</dt><dd>No.</dd>
+      </dl>
+    </div>
+    <div class="panel">
+      <h3>Disposición y tiempos de observación</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Escenario</th><th>Conducta</th></tr></thead>
+          <tbody>
+            <tr><td>BB/BCC liberación inmediata, asintomático</td><td>Observar ≥ 6 h con monitor; alta si sigue asintomático</td></tr>
+            <tr><td>Liberación prolongada o ingesta masiva</td><td>Observar hasta 24 h</td></tr>
+            <tr><td>Sotalol</td><td>Observación prolongada con QTc seriado</td></tr>
+            <tr><td>Digoxina aguda asintomática</td><td>Alta si a las 6 h sigue asintomático, con 2 niveles estables o en descenso, electrolitos y función renal normales</td></tr>
+            <tr><td>Cualquier sintomático</td><td>Tratar e internar con monitorización</td></tr>
+            <tr><td>Ingesta intencional</td><td>Evaluación por psiquiatría</td></tr>
+            <tr><td>Adulto mayor con error de dosificación</td><td>Evaluar cognición y capacidad de autocuidado</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>Bradicardia + hipotensión sin causa evidente = cardiotóxico hasta demostrar lo contrario. Diferencial tóxico: <strong>4C + B + O</strong>.</li>
+      <li>En los primeros 10 minutos: parches de marcapaso, 2 vías, ECG, glicemia y la pregunta clave: ¿liberación prolongada?</li>
+      <li>Carbón activado precoz solo con vía aérea segura; irrigación intestinal solo en el estable.</li>
+      <li>Observar 6 h (inmediata) o 24 h (prolongada).</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>Paciente lúcido con PAS 70 y FC 35: ¿qué grupo sospechas primero?</summary><p>BCC no dihidropiridínico: la conciencia se conserva hasta que la hipoperfusión la deprime. El β-bloqueo (sobre todo propranolol) deprime antes el SNC.</p></details>
+    <details><summary>¿Cuándo está contraindicada la irrigación intestinal total?</summary><p>En el paciente inestable o con vía aérea no protegida: se describió aspiración y muerte.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 03 BB y BCC ===================== -->
+<section class="mod" id="bbbcc" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n1">Interno</span><span class="lv n2">Residente</span></div>
+    <h2>β-bloqueadores y bloqueadores de canales de calcio</h2>
+    <p>Son la 6.ª y 7.ª causa de muerte por intoxicación medicamentosa en EE. UU.; el amlodipino aporta una proporción desproporcionada de las muertes cardiovasculares, seguido de diltiazem. Una sola dosis extra puede intoxicar a un niño.</p>
+  </div>
+
+  <div class="block">
+    <h3>β-bloqueadores: las propiedades que cambian el pronóstico</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Fármaco</th><th>Selectividad</th><th>Bloqueo Na (MSA)</th><th>Bloqueo K</th><th>ASI</th><th>α-bloqueo / vasodil.</th><th>Lipofilia / dializable</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Propranolol</strong></td><td>β1 + β2</td><td class="y">Sí</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>Alta: SNC, convulsiones · no dializable</td></tr>
+          <tr><td><strong>Sotalol</strong></td><td>β1 + β2</td><td class="n">—</td><td class="y">Sí (clase III)</td><td class="n">—</td><td class="n">—</td><td>Hidrofílico · dializable</td></tr>
+          <tr><td><strong>Acebutolol</strong></td><td>β1</td><td class="y">Sí</td><td class="y">Sí</td><td class="y">Sí</td><td class="n">—</td><td>Dializable</td></tr>
+          <tr><td>Carvedilol</td><td>β1 + β2</td><td class="y">Sí</td><td class="n">—</td><td class="n">—</td><td>α1 + efecto BCC</td><td>Lipofílico</td></tr>
+          <tr><td>Labetalol</td><td>β1 + β2</td><td class="n">—</td><td class="n">—</td><td>β2 parcial</td><td>α1</td><td>—</td></tr>
+          <tr><td>Betaxolol</td><td>β1</td><td class="y">Sí</td><td class="n">—</td><td class="n">—</td><td>Efecto BCC</td><td>—</td></tr>
+          <tr><td>Pindolol</td><td>β1 + β2</td><td class="n">—</td><td class="n">—</td><td class="y">Sí</td><td class="n">—</td><td>—</td></tr>
+          <tr><td>Nebivolol</td><td>β1</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>NO</td><td>—</td></tr>
+          <tr><td>Atenolol</td><td>β1</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>Hidrofílico · dializable</td></tr>
+          <tr><td>Metoprolol, bisoprolol, esmolol</td><td>β1</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>—</td></tr>
+          <tr><td>Nadolol, timolol</td><td>β1 + β2</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td>Nadolol dializable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">MSA: actividad estabilizadora de membrana (efecto quinidínico). ASI: actividad simpaticomimética intrínseca. La selectividad β1 se pierde en sobredosis. Fuentes: Goldfine 2024; Cole 2022; Palatnick 2020.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Clínica del β-bloqueo</h3>
+      <ul>
+        <li>Bradicardia sinusal, pausa o paro sinusal; BAV 1.er grado es el hallazgo ECG más frecuente y precoz.</li>
+        <li>Hipotensión; mayor riesgo con cardiopatía previa o coingesta de otro cardiovascular.</li>
+        <li>Delirio, convulsiones y coma (propranolol), a menudo en contexto de hipotensión.</li>
+        <li>QRS ancho con propranolol, acebutolol, carvedilol, betaxolol. Acebutolol: QTc desproporcionado y R &gt; 3 mm en aVR, con TV.</li>
+        <li>QTc largo y torsión de puntas con sotalol (inicio diferido).</li>
+        <li>Broncoespasmo (bloqueo β2), hipoglicemia rara, hiperkalemia leve.</li>
+        <li>Inicio en 6 h en formulación inmediata; hasta 24 h en prolongada o ingestas grandes.</li>
+      </ul>
+      <div class="perla"><b class="t">Perla</b>Propranolol es el β-bloqueador más letal: lipofílico (SNC) y bloqueador de Na (QRS, arritmias). Si el QRS se ensancha, sumar bicarbonato.</div>
+    </div>
+    <div class="panel">
+      <h3>Clínica de los BCC</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th></th><th>Dihidropiridinas</th><th>No dihidropiridinas</th></tr></thead>
+          <tbody>
+            <tr><td>Fármacos</td><td>Amlodipino, nifedipino, nicardipino, felodipino, nimodipino, clevidipino</td><td>Verapamilo (fenilalquilamina), diltiazem (benzotiazepina)</td></tr>
+            <tr><td>Diana</td><td>Canal L vascular</td><td>Canal L cardíaco (verapamilo también vascular)</td></tr>
+            <tr><td>Presentación</td><td>Vasoplejia, taquicardia refleja inicial; bradicardia cuando se pierde selectividad</td><td>Bradicardia, BAV, ritmo de la unión o idioventricular, inotropismo ↓</td></tr>
+            <tr><td>Glicemia</td><td>↑ menos constante</td><td>↑ y se correlaciona con gravedad</td></tr>
+            <tr><td>Particular</td><td>Amlodipino: NO ↑, Vd 21 L/kg, vasoplejia refractaria; edema pulmonar no cardiogénico</td><td>Verapamilo: edema pulmonar no cardiogénico descrito</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        <li>Metabolismo hepático por CYP3A4: interacciones (macrólidos, azoles, jugo de pomelo).</li>
+        <li>Alta unión a proteínas y Vd grande: no dializables.</li>
+        <li>Edema pulmonar no cardiogénico: 47 % en una cohorte de amlodipino con vasopresores. Mecanismo: vasodilatación precapilar pulmonar. Cuidado con el volumen.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel warn">
+    <h3>Situaciones especiales</h3>
+    <ul>
+      <li><strong>Sotalol:</strong> corregir K⁺ y Mg²⁺; Mg²⁺ profiláctico si QTc prolongado. En torsión de puntas: magnesio y sobreestimulación (overdrive). La hipokalemia de HIET agrava el QT.</li>
+      <li><strong>Portadores de marcapaso o DAV:</strong> el dispositivo no protege de la toxicidad y puede fallar la captura. Mismo manejo.</li>
+      <li><strong>Hemodiálisis (EXTRIP):</strong> no indicada en amlodipino, verapamilo ni diltiazem, ni en propranolol. Sí en atenolol o sotalol graves con falla renal y bradicardia/hipotensión refractarias o torsión de puntas recurrente.</li>
+    </ul>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>Propranolol: el β-bloqueador más letal (lipofílico y bloqueador de Na).</li>
+      <li>Sotalol: QT largo y TdP, toxicidad diferida; acebutolol: QRS y QT.</li>
+      <li>Amlodipino: vasoplejia refractaria (libera NO) y edema pulmonar no cardiogénico.</li>
+      <li>BCC y la mayoría de los BB no se dializan; atenolol y sotalol sí, en falla renal.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>Nombra 3 β-bloqueadores con actividad estabilizadora de membrana.</summary><p>Propranolol, acebutolol, carvedilol (también betaxolol, oxprenolol).</p></details>
+    <details><summary>¿Por qué el amlodipino tiene alta letalidad?</summary><p>Vasodilatación por bloqueo del canal L vascular más liberación de NO, Vd de 21 L/kg, vida media larga y edema pulmonar no cardiogénico.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 04 TRATAMIENTO ===================== -->
+<section class="mod" id="tto" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n2">Residente</span><span class="lv n3">Urgenciólogo</span></div>
+    <h2>Tratamiento escalonado de β-bloqueadores y BCC</h2>
+    <p>Estructura de Cole y Arens (2022), complementada con Goldfine (2024) y Palatnick (2020). La evidencia es de baja calidad (series, modelos animales, consenso), por lo que el manejo se guía por fisiología y respuesta.</p>
+  </div>
+
+  <div class="stages">
+    <div class="stage s1">
+      <span class="sn">Etapa 1 · Estabilización</span>
+      <ul>
+        <li>Descontaminación si corresponde</li>
+        <li>Cristaloides <span class="mono">10–20 mL/kg</span>, reevaluando congestión</li>
+        <li>Atropina <span class="mono">1 mg IV</span> (niños 0,02 mg/kg, mín. 0,1 mg) si la bradicardia contribuye a la hipoperfusión; suele fallar</li>
+        <li><strong>Calcio IV</strong> si hipotensión refractaria a volumen</li>
+        <li>Glucagón solo en β-bloqueo seleccionado, como puente</li>
+      </ul>
+    </div>
+    <div class="stage s2">
+      <span class="sn">Etapa 2 · Infusiones vasoactivas</span>
+      <ul>
+        <li><strong>Iniciar simultáneamente</strong> HIET (1 U/kg + 1 U/kg/h) y noradrenalina en dosis baja (0,04 mcg/kg/min)</li>
+        <li>Reevaluar contractilidad (POCUS), FC y PAM a los 30 min</li>
+        <li>Titular HIET hasta 10 U/kg/h si persiste disfunción</li>
+        <li>Agregar vasopresores según fenotipo</li>
+      </ul>
+    </div>
+    <div class="stage s3">
+      <span class="sn">Etapa 3 · Rescate</span>
+      <p class="note">Shock refractario a HIET + ≥ 3 vasopresores/inotrópicos</p>
+      <ul>
+        <li>ECMO VA (cardiogénico o arritmias refractarias)</li>
+        <li>Azul de metileno (vasoplejia)</li>
+        <li>Emulsión lipídica 20 % si no hay ECMO o en paro</li>
+        <li>Marcapaso (captura incierta)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Decisión guiada por fenotipo hemodinámico</h3>
+    <div class="phen">
+      <div class="panel">
+        <h4>Cardiogénico</h4>
+        <p>FEVI baja en POCUS, VTI bajo, extremidades frías.</p>
+        <ul><li>Subir HIET (1–2 U/kg/h c/15 min)</li><li>Cambiar noradrenalina por adrenalina</li><li>Dobutamina si disfunción confirmada</li><li>ECMO VA precoz si progresa</li></ul>
+      </div>
+      <div class="panel">
+        <h4>Vasopléjico</h4>
+        <p>FEVI normal o hiperdinámica, PAM baja, piel tibia. Típico de amlodipino.</p>
+        <ul><li>Maximizar noradrenalina; a 0,5 mcg/kg/min agregar vasopresina 0,04 U/min</li><li>HIET con cautela: también vasodilata</li><li>Azul de metileno; hidroxocobalamina</li><li>Angiotensina II (casos aislados)</li></ul>
+      </div>
+      <div class="panel">
+        <h4>Bradicárdico</h4>
+        <p>Contractilidad aceptable, FC limita el gasto.</p>
+        <ul><li>Atropina repetida</li><li>Adrenalina (β1) en vez de noradrenalina</li><li>Isoproterenol, milrinona (vasodilatan)</li><li>Marcapaso transcutáneo de prueba, luego transvenoso</li></ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Fármacos, mecanismo y dosis</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Terapia</th><th>Mecanismo</th><th>Dosis adulto</th><th>Notas</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Gluconato de calcio 10 %</strong></td><td>↑ gradiente de Ca²⁺ extracelular para entrar por canales L no bloqueados</td><td class="dose wrap-ok">0,6 mL/kg (≈ 30–60 mL; 3–6 g) en 10 min. Infusión 0,2–0,5 mL/kg/h (Cole: 60 mg/kg/h)</td><td>Vía periférica segura. Mejora PA y contractilidad, poco la FC</td></tr>
+          <tr><td><strong>Cloruro de calcio 10 %</strong></td><td>Ídem; ~3 veces más Ca²⁺ elemental por mL</td><td class="dose wrap-ok">0,2 mL/kg (≈ 10–20 mL; 1–2 g) en 10 min. Infusión 20 mg/kg/h</td><td>Vía central (necrosis por extravasación). Repetir a los 20 min si responde</td></tr>
+          <tr><td><strong>Insulina regular (HIET)</strong></td><td>Inotropía por mejor uso de glucosa y manejo de Ca²⁺; vasodilatación microvascular por eNOS</td><td class="dose wrap-ok">Bolo 1 U/kg → 1 U/kg/h; +1–2 U/kg/h c/10–15 min; máx. 10 U/kg/h</td><td>Efecto en 15–45 min. Aumenta sobre todo el volumen sistólico</td></tr>
+          <tr><td><strong>Dextrosa</strong></td><td>Mantener euglicemia durante HIET</td><td class="dose wrap-ok">Bolo 25–50 g si glicemia &lt; 200 mg/dL. Infusión 0,5 g/kg/h (o 25 g/h de G50 por CVC)</td><td>Concentrada por vía central para limitar volumen</td></tr>
+          <tr><td><strong>Noradrenalina</strong></td><td>α1 &gt; β1</td><td class="dose wrap-ok">Inicio 0,04 mcg/kg/min; sin techo real; a 0,5 mcg/kg/min agregar 2.º vasopresor</td><td>Vasopresor de elección (Cole); sinérgica con HIET; línea arterial</td></tr>
+          <tr><td>Adrenalina</td><td>β1 + α1</td><td class="dose wrap-ok">Titular por efecto <span class="lv cx">compl.</span> 0,05–0,5 mcg/kg/min</td><td>Si bradicardia o contractilidad baja predominan</td></tr>
+          <tr><td>Vasopresina</td><td>V1, independiente de catecolaminas</td><td class="dose">0,04 U/min</td><td>Vasoplejia refractaria</td></tr>
+          <tr><td>Dobutamina</td><td>β1</td><td class="dose wrap-ok"><span class="lv cx">compl.</span> 2,5–20 mcg/kg/min</td><td>Solo con disfunción miocárdica confirmada; vasodilata</td></tr>
+          <tr><td><strong>Glucagón</strong></td><td>Receptor propio → Gs → cAMP sin pasar por β</td><td class="dose wrap-ok">5–10 mg IV lento (niños 0,05–0,1 mg/kg) → 1–5 mg/h</td><td>Vómitos (antiemético previo, proteger vía aérea); efecto transitorio; stock insuficiente. No en BCC</td></tr>
+          <tr><td>Atropina</td><td>Antimuscarínico</td><td class="dose wrap-ok">1 mg IV; repetir hasta 3 mg</td><td>Rara vez efectiva; útil en digoxina (componente vagal)</td></tr>
+          <tr><td><strong>Azul de metileno</strong></td><td>Inhibe NOS y guanilato ciclasa → ↓ cGMP → ↑ RVS</td><td class="dose wrap-ok">1–2 mg/kg en 5–20 min → 1 mg/kg/h (hasta 6 h). Máx. acumulado 7 mg/kg</td><td>Contraindicado en déficit de G6PD; riesgo serotoninérgico con ISRS/IMAO; metahemoglobinemia; altera oximetría</td></tr>
+          <tr><td>Hidroxocobalamina</td><td>Captura NO y H₂S</td><td class="dose wrap-ok">5 g IV en 15 min</td><td>Evidencia anecdótica; tiñe orina y plasma, interfiere colorimetría y diálisis</td></tr>
+          <tr><td><strong>Emulsión lipídica 20 %</strong></td><td>«Sumidero lipídico», aporte de ácidos grasos, apertura de canales de Ca</td><td class="dose wrap-ok">Bolo 1,5 mL/kg en 2–3 min → 0,25 mL/kg/min (30–60 min). Si responde: 0,025 mL/kg/min. Máx. 10–12 mL/kg en 30 min</td><td>Rescate o paro, sobre todo fármacos lipofílicos (propranolol, verapamilo). Lipemia altera exámenes y circuitos de ECMO/diálisis; pancreatitis, SDRA</td></tr>
+          <tr><td>Bicarbonato de sodio</td><td>Supera bloqueo de canales de Na</td><td class="dose wrap-ok">1–2 mEq/kg en bolo si QRS &gt; 120 ms; repetir si se acorta</td><td>Propranolol, acebutolol, coingesta</td></tr>
+          <tr><td>Marcapaso</td><td>Cronotropía</td><td class="dose wrap-ok">Meta FC 50–60/min</td><td>La captura suele fallar; no corrige inotropía. Probar transcutáneo primero</td></tr>
+          <tr><td><strong>ECMO VA</strong></td><td>Soporte circulatorio mientras se metaboliza el tóxico</td><td class="dose wrap-ok">Según centro</td><td>Supervivencia 86 % vs 48 % en serie de Masson. VV si edema pulmonar no cardiogénico con función conservada</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel rx">
+      <span class="lv n2">Residente</span>
+      <h3>Protocolo HIET paso a paso</h3>
+      <ol>
+        <li>Basal: glicemia, K⁺, creatinina. Si K⁺ bajo, reponer antes.</li>
+        <li>Si glicemia &lt; 200 mg/dL: dextrosa 25–50 g IV.</li>
+        <li>Insulina regular <span class="mono">1 U/kg</span> IV en bolo.</li>
+        <li>Infusión <span class="mono">1 U/kg/h</span> + dextrosa (G10–G20 periférica; luego concentrada por CVC).</li>
+        <li>Concentrar insulina (p. ej. 10 U/mL) y glucosa para evitar sobrecarga de volumen.</li>
+        <li>A los 30 min, si persiste disfunción en POCUS: subir 1–2 U/kg/h c/15 min hasta 10 U/kg/h. En el moribundo, titular más rápido.</li>
+        <li>Glicemia c/10–15 min hasta estabilizar, luego c/1–2 h. Cada hipoglicemia: bolo 25 g y subir infusión 25 g/h.</li>
+        <li>K⁺ cada 1 h durante titulación, luego c/4–6 h. Mantener K⁺ ≥ 2,8 mEq/L (la hipokalemia es redistribución, no déficit total).</li>
+        <li>Mg²⁺ y P c/4–6 h; reponer según protocolo de UCI.</li>
+        <li>Al suspender: la hipoglicemia puede aparecer horas después; mantener controles.</li>
+      </ol>
+      <div class="pitfall"><b class="t">Seguridad</b>Las dosis asustan al equipo: 70 U/h en un paciente de 70 kg es lo correcto. Doble chequeo de dosis y bomba, rotulado claro y comunicación explícita con enfermería.</div>
+    </div>
+    <div class="panel">
+      <span class="lv n3">Urgenciólogo</span>
+      <h3>Qué dice la evidencia</h3>
+      <ul>
+        <li>Revisiones sistemáticas de BB (2020) y BCC (2014): evidencia de baja calidad y alto riesgo de sesgo para todas las terapias.</li>
+        <li>HIET: en modelo porcino de propranolol mejora supervivencia frente a placebo; los vasopresores solos fueron peores que placebo en ese modelo. En humanos, series favorables.</li>
+        <li>Respuesta dosis-dependiente: a 10 U/kg/h el gasto sube ~50 % más que a 1 U/kg/h, pero también la vasodilatación, que puede empeorar el shock dihidropiridínico.</li>
+        <li>Vasopresores solos: serie de 48 intoxicados por verapamilo/diltiazem (25 años) con buenos resultados y 2/33 complicaciones isquémicas.</li>
+        <li>Modelo animal reciente: en shock profundo la noradrenalina mejora perfusión cerebral y mortalidad; HIET + NA serían sinérgicas.</li>
+        <li>Seguir recomendaciones del centro toxicológico redujo mortalidad de 10 % a 0 % en 103 intoxicados por BCC (Quebec), en parte por HIET precoz.</li>
+        <li>Consenso de expertos BCC 2017 (St-Onge, Crit Care Med): base de la mayoría de algoritmos.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Calcio: cómo monitorizarlo</h3>
+      <ul>
+        <li>Medir Ca iónico c/1–2 h durante infusión; meta no mayor de 1,5 veces el límite superior del laboratorio.</li>
+        <li>El Ca total puede llegar a 18 mg/dL 15 min después de 5 mL de cloruro 10 %: medir ≥ 30 min después de terminar el bolo.</li>
+        <li>Exceso: arritmias, calcifilaxis.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Glucagón: por qué perdió protagonismo</h3>
+      <ul>
+        <li>No superior a vasopresores o inotrópicos; inferior a HIET.</li>
+        <li>Efecto transitorio, vómitos frecuentes, costo alto, stock hospitalario insuficiente (en Chile, kits de 1 mg: un bolo de 10 mg son 10 kits).</li>
+        <li>Útil en ingestas accidentales pequeñas de BB o como puente.</li>
+        <li>No tiene rol en BCC.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>Secuencia <strong>VACÍA</strong>: Volumen, Atropina, Calcio, Insulina, Aminas; luego Rescate.</li>
+      <li>HIET y noradrenalina juntas; titular la insulina por contractilidad (POCUS), no solo por PA.</li>
+      <li>Hipokalemia de HIET = redistribución: reponer bajo ~2,8 mEq/L.</li>
+      <li>Vasopléjico: NA → vasopresina → azul de metileno. Cardiogénico: subir HIET → adrenalina → ECMO VA.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Cuánto Ca²⁺ elemental aporta 1 g de cloruro vs 1 g de gluconato?</summary><p>Cloruro: 13,6 mEq (273 mg). Gluconato: 4,65 mEq (93 mg). Unas 3 veces más el cloruro.</p></details>
+    <details><summary>¿En qué fenotipo puede empeorar el shock al subir la insulina?</summary><p>En el vasopléjico (típico de dihidropiridinas): la insulina en dosis altas vasodilata de forma dosis-dependiente.</p></details>
+    <details><summary>Dos contraindicaciones relativas del azul de metileno.</summary><p>Déficit de G6PD (hemólisis, metHb paradójica) y uso de serotoninérgicos (ISRS, IMAO): síndrome serotoninérgico.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 05 DIGOXINA ===================== -->
+<section class="mod" id="digoxina" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n1">Interno</span><span class="lv n2">Residente</span></div>
+    <h2>Digoxina y esteroides cardioactivos</h2>
+    <p>Rango terapéutico estrecho (0,5–0,9 ng/mL según las fuentes más recientes), excreción renal, vida media ~36 h y Vd grande. El patrón típico combina automatismo aumentado con conducción deprimida.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Fisiopatología</h3>
+      <ol>
+        <li>Se une a la subunidad α de la Na⁺/K⁺-ATPasa y la inhibe.</li>
+        <li>Na⁺ intracelular ↑ → el intercambiador NCX expulsa menos Ca²⁺ → Ca²⁺ citosólico y del RS ↑ → <strong>inotropía</strong>.</li>
+        <li>Aumenta el tono vagal → bradicardia sinusal y conducción AV lenta.</li>
+        <li>En toxicidad: sobrecarga de Ca²⁺ → posdespolarizaciones tardías (DADs) → extrasístoles, TV, TV bidireccional. Potencial de reposo menos negativo → automatismo ↑ en todo el corazón excepto el nodo sinusal.</li>
+        <li>Intoxicación aguda: la bomba bloqueada no reingresa K⁺ → <strong>hiperkalemia</strong>, predictora de muerte.</li>
+        <li>La hipokalemia potencia la toxicidad: el K⁺ compite con la digoxina por su sitio en la bomba.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>Aguda vs crónica</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th></th><th>Aguda</th><th>Crónica</th></tr></thead>
+          <tbody>
+            <tr><td>Edad</td><td>Joven</td><td>Mayor</td></tr>
+            <tr><td>Corazón</td><td>Sano</td><td>Cardiopatía de base</td></tr>
+            <tr><td>Nivel</td><td>Alto</td><td>Normal o alto</td></tr>
+            <tr><td>K⁺</td><td>Normal o alto</td><td>Bajo o normal</td></tr>
+            <tr><td>Síntomas</td><td>Cardíacos, GI precoces</td><td>Extracardíacos, insidiosos</td></tr>
+            <tr><td>Ritmo</td><td>Bloqueos AV</td><td>Arritmias variadas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Síntomas crónicos: náuseas (45 %), anorexia (28 %), dolor abdominal (26 %), confusión o delirio, astenia. Xantopsia y halos: raros hoy (1 de 42 en serie reciente).</p>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Precipitantes de toxicidad crónica</h3>
+      <ul>
+        <li>Deterioro de función renal (incluye inicio de IECA/ARA-II, deshidratación por gastroenteritis)</li>
+        <li>Hipokalemia, hipomagnesemia (diuréticos), hipercalcemia, hipernatremia, alcalosis, hipoxemia</li>
+        <li>Hipotiroidismo, edad avanzada, hepatopatía</li>
+        <li>Interacciones: quinidina, verapamilo, amiodarona, espironolactona, macrólidos (inhiben P-gp y eliminan flora que inactiva digoxina)</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>ECG</h3>
+      <ul>
+        <li>Efecto digitálico (no toxicidad): ST «en cubeta», QT corto, onda U.</li>
+        <li>Bradicardia sinusal, BAV de grado variable, ritmo de la unión acelerado.</li>
+        <li><strong>Taquicardia auricular paroxística con bloqueo AV</strong>: clásica.</li>
+        <li>FA o flutter con respuesta ventricular lenta y regular (unión).</li>
+        <li>Extrasístoles ventriculares, TV, FV.</li>
+        <li><strong>TV bidireccional</strong>: muy sugerente (también acónito).</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Digoxinemia: cómo leerla</h3>
+    <ul>
+      <li>Ingesta aguda: medir ≥ 6 h después (4–6 h de distribución). Antes, el valor es falsamente alto respecto de la toxicidad tisular.</li>
+      <li>Crónica: medir de inmediato (estado estable).</li>
+      <li>Un nivel alto sin clínica no obliga a tratar; un nivel «terapéutico» con hipokalemia puede ser tóxico.</li>
+      <li>Tras Fab, la digoxina total sube (mide la unida al anticuerpo): no seguir niveles salvo digoxina libre. Guiarse por la clínica.</li>
+      <li>Plantas con glucósidos dan nivel positivo que no se correlaciona con gravedad.</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>Fab antidigoxina: indicaciones</h3>
+    <div class="grid2">
+      <div class="panel rx">
+        <h4>Cole y Arens 2022</h4>
+        <ol>
+          <li>Arritmias ventriculares más graves que extrasístoles</li>
+          <li>Bradiarritmias progresivas con repercusión, sin respuesta a atropina</li>
+          <li>K⁺ &gt; 5,0 mEq/L</li>
+          <li>Alteraciones del ritmo o K⁺ en rápida progresión</li>
+          <li>Coingesta de otros cardiotóxicos</li>
+          <li>Planta con glucósidos + arritmia grave o K⁺ &gt; 5,0</li>
+          <li>Ingesta aguda &gt; 10 mg (niño &gt; 0,1 mg/kg) + cualquiera de 1–6</li>
+          <li>Nivel en estado estable &gt; 6 ng/mL + cualquiera de 1–6</li>
+        </ol>
+      </div>
+      <div class="panel rx">
+        <h4>Palatnick y Jelic 2020</h4>
+        <ul>
+          <li>Ingesta ≥ 10 mg (niños ≥ 4 mg)</li>
+          <li>Aguda con nivel estable &gt; 10 ng/mL</li>
+          <li>Crónica con nivel estable &gt; 6 ng/mL</li>
+          <li>Cualquier arritmia no controlada con medidas conservadoras</li>
+          <li>K⁺ &gt; 5,5 mEq/L en ingesta aguda</li>
+          <li>Toxicidad por esteroides cardioactivos no digoxina</li>
+        </ul>
+        <p class="note">Bismuth: K⁺ &gt; 5,5 en intoxicación aguda por digitoxina = 100 % mortalidad en la era pre-Fab. En crónica tratada con Fab, K⁺ &gt; 5 se asoció a OR de muerte 36,7.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Fab antidigoxina: dosis</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Escenario</th><th>Fórmula o dosis</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Equivalencia</td><td class="dose">1 vial (40 mg) neutraliza ≈ 0,5 mg</td><td>—</td></tr>
+          <tr><td>Dosis ingerida conocida</td><td class="dose">Viales = (mg × 0,8) ÷ 0,5</td><td>10 mg → 16 viales</td></tr>
+          <tr><td>Nivel conocido (ng/mL)</td><td class="dose">Viales = (ng/mL × kg) ÷ 100</td><td>6,43 ng/mL, 95 kg → 6,1 → 7 viales (redondear hacia arriba)</td></tr>
+          <tr><td>Nivel en nmol/L</td><td class="dose">Viales = (nmol/L × 0,781 × kg) ÷ 100</td><td>—</td></tr>
+          <tr><td>Empírico aguda</td><td class="dose wrap-ok">Cole: 1–2 viales (iniciar con 1 y repetir). Palatnick: 5–10 viales o 2 viales c/1 h</td><td>Ver Controversias</td></tr>
+          <tr><td>Empírico crónica</td><td class="dose wrap-ok">1–2 viales, repetir según clínica (2 viales suelen bastar)</td><td>—</td></tr>
+          <tr><td>Paro cardíaco</td><td class="dose">10 viales (o el máximo disponible)</td><td>—</td></tr>
+          <tr><td>Glucósidos vegetales (adelfa amarilla, productos «adelgazantes»)</td><td class="dose">20–30 viales</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Respuesta inicial media en 19 min, completa en 88 min (rango 30–360). Al neutralizar la digoxina puede reaparecer FA rápida o descompensarse la insuficiencia cardíaca, y caer el K⁺. En falla renal, el complejo se elimina lento: observar más tiempo por rebote. En Chile la disponibilidad es limitada: identificar con farmacia y CITUC dónde conseguirlo.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Si no hay Fab o mientras llega</h3>
+      <ul>
+        <li>Atropina 0,5–1 mg IV para bradicardia (componente vagal); puede bastar.</li>
+        <li>Corregir K⁺ y Mg²⁺; en hipokalemia crónica reponer K⁺ hasta normalizar.</li>
+        <li>Hiperkalemia aguda: insulina-glucosa, bicarbonato como puente (riesgo de hipokalemia tras Fab); diálisis si corresponde por otra causa.</li>
+        <li>Taquiarritmias ventriculares: lidocaína (preferida frente a fenitoína); magnesio IV.</li>
+        <li>Carbón activado 25–100 g si llega dentro de 1–2 h y vía aérea protegida.</li>
+        <li>Hemodiálisis: no remueve digoxina.</li>
+      </ul>
+    </div>
+    <div class="panel alert">
+      <h3>Controversias de seguridad</h3>
+      <ul>
+        <li><strong>Calcio y «corazón de piedra»:</strong> basado en 2 casos de 1930 y animales con Ca &gt; 20 mg/dL. Levine 2011 (159 pacientes, 23 con Ca IV): sin aumento de mortalidad. Es razonable dar calcio al bradicárdico con QRS ancho e hiperkalemia probable cuando no se sabe si toma digoxina. Con toxicidad digitálica conocida + hiperkalemia, el tratamiento es Fab.</li>
+        <li><strong>Marcapaso:</strong> complicaciones en 36 % y muerte en 13 % (1993). Fab fue más eficaz (92 % vs 77 %). Solo como puente si Fab se retrasa o no existe.</li>
+        <li><strong>Cardioversión:</strong> el miocardio sensibilizado puede degenerar a FV. Reservar para TV/FV sin pulso.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>Automatismo ↑ + conducción ↓: TAP con bloqueo, ritmo de la unión acelerado, TV bidireccional.</li>
+      <li>Nivel en aguda: ≥ 6 h. Tras Fab, no seguir digoxina total.</li>
+      <li>Viales = ng/mL × kg ÷ 100 · o · mg × 0,8 ÷ 0,5. Redondear hacia arriba.</li>
+      <li>Hiperkalemia + digoxina conocida → Fab. Evitar marcapaso y cardioversión salvo extremo.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Por qué la hipokalemia potencia la toxicidad digitálica?</summary><p>El K⁺ compite con la digoxina por su sitio en la Na⁺/K⁺-ATPasa: con menos K⁺, más digoxina se une.</p></details>
+    <details><summary>Aguda vs crónica: ¿cómo se comporta el K⁺?</summary><p>Aguda: normal o alto (pronóstico). Crónica: bajo o normal, aunque K⁺ &gt; 5 también se asoció a mortalidad.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 06 CANAL Na / K ===================== -->
+<section class="mod" id="sodio" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n2">Residente</span><span class="lv n3">Urgenciólogo</span></div>
+    <h2>Bloqueadores de canales de sodio y de potasio</h2>
+    <p>La flecainida es el prototipo que verá el urgenciólogo: fue el bloqueador de Na más frecuente en pacientes con ECMO por intoxicación (letalidad 12 %), y la letalidad de los IC llega a 22,5 %.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Clasificación de Vaughan-Williams (clase I)</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Clase</th><th>Fármacos</th><th>Cinética</th><th>Efecto extra</th></tr></thead>
+          <tbody>
+            <tr><td>IA</td><td>Procainamida, quinidina, disopiramida</td><td>Intermedia</td><td>Bloqueo K⁺ → QT largo</td></tr>
+            <tr><td>IB</td><td>Lidocaína, mexiletina, fenitoína</td><td>Rápida (entra y sale)</td><td>Puede desplazar a IA</td></tr>
+            <tr><td>IC</td><td>Flecainida, propafenona</td><td>Muy lenta: bloqueo persistente</td><td>QRS ancho incluso a FC baja; IC también prolonga QT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Otros con bloqueo de Na: antidepresivos tricíclicos, antimaláricos, antihistamínicos, cocaína, propranolol, carbamazepina.</p>
+    </div>
+    <div class="panel">
+      <h3>Fisiopatología</h3>
+      <ul>
+        <li>Unión al canal en estado abierto o inactivado; retrasan su retorno al reposo. Menos canales disponibles → fase 0 lenta → <strong>QRS ancho</strong>, conducción lenta y reentrada.</li>
+        <li>Dependencia de uso: a mayor FC, más bloqueo (la taquicardia agrava el QRS).</li>
+        <li>Clínica de flecainida: bradicardia, PR, QRS y QTc largos, bloqueo AV, patrón Brugada, TV monomorfa ancha, FV, shock cardiogénico, convulsiones.</li>
+        <li>Indicadores ECG: QRS &gt; 100 ms (riesgo de convulsión), &gt; 160 ms (arritmia ventricular) <span class="lv cx">compl.</span>; R terminal en aVR &gt; 3 mm; desviación del eje a la derecha.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel rx">
+    <h3>Tratamiento</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Intervención</th><th>Dosis</th><th>Racional y advertencias</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Bicarbonato de sodio hipertónico</strong></td><td class="dose wrap-ok">1–2 mEq/kg en bolo; repetir c/3–5 min hasta QRS &lt; 120 ms o pH 7,50–7,55 <span class="lv cx">compl.</span></td><td>Carga de Na⁺ supera el bloqueo; la alcalemia reduce la fracción ionizada que se une al canal. Vigilar hipokalemia (empeora QT) e hipernatremia</td></tr>
+          <tr><td>Solución salina hipertónica</td><td class="dose wrap-ok">Bolos (p. ej. NaCl 3 %) <span class="lv cx">compl.</span></td><td>Alternativa si no puede usarse bicarbonato (alcalemia, hipokalemia)</td></tr>
+          <tr><td>Magnesio</td><td class="dose wrap-ok">Sulfato de Mg 2 g IV <span class="lv cx">compl.</span></td><td>QT largo o TV polimorfa</td></tr>
+          <tr><td>Lidocaína</td><td class="dose wrap-ok">1–1,5 mg/kg IV <span class="lv cx">compl.</span></td><td>Arritmias en intoxicación por clase IA: su cinética rápida desplaza al fármaco</td></tr>
+          <tr><td>Vasopresores e inotrópicos</td><td class="dose wrap-ok">Según fenotipo</td><td>Shock cardiogénico frecuente</td></tr>
+          <tr><td>Emulsión lipídica</td><td class="dose wrap-ok">Igual que en BB/BCC</td><td>Un caso exitoso con flecainida</td></tr>
+          <tr><td><strong>ECMO VA / bypass</strong></td><td class="dose wrap-ok">—</td><td>Arritmias refractarias o shock</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pitfall"><b class="t">Evitar</b>Otros antiarrítmicos IA o IC (procainamida, propafenona) por bloqueo aditivo; también amiodarona, que tiene efecto bloqueador de Na y de K <span class="lv cx">compl.</span>. Particularidad de la flecainida: la alcalinización urinaria <strong>reduce</strong> su eliminación.</div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Bloqueadores de canales de K⁺ (clase III)</h3>
+      <ul>
+        <li>Amiodarona, sotalol, ibutilida, dofetilida, dronedarona bloquean IKr (subunidad hERG): repolarización lenta → QT largo → posdespolarizaciones precoces → torsión de puntas.</li>
+        <li>El canal hERG tiene un poro grande que acepta moléculas aromáticas: por eso tantos fármacos prolongan el QT.</li>
+        <li>Potencian el riesgo: bradicardia, hipokalemia, hipomagnesemia, sexo femenino, otros fármacos que prolongan QT.</li>
+      </ul>
+    </div>
+    <div class="panel alert">
+      <h3>Torsión de puntas <span class="lv cx">compl.</span></h3>
+      <ul>
+        <li>Sulfato de magnesio 2 g IV en 1–2 min si inestable, 10–15 min si estable; infusión si recurre.</li>
+        <li>K⁺ a 4,5–5 mEq/L.</li>
+        <li>Aumentar FC: sobreestimulación con marcapaso (90–110/min) o isoproterenol.</li>
+        <li>Desfibrilar si sin pulso.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>QRS ancho → <strong>sodio</strong> (bicarbonato 1–2 mEq/kg en bolos). QT largo → <strong>magnesio</strong>.</li>
+      <li>Flecainida: cinética lenta, la alcalinización urinaria reduce su eliminación.</li>
+      <li>No usar IA, IC ni amiodarona para tratar arritmias por bloqueo de Na. Lidocaína en intoxicación por IA.</li>
+      <li>ECMO VA precoz en arritmias refractarias.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Por qué funciona el bicarbonato hipertónico?</summary><p>La carga de Na⁺ aumenta el gradiente que supera el bloqueo, y la alcalemia reduce la fracción ionizada del fármaco que se une al canal.</p></details>
+    <details><summary>¿Qué efecto adverso del bicarbonato empeora el QT?</summary><p>La hipokalemia por alcalosis y desplazamiento intracelular de K⁺.</p></details>
+  </div>
+</section>
+
+<!-- ===================== 07 CLONIDINA Y OTROS ===================== -->
+<section class="mod" id="otros" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n2">Residente</span><span class="lv cx">Complementario en buena parte</span></div>
+    <h2>Clonidina y otros antihipertensivos</h2>
+    <p>Los agonistas α2 aparecen en los artículos base; el resto de los antihipertensivos se agrega con conocimiento estándar de toxicología y debe contrastarse con protocolo local o CITUC.</p>
+  </div>
+
+  <div class="panel">
+    <h3>Agonistas α2 centrales e imidazolinas</h3>
+    <div class="grid2">
+      <div>
+        <h4>Fármacos</h4>
+        <ul>
+          <li>Clonidina, guanfacina, dexmedetomidina, tizanidina</li>
+          <li>Imidazolinas tópicas: oximetazolina, tetrahidrozolina, nafazolina (gotas nasales y oculares), brimonidina</li>
+        </ul>
+        <h4 class="mt">Fisiopatología</h4>
+        <ul>
+          <li>α2 presináptico y central (núcleo del tracto solitario, locus coeruleus): ↓ liberación de noradrenalina → bradicardia e hipotensión.</li>
+          <li>Receptores de imidazolina I1: depresión del SNC profunda.</li>
+          <li>Liberación de β-endorfinas → cuadro similar a opioides con miosis; reportes de respuesta a naloxona en dosis altas.</li>
+          <li>α2 postsináptico periférico → vasoconstricción: hipertensión transitoria precoz.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Clínica</h4>
+        <ul>
+          <li>Sopor o coma, miosis, apneas centrales, hipotermia</li>
+          <li>Bradicardia, hipotensión (hipertensión inicial breve)</li>
+          <li>Niños: 1 comprimido de clonidina o unos mL de gotas nasales pueden intoxicar <span class="lv cx">compl.</span></li>
+        </ul>
+        <h4 class="mt">Manejo <span class="lv cx">compl.</span></h4>
+        <ul>
+          <li>Soporte ventilatorio y estimulación; la mayoría evoluciona bien en 24 h</li>
+          <li>Naloxona: respuesta inconstante; probar dosis escalonadas (adulto 0,4–2 mg; niño 0,1 mg/kg, máx. 2 mg), hasta ~10 mg</li>
+          <li>Atropina para bradicardia sintomática</li>
+          <li>Volumen y vasopresores para hipotensión; evitar tratar la hipertensión precoz (transitoria y seguida de hipotensión)</li>
+          <li>Parche de clonidina: retirarlo y buscar parches ocultos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Grupo <span class="lv cx">compl.</span></th><th>Mecanismo tóxico</th><th>Presentación</th><th>Manejo clave</th></tr></thead>
+      <tbody>
+        <tr><td><strong>IECA / ARA-II</strong></td><td>Bloqueo del eje renina-angiotensina; bradicinina (IECA)</td><td>Hipotensión habitualmente leve, hiperkalemia, falla renal; angioedema (no dosis-dependiente)</td><td>Volumen; vasopresores raros. Naloxona descrita en casos con IECA, evidencia débil. Observar ~6 h. Precipitan toxicidad digitálica crónica</td></tr>
+        <tr><td><strong>Antagonistas α1</strong> (prazosina, doxazosina)</td><td>Vasodilatación arterial y venosa</td><td>Hipotensión ortostática, taquicardia refleja, síncope; priapismo</td><td>Volumen; agonista α1 (noradrenalina, fenilefrina)</td></tr>
+        <tr><td><strong>Hidralazina, minoxidil</strong></td><td>Vasodilatación arteriolar directa</td><td>Hipotensión con taquicardia refleja, isquemia miocárdica</td><td>Volumen, noradrenalina; evitar β-agonistas puros</td></tr>
+        <tr><td><strong>Nitratos</strong></td><td>NO → cGMP; venodilatación</td><td>Hipotensión, cefalea, taquicardia; metahemoglobinemia (más con nitritos)</td><td>Volumen, Trendelenburg; azul de metileno 1–2 mg/kg si metHb sintomática</td></tr>
+        <tr><td><strong>Nitroprusiato</strong> (hospitalario)</td><td>Libera cianuro</td><td>Acidosis láctica, inestabilidad con infusiones prolongadas</td><td>Suspender; hidroxocobalamina</td></tr>
+        <tr><td><strong>Diuréticos</strong></td><td>Depleción de volumen y electrolitos</td><td>Hipovolemia, hipokalemia, hiponatremia</td><td>Volumen y corrección electrolítica; potencian digoxina</td></tr>
+        <tr><td><strong>Combinaciones</strong> (BB + diurético, BCC + IECA, etc.)</td><td>Suma de mecanismos</td><td>Shock mixto</td><td>Manejar el componente más grave; la formulación combinada suele ser de liberación prolongada</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>Clonidina = sopor + miosis + bradicardia + hipotensión, a veces precedidas de hipertensión breve.</li>
+      <li>Naloxona puede ayudar en dosis altas, de forma inconstante; soporte ventilatorio es lo principal.</li>
+      <li>IECA/ARA-II rara vez graves solos, pero precipitan toxicidad digitálica crónica.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>¿Por qué no tratar la hipertensión inicial de la clonidina?</summary><p>Es transitoria (α2 postsináptico periférico) y le sigue hipotensión: un antihipertensivo la agravaría.</p></details>
+  </div>
+</section>
+
+
+<!-- ===================== 09 NIVEL EXPERTO ===================== -->
+<section class="mod" id="experto" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n4">Experto en toxicología</span><span class="lv cx">Complementario en buena parte</span></div>
+    <h2>Nivel experto: pensar como toxicólogo</h2>
+    <p>El especialista no solo trata al paciente: anticipa cómo evolucionará la sobredosis, ajusta el manejo a cada población, prepara a su unidad y juzga la evidencia. Gran parte de este módulo es complementario a los 3 artículos base.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>1. Toxicocinética de la sobredosis</h3>
+      <ul>
+        <li><strong>Absorción prolongada:</strong> la liberación prolongada y las ingestas masivas mantienen la absorción por horas. Puede haber mejoría inicial y deterioro posterior.</li>
+        <li><strong>Bezoares farmacológicos</strong> <span class="lv cx">compl.</span>: descritos con verapamilo SR; sospechar si la toxicidad progresa tarde o rebota al bajar el soporte. Considerar irrigación intestinal (paciente estable) y evaluación endoscópica.</li>
+        <li><strong>Metabolismo saturado:</strong> los BCC dependen de CYP3A4; sus inhibidores (macrólidos, azoles) agravan y prolongan el cuadro.</li>
+        <li><strong>Vd y depuración:</strong> amlodipino (Vd 21 L/kg) puede requerir días de soporte; atenolol y sotalol dependen del riñón.</li>
+        <li><strong>Toxicidad diferida:</strong> sotalol (QT) y formulaciones prolongadas obligan a observación larga.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>2. Coingestas que cambian el plan</h3>
+      <ul>
+        <li><strong>BB + BCC:</strong> sinergia en el nodo AV, shock más grave de lo que sugiere cada dosis.</li>
+        <li><strong>Antidepresivos serotoninérgicos:</strong> contraindican relativamente el azul de metileno.</li>
+        <li><strong>Tricíclicos u otros bloqueadores de Na:</strong> sumar bicarbonato.</li>
+        <li><strong>Metformina:</strong> acidosis láctica que confunde la lectura de perfusión.</li>
+        <li><strong>Paracetamol:</strong> siempre medirlo en ingesta intencional.</li>
+        <li><strong>Si el Fab no responde:</strong> buscar otro cardiotóxico.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>3. Poblaciones especiales <span class="lv cx">compl.</span></h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Población</th><th>Particularidad</th><th>Ajuste</th></tr></thead>
+        <tbody>
+          <tr><td>Embarazo</td><td>La reanimación materna es la mejor reanimación fetal</td><td>Mismos antídotos (calcio, HIET, vasopresores); desplazamiento uterino a izquierda; ECMO factible; equipo obstétrico precoz</td></tr>
+          <tr><td>Pediatría</td><td>Una a dos dosis de adulto pueden intoxicar (BCC, BB, clonidina, flecainida)</td><td>Dosis por kg; dextrosa con concentración y volumen pediátricos; hipoglicemia más frecuente con BB; hospitalizar y observar</td></tr>
+          <tr><td>Adulto mayor</td><td>Toxicidad crónica, polifarmacia, falla renal</td><td>Buscar el precipitante (IECA, diurético, macrólido); umbral bajo para digoxinemia</td></tr>
+          <tr><td>Marcapaso o DAV</td><td>El dispositivo no protege de la toxicidad</td><td>Puede perder captura; mismo manejo farmacológico</td></tr>
+          <tr><td>Insuficiencia cardíaca</td><td>Poca tolerancia al volumen</td><td>Bolos pequeños guiados por POCUS; concentrar infusiones</td></tr>
+          <tr><td>Falla renal</td><td>Atenolol, sotalol y complejos Fab-digoxina se eliminan lento</td><td>Considerar diálisis (atenolol, sotalol) y observar rebote post-Fab</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel rx">
+      <h3>4. Preparar la unidad: stock de antídotos</h3>
+      <p class="note">Consumo estimado en 24 h para un adulto de 70 kg con las dosis de este módulo. Sirve para dimensionar, no es una norma.</p>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Antídoto</th><th>Consumo estimado</th><th>Comentario</th></tr></thead>
+          <tbody>
+            <tr><td>Gluconato de calcio 10 %</td><td class="dose wrap-ok">~3 bolos de 42 mL + infusión 0,5 mL/kg/h ≈ 950 mL (≈ 95 ampollas de 10 mL)</td><td>El calcio se agota antes de lo que se piensa</td></tr>
+            <tr><td>Insulina regular</td><td class="dose wrap-ok">70–700 U/h → hasta varios miles de U/día</td><td>Abundante; el límite es la glucosa concentrada</td></tr>
+            <tr><td>Glucosa concentrada</td><td class="dose wrap-ok">0,5 g/kg/h ≈ 840 g/día</td><td>G50 o G30 por CVC</td></tr>
+            <tr><td>Glucagón</td><td class="dose wrap-ok">10 mg + 5 mg/h × 24 h ≈ 130 mg = 130 kits</td><td>Inviable como terapia sostenida</td></tr>
+            <tr><td>Fab antidigoxina</td><td class="dose wrap-ok">Paro: 10 viales; vegetal: 20–30</td><td>Definir dónde está el stock regional</td></tr>
+            <tr><td>Emulsión lipídica 20 %</td><td class="dose wrap-ok">~1 L en la primera hora</td><td>Coordinar con ECMO por interferencia</td></tr>
+            <tr><td>Azul de metileno 1 %</td><td class="dose wrap-ok">140 mg + 70 mg/h × 6 h ≈ 560 mg</td><td>Verificar presentación local</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>5. Protocolo institucional de HIET <span class="lv cx">compl.</span></h3>
+      <ul>
+        <li>Preparación estándar única (p. ej. insulina 1 U/mL o 10 U/mL), rotulada «HIET – dosis alta intencional».</li>
+        <li>Tabla de mL/h por peso impresa junto a la bomba.</li>
+        <li>Glucosa concentrada disponible en la UEH, no solo en farmacia central.</li>
+        <li>Hoja de controles: glicemia c/10–15 min, K⁺ c/1 h en titulación.</li>
+        <li>Doble chequeo de enfermería en cada cambio de velocidad.</li>
+        <li>Criterios de llamado a UCI, CITUC y centro ECMO escritos en el protocolo.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel alert">
+      <h3>6. ECMO: cuándo y cómo</h3>
+      <ul>
+        <li><strong>Indicación:</strong> shock cardiogénico persistente o arritmias refractarias pese a HIET y ≥ 3 vasoactivos, o paro cardíaco (ECPR si el programa existe).</li>
+        <li><strong>Momento:</strong> antes del paro. En la serie con recomendación toxicológica de ECMO no realizada, los 9 pacientes murieron.</li>
+        <li><strong>Modalidad:</strong> VA para falla de bomba; VV para edema pulmonar no cardiogénico con función conservada.</li>
+        <li><strong>Distributivo puro:</strong> beneficio incierto, decisión caso a caso.</li>
+        <li><strong>Traslado</strong> <span class="lv cx">compl.</span>: decidir temprano; un paciente con 3 vasopresores es de alto riesgo para el traslado. Valorar ECMO móvil si la red lo ofrece.</li>
+        <li>Avisar al equipo ECMO antes de dar lípidos (interfieren con el circuito).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>7. Lectura crítica de la evidencia</h3>
+      <ul>
+        <li>No hay ensayos clínicos en humanos: casi todo viene de modelos animales, series de casos y consenso.</li>
+        <li><strong>Modelos porcinos:</strong> el tóxico se infunde IV a dosis fija; no reproducen la absorción oral ni las coingestas.</li>
+        <li><strong>Series de casos:</strong> sesgo de publicación (se publican los éxitos, típico de los lípidos) y confusión por múltiples terapias simultáneas.</li>
+        <li><strong>Registros</strong> (NPDS, ECMO): describen uso, no eficacia.</li>
+        <li><strong>Consensos</strong> (St-Onge 2017 para BCC; EXTRIP para diálisis): la mejor guía disponible, con recomendaciones mayoritariamente débiles.</li>
+        <li>Pregunta para el club de revista: ¿qué diseño permitiría comparar HIET vs vasopresores en humanos?</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>8. Indicadores de calidad para la UEH <span class="lv cx">compl.</span></h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Indicador</th><th>Meta sugerida para discutir</th></tr></thead>
+        <tbody>
+          <tr><td>Tiempo puerta-calcio en hipotensión refractaria a volumen</td><td>&lt; 30 min</td></tr>
+          <tr><td>Tiempo puerta-HIET en shock por BB/BCC</td><td>&lt; 60 min</td></tr>
+          <tr><td>Consulta a CITUC documentada</td><td>100 %</td></tr>
+          <tr><td>Hipoglicemias &lt; 70 mg/dL durante HIET</td><td>Registrar y analizar cada evento</td></tr>
+          <tr><td>Consulta a ECMO antes del paro en shock refractario</td><td>100 %</td></tr>
+          <tr><td>Evaluación psiquiátrica en ingesta intencional</td><td>100 %</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="llevar"><span class="tl">Para llevar</span>
+    <ul>
+      <li>La sobredosis tiene su propia cinética: absorción larga, metabolismo saturado, deterioro tardío.</li>
+      <li>El calcio y la glucosa concentrada se acaban antes que la insulina: el stock se planifica antes del caso.</li>
+      <li>ECMO se activa antes del paro; los lípidos se coordinan con el equipo ECMO.</li>
+      <li>La evidencia es débil: decidir por fisiología, fenotipo y respuesta.</li>
+    </ul>
+  </div>
+  <div class="check">
+    <details><summary>Paciente con verapamilo SR mejora a las 8 h y empeora a las 18 h. ¿Qué piensas?</summary><p>Absorción continuada, posible bezoar. Reevaluar descontaminación (irrigación si está estable, evaluación endoscópica) y mantener soporte.</p></details>
+    <details><summary>¿Por qué un modelo porcino puede sobrestimar el daño de los vasopresores?</summary><p>Usa dosis fija IV del tóxico, sin absorción oral ni coingestas, con desenlace y tiempos distintos a los humanos; además la dosis y el tipo de vasopresor son fijos y no se titulan.</p></details>
+  </div>
+</section>
+
+
+<!-- ===================== 10 DOSIS ===================== -->
+<section class="mod" id="dosis" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n2">Residente</span><span class="lv n3">Urgenciólogo</span></div>
+    <h2>Calculadora de dosis por peso</h2>
+    <p>Valores calculados desde las dosis de los artículos base. Presentaciones habituales en Chile: confirmar concentraciones y diluciones con la farmacia del hospital antes de usar. Herramienta de estudio, no reemplaza el doble chequeo clínico.</p>
+  </div>
+
+  <div class="calc">
+    <div class="inputs">
+      <div class="field"><label for="w">Peso (kg)</label><input id="w" type="number" min="3" max="250" step="1" value="70" inputmode="decimal"></div>
+      <div class="field"><label for="dl">Digoxinemia (ng/mL)</label><input id="dl" type="number" min="0" step="0.1" value="4.0" inputmode="decimal"></div>
+      <div class="field"><label for="dm">Digoxina ingerida (mg)</label><input id="dm" type="number" min="0" step="0.25" value="5" inputmode="decimal"></div>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Fármaco y presentación</th><th>Pauta</th><th>Cálculo para el peso</th></tr></thead>
+        <tbody id="calcBody"></tbody>
+      </table>
+    </div>
+    <p class="note">Presentaciones de referencia: gluconato de calcio 10 % (100 mg/mL; 1 g = 4,65 mEq = 93 mg Ca²⁺); cloruro de calcio 10 % (100 mg/mL; 1 g = 13,6 mEq = 273 mg Ca²⁺); insulina cristalina 100 U/mL diluida; glucosa 10 %, 30 % y 50 %; noradrenalina 4 mg/4 mL; azul de metileno 1 % (10 mg/mL); emulsión lipídica 20 %; bicarbonato de sodio 8,4 % (1 mEq/mL) y 2/3 molar (0,67 mEq/mL); lidocaína 2 % (20 mg/mL); glucagón kit 1 mg; Fab antidigoxina 40 mg/vial.</p>
+  </div>
+</section>
+
+<!-- ===================== 09 CONTROVERSIAS ===================== -->
+<section class="mod" id="controv" data-sec hidden>
+  <div class="sec-head">
+    <div class="chiprow"><span class="lv n3">Urgenciólogo</span><span class="lv n4">Experto</span></div>
+    <h2>Controversias y discrepancias entre las fuentes</h2>
+    <p>Las tres revisiones no dicen lo mismo. Saber dónde discrepan y por qué es parte de la competencia del especialista: la mayoría de las diferencias reflejan evidencia de baja calidad y la época de cada publicación.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Tema</th><th>Palatnick &amp; Jelic 2020 (EM Practice)</th><th>Cole &amp; Arens 2022 (EMCNA)</th><th>Goldfine et al. 2024 (EHJ-ACVC)</th><th>Lectura sugerida</th></tr></thead>
+      <tbody>
+        <tr><td>Calcio</td><td>Evidencia débil; 10–20 mL CaCl₂ o 30–60 mL gluconato; <strong>una sola dosis</strong></td><td>13–25 mEq en 10 min, repetir a 20 min, infusión si responde</td><td>0,2 mL/kg CaCl₂ o 0,6 mL/kg gluconato + infusión; meta iCa 1,5× LSN</td><td>Bolo + infusión si hay respuesta, con iCa seriado</td></tr>
+        <tr><td>Glucagón</td><td>3–5 mg, repetir 4–10 mg; infusión 2–5 mg/h; buen resultado precoz en reportes</td><td>5–10 mg; sin rol en BCC; puente en BB</td><td>5–10 mg lento + 1–5 mg/h; no en BCC</td><td>Solo BB, como puente; no retrasa HIET</td></tr>
+        <tr><td>HIET: bolo</td><td>0,5–1 U/kg; +50 % c/20 min</td><td>1 U/kg; +1–2 U/kg/h c/15 min desde los 30 min</td><td>1 U/kg; +1–2 U/kg/h c/10 min</td><td>1 U/kg; titular por POCUS, techo 10 U/kg/h</td></tr>
+        <tr><td>Orden HIET vs vasopresor</td><td>HIET primero; vasopresor si necesario</td><td><strong>Simultáneos</strong> (NA 0,04 mcg/kg/min + HIET)</td><td>Vasopresores primero; HIET en refractarios o disfunción sistólica</td><td>Tendencia actual: ambos juntos y precoces</td></tr>
+        <tr><td>Vasopresor de elección</td><td>Adrenalina; NA si solo hipotensión; evitar dopamina</td><td>Noradrenalina</td><td>Sin preferencia; NA o adrenalina; fenilefrina si FC normal</td><td>NA; adrenalina si bradicardia/contractilidad dominan</td></tr>
+        <tr><td>Carbón activado</td><td>25–100 g; 1–2 h; hasta 2 h en prolongada; AACT ya no lo recomienda rutinariamente</td><td>Favorable si es probable que quede fármaco</td><td>50–100 g dentro de 1 h</td><td>Sí, precoz, con vía aérea segura</td></tr>
+        <tr><td>Emulsión lipídica</td><td>Si no hay ECMO, en paro o shock refractario</td><td>Solo tras HIET + ≥ 3 vasopresores sin ECMO; apoyo menguante</td><td>No de primera línea; refractario o paro</td><td>Rescate, después de ECMO cuando existe</td></tr>
+        <tr><td>Azul de metileno</td><td>2 mg/kg en 20 min + 1 mg/kg/h; no rutinario</td><td>1–2 mg/kg + 1 mg/kg hasta 6 h; interesante en amlodipino</td><td>1–2 mg/kg en 5 min + 1 mg/kg/h; máx. 7 mg/kg; no necesita esperar al periparo</td><td>Vasoplejia refractaria, sin ISRS ni G6PD</td></tr>
+        <tr><td>Fab: umbral de K⁺</td><td>&gt; 5,5 mEq/L (aguda)</td><td>&gt; 5,0 mEq/L</td><td>—</td><td>&gt; 5,0 con clínica compatible</td></tr>
+        <tr><td>Fab empírico aguda</td><td>5–10 viales (algoritmo: 10 + 10)</td><td>1–2 viales, iniciar 1 y repetir; paro 10</td><td>—</td><td>Dosis menores repetidas; en paro dar todo lo disponible</td></tr>
+        <tr><td>Rango terapéutico digoxina</td><td>0,5–0,9 ng/mL (texto) / 0,8–2 (laboratorio)</td><td>0,5–1,0 ng/mL</td><td>—</td><td>Objetivo actual 0,5–0,9 ng/mL</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="perla"><b class="t">Para discutir en club de revista</b>¿Por qué un modelo porcino muestra vasopresores peores que placebo y una serie humana de 25 años muestra buenos resultados con vasopresores solos? Pensar en sesgo de selección, especie, dosis tóxica fija vs ingesta variable y el desenlace medido.</div>
+</section>
+
+
+<!-- ===================== 12 REPASO ===================== -->
+<section class="mod" id="repaso" data-sec hidden>
+  <div class="sec-head">
+    <h2>Repaso</h2>
+    <p>Tarjetas para recuperación activa, mnemotecnias, hoja de una página y un plan de repaso espaciado. Lo que marques como «La sé» queda guardado en este dispositivo.</p>
+  </div>
+
+  <div class="block">
+    <h3>Tarjetas</h3>
+    <div class="fcbar">
+      <div class="filters" role="group" aria-label="Filtrar tarjetas">
+        <button class="fbtn fcf" data-f="all" aria-pressed="true">Todas</button>
+        <button class="fbtn fcf" data-f="0" aria-pressed="false">Estudiante</button>
+        <button class="fbtn fcf" data-f="1" aria-pressed="false">Interno</button>
+        <button class="fbtn fcf" data-f="2" aria-pressed="false">Residente</button>
+        <button class="fbtn fcf" data-f="3" aria-pressed="false">Urgenciólogo</button>
+        <button class="fbtn fcf" data-f="4" aria-pressed="false">Experto</button>
+        <button class="fbtn fcf" data-f="pend" aria-pressed="false">Solo por repasar</button>
+      </div>
+      <button class="btn ghost" id="fcShuffle">Barajar</button>
+    </div>
+    <div class="fcwrap">
+      <button class="fcard" id="fcCard" aria-live="polite"><span class="side" id="fcSide">Pregunta</span><span class="txt" id="fcTxt"></span><span class="note">Toca la tarjeta para voltearla</span></button>
+      <div class="fcctl">
+        <button class="btn ghost" id="fcPrev">← Anterior</button>
+        <button class="btn ko" id="fcNo">Repasar</button>
+        <button class="btn ok" id="fcYes">La sé</button>
+        <button class="btn ghost" id="fcNext">Siguiente →</button>
+      </div>
+      <div class="fcstat" id="fcStat"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Mnemotecnias</h3>
+    <div class="mnemo">
+      <div class="panel"><span class="big">4C + B + O</span><p>Diferencial tóxico de bradicardia + hipotensión: <strong>C</strong>alcioantagonistas, <strong>C</strong>lonidina e imidazolinas, <strong>C</strong>olinérgicos, <strong>C</strong>ardioactivos esteroides (digoxina), <strong>B</strong>-bloqueadores, <strong>O</strong>pioides.</p></div>
+      <div class="panel"><span class="big">VACÍA</span><p>Secuencia en BB/BCC: <strong>V</strong>olumen juicioso → <strong>A</strong>tropina → <strong>C</strong>alcio → <strong>I</strong>nsulina en dosis altas → <strong>A</strong>minas (noradrenalina). Si sigue «vacía» la presión: rescate.</p></div>
+      <div class="panel"><span class="big">1-1-10</span><p>HIET: bolo <strong>1</strong> U/kg, infusión <strong>1</strong> U/kg/h, techo <strong>10</strong> U/kg/h.</p></div>
+      <div class="panel"><span class="big">× 3</span><p>El cloruro de calcio aporta unas 3 veces más Ca²⁺ que el gluconato: 0,2 mL/kg de cloruro ≈ 0,6 mL/kg de gluconato.</p></div>
+      <div class="panel"><span class="big">½ mg</span><p>Un vial de Fab neutraliza medio miligramo de digoxina. Por nivel: ng/mL × kg ÷ 100.</p></div>
+      <div class="panel"><span class="big">Na · Mg</span><p>QRS ancho → sodio (bicarbonato). QT largo → magnesio.</p></div>
+      <div class="panel"><span class="big">6 · 24</span><p>Horas de observación: 6 en liberación inmediata asintomática, 24 en prolongada.</p></div>
+      <div class="panel"><span class="big">Rápido + lento</span><p>Digoxina: automatismo rápido con conducción lenta (TAP con bloqueo, unión acelerada).</p></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Hoja de repaso en una página</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Tóxico</th><th>Clave clínica</th><th>ECG</th><th>Tratamiento específico</th><th>Trampa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>β-bloqueador</strong></td><td>Bradicardia, hipotensión, depresión SNC, hipoglicemia (niños)</td><td>BAV 1.°, bradicardia; QRS ancho (propranolol); QT (sotalol)</td><td>Calcio, HIET + NA, glucagón puente, bicarbonato si QRS</td><td>Sotalol: toxicidad tardía</td></tr>
+          <tr><td><strong>BCC no DHP</strong></td><td>Bradicardia, BAV, shock con conciencia conservada, hiperglicemia</td><td>BAV, unión, idioventricular</td><td>Calcio, HIET + NA, ECMO VA</td><td>Glucagón no sirve; SR = 24 h</td></tr>
+          <tr><td><strong>BCC DHP</strong></td><td>Vasoplejia, taquicardia refleja, edema pulmonar no cardiogénico</td><td>Taquicardia sinusal → bradicardia tardía</td><td>NA, vasopresina, azul de metileno; HIET con cautela</td><td>Exceso de volumen; ISRS y azul de metileno</td></tr>
+          <tr><td><strong>Digoxina</strong></td><td>GI, confusión, xantopsia (rara); K⁺ alto en aguda</td><td>TAP con bloqueo, unión acelerada, TV bidireccional</td><td>Fab; atropina; K⁺ y Mg²⁺</td><td>Nivel precoz engaña; marcapaso y cardioversión</td></tr>
+          <tr><td><strong>Flecainida / clase I</strong></td><td>Shock, convulsiones, arritmias</td><td>QRS ancho, R en aVR, Brugada</td><td>Bicarbonato 1–2 mEq/kg en bolos; ECMO VA</td><td>Amiodarona, procainamida</td></tr>
+          <tr><td><strong>Clonidina</strong></td><td>Sopor, miosis, apneas, bradicardia; HTA inicial</td><td>Bradicardia sinusal</td><td>Soporte, naloxona, atropina</td><td>Tratar la HTA inicial</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>Plan de repaso espaciado</h3>
+    <div class="spaced">
+      <div class="d"><b>Día 0</b><span>Lectura del escalón y bloques «Para llevar»</span></div>
+      <div class="d"><b>Día 1</b><span>Tarjetas del escalón; marca las que fallas</span></div>
+      <div class="d"><b>Día 3</b><span>Prueba de paso del escalón (meta 80 %)</span></div>
+      <div class="d"><b>Día 7</b><span>Un caso clínico sin mirar la respuesta</span></div>
+      <div class="d"><b>Día 21</b><span>Hoja de una página + «Solo por repasar»</span></div>
+      <div class="d"><b>Día 60</b><span>Quiz completo y controversias</span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== 13 QUIZ ===================== -->
+<section class="mod" id="quiz" data-sec hidden>
+  <div class="sec-head">
+    <h2>Preguntas de autoevaluación</h2>
+    <p>Selecciona una alternativa para ver la explicación. Cada escalón tiene su prueba de paso: filtra por nivel y apunta a 80 % antes de subir al siguiente.</p>
+  </div>
+  <div class="qbar">
+    <div class="filters" role="group" aria-label="Filtrar por nivel">
+      <button class="fbtn" data-f="all" aria-pressed="true">Todas</button>
+      <button class="fbtn" data-f="0" aria-pressed="false">Estudiante</button>
+      <button class="fbtn" data-f="1" aria-pressed="false">Interno</button>
+      <button class="fbtn" data-f="2" aria-pressed="false">Residente</button>
+      <button class="fbtn" data-f="3" aria-pressed="false">Urgenciólogo</button>
+      <button class="fbtn" data-f="4" aria-pressed="false">Experto</button>
+    </div>
+    <div class="chiprow"><span class="score" id="score">0 / 0 respondidas</span><button class="btn ghost" id="qreset">Reiniciar</button></div>
+  </div>
+  <div id="qlist" class="block"></div>
+</section>
+
+<!-- ===================== 11 TUTORÍA ===================== -->
+<section class="mod" id="tutoria" data-sec hidden>
+  <div class="sec-head">
+    <h2>Modelo de tutoría clínica</h2>
+    <p>Sesión de 90 minutos basada en casos con revelado progresivo, preguntas socráticas, microdestrezas del preceptor de un minuto y debriefing estructurado (PEARLS).</p>
+  </div>
+
+  <div class="mode">
+    <label class="switch" for="tutorMode"><input type="checkbox" id="tutorMode"> Modo tutor</label>
+    <span class="note">Muestra respuestas esperadas, errores frecuentes, pistas y criterios de evaluación en cada etapa. Desactivar al proyectar a los residentes.</span>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Objetivos de aprendizaje</h3>
+      <p>Al terminar, el residente será capaz de:</p>
+      <ol>
+        <li>Reconocer el toxídromo cardiovascular y su diferencial en menos de 5 minutos.</li>
+        <li>Indicar y dosificar calcio, HIET, vasopresores y Fab antidigoxina sin apoyo.</li>
+        <li>Clasificar el fenotipo hemodinámico con POCUS y elegir la terapia según él.</li>
+        <li>Anticipar y tratar las complicaciones de HIET (hipoglicemia, hipokalemia, sobrecarga).</li>
+        <li>Definir criterios de rescate y derivación a ECMO; comunicarse con CITUC y UCI.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>Estructura de la sesión</h3>
+      <div class="tbl">
+        <table>
+          <thead><tr><th>Min</th><th>Actividad</th></tr></thead>
+          <tbody>
+            <tr><td>Previo</td><td>Lectura de módulos 01–05 y pre-test N1 (10 preguntas)</td></tr>
+            <tr><td>0–5</td><td>Prebriefing: objetivos, ambiente seguro, roles (líder, farmacia, registro)</td></tr>
+            <tr><td>5–30</td><td>Caso 1 (verapamilo) con revelado por etapas</td></tr>
+            <tr><td>30–50</td><td>Caso 2 o 3 según nivel del grupo</td></tr>
+            <tr><td>50–65</td><td>Caso relámpago 4 o 5 (10 min)</td></tr>
+            <tr><td>65–80</td><td>Debriefing PEARLS y tabla de controversias</td></tr>
+            <tr><td>80–90</td><td>Post-test N2–N3 y compromiso de acción individual</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel rx">
+      <h3>Preceptor de un minuto (aplicar en cada etapa)</h3>
+      <ol>
+        <li><strong>Obtener un compromiso:</strong> «¿Qué crees que está pasando y qué harías ahora?»</li>
+        <li><strong>Explorar el razonamiento:</strong> «¿Qué te hace pensar eso? ¿Qué más consideraste?»</li>
+        <li><strong>Enseñar una regla general:</strong> una perla breve y transferible.</li>
+        <li><strong>Reforzar lo bien hecho:</strong> específico, no genérico.</li>
+        <li><strong>Corregir errores:</strong> en privado si es sensible, con la conducta correcta.</li>
+      </ol>
+    </div>
+    <div class="panel rx">
+      <h3>Escalera socrática (Bloom)</h3>
+      <dl class="kv">
+        <dt>Recordar</dt><dd>«¿Cuál es la dosis de bolo de insulina?»</dd>
+        <dt>Comprender</dt><dd>«¿Por qué la insulina mejora la contractilidad?»</dd>
+        <dt>Aplicar</dt><dd>«Calcula la infusión para este paciente en mL/h.»</dd>
+        <dt>Analizar</dt><dd>«El POCUS muestra FEVI 70 %. ¿Qué cambia?»</dd>
+        <dt>Evaluar</dt><dd>«¿Azul de metileno o ECMO VV? Defiende tu elección.»</dd>
+        <dt>Crear</dt><dd>«Diseña el protocolo HIET de nuestra UEH.»</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="block" id="cases"></div>
+
+  <div class="panel">
+    <h3>Debriefing PEARLS (15 min)</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Fase</th><th>Pregunta guía</th></tr></thead>
+        <tbody>
+          <tr><td>Reacciones</td><td>«¿Cómo se sintieron manejando este caso?»</td></tr>
+          <tr><td>Descripción</td><td>«Resuman en una frase qué le pasaba al paciente y qué hicieron.»</td></tr>
+          <tr><td>Análisis</td><td>Más/Delta: «¿Qué funcionó? ¿Qué cambiarían?» Abogacía-indagación: «Observé que el calcio se dio a los 25 min; me preocupa porque… ¿Qué estaban pensando en ese momento?»</td></tr>
+          <tr><td>Aplicación</td><td>«¿Qué harán distinto el próximo turno?»</td></tr>
+          <tr><td>Resumen</td><td>Cada residente nombra un aprendizaje; el tutor cierra con las 6 ideas clave.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h3>Rúbrica de evaluación</h3>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Dominio</th><th>En desarrollo</th><th>Competente</th><th>Autónomo</th></tr></thead>
+        <tbody>
+          <tr><td>Reconocimiento</td><td>Plantea intoxicación solo con la historia explícita</td><td>Plantea el toxídromo y su diferencial</td><td>Además usa ECG, glicemia y POCUS para estratificar gravedad</td></tr>
+          <tr><td>Estabilización</td><td>Volumen y atropina sin reevaluar</td><td>Volumen juicioso, calcio y monitorización adecuados</td><td>Anticipa deterioro: parches, CVC, línea arterial, vía aérea</td></tr>
+          <tr><td>Terapia escalonada y dosis</td><td>Requiere apoyo para dosis</td><td>Dosifica calcio, HIET y NA correctamente</td><td>Titula por fenotipo y conoce rescates con sus riesgos</td></tr>
+          <tr><td>Complicaciones</td><td>No las anticipa</td><td>Pide glicemia y K⁺ seriados</td><td>Define metas, frecuencia y umbrales de corrección</td></tr>
+          <tr><td>Comunicación y sistema</td><td>No consulta</td><td>Llama a CITUC y UCI</td><td>Activa ECMO precoz, doble chequeo de insulina, comunicación en asa cerrada</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap foot">
+  <p><strong>Fuentes base.</strong> Goldfine CE, Troger A, Erickson TB, Chai PR. Beta-blocker and calcium-channel blocker toxicity: current evidence on evaluation and management. <em>Eur Heart J Acute Cardiovasc Care</em> 2024;13:247–253. · Cole JB, Arens AM. Cardiotoxic medication poisoning. <em>Emerg Med Clin N Am</em> 2022;40:395–416. · Palatnick W, Jelic T. Calcium channel blocker and beta blocker overdose, and digoxin toxicity management. <em>Emergency Medicine Practice EXTRA</em>, septiembre 2020.</p>
+  <p class="mt">Los contenidos marcados como «Complementario» provienen de conocimiento general de toxicología clínica y no de estos artículos. Material docente; no reemplaza protocolos institucionales ni la consulta con CITUC.</p>
+</footer>
+
+<script>
+(function(){
+  /* ---------- Tabs ---------- */
+  const tabs=[...document.querySelectorAll('.tab')];
+  const secs=[...document.querySelectorAll('[data-sec]')];
+  function show(id,push){
+    if(!secs.some(s=>s.id===id)) id='inicio';
+    secs.forEach(s=>s.hidden=(s.id!==id));
+    tabs.forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===id?'true':'false'));
+    const act=tabs.find(t=>t.dataset.tab===id); if(act){const bar=act.parentElement; bar.scrollLeft=act.offsetLeft-bar.clientWidth/2+act.offsetWidth/2;}
+    if(push){ try{history.replaceState(null,'','#'+id)}catch(e){} window.scrollTo({top:0}); }
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab,true)));
+  document.addEventListener('click',e=>{const g=e.target.closest('[data-goto]'); if(!g)return; show(g.dataset.goto,true); if(g.dataset.qf){const fb=document.querySelector(`#quiz .fbtn[data-f="${g.dataset.qf}"]`); if(fb)fb.click();}});
+  show((location.hash||'').replace('#','')||'inicio',false);
+
+  /* ---------- Calculator ---------- */
+  const $=id=>document.getElementById(id);
+  const f=(x,d=0)=>{if(!isFinite(x))return'—';return x.toLocaleString('es-CL',{minimumFractionDigits:d,maximumFractionDigits:d})};
+  function calc(){
+    const w=Math.max(0,parseFloat($('w').value)||0);
+    const lvl=Math.max(0,parseFloat($('dl').value)||0);
+    const mg=Math.max(0,parseFloat($('dm').value)||0);
+    const ped=w<40;
+    const rows=[
+      ['g','Estabilización'],
+      ['Cristaloides','10–20 mL/kg, reevaluar',`${f(10*w)}–${f(20*w)} mL`],
+      ['Atropina 1 mg/mL','Adulto 1 mg (máx. 3 mg); niño 0,02 mg/kg (mín. 0,1 mg)', ped?`${f(Math.max(0.1,0.02*w),2)} mg`:'1 mg por dosis; máx. 3 mg'],
+      ['Carbón activado','50–100 g; niño ~1 g/kg', ped?`${f(w)} g`:'50–100 g'],
+      ['g','Calcio'],
+      ['Gluconato de calcio 10 %','Bolo 0,6 mL/kg en 10 min',`${f(0.6*w)} mL = ${f(0.06*w,1)} g = ${f(0.06*w*4.65,1)} mEq<small>Periférico</small>`],
+      ['Gluconato de calcio 10 % (infusión)','0,2–0,6 mL/kg/h',`${f(0.2*w)}–${f(0.6*w)} mL/h`],
+      ['Cloruro de calcio 10 %','Bolo 0,2 mL/kg en 10 min',`${f(0.2*w)} mL = ${f(0.02*w,1)} g = ${f(0.02*w*13.6,1)} mEq<small>Vía central</small>`],
+      ['Cloruro de calcio 10 % (infusión)','20 mg/kg/h = 0,2 mL/kg/h',`${f(0.2*w)} mL/h`],
+      ['g','Insulina en dosis altas (HIET)'],
+      ['Insulina regular: bolo','1 U/kg IV',`${f(w)} U`],
+      ['Insulina regular: infusión inicial','1 U/kg/h',`${f(w)} U/h<small>${f(w)} mL/h a 1 U/mL · ${f(w/10,1)} mL/h a 10 U/mL</small>`],
+      ['Insulina regular: techo','10 U/kg/h',`${f(10*w)} U/h<small>${f(w,0)} mL/h a 10 U/mL</small>`],
+      ['Dextrosa: bolo','25–50 g si glicemia < 200 mg/dL','G30 %: 83–167 mL · G50 %: 50–100 mL'],
+      ['Dextrosa: infusión','0,5 g/kg/h',`${f(0.5*w)} g/h<small>G10 %: ${f(5*w)} mL/h · G30 %: ${f(0.5*w/0.3)} mL/h · G50 %: ${f(w)} mL/h</small>`],
+      ['g','Vasoactivos'],
+      ['Noradrenalina','Inicio 0,04 mcg/kg/min',`${f(0.04*w,1)} mcg/min<small>${f(0.04*w*60/16,1)} mL/h con 4 mg en 250 mL (16 mcg/mL); ajustar a dilución local</small>`],
+      ['Noradrenalina: umbral 2.º vasopresor','0,5 mcg/kg/min',`${f(0.5*w,0)} mcg/min`],
+      ['Vasopresina','0,04 U/min fija','2,4 U/h'],
+      ['Glucagón (solo BB)','Bolo 5–10 mg (niño 0,05–0,1 mg/kg) → 1–5 mg/h', ped?`${f(0.05*w,2)}–${f(0.1*w,2)} mg`:'5–10 mg = 5–10 kits de 1 mg; infusión 1–5 mg/h'],
+      ['g','Rescate'],
+      ['Azul de metileno 1 % (10 mg/mL)','1–2 mg/kg → 1 mg/kg/h; máx. 7 mg/kg',`Bolo ${f(w)}–${f(2*w)} mg (${f(w/10,1)}–${f(2*w/10,1)} mL) · infusión ${f(w)} mg/h<small>Acumulado máx. ${f(7*w)} mg</small>`],
+      ['Hidroxocobalamina','5 g IV en 15 min','5 g'],
+      ['Emulsión lipídica 20 %','Bolo 1,5 mL/kg → 0,25 mL/kg/min',`Bolo ${f(1.5*w)} mL · infusión ${f(0.25*w,1)} mL/min (${f(15*w)} mL/h)<small>Mantención si responde: ${f(0.025*w*60)} mL/h · tope ~${f(12*w)} mL en 30 min</small>`],
+      ['g','Canal de sodio / potasio'],
+      ['Bicarbonato de sodio','1–2 mEq/kg en bolo',`${f(w)}–${f(2*w)} mEq<small>8,4 %: ${f(w)}–${f(2*w)} mL · 2/3 M: ${f(w/0.667)}–${f(2*w/0.667)} mL</small>`],
+      ['Lidocaína 2 %','1–1,5 mg/kg IV',`${f(w)}–${f(1.5*w)} mg (${f(w/20,1)}–${f(1.5*w/20,1)} mL)`],
+      ['Sulfato de magnesio','Adulto 2 g; niño 25–50 mg/kg (máx. 2 g)', ped?`${f(Math.min(2000,25*w))}–${f(Math.min(2000,50*w))} mg`:'2 g'],
+      ['g','Digoxina: Fab (40 mg/vial ≈ 0,5 mg)'],
+      ['Fab según nivel','(ng/mL × kg) ÷ 100',`${f(lvl*w/100,1)} → <b>${f(Math.ceil(lvl*w/100))} viales</b>`],
+      ['Fab según dosis ingerida','(mg × 0,8) ÷ 0,5',`${f(mg*0.8/0.5,1)} → <b>${f(Math.ceil(mg*0.8/0.5))} viales</b>`],
+      ['Fab empírico','Aguda 1–2 (Cole) o 5–10 (Palatnick); crónica 1–2; paro 10; vegetal 20–30','Repetir según clínica'],
+      ['g','Agonistas α2 (complementario)'],
+      ['Naloxona','Adulto 0,4–2 mg escalonado; niño 0,1 mg/kg (máx. 2 mg)', ped?`${f(Math.min(2,0.1*w),2)} mg`:'0,4–2 mg, repetir hasta ~10 mg']
+    ];
+    $('calcBody').innerHTML=rows.map(r=>r[0]==='g'?`<tr class="grp"><td colspan="3">${r[1]}</td></tr>`:`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="out">${r[2]}</td></tr>`).join('');
+  }
+  ['w','dl','dm'].forEach(id=>$(id).addEventListener('input',calc));
+  calc();
+
+  /* ---------- Quiz ---------- */
+  const Q=[
+    {l:0,q:'¿Qué efecto tiene la estimulación del receptor β1 cardíaco?',o:['Disminuye la frecuencia cardíaca','Aumenta frecuencia, contractilidad y conducción vía Gs → cAMP','Produce vasoconstricción arteriolar','Inhibe la Na⁺/K⁺-ATPasa'],a:1,e:'β1 se acopla a Gs, activa la adenilato ciclasa y sube cAMP; la PKA fosforila el canal L, el fosfolamban y el RyR2: más cronotropismo, inotropismo, dromotropismo y lusitropismo.'},
+    {l:0,q:'En las células del nodo AV, la fase 0 del potencial de acción depende principalmente de:',o:['Corriente rápida de Na⁺','Corriente de Ca²⁺ tipo L','Corriente de K⁺ IKr','Na⁺/K⁺-ATPasa'],a:1,e:'En el tejido nodal la despolarización es lenta y depende del canal L de calcio. Por eso los BCC no dihidropiridínicos producen bloqueo AV.'},
+    {l:0,q:'¿A qué clase de Vaughan-Williams pertenece la flecainida?',o:['IA','IB','IC','III'],a:2,e:'Clase IC: bloqueador de canal de Na con cinética de disociación muy lenta, lo que explica su toxicidad.'},
+    {l:0,q:'El término «lusitropismo» se refiere a:',o:['La frecuencia cardíaca','La velocidad de conducción AV','La relajación diastólica','La fuerza de contracción'],a:2,e:'Lusitropismo es la relajación. Depende de la recaptación de Ca²⁺ por SERCA2a, que el cAMP/PKA favorece al fosforilar el fosfolamban.'},
+    {l:0,q:'¿Por qué los BCC no se eliminan con hemodiálisis?',o:['Son muy hidrofílicos','Tienen alta unión a proteínas y volumen de distribución grande','Se eliminan solo por bilis','Se unen a la membrana del dializador'],a:1,e:'Para que la diálisis sea útil el tóxico debe estar en el plasma, libre y en un Vd pequeño. Los BCC están unidos a proteínas y repartidos en los tejidos.'},
+    {l:4,q:'Intoxicación por verapamilo SR: mejoría a las 8 h y deterioro hemodinámico a las 18 h sin cambios en el soporte. ¿Explicación más probable?',o:['Taquifilaxia a la insulina','Absorción continuada, posiblemente por bezoar farmacológico','Efecto rebote del calcio','Hipoglicemia oculta'],a:1,e:'Las formulaciones prolongadas pueden formar conglomerados y absorberse por muchas horas. Reevaluar descontaminación (irrigación intestinal si está estable, evaluación endoscópica) y mantener el soporte (contenido complementario).'},
+    {l:4,q:'Al diseñar el stock de antídotos de la UEH, ¿por qué el glucagón no es una terapia sostenible?',o:['Es ineficaz en β-bloqueo','Un día de tratamiento en un adulto requiere del orden de 130 kits de 1 mg','Produce hiperkalemia','Está contraindicado en diabéticos'],a:1,e:'Bolo de 10 mg más 5 mg/h por 24 h ≈ 130 mg. Además su efecto es transitorio y causa vómitos. Por eso se reserva como puente y la planificación prioriza calcio, glucosa concentrada e insulina.'},
+    {l:4,q:'Embarazada de 30 semanas en shock por amlodipino. ¿Cuál es el principio correcto?',o:['Evitar vasopresores por riesgo fetal','Evitar HIET por hipoglicemia fetal','Tratar a la madre con los mismos antídotos; la reanimación materna es la mejor reanimación fetal','Interrumpir el embarazo antes de iniciar tratamiento'],a:2,e:'Se usan calcio, vasopresores, HIET y, si es necesario, ECMO, con desplazamiento uterino y equipo obstétrico precoz (contenido complementario).'},
+    {l:4,q:'¿Cuál es la principal limitación de las series de casos que apoyan la emulsión lipídica?',o:['Se hicieron solo en niños','Sesgo de publicación y múltiples terapias simultáneas que impiden atribuir el efecto','Usaron dosis demasiado bajas','No midieron la presión arterial'],a:1,e:'Se publican sobre todo los éxitos y casi siempre los pacientes recibían otras terapias. Por eso la evidencia para lípidos en tóxicos orales es de muy baja calidad y su apoyo ha disminuido.'},
+    {l:1,q:'¿Cuál es la vía final común de la toxicidad por β-bloqueadores y bloqueadores de canales de calcio?',o:['Exceso de cAMP intracelular','Déficit de Ca²⁺ intracelular disponible para la contracción','Bloqueo de la Na⁺/K⁺-ATPasa','Hiperpolarización por apertura de canales de K⁺'],a:1,e:'Ambos terminan reduciendo el Ca²⁺ intracelular: el BB porque cae cAMP/PKA y se fosforila menos el canal L; el BCC porque bloquea el canal directamente. Por eso calcio, insulina y catecolaminas comparten el blanco.'},
+    {l:1,q:'Un paciente con PA 75/40 y FC 36 está lúcido y con glicemia 320 mg/dL. ¿Qué intoxicación sugiere?',o:['β-bloqueador','Clonidina','Verapamilo o diltiazem','Organofosforado'],a:2,e:'BCC no dihidropiridínico: bradicardia + hipotensión con conciencia relativamente conservada e hiperglicemia por bloqueo de canales L en la célula β. La hiperglicemia se correlaciona con gravedad, aunque no debe usarse sola para el diagnóstico diferencial.'},
+    {l:1,q:'¿Qué β-bloqueador se asocia a mayor letalidad en sobredosis?',o:['Atenolol','Metoprolol','Propranolol','Bisoprolol'],a:2,e:'Propranolol: muy lipofílico (convulsiones, coma) y con actividad estabilizadora de membrana (bloqueo de Na → QRS ancho, arritmias).'},
+    {l:1,q:'La presentación inicial típica de una sobredosis de amlodipino es:',o:['Bradicardia extrema con BAV completo','Hipotensión con taquicardia refleja','Hipertensión transitoria y miosis','QT largo y torsión de puntas'],a:1,e:'Las dihidropiridinas actúan sobre el músculo liso vascular. La vasodilatación provoca taquicardia refleja; con dosis mayores se pierde selectividad y aparece bradicardia.'},
+    {l:1,q:'Paciente asintomático tras ingerir diltiazem de liberación prolongada. ¿Cuánto tiempo observar?',o:['2 horas','6 horas','Hasta 24 horas','No requiere observación si el ECG es normal'],a:2,e:'Liberación prolongada o ingesta masiva: hasta 24 h. Liberación inmediata asintomática: al menos 6 h.'},
+    {l:1,q:'Sobre la atropina en intoxicación por BB/BCC, es correcto:',o:['Es el tratamiento de elección','Suele ser ineficaz, porque no mejora la contractilidad','Está contraindicada','Debe darse en dosis de 0,1 mg para evitar taquicardia'],a:1,e:'Es razonable 1 mg IV como medida temporal si la bradicardia limita la perfusión, pero en la serie de 139 BCC solo funcionó en 2 de 8. Sube la FC (a veces) sin efecto inotrópico.'},
+    {l:2,q:'¿Qué diferencia práctica hay entre cloruro y gluconato de calcio al 10 %?',o:['Ninguna; son equivalentes mL a mL','El cloruro aporta ~3 veces más Ca²⁺ elemental y debe ir por vía central','El gluconato requiere vía central','El cloruro no eleva el Ca iónico'],a:1,e:'CaCl₂ 10 %: 13,6 mEq/g; gluconato 10 %: 4,65 mEq/g. Por eso 0,2 mL/kg de cloruro equivale a 0,6 mL/kg de gluconato. El cloruro necrosa si extravasa.'},
+    {l:2,q:'Paciente de 80 kg con shock por verapamilo refractario a volumen y calcio. Pauta inicial de HIET:',o:['Bolo 10 U, infusión 0,1 U/kg/h','Bolo 80 U, infusión 80 U/h, con dextrosa','Bolo 8 U, infusión 8 U/h','Infusión 10 U/kg/h sin bolo'],a:1,e:'«1-1-10»: bolo 1 U/kg (80 U), infusión 1 U/kg/h (80 U/h), titulable hasta 10 U/kg/h. Dextrosa 25–50 g si glicemia < 200 y luego infusión.'},
+    {l:2,q:'Durante HIET, el aumento del gasto cardíaco se explica sobre todo por:',o:['Aumento de la frecuencia cardíaca','Aumento del volumen sistólico','Vasoconstricción periférica','Aumento de la precarga por la dextrosa'],a:1,e:'La FC sube poco. El efecto principal es inotrópico (volumen sistólico); por eso se sigue con POCUS (contractilidad, VTI del TSVI) y no solo con la PA.'},
+    {l:2,q:'Con HIET a 5 U/kg/h, el K⁺ es 3,0 mEq/L. ¿Qué hacer?',o:['Suspender la insulina','Reponer K⁺ agresivamente hasta 4,5','Mantener HIET; reponer solo si cae bajo ~2,8 y controlar cada hora','Agregar espironolactona'],a:2,e:'La hipokalemia de HIET es redistribución intracelular, no déficit total. Cole recomienda mantener K⁺ ≥ 2,8 mEq/L con controles horarios durante titulación. Reponer agresivamente arriesga hiperkalemia al suspender. Excepción: fármacos que prolongan QT (sotalol).'},
+    {l:2,q:'¿Cuál es el rol actual del glucagón?',o:['Primera línea en BCC','Puente en β-bloqueo o ingestas accidentales pequeñas','Reemplaza a la insulina en diabéticos','Ninguno; está contraindicado'],a:1,e:'No es superior a vasopresores e inferior a HIET; efecto transitorio, vómitos y stock limitado. Sin rol en BCC.'},
+    {l:2,q:'En intoxicación por sotalol con QTc 560 ms y hemodinamia estable, lo más apropiado es:',o:['Alta tras 6 h','Magnesio IV profiláctico, corregir K⁺ y observación prolongada','Amiodarona profiláctica','Bicarbonato de sodio'],a:1,e:'Sotalol bloquea IKr: QT largo, torsión de puntas, toxicidad diferida. Mg²⁺ profiláctico tiene alta relación beneficio-riesgo. Si hay falla renal con bradicardia/hipotensión refractaria o TdP recurrente, EXTRIP sugiere hemodiálisis.'},
+    {l:2,q:'Se mide digoxinemia 2 h después de una ingesta aguda: 12 ng/mL. ¿Cómo interpretarla?',o:['Confirma toxicidad tisular grave','Es una muestra predistributiva, que sobrestima la toxicidad; repetir ≥ 6 h','El nivel no tiene utilidad en intoxicación aguda','Indica hemodiálisis'],a:1,e:'La digoxina tarda 4–6 h en distribuirse a los tejidos. Antes, el nivel sérico es alto respecto del efecto. Igual se trata según clínica y K⁺, no se espera el nivel para dar Fab si hay indicación.'},
+    {l:2,q:'Mujer de 95 kg con toxicidad crónica y digoxinemia 6,43 ng/mL. ¿Cuántos viales de Fab según fórmula?',o:['2','4','7','16'],a:2,e:'(6,43 × 95) ÷ 100 = 6,1 → redondear hacia arriba a 7 viales. Cole sugiere que en crónica 2 viales empíricos suelen neutralizar la digoxina libre, pero la fórmula es la referencia.'},
+    {l:2,q:'Tras 4 viales de Fab, la digoxina sérica subió de 5 a 18 ng/mL. ¿Qué significa?',o:['Fracaso del antídoto','Error de dosis','Se mide digoxina total (incluida la unida al Fab): no seguir niveles','Liberación de digoxina por hemólisis'],a:2,e:'El inmunoensayo mide la digoxina ligada al anticuerpo. Después del Fab, guiarse por la clínica salvo que se mida digoxina libre.'},
+    {l:2,q:'Adulto mayor con FA, digoxina e hiperkalemia de 6,4 y bloqueo AV avanzado. ¿Tratamiento de elección?',o:['Gluconato de calcio','Fab antidigoxina','Marcapaso transvenoso inmediato','Cardioversión eléctrica'],a:1,e:'Hiperkalemia con toxicidad digitálica conocida es indicación de Fab, que trata la causa. El calcio parece seguro según datos recientes, pero no es la primera opción en este escenario. El marcapaso tiene 36 % de complicaciones.'},
+    {l:2,q:'¿Cuál NO precipita toxicidad digitálica crónica?',o:['Claritromicina','Inicio de enalapril con caída de la VFG','Hipokalemia por furosemida','Hiperkalemia leve aislada'],a:3,e:'Macrólidos (P-gp, flora intestinal), deterioro renal e hipokalemia/hipomagnesemia aumentan la toxicidad. La hiperkalemia es consecuencia y marcador de gravedad, no precipitante.'},
+    {l:2,q:'Niño de 2 años, sopor, miosis, FC 58, PA 70/40 tras ingerir comprimidos de su abuelo. ¿Sospecha principal?',o:['Digoxina','Clonidina','Amlodipino','Metoprolol'],a:1,e:'Agonista α2: depresión del SNC, miosis, apneas, bradicardia e hipotensión, a veces con hipertensión inicial. Puede responder a naloxona en dosis altas, de forma inconstante.'},
+    {l:3,q:'Intoxicación por flecainida con QRS 170 ms. ¿Qué afirmación es correcta?',o:['La alcalinización urinaria acelera su eliminación','El bicarbonato hipertónico es la terapia central; vigilar hipokalemia','Procainamida es el antiarrítmico de elección','El QRS mejora con taquicardia'],a:1,e:'Bicarbonato 1–2 mEq/kg en bolos supera el bloqueo de Na. La alcalinización urinaria reduce la eliminación de flecainida. La hipokalemia por bicarbonato agrava el QT. Evitar IA/IC. Taquicardia empeora el bloqueo dependiente de uso.'},
+    {l:3,q:'Shock por amlodipino: NA 0,6 mcg/kg/min, vasopresina 0,04 U/min, HIET 2 U/kg/h; POCUS con VI hiperdinámico. El paciente toma sertralina. ¿Mejor siguiente paso?',o:['Subir HIET a 10 U/kg/h','Azul de metileno sin precauciones','Hidroxocobalamina 5 g y llamar al centro ECMO','Glucagón 10 mg'],a:2,e:'Fenotipo vasopléjico: subir HIET aumenta la vasodilatación. El azul de metileno inhibe la MAO y con ISRS arriesga síndrome serotoninérgico; la hidroxocobalamina es una alternativa sin ese riesgo. Toda terapia de rescate debe ir de la mano de la consulta a ECMO.'},
+    {l:3,q:'Paciente con amlodipino, FEVI 65 %, hipoxemia grave con líneas B difusas tras 4 L de cristaloides. ¿Qué soporte extracorpóreo corresponde?',o:['ECMO VA','ECMO VV','Balón de contrapulsación','Hemodiálisis'],a:1,e:'El edema pulmonar no cardiogénico (vasodilatación precapilar más volumen) con función sistólica conservada se soporta con VV. El VA se reserva para shock cardiogénico o arritmias refractarias.'},
+    {l:3,q:'¿Cuál es una desventaja específica de la emulsión lipídica?',o:['Causa hiperkalemia','Interfiere con exámenes de laboratorio y puede obstruir circuitos de ECMO/diálisis','Está contraindicada en paro cardíaco','No sirve en fármacos lipofílicos'],a:1,e:'La lipemia altera glicemia, Mg, creatinina y otros (no K⁺), y puede dañar circuitos. Otros riesgos: pancreatitis, SDRA. Por eso, cuando existe ECMO, va antes que los lípidos.'},
+    {l:3,q:'En intoxicación por acebutolol, ¿qué hallazgo ECG anticipa TV?',o:['ST en cubeta','R > 3 mm en aVR y QTc desproporcionado','Onda J de Osborn','PR corto con onda delta'],a:1,e:'Acebutolol tiene bloqueo de Na, de K y ASI. En la serie de Love, los pacientes con R en aVR > 3 mm y QTc prolongado desarrollaron taquiarritmias ventriculares.'},
+    {l:3,q:'¿Cuál de estos pacientes intoxicados tiene indicación de hemodiálisis según EXTRIP?',o:['Amlodipino 500 mg en shock','Propranolol con convulsiones','Atenolol con falla renal, bradicardia e hipotensión refractarias','Verapamilo con BAV completo'],a:2,e:'Atenolol y sotalol son hidrofílicos y de baja unión a proteínas. EXTRIP recomienda diálisis si hay falla renal con bradicardia/hipotensión refractaria o TdP recurrente. No para BCC ni propranolol.'},
+    {l:3,q:'Ingesta de un «producto adelgazante» con semillas de adelfa amarilla, TV bidireccional y K⁺ 6,8. Dosis empírica de Fab:',o:['1 vial','2 viales','10 viales','20–30 viales'],a:3,e:'Los glucósidos vegetales tienen menor afinidad por el anticuerpo; Cole recomienda 20–30 viales empíricos en toxicidad grave por productos con adelfa amarilla, si están disponibles.'},
+    {l:3,q:'Según Cole y Arens, ante shock refractario a volumen, calcio y atropina, el siguiente paso recomendado es:',o:['Glucagón y luego insulina','Noradrenalina 0,04 mcg/kg/min e HIET simultáneamente','Esperar respuesta al calcio 2 horas','Emulsión lipídica'],a:1,e:'La noradrenalina actúa rápido, la insulina tarda 15–45 min, y ambas son sinérgicas en modelos animales. Se inician juntas y se titulan por POCUS, FC y PAM.'}
+  ];
+  let filt='all'; const answered={};
+  const list=document.getElementById('qlist');
+  const lvName={0:'n0',1:'n1',2:'n2',3:'n3',4:'n4'};const lvLbl={0:'Estudiante',1:'Interno',2:'Residente',3:'Urgenciólogo',4:'Experto'};
+  function renderQ(){
+    const items=Q.map((x,i)=>({...x,i})).filter(x=>filt==='all'||String(x.l)===filt);
+    list.innerHTML=items.map((x,k)=>{
+      const st=answered[x.i];
+      const opts=x.o.map((o,j)=>{
+        let c='opt'; if(st!==undefined){ if(j===x.a)c+=' right'; else if(j===st)c+=' wrong'; }
+        return `<button class="${c}" data-q="${x.i}" data-o="${j}" ${st!==undefined?'disabled':''}>${String.fromCharCode(65+j)}. ${o}</button>`;
+      }).join('');
+      const ex = st===undefined?'':`<div class="expl"><b class="v ${st===x.a?'ok':'ko'}">${st===x.a?'Correcto.':'Incorrecto.'}</b> ${x.e}</div>`;
+      return `<article class="q"><div class="qh"><span class="qn">${String(k+1).padStart(2,'0')}</span><span class="lv ${lvName[x.l]}">${lvLbl[x.l]}</span></div><p class="qt">${x.q}</p><div class="opts">${opts}</div>${ex}</article>`;
+    }).join('');
+    const ids=items.map(x=>x.i); const done=ids.filter(i=>answered[i]!==undefined); const ok=done.filter(i=>answered[i]===Q[i].a);
+    document.getElementById('score').textContent=`${ok.length} correctas de ${done.length} respondidas · ${ids.length} preguntas`;
+  }
+  list.addEventListener('click',e=>{const b=e.target.closest('.opt'); if(!b||b.disabled)return; answered[+b.dataset.q]=+b.dataset.o; renderQ();});
+  document.querySelectorAll('#quiz .fbtn').forEach(b=>b.addEventListener('click',()=>{filt=b.dataset.f;document.querySelectorAll('#quiz .fbtn').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));renderQ();}));
+  document.getElementById('qreset').addEventListener('click',()=>{for(const k in answered)delete answered[k];renderQ();});
+  renderQ();
+
+  /* ---------- Cases ---------- */
+  const C=[
+    {t:'Verapamilo de liberación prolongada',sub:'Mujer de 32 años, 60 kg, encontrada somnolienta tras discusión. Usa verapamilo SR 240 mg para migraña; blíster vacío de 20 comprimidos (4,8 g). Ingesta hace ~3 h.',lvl:'Residente',
+     v:[['PA 74/36',1],['FC 34',1],['FR 16',0],['SatO₂ 95 %',0],['Glasgow 13',0],['HGT 312 mg/dL',1]],
+     s:[
+      {h:'Etapa 1 · Reconocimiento',i:'ECG: bradicardia de la unión a 34/min, sin ondas P visibles, QRS 100 ms. Piel fría. Llene capilar 4 s.',q:'¿Qué está pasando y cuáles son tus primeras 5 acciones?',k:'Intoxicación grave por BCC no dihidropiridínico (bradicardia de la unión + hipotensión + hiperglicemia, que marca gravedad). Acciones: monitor y parches de marcapaso; 2 vías gruesas; ECG y glicemia (hechos); bolo de cristaloides 10–20 mL/kg reevaluando; atropina 1 mg; pedir gases, electrolitos con Ca iónico, K⁺, lactato, creatinina, paracetamol, β-hCG. Llamar a CITUC.',err:'Atribuir la hiperglicemia a diabetes; esperar el efecto del volumen sin pasar a calcio; no preguntar por la formulación (SR cambia todo).',hint:'¿Qué significa que esté hiperglicémica si no es diabética?'},
+      {h:'Etapa 2 · Tratamiento inicial',i:'Tras 1.000 mL de SF y atropina 1 mg: PA 78/40, FC 36. Paciente más somnolienta (Glasgow 11).',q:'¿Qué indicas ahora y en qué dosis? ¿Descontaminación?',k:'Calcio: gluconato 10 % 0,6 mL/kg = 36 mL en 10 min por vía periférica (o cloruro 10 % 12 mL por CVC); repetir a los 20 min y dejar infusión si responde; Ca iónico seriado. Descontaminación: liberación prolongada a las 3 h; carbón activado e irrigación intestinal total solo con vía aérea asegurada y si se estabiliza (irrigación contraindicada en inestable). Planificar intubación por deterioro de conciencia y CVC.',err:'Dar irrigación intestinal con vía aérea no protegida; dar glucagón (sin rol en BCC); sobrecargar de volumen.',hint:'¿Cuál es la vía final común y qué la corrige más directamente?'},
+      {h:'Etapa 3 · Shock refractario',i:'Tras 2 bolos de calcio: PA 70/35, FC 38. Intubada. POCUS: VI con contractilidad globalmente disminuida, FEVI estimada 30 %, VCI 2 cm sin colapso, líneas B escasas.',q:'Define fenotipo y escribe las indicaciones con dosis para 60 kg.',k:'Fenotipo cardiogénico con bradicardia. Iniciar en paralelo: noradrenalina 0,04 mcg/kg/min (2,4 mcg/min) e HIET: dextrosa 25–50 g (HGT ya 312, puede omitirse el bolo), insulina 60 U en bolo, infusión 60 U/h (6 mL/h a 10 U/mL) + dextrosa 0,5 g/kg/h si glicemia baja de ~250. A los 30 min reevaluar POCUS; si persiste disfunción subir 1–2 U/kg/h c/15 min hasta 600 U/h. Considerar adrenalina por bradicardia. Línea arterial y CVC.',err:'Subir solo vasopresores sin insulina; titular insulina por PA y no por contractilidad; olvidar K⁺ y glicemia basales.',hint:'El gasto es FC × volumen sistólico: ¿cuál falla más según el POCUS?'},
+      {h:'Etapa 4 · Complicaciones',i:'2 h después: insulina a 5 U/kg/h, PA 98/54, FC 52. Glicemia 58 mg/dL, K⁺ 2,5 mEq/L, Mg 1,5 mg/dL.',q:'¿Qué corriges y cómo? ¿Suspendes la insulina?',k:'No suspender HIET (está funcionando). Hipoglicemia: bolo de 25 g de dextrosa y subir infusión 25 g/h, controles c/10–15 min. K⁺ 2,5: bajo el umbral de 2,8 → reponer K⁺ por CVC y control horario. Reponer Mg. Concentrar soluciones para evitar sobrecarga.',err:'Suspender la insulina por la hipoglicemia; reponer K⁺ hasta 4,5 (hiperkalemia de rebote al suspender).',hint:'¿La hipokalemia es déficit o redistribución?'},
+      {h:'Etapa 5 · Disposición y rescate',i:'Al cuarto día de UCI se plantea a qué centro se habría derivado si la PA hubiese caído a 60/30 con insulina a 10 U/kg/h y 3 vasopresores.',q:'¿Cuáles son tus criterios de ECMO y qué harías mientras se activa?',k:'Shock cardiogénico persistente pese a HIET máxima y ≥ 3 vasoactivos, o arritmias refractarias → ECMO VA (supervivencia 86 % vs 48 % en Masson). Activar precozmente, antes del paro. Mientras: emulsión lipídica 20 % 1,5 mL/kg (90 mL) + 0,25 mL/kg/min si no hay ECMO, marcapaso transcutáneo de prueba. Evaluación psiquiátrica al recuperarse.',err:'Llamar a ECMO cuando ya está en paro; dar lípidos y luego derivar sin avisar (lípidos interfieren con el circuito).',hint:'¿Qué rescate tiene mejor evidencia en shock cardiogénico tóxico?'}
+     ]},
+    {t:'Amlodipino y pulmón húmedo',sub:'Hombre de 58 años, 85 kg, HTA y depresión en tratamiento con sertralina. Ingirió 40 comprimidos de amlodipino 10 mg hace 6 h.',lvl:'Urgenciólogo',
+     v:[['PA 72/34',1],['FC 108',0],['SatO₂ 93 %',0],['Lactato 5,8',1],['HGT 168',0]],
+     s:[
+      {h:'Etapa 1 · Fenotipo',i:'Piel tibia, llene capilar 2 s. ECG: taquicardia sinusal. POCUS: VI hiperdinámico, FEVI ~70 %, VCI 1,2 cm colapsable, sin líneas B.',q:'¿Qué fenotipo es y qué lo explica fisiopatológicamente?',k:'Vasopléjico puro: dihidropiridina con selectividad vascular, taquicardia refleja; amlodipino además aumenta NO. Volumen 10–20 mL/kg con reevaluación, calcio, noradrenalina temprana.',err:'Indicar HIET en dosis máxima de entrada: puede empeorar la vasodilatación.',hint:'¿Dónde actúan las dihidropiridinas en dosis terapéutica?'},
+      {h:'Etapa 2 · Escalada',i:'Tras 4 L de cristaloides, calcio y NA hasta 0,5 mcg/kg/min: PAM 55. SatO₂ 86 % con FiO₂ 60 %, líneas B difusas. FEVI sigue ~65 %.',q:'¿Qué explica la hipoxemia? ¿Qué agregas?',k:'Edema pulmonar no cardiogénico (vasodilatación precapilar pulmonar + volumen); en serie de amlodipino 47 %. Frenar volumen. Agregar vasopresina 0,04 U/min (2.º vasopresor a NA 0,5 mcg/kg/min). HIET a dosis moderada puede aportar, pero vigilar vasodilatación. Ventilación protectora.',err:'Interpretar como edema cardiogénico y dar diuréticos agresivos en un paciente vasopléjico; seguir dando volumen.',hint:'La FEVI es normal. ¿Qué otro mecanismo produce edema pulmonar?'},
+      {h:'Etapa 3 · Rescate',i:'PAM 52 con NA 0,8, vasopresina 0,04, adrenalina 0,2 mcg/kg/min. SatO₂ 84 % con FiO₂ 100 % y PEEP 12.',q:'¿Azul de metileno? ¿Qué ECMO?',k:'Azul de metileno es lógico en amlodipino, pero con sertralina tiene riesgo de síndrome serotoninérgico (inhibe MAO-A): valorar riesgo-beneficio o preferir hidroxocobalamina 5 g en 15 min. Descartar déficit de G6PD si se usa. Hipoxemia refractaria con función sistólica conservada → ECMO VV (VA si aparece falla cardíaca). Coordinar con centro ECMO y CITUC.',err:'No revisar la farmacoterapia crónica antes del azul de metileno; elegir VA por reflejo cuando el problema es pulmonar.',hint:'Revisa la lista de medicamentos habituales del paciente.'}
+     ]},
+    {t:'La abuela con náuseas',sub:'Mujer de 83 años, 60 kg, IC y FA. Digoxina 0,25 mg/día. Hace 10 días inició enalapril y, por neumonía, claritromicina. Náuseas, anorexia y confusión de 4 días.',lvl:'Residente',
+     v:[['PA 94/52',0],['FC 42',1],['K⁺ 6,1',1],['Creat 2,8',1],['Digoxina 4,1 ng/mL',1]],
+     s:[
+      {h:'Etapa 1 · Sospecha',i:'ECG: taquicardia auricular con bloqueo AV 2:1, respuesta ventricular 42/min, extrasístoles ventriculares frecuentes, ST en cubeta.',q:'¿Aguda o crónica? Nombra 3 precipitantes de este caso.',k:'Toxicidad crónica: adulta mayor, cardiopatía, síntomas extracardíacos. Precipitantes: deterioro renal (enalapril, posible hipovolemia), claritromicina (P-gp y flora intestinal), edad. El nivel en crónica se interpreta de inmediato (estado estable). TAP con bloqueo es clásica.',err:'Atribuir las náuseas a la claritromicina y cerrar el caso; esperar el nivel para decidir.',hint:'¿Qué ritmo combina automatismo aumentado con conducción deprimida?'},
+      {h:'Etapa 2 · Antídoto',i:'Farmacia informa que no hay Fab en el hospital.',q:'¿Tiene indicación de Fab? Calcula viales. ¿Qué haces mientras se consigue?',k:'Sí: K⁺ > 5,0, bradiarritmia con repercusión, nivel elevado. Viales = (4,1 × 60) ÷ 100 = 2,46 → 3 viales (empírico crónico 1–2, repetir). Contactar CITUC y red para conseguirlo. Mientras: atropina 0,5–1 mg; tratar hiperkalemia con insulina-glucosa (anticipando hipokalemia tras Fab); corregir Mg; suspender digoxina, enalapril y claritromicina; lidocaína si arritmia ventricular.',err:'Calcular con la dosis diaria; olvidar redondear hacia arriba; usar marcapaso como primera medida.',hint:'Fórmula por nivel: ng/mL × kg ÷ 100.'},
+      {h:'Etapa 3 · Calcio, marcapaso y después',i:'El interno propone gluconato de calcio por la hiperkalemia y el residente de UCI sugiere marcapaso transvenoso.',q:'¿Qué respondes a cada uno? ¿Cómo monitorizas tras el Fab?',k:'Calcio: los datos recientes (Levine 2011) no muestran daño, pero con toxicidad digitálica conocida + hiperkalemia, el tratamiento es Fab. Marcapaso: 36 % de complicaciones y 13 % mortalidad; solo como puente si Fab no llega. Tras Fab: guiarse por clínica (no por digoxina total), K⁺ seriado por riesgo de hipokalemia, vigilar FA rápida o IC descompensada al perder el efecto digitálico; observación prolongada por falla renal (rebote). Evaluar cognición y manejo de fármacos al alta.',err:'Pedir digoxinemia de control post-Fab y alarmarse por el aumento; dar el alta precoz con falla renal.',hint:'¿Qué mide el laboratorio después del Fab?'}
+     ]},
+    {t:'QRS que se ensancha',sub:'Mujer de 24 años, 55 kg, flecainida por TPSV. Ingesta de 30 comprimidos de 100 mg hace 2 h. Caso relámpago (10 min).',lvl:'Urgenciólogo',
+     v:[['PA 82/50',1],['FC 64',0],['QRS 168 ms',1],['K⁺ 3,6',0],['pH 7,32',0]],
+     s:[
+      {h:'Etapa 1',i:'ECG: QRS 168 ms, R terminal en aVR 4 mm, PR 260 ms, QTc 520 ms.',q:'Mecanismo y tratamiento inmediato con dosis.',k:'Bloqueo de canal de Na clase IC (cinética lenta). Bicarbonato de sodio 8,4 %: 1–2 mEq/kg = 55–110 mEq en bolo, repetir hasta QRS < 120 ms o pH 7,50–7,55. Vigilar K⁺ (la alcalosis lo baja y alarga el QT); Mg si QT largo. Carbón activado con vía aérea segura.',err:'Usar solo infusión de bicarbonato sin bolos; olvidar el K⁺.',hint:'¿Qué hace la carga de Na⁺ sobre un canal bloqueado?'},
+      {h:'Etapa 2',i:'Tras 150 mEq: QRS 140 ms. Luego TV monomorfa ancha a 150/min con pulso, PA 70/40.',q:'¿Qué antiarrítmico evitas y qué haces?',k:'Evitar procainamida, propafenona y amiodarona (bloqueo aditivo). Más bicarbonato en bolo, corregir K⁺/Mg, cardioversión sincronizada si inestable (puede fallar). Shock cardiogénico: noradrenalina/adrenalina. Activar ECMO VA precoz (flecainida es el bloqueador de Na más frecuente en ECMO). Emulsión lipídica si no hay ECMO.',err:'Tratar la TV con amiodarona según algoritmo ACLS estándar.',hint:'Algoritmo ACLS vs algoritmo toxicológico.'}
+     ]},
+    {t:'El niño somnoliento',sub:'Niño de 2 años, 12 kg, traído por sopor. Estuvo en casa de su abuelo hipertenso. Caso relámpago (10 min). Contenido complementario.',lvl:'Residente',
+     v:[['PA 72/40',1],['FC 62',1],['FR 10',1],['Pupilas 1 mm',0],['Glasgow 9',1],['T 35,6 °C',0]],
+     s:[
+      {h:'Etapa 1',i:'El abuelo usa clonidina 0,15 mg y amlodipino. Faltan comprimidos. Apneas de 15 s. Al llegar el SAMU registró PA 118/76.',q:'¿Qué tóxico explica todo y por qué hubo hipertensión inicial?',k:'Agonista α2 (clonidina): sopor, miosis, apneas, bradicardia, hipotensión, hipotermia; hipertensión transitoria por estímulo α2 postsináptico periférico. Diferencial: opioides, amlodipino (no da miosis ni coma precoz con PA así).',err:'Tratar la hipertensión inicial; descartar opioides solo por el contexto.',hint:'¿Qué receptor periférico produce vasoconstricción además de α1?'},
+      {h:'Etapa 2',i:'Glicemia 92 mg/dL.',q:'Manejo con dosis para 12 kg.',k:'Vía aérea y ventilación (estímulo, VMNI o intubación si apneas persisten). Naloxona 0,1 mg/kg = 1,2 mg, repetible (respuesta inconstante). Atropina 0,02 mg/kg = 0,24 mg si bradicardia con hipoperfusión. Volumen 10–20 mL/kg. Observación con monitor, idealmente 24 h por la posibilidad de amlodipino (coingesta). Evaluar seguridad del entorno (almacenamiento de medicamentos).',err:'Dar el alta cuando despierta, sin considerar la coingesta de amlodipino.',hint:'Dos fármacos en la casa: ¿cuál define el tiempo de observación?'}
+     ]}
+  ];
+  const cw=document.getElementById('cases');
+  cw.innerHTML='<h3>Casos clínicos</h3>'+C.map((c,ci)=>`
+    <details class="case" ${ci===0?'open':''}>
+      <summary><span class="cn">CASO ${ci+1}</span><h3>${c.t}</h3><span class="lv ${c.lvl==='Urgenciólogo'?'n3':'n2'}">${c.lvl}</span><span class="sub">${c.sub}</span></summary>
+      <div class="cbody">
+        <div class="vitals">${c.v.map(v=>`<span class="vital ${v[1]?'bad':''}">${v[0]}</span>`).join('')}</div>
+        ${c.s.map((s,si)=>`
+          <div class="cstage" data-case="${ci}" data-stage="${si}" ${si>0?'hidden':''}>
+            <span class="st">${s.h}</span>
+            <p>${s.i}</p>
+            <p class="ask">${s.q}</p>
+            <div class="tutor"><span class="tl">Pista si se atasca</span><p>${s.hint}</p></div>
+            <div class="res-key" hidden><span class="tl">Respuesta esperada</span><p>${s.k}</p></div>
+            <div class="tutor"><span class="tl">Errores frecuentes</span><p>${s.err}</p></div>
+            <div class="stagenav">
+              <button class="btn ghost" data-act="key">Ver respuesta</button>
+              ${si<c.s.length-1?`<button class="btn rx" data-act="next">Siguiente etapa →</button>`:`<span class="prog">Fin del caso: pasar a debriefing</span>`}
+              <span class="prog">Etapa ${si+1} de ${c.s.length}</span>
+            </div>
+          </div>`).join('')}
+        <div class="stagenav"><button class="btn ghost" data-act="reset" data-case="${ci}">Reiniciar caso</button></div>
+      </div>
+    </details>`).join('');
+  cw.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-act]'); if(!b)return;
+    const act=b.dataset.act;
+    if(act==='key'){const st=b.closest('.cstage');const k=st.querySelector('.res-key');k.hidden=!k.hidden;b.textContent=k.hidden?'Ver respuesta':'Ocultar respuesta';}
+    if(act==='next'){const st=b.closest('.cstage');const nx=st.nextElementSibling; if(nx&&nx.classList.contains('cstage')){nx.hidden=false;b.hidden=true;nx.scrollIntoView({behavior:'smooth',block:'nearest'});}}
+    if(act==='reset'){const ci=b.dataset.case;cw.querySelectorAll(`.cstage[data-case="${ci}"]`).forEach((st,i)=>{st.hidden=i>0;st.querySelector('.res-key').hidden=true;const kb=st.querySelector('[data-act="key"]');kb.textContent='Ver respuesta';const nb=st.querySelector('[data-act="next"]');if(nb)nb.hidden=false;});}
+  });
+  /* ---------- Storage helpers ---------- */
+  const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+
+  /* ---------- Ruta checklists ---------- */
+  const ruta=store.get('cxu-ruta',{});
+  function rutaUpdate(){
+    document.querySelectorAll('.esc').forEach(esc=>{
+      const boxes=[...esc.querySelectorAll('input[type=checkbox]')];
+      const done=boxes.filter(b=>b.checked).length;
+      esc.querySelector('.meter>i').style.width=(100*done/boxes.length)+'%';
+      esc.querySelector('.prog').textContent=`${done} de ${boxes.length} competencias marcadas`;
+    });
+  }
+  document.querySelectorAll('.esc input[type=checkbox]').forEach(b=>{
+    b.checked=!!ruta[b.dataset.k];
+    b.addEventListener('change',()=>{ruta[b.dataset.k]=b.checked;store.set('cxu-ruta',ruta);rutaUpdate();});
+  });
+  rutaUpdate();
+
+  /* ---------- Flashcards ---------- */
+  const FC=[
+    [0,'¿Qué corriente produce la fase 0 en el miocito ventricular? ¿Y en el nodo AV?','Ventrículo: INa rápida (Nav1.5). Nodo AV: ICa tipo L.'],
+    [0,'Cascada del receptor β1','β1 → Gs → adenilato ciclasa → cAMP → PKA → fosforila canal L, fosfolamban, RyR2 y troponina I.'],
+    [0,'Clases de Vaughan-Williams','I: canal Na · II: β-bloqueo · III: canal K · IV: canal Ca L. Digoxina aparte (Na⁺/K⁺-ATPasa).'],
+    [0,'¿Cómo aumenta la contractilidad la digoxina?','Bloquea la Na⁺/K⁺-ATPasa → Na⁺ᵢ ↑ → el NCX saca menos Ca²⁺ → Ca²⁺ᵢ ↑.'],
+    [0,'¿Por qué los BCC causan hiperglicemia?','Bloquean el canal L de la célula β (menos insulina) y generan resistencia periférica.'],
+    [0,'Efecto del receptor α2 presináptico','Disminuye la liberación de noradrenalina: bradicardia e hipotensión (clonidina).'],
+    [1,'Diferencial tóxico de bradicardia + hipotensión','4C + B + O: calcioantagonistas, clonidina/imidazolinas, colinérgicos, cardioactivos esteroides, β-bloqueadores, opioides.'],
+    [1,'Primeros 10 minutos','ABC, monitor, parches de marcapaso, 2 vías gruesas, ECG de 12 derivaciones, glicemia, historia (fármaco, dosis, hora, formulación).'],
+    [1,'Observación en paciente asintomático','Liberación inmediata: ≥ 6 h. Liberación prolongada: hasta 24 h. Sotalol: prolongada.'],
+    [1,'Carbón activado en cardiotóxicos','50–100 g dentro de 1 h (hasta 2 h en prolongada), solo con vía aérea protegida o paciente alerta.'],
+    [1,'Hallazgo ECG más precoz en BB/BCC','PR prolongado (BAV de 1.er grado), incluso sin bradicardia importante.'],
+    [1,'ECG clásico de toxicidad digitálica','Taquicardia auricular paroxística con bloqueo AV; también unión acelerada y TV bidireccional.'],
+    [1,'¿Cuándo medir digoxinemia en ingesta aguda?','≥ 6 h postingesta. Antes, el valor sobrestima la toxicidad tisular.'],
+    [2,'Dosis de calcio','Gluconato 10 % 0,6 mL/kg (periférico) o cloruro 10 % 0,2 mL/kg (central) en 10 min; repetir; infusión si responde. iCa ≤ 1,5× LSN.'],
+    [2,'HIET completo','Dextrosa 25–50 g si glicemia < 200 → insulina 1 U/kg → 1 U/kg/h + dextrosa 0,5 g/kg/h → titular hasta 10 U/kg/h. Glicemia c/10–15 min, K⁺ c/1 h.'],
+    [2,'Umbral de K⁺ durante HIET','Mantener ≥ 2,8 mEq/L. Es redistribución, no déficit total.'],
+    [2,'Noradrenalina en BB/BCC','Inicio 0,04 mcg/kg/min junto con HIET; a 0,5 mcg/kg/min agregar vasopresina 0,04 U/min.'],
+    [2,'Glucagón','5–10 mg IV lento → 1–5 mg/h. Solo BB, como puente. Vómitos. Sin rol en BCC.'],
+    [2,'Fab antidigoxina: fórmulas','Nivel: ng/mL × kg ÷ 100. Dosis ingerida: mg × 0,8 ÷ 0,5. 1 vial (40 mg) ≈ 0,5 mg. Paro: 10 viales.'],
+    [2,'Indicaciones de Fab','Arritmia ventricular, bradiarritmia sin respuesta a atropina, K⁺ > 5,0, progresión rápida, coingesta, glucósido vegetal grave, ingesta > 10 mg o nivel > 6 ng/mL con clínica.'],
+    [2,'Bicarbonato en bloqueo de Na','1–2 mEq/kg en bolo, repetir hasta QRS < 120 ms o pH 7,50–7,55. Vigilar K⁺.'],
+    [2,'Clonidina: tríada y antídoto','Sopor + miosis + bradicardia/hipotensión (HTA inicial). Naloxona en dosis altas, respuesta inconstante.'],
+    [3,'Fenotipo cardiogénico','FEVI baja: subir HIET, cambiar a adrenalina, dobutamina, ECMO VA precoz.'],
+    [3,'Fenotipo vasopléjico','FEVI normal: NA → vasopresina → azul de metileno o hidroxocobalamina. HIET con cautela.'],
+    [3,'Azul de metileno','1–2 mg/kg → 1 mg/kg/h hasta 6 h; máx. 7 mg/kg. Evitar con ISRS/IMAO y déficit de G6PD.'],
+    [3,'Emulsión lipídica 20 %','1,5 mL/kg en 2–3 min → 0,25 mL/kg/min; máx. 10–12 mL/kg en 30 min. Rescate, después de ECMO si existe.'],
+    [3,'ECMO VA vs VV','VA: shock cardiogénico o arritmias refractarias. VV: edema pulmonar no cardiogénico con función conservada.'],
+    [3,'Calcio en toxicidad digitálica','Datos recientes: no aumenta mortalidad. Con digoxina conocida e hiperkalemia, el tratamiento es Fab.'],
+    [3,'Diálisis según EXTRIP','No en BCC ni propranolol. Sí en atenolol o sotalol con falla renal y shock o TdP refractarios.'],
+    [4,'¿Qué es la absorción continuada?','Liberación prolongada o bezoar que mantiene la absorción por horas: deterioro tardío pese a mejoría inicial.'],
+    [4,'Consumo de calcio en 24 h (70 kg)','~3 bolos + infusión 0,5 mL/kg/h ≈ 950 mL de gluconato 10 %. El stock se agota rápido.'],
+    [4,'Principio en la embarazada intoxicada','Reanimar a la madre con los mismos antídotos; desplazamiento uterino; obstetricia precoz.'],
+    [4,'Límites de la evidencia en cardiotóxicos','Sin ECA humanos: modelos animales con dosis IV fija, series con sesgo de publicación, consensos con recomendaciones débiles.'],
+    [4,'Momento de ECMO','Antes del paro. Activar cuando el shock progresa pese a HIET y vasopresores en aumento.']
+  ];
+  let fcKnown=store.get('cxu-fc',{}); let fcF='all'; let fcOrder=FC.map((_,i)=>i); let fcPos=0; let fcBack=false;
+  const fcCard=$('fcCard'), fcTxt=$('fcTxt'), fcSide=$('fcSide'), fcStat=$('fcStat');
+  function fcList(){return fcOrder.filter(i=>fcF==='all'?true:fcF==='pend'?!fcKnown[i]:String(FC[i][0])===fcF);}
+  function fcRender(){
+    const L=fcList();
+    if(!L.length){fcTxt.textContent=fcF==='pend'?'No quedan tarjetas por repasar en este filtro.':'Sin tarjetas.';fcSide.textContent='—';fcCard.classList.remove('back');fcStat.textContent='';return;}
+    if(fcPos>=L.length)fcPos=0; if(fcPos<0)fcPos=L.length-1;
+    const i=L[fcPos], c=FC[i];
+    fcCard.classList.toggle('back',fcBack);
+    fcSide.textContent=(fcBack?'Respuesta':'Pregunta')+' · '+lvLbl[c[0]];
+    fcTxt.textContent=fcBack?c[2]:c[1];
+    const k=Object.keys(fcKnown).filter(x=>fcKnown[x]).length;
+    fcStat.textContent=`Tarjeta ${fcPos+1} de ${L.length}${fcKnown[i]?' · marcada como sabida':''} · ${k} de ${FC.length} sabidas en total`;
+  }
+  fcCard.addEventListener('click',()=>{fcBack=!fcBack;fcRender();});
+  $('fcNext').addEventListener('click',()=>{fcPos++;fcBack=false;fcRender();});
+  $('fcPrev').addEventListener('click',()=>{fcPos--;fcBack=false;fcRender();});
+  function fcMark(v){const L=fcList(); if(!L.length)return; const i=L[fcPos]; fcKnown[i]=v; store.set('cxu-fc',fcKnown); if(!(fcF==='pend'&&v))fcPos++; fcBack=false; fcRender();}
+  $('fcYes').addEventListener('click',()=>fcMark(true));
+  $('fcNo').addEventListener('click',()=>fcMark(false));
+  $('fcShuffle').addEventListener('click',()=>{for(let i=fcOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcOrder[i],fcOrder[j]]=[fcOrder[j],fcOrder[i]];}fcPos=0;fcBack=false;fcRender();});
+  document.querySelectorAll('.fcf').forEach(b=>b.addEventListener('click',()=>{fcF=b.dataset.f;document.querySelectorAll('.fcf').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));fcPos=0;fcBack=false;fcRender();}));
+  fcRender();
+
+  const tm=document.getElementById('tutorMode');
+  tm.addEventListener('change',()=>document.body.classList.toggle('tutor-on',tm.checked));
+})();
+</script>
+
+</body>
+</html>
