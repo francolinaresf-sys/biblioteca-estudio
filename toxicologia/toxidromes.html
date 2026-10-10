@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Toxídromes en Urgencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: columna de estudio de ~72ch con navegación pegajosa por secciones; tablas y fichas con código de color por toxídrome */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --surface-2:#e9edf1; --ink:#14202b; --muted:#566573; --line:#d3dae1;
+  --accent:#0d5c7a; --accent-ink:#ffffff; --warn:#a1420f; --warn-bg:#fbeee5;
+  --t-op:#4b4fc4; --t-sy:#c0352b; --t-se:#d06a10; --t-am:#a77d00; --t-mu:#0f8a7e; --t-ni:#3a8a2e; --t-de:#b0307e; --t-sn:#6b5a4a;
+  --tint:12%;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f161d; --surface:#16212b; --surface-2:#1d2a36; --ink:#e3eaf0; --muted:#97a7b5; --line:#2a3a48;
+  --accent:#5cb8d9; --accent-ink:#06202b; --warn:#f0a070; --warn-bg:#2d1d12;
+  --t-op:#8f93ff; --t-sy:#ff7a6e; --t-se:#ffa04d; --t-am:#e4c24a; --t-mu:#4fd1c2; --t-ni:#7fcf6f; --t-de:#f07cc3; --t-sn:#c2ad98;
+  --tint:18%; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f161d; --surface:#16212b; --surface-2:#1d2a36; --ink:#e3eaf0; --muted:#97a7b5; --line:#2a3a48;
+  --accent:#5cb8d9; --accent-ink:#06202b; --warn:#f0a070; --warn-bg:#2d1d12;
+  --t-op:#8f93ff; --t-sy:#ff7a6e; --t-se:#ffa04d; --t-am:#e4c24a; --t-mu:#4fd1c2; --t-ni:#7fcf6f; --t-de:#f07cc3; --t-sn:#c2ad98;
+  --tint:18%; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.1;margin:0}
+h2{font-size:clamp(1.6rem,3.2vw,2.1rem);font-weight:800;font-stretch:85%;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700;font-stretch:90%}
+h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:var(--muted)}
+p{margin:0;max-width:68ch}
+ul{margin:0;padding-left:1.15em}
+li+li{margin-top:.25em}
+a{color:var(--accent)}
+.mono{font-family:var(--f-mono);font-size:.86em}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Hero */
+header.hero{padding-block:44px 28px;display:grid;gap:18px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(2.6rem,7vw,4.6rem);font-weight:900;font-stretch:75%;letter-spacing:-.02em;line-height:.95}
+.hero h1 span{color:var(--accent)}
+.hero .lede{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.ref{font-size:.85rem;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--c:var(--accent);display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) var(--tint),transparent);border:1px solid color-mix(in srgb,var(--c) 35%,transparent)}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+
+/* Nav */
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-inline:-20px;padding-inline:20px}
+nav.toc ul{list-style:none;padding:0;margin:0;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.toc li{margin:0}
+nav.toc a{display:block;white-space:nowrap;padding:12px 10px;font-size:.88rem;font-weight:700;color:var(--muted);text-decoration:none;border-bottom:2px solid transparent}
+nav.toc a:hover{color:var(--ink);border-bottom-color:var(--line)}
+
+section{padding-block:48px 8px;display:grid;gap:22px;scroll-margin-top:52px}
+.sec-head{display:grid;gap:8px}
+.sec-head p{color:var(--muted)}
+
+/* Flujo general */
+.flow{display:grid;gap:0}
+.step{display:grid;grid-template-columns:44px 1fr;gap:16px;position:relative;padding-bottom:22px}
+.step:not(:last-child)::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.step .n{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:1.25rem;background:var(--accent);color:var(--accent-ink)}
+.step .body{display:grid;gap:10px;min-width:0;padding-top:8px}
+.step .body p{color:var(--muted)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:8px;min-width:0}
+.box.tint{background:var(--surface-2);border-color:transparent}
+.callout{background:var(--warn-bg);border-left:4px solid var(--warn);border-radius:4px;padding:12px 16px;display:grid;gap:4px}
+.callout strong{color:var(--warn)}
+
+.sev{width:100%;border-collapse:collapse;font-size:.92rem}
+.sev th,.sev td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.sev th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+
+/* Tabla comparativa */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table.cmp{border-collapse:separate;border-spacing:0;font-size:.86rem;min-width:900px;width:100%}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp thead th{position:sticky;top:0;background:var(--surface);font-family:var(--f-display);font-stretch:85%;font-size:.95rem;font-weight:800;color:var(--c,var(--ink));border-bottom:3px solid var(--c,var(--line));cursor:pointer}
+.cmp tbody th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;position:sticky;left:0;background:var(--surface);z-index:1}
+.cmp td.hl{background:color-mix(in srgb,var(--c) var(--tint),transparent)}
+.cmp td.sev-mark{font-weight:700}
+.cmp sup{color:var(--warn);font-weight:700}
+.cmp tr.mnemo td{font-style:italic;color:var(--muted)}
+.cmp-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-size:.85rem;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn[aria-pressed="true"]{background:var(--c,var(--accent));border-color:var(--c,var(--accent));color:var(--bg)}
+.note{font-size:.84rem;color:var(--muted)}
+
+/* Pupilas */
+.pupil{display:inline-block;vertical-align:middle;margin-right:6px}
+
+/* Clasificador */
+.clf{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.clf{grid-template-columns:1fr}}
+.qgrid{display:grid;gap:14px}
+.q{display:grid;gap:6px}
+.q .opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{font:inherit;font-size:.84rem;padding:6px 11px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+.opt:hover{border-color:var(--accent)}
+.opt[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.results{position:sticky;top:64px;display:grid;gap:10px}
+.res{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:.88rem}
+.res .name{font-weight:700;color:var(--c)}
+.bar{height:10px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.bar span{display:block;height:100%;background:var(--c);width:0;transition:width .35s ease}
+.res .pct{font-family:var(--f-mono);font-size:.8rem;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.res.top .name::after{content:" ◆";font-size:.7em}
+.mismatch{font-size:.8rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.bar span{transition:none}}
+
+/* Fichas */
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tabs .btn{--c:var(--accent)}
+.ficha{--c:var(--accent);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:10px;padding:20px;display:grid;gap:18px}
+.ficha-head{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:baseline;justify-content:space-between}
+.ficha-head h3{font-size:1.7rem;font-weight:900;font-stretch:80%;color:var(--c)}
+.mn{font-family:var(--f-mono);font-size:.82rem;background:color-mix(in srgb,var(--c) var(--tint),transparent);color:var(--ink);padding:4px 10px;border-radius:6px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.fgrid > div{display:grid;gap:6px;align-content:start;min-width:0}
+.dose{border:1px dashed var(--line);border-radius:8px;padding:12px 14px;display:grid;gap:6px;font-size:.92rem}
+.dose .eyebrow{color:var(--warn)}
+
+/* Otros */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.mini{width:100%;border-collapse:collapse;font-size:.86rem}
+.mini th,.mini td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.mini th{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+.timeline{display:grid;grid-template-columns:1fr 1fr;border-radius:8px;overflow:hidden;font-size:.88rem}
+.timeline div{padding:10px 12px;display:grid;gap:4px}
+.timeline .early{background:color-mix(in srgb,var(--t-mu) var(--tint),transparent)}
+.timeline .late{background:color-mix(in srgb,var(--t-sy) var(--tint),transparent)}
+.timeline b{font-family:var(--f-mono)}
+
+/* Flashcards */
+.deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{font:inherit;text-align:left;cursor:pointer;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:16px;min-height:150px;display:grid;align-content:space-between;gap:10px}
+.card .front{font-weight:700}
+.card .back{display:none;color:var(--ink)}
+.card[aria-pressed="true"]{background:var(--surface-2);border-color:var(--accent)}
+.card[aria-pressed="true"] .front{display:none}
+.card[aria-pressed="true"] .back{display:block}
+.card .hint{font-family:var(--f-mono);font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:.84rem;color:var(--muted);display:grid;gap:6px}
+@media (max-width:520px){.wrap{padding-inline:16px} nav.toc{margin-inline:-16px;padding-inline:16px} .res{grid-template-columns:110px 1fr 40px} .step{grid-template-columns:36px 1fr;gap:12px} .step .n{width:36px;height:36px;font-size:1rem} .step:not(:last-child)::before{left:17px;top:36px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Material de estudio · Medicina de urgencia</div>
+  <h1>Toxídromes y el <span>paciente intoxicado</span></h1>
+  <p class="lede">Del ABCDE al alta: cómo leer el cuerpo del paciente para adivinar qué tomó, cuánto le preocupa y qué hacer. Toxídrome = <em>tóxico + síndrome</em>, la constelación de signos que delata a un grupo de xenobióticos.</p>
+  <div class="chips" id="legend"></div>
+  <p class="ref">Basado en Roberts DM, Nic Ionmhain Ú, Trakulsrichai S, Peter JV, Hassanian-Moghaddam H, Wood DM. <em>Toxidromes.</em> Nat Rev Dis Primers 2026;12:60. doi:10.1038/s41572-026-00736-4</p>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <ul>
+    <li><a href="#enfrentamiento">Enfrentamiento</a></li>
+    <li><a href="#tabla">Tabla comparativa</a></li>
+    <li><a href="#clasificador">Clasificador</a></li>
+    <li><a href="#fichas">Fichas</a></li>
+    <li><a href="#otros">Otros toxídromes</a></li>
+    <li><a href="#examenes">Exámenes</a></li>
+    <li><a href="#manejo">Manejo</a></li>
+    <li><a href="#modificadores">Trampas</a></li>
+    <li><a href="#repaso">Repaso</a></li>
+  </ul>
+</nav>
+
+<!-- ENFRENTAMIENTO -->
+<section id="enfrentamiento">
+  <div class="sec-head">
+    <div class="eyebrow">01 · Algoritmo general</div>
+    <h2>Enfrentamiento del paciente intoxicado</h2>
+    <p>Proceso escalonado y simultáneo: se resucita, se estima el riesgo y se maneja, y el toxídrome ocupa el centro de todo. La evaluación de riesgo no se hace una vez: se re-evalúa hasta la recuperación.</p>
+  </div>
+
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="body">
+      <h3>Resucitación</h3>
+      <p>ABCDE estándar. Antídotos precoces si la clínica los indica (p. ej., naloxona en hipoventilación + miosis + coma).</p>
+      <div class="split">
+        <div class="box tint"><h4>A · B</h4><p>Vía aérea y ventilación: el coma opioide mata por hipoventilación; broncorrea y broncoespasmo en el muscarínico.</p></div>
+        <div class="box tint"><h4>C</h4><p>Bradicardia + hipotensión (muscarínico, β-bloq., BCC, digoxina, α2) vs taquicardia + HTA (simpaticomimético, serotoninérgico).</p></div>
+        <div class="box tint"><h4>D · E</h4><p>Glicemia capilar, pupilas, tono y reflejos, convulsiones. Temperatura y piel (seca vs sudorosa): datos clave del toxídrome.</p></div>
+      </div>
+    </div></div>
+
+    <div class="step"><div class="n">2</div><div class="body">
+      <h3>Evaluación de riesgo</h3>
+      <p>Paso cognitivo explícito que integra el tóxico, la exposición, el paciente, la clínica actual y la esperada, y los recursos disponibles.</p>
+      <div class="split">
+        <div class="box"><h4>Xenobiótico</h4><ul><li>Toxicidad intrínseca</li><li>Relación dosis–toxicidad</li><li>Curso temporal: inicio y duración</li><li>Liberación prolongada</li></ul></div>
+        <div class="box"><h4>Exposición</h4><ul><li>Vía, cantidad, duración</li><li>Aguda / subaguda / crónica</li><li>Intencionalidad: accidental, intencional, recreacional, ocupacional, ambiental</li></ul></div>
+        <div class="box"><h4>Paciente y entorno</h4><ul><li>Edad, comorbilidad, fármacos habituales</li><li>Tolerancia (opioides)</li><li>Acceso a UCI, antídotos, toxicólogo</li></ul></div>
+      </div>
+    </div></div>
+
+    <div class="step"><div class="n">3</div><div class="body">
+      <h3>Historia, examen y screening</h3>
+      <p>Historia del paciente y de informantes clave (familia, SAMU, testigos). Si no hay historia (coma, agitación extrema), el toxídrome es la herramienta principal; si la hay, el toxídrome la confirma y gradúa la severidad.</p>
+      <div class="box tint"><h4>Screening inicial en todo paciente intoxicado</h4>
+        <div class="chips"><span class="chip">Glicemia</span><span class="chip">Gases (venosos o arteriales)</span><span class="chip">Electrolitos</span><span class="chip">ECG</span><span class="chip">Paracetamolemia en toda ingesta intencional</span></div>
+      </div>
+    </div></div>
+
+    <div class="step"><div class="n">4</div><div class="body">
+      <h3>Buscar el toxídrome</h3>
+      <p>Integrar conciencia, pupilas, piel, mucosas, FC, PA, FR, temperatura, tono y reflejos, ruidos hidroaéreos y vejiga. Pensar siempre en el diagnóstico diferencial no tóxico.</p>
+    </div></div>
+
+    <div class="step"><div class="n">5</div><div class="body">
+      <h3>Manejo dirigido y reevaluación</h3>
+      <ul>
+        <li>Exámenes adicionales según el caso: daño de órgano seriado, gases, ELP, niveles o marcadores sustitutos.</li>
+        <li>Antídotos; considerar descontaminación (carbón activado, irrigación intestinal total) o eliminación aumentada (carbón en dosis múltiples, alcalinización urinaria, diálisis).</li>
+        <li>Soporte continuo y monitorización. Ante un cambio clínico, se vuelve a evaluar el riesgo.</li>
+      </ul>
+    </div></div>
+
+    <div class="step"><div class="n">6</div><div class="body">
+      <h3>Recuperación y alta</h3>
+      <ul>
+        <li>Buscar los factores que llevaron a la intoxicación: salud mental, consumo de sustancias, comorbilidad médica, estresores psicosociales.</li>
+        <li>Evaluación de salud mental antes del alta médica en exposiciones intencionales.</li>
+        <li>Psicotrópicos: no conducir ni operar maquinaria (algunas guías indican ≥3 días post alta). Tras una convulsión: sin conducir hasta evaluación por neurología o la autoridad.</li>
+        <li>Naloxona para llevar en intoxicación o riesgo opioide.</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <div class="box">
+    <h4>Marcadores de gravedad por toxídrome</h4>
+    <div class="scroll" style="border:0">
+    <table class="sev">
+      <thead><tr><th>Signo</th><th>Indica gravedad en</th><th>Excepción</th></tr></thead>
+      <tbody>
+        <tr><td>Agitación y convulsiones</td><td>Casi todos</td><td>Opioide: la gravedad la marca el <b>coma</b></td></tr>
+        <tr><td>Hipertensión</td><td>Simpaticomimético, serotoninérgico</td><td></td></tr>
+        <tr><td>Hipotensión y bradicardia</td><td>Muscarínico</td><td></td></tr>
+        <tr><td>Hipertermia</td><td>Todos</td><td>Opioide y muscarínico: <b>hipotermia</b></td></tr>
+        <tr><td>Síndrome febril–rígido</td><td>Marcador de intoxicación moderada a grave</td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">En la mayoría de las intoxicaciones se recomienda resucitación avanzada prolongada, idealmente hasta discutir el caso con un toxicólogo clínico (en Chile: CITUC, +56 2 2635 3800).</p>
+  </div>
+</section>
+
+<!-- TABLA -->
+<section id="tabla">
+  <div class="sec-head">
+    <div class="eyebrow">02 · Tabla 2 del artículo</div>
+    <h2>Tabla comparativa de toxídromes</h2>
+    <p>Toca un toxídrome para resaltar su columna. <sup style="color:var(--warn)">●</sup> = signo de intoxicación moderada a grave.</p>
+  </div>
+  <div class="cmp-tools" id="cmpTools"></div>
+  <div class="scroll"><table class="cmp" id="cmp"></table></div>
+</section>
+
+<!-- CLASIFICADOR -->
+<section id="clasificador">
+  <div class="sec-head">
+    <div class="eyebrow">03 · Juego de cabecera</div>
+    <h2>¿Qué toxídrome tengo al frente?</h2>
+    <p>Marca lo que encuentras al examen y mira cómo se ordenan los candidatos. Es una herramienta de estudio para entrenar el reconocimiento de patrones y no reemplaza el juicio clínico. Los cuadros mixtos son frecuentes.</p>
+  </div>
+  <div class="clf">
+    <div class="qgrid" id="qgrid"></div>
+    <div class="results box">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h4>Coincidencia</h4><button class="btn" id="reset" type="button">Limpiar</button></div>
+      <div id="resList" style="display:grid;gap:8px"></div>
+      <p class="mismatch" id="pearl">Marca al menos un hallazgo para empezar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FICHAS -->
+<section id="fichas">
+  <div class="sec-head">
+    <div class="eyebrow">04 · Mecanismo → causas → clínica → exámenes → manejo</div>
+    <h2>Fichas por toxídrome</h2>
+  </div>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <article class="ficha" id="ficha" aria-live="polite"></article>
+</section>
+
+<!-- OTROS -->
+<section id="otros">
+  <div class="sec-head">
+    <div class="eyebrow">05 · Recuadro 1 y diagnóstico diferencial</div>
+    <h2>Otros toxídromes que no puedes pasar por alto</h2>
+  </div>
+  <div class="cards">
+    <div class="box">
+      <h3>Knockdown toxicológico</h3>
+      <p>Colapso súbito con pérdida de conciencia, con o sin depresión respiratoria, en un <b>espacio cerrado</b>.</p>
+      <ul>
+        <li><b>Gases:</b> CO (generador defectuoso), H₂S (materia orgánica en descomposición), cianuro, fosfina.</li>
+        <li><b>Asfixiantes simples:</b> metano, CO₂.</li>
+        <li><b>Espacio abierto:</b> metahemoglobinemia grave (nitrito de sodio), fentanilos, agentes nerviosos (VX), cianuro ingerido.</li>
+        <li>Fosfuros metálicos ingeridos (frecuente en Asia).</li>
+      </ul>
+      <div class="callout"><strong>Seguridad de la escena</strong><p>Los rescatistas sin EPP se convierten en las siguientes víctimas.</p></div>
+    </div>
+
+    <div class="box">
+      <h3>Bradicardia con hipotensión</h3>
+      <p>Muchas causas con manejos distintos: hay que buscar el rasgo que las diferencia.</p>
+      <div class="scroll" style="border:0">
+      <table class="mini">
+        <thead><tr><th>Causa</th><th>Pista</th></tr></thead>
+        <tbody>
+          <tr><td>Organofosforados</td><td>Miosis, olor a pesticida, signos GI y respiratorios, colinesterasa baja</td></tr>
+          <tr><td>α2 / imidazolinas (clonidina, xilazina, medetomidina, amitraz)</td><td>Sedación, miosis, respuesta parcial a naloxona; amitraz con olor</td></tr>
+          <tr><td>β-bloqueadores</td><td>Sin miosis. Bradicardia sinusal, BAV. Sotalol: QT largo. Propranolol: coma, convulsiones, QRS ancho</td></tr>
+          <tr><td>Verapamilo / diltiazem</td><td>Sin miosis. Bradicardia y BAV marcados, hiperglicemia leve</td></tr>
+          <tr><td>Digoxina / adelfa amarilla</td><td>Sin miosis. ST “en cubeta”, BAV, ectopia ventricular, <b>hiperkalemia</b></td></tr>
+          <tr><td>Flecainida</td><td>QRS y QT prolongados, arritmias ventriculares, BAV</td></tr>
+          <tr><td>(Hidroxi)cloroquina</td><td>BAV, QRS y QT largos, somnolencia, <b>hipokalemia</b></td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="note">La hipotensión puede ser cardiogénica o distributiva: la ecocardiografía orienta inótropo vs vasopresor.</p>
+    </div>
+
+    <div class="box">
+      <h3>Hongos silvestres</h3>
+      <p>Regla de las 6 horas para los síntomas gastrointestinales:</p>
+      <div class="timeline">
+        <div class="early"><b>&lt; 6 h</b><span>Probable no amatoxina: cuadro generalmente menos grave</span></div>
+        <div class="late"><b>&gt; 6 h</b><span>Sospechar ciclopéptidos (<i>Amanita phalloides</i>): hepatotoxicidad y muerte</span></div>
+      </div>
+      <p class="note">Descontaminación y antídotos precoces cuando estén indicados. <i>Cortinarius</i>: daño renal potencialmente irreversible. Los hongos con muscarina dan un toxídrome muscarínico.</p>
+    </div>
+
+    <div class="box">
+      <h3>Síndrome febril–rígido</h3>
+      <p>Hipertermia + hipertonía (± rabdomiólisis). Marca gravedad moderada a severa. Se discrimina por:</p>
+      <div class="scroll" style="border:0">
+      <table class="mini">
+        <thead><tr><th>Rasgo</th><th>Orienta a</th></tr></thead>
+        <tbody>
+          <tr><td>Reflejos ↑, clonus</td><td>Serotoninérgico</td></tr>
+          <tr><td>Midriasis</td><td>Simpaticomimético, serotoninérgico, antimuscarínico</td></tr>
+          <tr><td>HTA</td><td>Simpaticomimético, serotoninérgico, SNM, abstinencia</td></tr>
+          <tr><td>Delirio</td><td>Antimuscarínico, abstinencia</td></tr>
+          <tr><td>Diaforesis vs anhidrosis</td><td>Simpatico/serotoninérgico vs antimuscarínico</td></tr>
+          <tr><td>Rigidez “en tubo de plomo”, curso de días</td><td>SNM</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="note"><b>Diferencial no tóxico:</b> estatus no convulsivo, encefalitis, catatonia maligna, abstinencia de sedantes, tirotoxicosis, sepsis grave, golpe de calor, tétanos, feocromocitoma, hipertermia maligna.</p>
+    </div>
+
+    <div class="box">
+      <h3>Toxídrome sedante</h3>
+      <p>Benzodiacepinas y afines, alcohol, GHB y precursores. Frecuente; el manejo es esencialmente de soporte.</p>
+      <ul>
+        <li>GHB: mioclonías con reflejos de vía aérea relativamente preservados.</li>
+        <li>Nuevos brotes: xilazina y medetomidina IV (adulterantes de opioides) y etomidato vapeado: sedación + bradicardia e hipotensión.</li>
+        <li>Flumazenil: si revierte la sedación, la BZD era la causa principal.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMENES -->
+<section id="examenes">
+  <div class="sec-head">
+    <div class="eyebrow">06 · Laboratorio e imágenes</div>
+    <h2>Exámenes: complementan el examen físico, no lo reemplazan</h2>
+    <p>No existe un “screening toxicológico” que detecte todo. Se pide según la exposición sospechada.</p>
+  </div>
+  <div class="cards">
+    <div class="box">
+      <h4>Niveles con impacto en decisiones</h4>
+      <p>Paracetamol, salicilato, litio, anticonvulsivantes, digoxina, alcoholes tóxicos, metales pesados.</p>
+      <h4>Marcadores sustitutos</h4>
+      <ul>
+        <li><b>Gap osmolar y anión gap:</b> alcoholes tóxicos.</li>
+        <li><b>Colinesterasa:</b> la eritrocitaria (AChE) se correlaciona mejor con la gravedad que la plasmática (BuChE). Una actividad &lt;30% apoya un inhibidor de colinesterasa sobre piretroides, amitraz, neonicotinoides u organoclorados.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h4>Drogas en orina (inmunoensayo)</h4>
+      <ul>
+        <li>Solo 4–5 familias.</li>
+        <li>Falsos positivos: venlafaxina y bupropión dan positivo para anfetamina.</li>
+        <li>Es cualitativo: cannabis positivo por días o semanas en consumidores crónicos.</li>
+        <li>Detecta metabolitos: cocaína = benzoilecgonina (1–3 días).</li>
+        <li>Opioides basados en morfina: <b>no detecta fentanilos ni nitazenos</b>.</li>
+      </ul>
+      <div class="callout"><strong>Regla</strong><p>Un positivo confirma exposición, no intoxicación. Un negativo no excluye nada.</p></div>
+    </div>
+    <div class="box">
+      <h4>ECG</h4>
+      <p>Obligatorio en todo toxídrome con compromiso cardiovascular (trastornos de conducción: QRS, QT, BAV). La eco evalúa el tipo de shock (bomba vs vasodilatación).</p>
+      <h4>Imágenes</h4>
+      <ul>
+        <li>Rx tórax: aspiración, edema pulmonar.</li>
+        <li>TC cerebro: TEC en el sedado; hemorragia por HTA simpaticomimética.</li>
+        <li>Rx abdomen: hierro, plomo. TC de baja dosis: body-packers y stuffers, perforación por cáusticos, farmacobezoares (quetiapina, clomipramina).</li>
+        <li>RM: PRES (simpaticomimético), daño hipóxico-isquémico.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- MANEJO -->
+<section id="manejo">
+  <div class="sec-head">
+    <div class="eyebrow">07 · Soporte general (además del antídoto específico)</div>
+    <h2>Manejo: tratar el problema fisiológico</h2>
+    <p>Suspender el xenobiótico, dar soporte y monitorizar. Las intoxicaciones moderadas a graves suelen manejarse en UCI. Considerar traslado si se requiere ECMO, antídotos o intensivo no disponibles.</p>
+  </div>
+  <div class="scroll"><table class="sev" style="min-width:620px">
+    <thead><tr><th>Problema</th><th>Herramientas</th></tr></thead>
+    <tbody>
+      <tr><td><b>Agitación</b></td><td>Benzodiacepinas, droperidol y/o ketamina (según protocolo local)</td></tr>
+      <tr><td><b>Hipertermia</b></td><td>Enfriamiento activo, benzodiacepinas; parálisis neuromuscular si es refractaria</td></tr>
+      <tr><td><b>Convulsiones</b></td><td>Benzodiacepinas → barbitúricos o levetiracetam si son refractarias</td></tr>
+      <tr><td><b>Hipertensión</b></td><td>Benzodiacepinas, nitratos</td></tr>
+      <tr><td><b>Hipotensión</b></td><td>Inótropos y/o vasopresores según la etiología, guiados por eco o monitoreo avanzado</td></tr>
+      <tr><td><b>Generales</b></td><td>Fluidos, O₂, antieméticos, antibióticos si hay infección, diuresis, profilaxis de TVP, nutrición</td></tr>
+      <tr><td><b>Descontaminación / eliminación</b></td><td>Carbón activado, irrigación intestinal total, carbón en dosis múltiples, alcalinización urinaria, terapias extracorpóreas</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box tint">
+    <h4>Prueba terapéutica con antídoto</h4>
+    <p>Una respuesta en minutos tras la dosis IV apoya fuertemente el diagnóstico: naloxona → opioide; fisostigmina → antimuscarínico; atropina → muscarínico; flumazenil → BZD. <b>Si no hay respuesta, puede que la dosis haya sido insuficiente</b>: fentanilos y nitazenos requieren más naloxona que la heroína, y los OP potentes o las ingestas grandes requieren más atropina.</p>
+  </div>
+</section>
+
+<!-- MODIFICADORES -->
+<section id="modificadores">
+  <div class="sec-head">
+    <div class="eyebrow">08 · Por qué el paciente no se parece al libro</div>
+    <h2>Factores que modifican el toxídrome</h2>
+    <p>Los toxídromes son constructos clínicos probabilísticos. No encontrar uno clásico no descarta una intoxicación.</p>
+  </div>
+  <div class="cards">
+    <div class="box"><h4>Dosis</h4><p>Principal determinante. Prometazina: delirio en 31% con 250 mg y 55% con 1 g. Cafeína ≈5 g: simpaticomimético + acidosis metabólica, hipokalemia y arritmias. Umbrales de bajo riesgo: paracetamol &lt;200 mg/kg o 10 g; aspirina &lt;150 mg/kg.</p></div>
+    <div class="box"><h4>Vida media</h4><p>Heroína: minutos. Metadona: 24–36 h (variable). El toxídrome dura mucho más y obliga a vigilar la renarcotización tras la naloxona. Ojo también con las formulaciones de liberación prolongada.</p></div>
+    <div class="box"><h4>Tolerancia y edad</h4><p>El paciente naïve a opioides tiene más riesgo. Los adultos mayores tienen menos reserva. En OP, los niños se presentan más con sedación y los adultos con el cuadro muscarínico.</p></div>
+    <div class="box"><h4>Coingestas</h4><p>Sedantes + anfetaminas atenúan el cuadro. Alcohol + cocaína forman cocaetileno (potencia). IMAO + ISRS: riesgo incluso con dosis terapéutica. BZD coingeridas reducen las convulsiones (venlafaxina, ADT). Un bradicardizante enmascara la taquicardia antimuscarínica.</p></div>
+    <div class="box"><h4>Efectos fuera del blanco</h4><p>Loperamida en dosis altas: QRS y QT largos (no explicables por el opioide). Citalopram y escitalopram: QT largo (otros ISRS no). Venlafaxina y cocaína: simpaticomimético + serotoninérgico.</p></div>
+    <div class="box"><h4>Coformulantes</h4><p>El surfactante del glifosato o el solvente del dimetoato aumentan la toxicidad. Las mezclas OP + piretroide son más tóxicas. Cada OP se comporta distinto.</p></div>
+    <div class="box"><h4>Antimuscarínico central vs periférico</h4><p>Algunos pacientes presentan sobre todo delirio (prometazina) y otros sobre todo signos periféricos. Influyen la afinidad del fármaco y el daño cerebral previo (atrofia).</p></div>
+  </div>
+</section>
+
+<!-- REPASO -->
+<section id="repaso">
+  <div class="sec-head">
+    <div class="eyebrow">09 · Tarjetas</div>
+    <h2>Repaso rápido</h2>
+    <p>Toca cada tarjeta para ver la respuesta.</p>
+  </div>
+  <div class="deck" id="deck"></div>
+</section>
+
+<footer>
+  <p>Fuente principal: Roberts DM et al. Toxidromes. <em>Nat Rev Dis Primers</em> 2026;12:60. El artículo entrega principios de manejo y no dosis. Las dosis marcadas como “complemento” provienen de práctica toxicológica habitual y deben contrastarse con las guías y protocolos locales vigentes.</p>
+  <p>Material de estudio. No reemplaza la consulta con un centro de toxicología.</p>
+</footer>
+</div>
+
+<script>
+const T = [
+  {id:"op", n:"Opioide", c:"--t-op"},
+  {id:"sy", n:"Simpaticomimético", c:"--t-sy"},
+  {id:"se", n:"Serotoninérgico", c:"--t-se"},
+  {id:"am", n:"Antimuscarínico", c:"--t-am"},
+  {id:"mu", n:"Muscarínico", c:"--t-mu"},
+  {id:"ni", n:"Nicotínico", c:"--t-ni"},
+  {id:"de", n:"Desacople fosf. oxidativa", c:"--t-de"},
+  {id:"sn", n:"SNM", c:"--t-sn"}
+];
+const cv = id => `var(${T.find(t=>t.id===id).c})`;
+
+function pupil(size){
+  const r = size==="mio"?2.2:size==="mid"?7:4.5;
+  return `<svg class="pupil" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55"/><circle cx="10" cy="10" r="${r}" fill="currentColor"/></svg>`;
+}
+
+/* Legend */
+document.getElementById("legend").innerHTML = T.map(t=>`<span class="chip" style="--c:var(${t.c})"><i></i>${t.n}</span>`).join("");
+
+/* Tabla comparativa (Tabla 2) — "●" = moderado/grave */
+const S = "<sup>●</sup>";
+const rows = [
+  ["Inicio", ["Minutos a horas; tardío si LP","Horas; tardío si LP","Horas; fluctúa con los estímulos","Horas; fluctúa con los estímulos","Minutos (agentes bélicos) a horas","Horas","Horas","Evoluciona en días, resuelve en semanas"]],
+  ["Conciencia", ["Deprimida, coma"+S,"Alerta, agitación"+S+", convulsiones"+S+", psicosis (crónico)","Alerta, ansiedad, agitación"+S+", convulsiones"+S,"Confusión, alucinaciones visuales y auditivas, delirio, agitación"+S,"Ansiedad, agitación, convulsiones, coma, ataxia","Agitación, luego sedación","Agitación, confusión","Agitación, confusión"]],
+  ["Pupilas", [pupil("mio")+"Miosis",pupil("mid")+"Midriasis",pupil("mid")+"Midriasis",pupil("mid")+"Midriasis, visión borrosa",pupil("mio")+"Miosis",pupil("n")+"Normal",pupil("n")+"Normal",pupil("n")+"Normal"]],
+  ["Boca", ["Seca","Seca","Normal","Seca","Hipersalivación","Normal","Normal o seca","Normal o hipersalivación"]],
+  ["Respiración", ["FR ↓, apnea"+S,"Normal o ↑","Normal o ↑","Normal o ↑","FR normal o ↑, profundidad ↓, sibilancias o crépitos"+S,"↑ y luego ↓","Taquipnea","Taquipnea"]],
+  ["FC", ["Normal o bradicardia","Taquicardia","Taquicardia","Taquicardia","Bradicardia"+S,"Taquicardia","Taquicardia","Taquicardia lábil"]],
+  ["PA", ["Normal o hipotensión","HTA"+S+" (hipotensión"+S+" menos frecuente)","HTA"+S,"Normal o HTA","Normal o hipotensión"+S,"HTA","Normal o hipotensión","HTA lábil"]],
+  ["Neuromuscular", ["Tono ↓ (por sedación)","Tono ↑, temblor, coreoatetosis","Tono ↑ (EEII > EESS), mioclonías, hiperreflexia, clonus aquiliano u ocular, trismus, bruxismo","Hipertonía leve, reflejos normales","Normal","Fasciculaciones, debilidad"+S,"Hipertonía, reflejos normales o ↓","Bradicinesia, temblor, rigidez, reflejos normales o ↓"]],
+  ["Temperatura", ["Hipotermia"+S,"Hipertermia"+S,"Hipertermia"+S,"Hipertermia","Normal o hipotermia","Normal","Hipertermia leve a grave"+S,"Hipertermia leve a grave"+S]],
+  ["Piel", ["Normal o cianótica","Diaforesis, piloerección","Diaforesis, rubicundez","Seca, roja, anhidrosis","Diaforesis","Normal","Normal o caliente con diaforesis"+S,"Diaforesis"]],
+  ["Intestino", ["↓","↓","↑","↓, íleo","↑, diarrea","Normal","Normal","Normal"]],
+  ["Vejiga", ["↓","↓","Normal","↓, retención urinaria","↑, incontinencia","Normal","Normal","Normal"]],
+  ["Mnemotecnia", ["CPR-3H · tríada coma + miosis + hipoventilación","FFFF · MATHS","SHIVERS","Rojo como un tomate, seco como un hueso, ciego como un murciélago, loco como una cabra, caliente como una liebre","DUMBBELS · SLUDGE","MTWTF","FIRE STORM","FEVER"]]
+];
+const cmp = document.getElementById("cmp");
+cmp.innerHTML = `<thead><tr><th style="--c:var(--line)"></th>${T.map((t,i)=>`<th data-i="${i}" style="--c:var(${t.c})">${t.n}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr class="${r[0]==="Mnemotecnia"?"mnemo":""}"><th>${r[0]}</th>${r[1].map((v,i)=>`<td data-i="${i}" style="--c:var(${T[i].c})">${v}</td>`).join("")}</tr>`).join("")}</tbody>`;
+const tools = document.getElementById("cmpTools");
+tools.innerHTML = T.map((t,i)=>`<button class="btn" type="button" aria-pressed="false" data-i="${i}" style="--c:var(${t.c})">${t.n}</button>`).join("");
+let hlSet = new Set();
+function applyHL(){
+  cmp.querySelectorAll("td").forEach(td=>td.classList.toggle("hl",hlSet.has(td.dataset.i)));
+  tools.querySelectorAll(".btn").forEach(b=>b.setAttribute("aria-pressed",hlSet.has(b.dataset.i)));
+}
+function toggleHL(i){ hlSet.has(i)?hlSet.delete(i):hlSet.add(i); applyHL(); }
+tools.addEventListener("click",e=>{const b=e.target.closest(".btn"); if(b) toggleHL(b.dataset.i);});
+cmp.querySelector("thead").addEventListener("click",e=>{const th=e.target.closest("th[data-i]"); if(th) toggleHL(th.dataset.i);});
+
+/* Clasificador */
+const Q = [
+  {k:"cons", l:"Conciencia", o:[["dep","Deprimida / coma"],["agi","Agitada / ansiosa"],["del","Delirio / alucinaciones / confusión"]]},
+  {k:"pup", l:"Pupilas", o:[["mio",pupil("mio")+"Miosis"],["n",pupil("n")+"Normales"],["mid",pupil("mid")+"Midriasis"]]},
+  {k:"skin", l:"Piel", o:[["dry","Seca, roja"],["n","Normal"],["sw","Sudorosa"]]},
+  {k:"mouth", l:"Boca y secreciones", o:[["dry","Seca"],["n","Normal"],["sal","Hipersalivación / broncorrea"]]},
+  {k:"hr", l:"Frecuencia cardiaca", o:[["b","Bradicardia"],["n","Normal"],["t","Taquicardia"]]},
+  {k:"temp", l:"Temperatura", o:[["lo","Hipotermia"],["n","Normal"],["hi","Hipertermia"]]},
+  {k:"tone", l:"Neuromuscular", o:[["lo","Hipotonía"],["n","Normal"],["hi","Hipertonía / temblor"],["cl","Clonus / mioclonías / hiperreflexia"],["fa","Fasciculaciones / debilidad"],["ri","Rigidez / bradicinesia"]]},
+  {k:"gut", l:"Ruidos hidroaéreos", o:[["lo","Disminuidos / íleo"],["n","Normales"],["hi","Aumentados / diarrea"]]}
+];
+const P = {
+  op:{cons:["dep"],pup:["mio"],skin:["n"],mouth:["dry","n"],hr:["b","n"],temp:["lo","n"],tone:["lo"],gut:["lo"]},
+  sy:{cons:["agi"],pup:["mid"],skin:["sw"],mouth:["dry"],hr:["t"],temp:["hi","n"],tone:["hi"],gut:["lo"]},
+  se:{cons:["agi"],pup:["mid"],skin:["sw"],mouth:["n"],hr:["t"],temp:["hi","n"],tone:["cl","hi"],gut:["hi"]},
+  am:{cons:["del","agi"],pup:["mid"],skin:["dry"],mouth:["dry"],hr:["t"],temp:["hi","n"],tone:["n","hi"],gut:["lo"]},
+  mu:{cons:["agi","dep"],pup:["mio"],skin:["sw"],mouth:["sal"],hr:["b"],temp:["n","lo"],tone:["n"],gut:["hi"]},
+  ni:{cons:["agi","dep"],pup:["n"],skin:["n"],mouth:["n"],hr:["t"],temp:["n"],tone:["fa"],gut:["n"]},
+  de:{cons:["agi","del"],pup:["n"],skin:["n","sw"],mouth:["n","dry"],hr:["t"],temp:["hi"],tone:["hi"],gut:["n"]},
+  sn:{cons:["agi","del"],pup:["n"],skin:["sw"],mouth:["n","sal"],hr:["t"],temp:["hi"],tone:["ri"],gut:["n"]}
+};
+const sel = {};
+const qgrid = document.getElementById("qgrid");
+qgrid.innerHTML = Q.map(q=>`<div class="q"><h4>${q.l}</h4><div class="opts" data-k="${q.k}">${q.o.map(o=>`<button class="opt" type="button" aria-pressed="false" data-v="${o[0]}">${o[1]}</button>`).join("")}</div></div>`).join("");
+qgrid.addEventListener("click",e=>{
+  const b=e.target.closest(".opt"); if(!b) return;
+  const k=b.parentElement.dataset.k, v=b.dataset.v;
+  sel[k] = sel[k]===v ? undefined : v;
+  b.parentElement.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x.dataset.v===sel[k]));
+  score();
+});
+document.getElementById("reset").addEventListener("click",()=>{Object.keys(sel).forEach(k=>delete sel[k]); qgrid.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); score();});
+const pearls = [
+  [s=>s.pup==="mid"&&s.skin==="dry","Midriasis + piel seca: piensa en antimuscarínico. El simpaticomimético suda."],
+  [s=>s.tone==="cl","El clonus (inducible o espontáneo, aquiliano u ocular) es la firma del serotoninérgico."],
+  [s=>s.tone==="ri","Rigidez + bradicinesia con curso de días: SNM. Pregunta por un antipsicótico nuevo o en aumento, o por la suspensión de un agonista dopaminérgico."],
+  [s=>s.pup==="mio"&&s.mouth==="sal","Miosis + secreciones: muscarínico (OP o carbamatos). Pide colinesterasa y prepara atropina."],
+  [s=>s.pup==="mio"&&s.cons==="dep","Coma + miosis: opioide hasta demostrar lo contrario, pero considera α2 agonistas, OP o un ictus pontino."],
+  [s=>s.tone==="fa","Fasciculaciones + debilidad: nicotínico. Vigila el síndrome intermedio a las 24–72 h si es OP."],
+  [s=>s.temp==="hi"&&(s.tone==="hi"||s.tone==="ri"||s.tone==="cl"),"Hipertermia + hipertonía = síndrome febril–rígido: marcador de gravedad. Enfría activamente."]
+];
+function score(){
+  const ans = Object.entries(sel).filter(([k,v])=>v);
+  const list = T.map(t=>{
+    const m = ans.filter(([k,v])=>P[t.id][k].includes(v)).length;
+    return {t, m, p: ans.length? m/ans.length : 0};
+  }).sort((a,b)=>b.p-a.p);
+  const best = list[0].p;
+  document.getElementById("resList").innerHTML = list.map(r=>`<div class="res ${ans.length&&r.p===best?"top":""}" style="--c:var(${r.t.c})"><span class="name">${r.t.n}</span><span class="bar"><span style="width:${Math.round(r.p*100)}%"></span></span><span class="pct">${ans.length?Math.round(r.p*100)+"%":"–"}</span></div>`).join("");
+  const pe = pearls.filter(([f])=>f(sel)).map(p=>p[1]);
+  document.getElementById("pearl").innerHTML = !ans.length ? "Marca al menos un hallazgo para empezar." : (pe.length? pe.map(x=>"• "+x).join("<br>") : `${ans.length} de ${Q.length} hallazgos marcados. Sigue examinando.`);
+}
+score();
+
+/* Fichas */
+const F = {
+  op:{mn:"CPR-3H",
+    mec:"Agonismo de receptores µ (también δ y κ), sobre todo en el SNC. El tronco encefálico concentra la depresión respiratoria, la miosis y la sedación.",
+    causas:["Naturales: opio y morfina","Fármacos: morfina, codeína, oxicodona, hidromorfona, metadona, buprenorfina, dextrometorfano","Ilícitos: heroína, <b>fentanilos, nitazenos</b>","Kratom (mitraginina): opioide + estimulante"],
+    clin:"Tríada: <b>coma + miosis + hipoventilación</b>. Además hipotensión, hipotermia (paciente caído en la calle en invierno), hiporreflexia y ruidos hidroaéreos disminuidos.",
+    ex:["Gases: función ventilatoria","CK: rabdomiólisis por inmovilidad prolongada","Daño hipóxico de órganos: renal, hepático","Drogas en orina: no detecta fentanilos ni nitazenos"],
+    ddx:["Antipsicóticos sedantes (rasgos antimuscarínicos, menos depresión respiratoria)","GHB (mioclonías, reflejos de vía aérea preservados)","Clonidina o guanfacina (bradicardia e hipotensión marcadas)","Inhibidores de colinesterasa","Ictus pontino","La mayoría no responde a naloxona"],
+    mx:["O₂ y ventilación","<b>Naloxona titulada</b> cuando hay sedación con FR o esfuerzo respiratorio disminuidos","Repetir o infundir si reaparece (metadona, LP)","Evaluar daño por retraso: neumonitis aspirativa, daño hipóxico-isquémico","Al alta: naloxona para llevar"],
+    dosis:"Naloxona 0,04–0,1 mg IV, repetir cada 2–3 min hasta FR adecuada (meta: ventilar, no despertar del todo, para no precipitar abstinencia). En apnea o paro: 0,4–2 mg. Infusión: ~⅔ de la dosis que revirtió, por hora. Los fentanilos y nitazenos pueden requerir dosis mayores.",
+    perla:"Una dosis de naloxona “suficiente para heroína” puede no bastar para nitazenos. Si no responde, ¿la dosis fue insuficiente o no es un opioide?"},
+  sy:{mn:"FFFF · MATHS",
+    mec:"Aumento de la liberación y/o menor recaptación de noradrenalina, adrenalina y dopamina → estimulación α1, β1, β2 y dopaminérgica central y periférica.",
+    causas:["Anfetaminas: metanfetamina, dexanfetamina, metilfenidato, fentermina","Cocaína, catinonas sintéticas, efedrina","IRSN, IMAO","Cafeína, teofilina, salbutamol, clenbuterol","Kratom"],
+    clin:"Agitación, midriasis, taquicardia, HTA, temblor, <b>diaforesis</b>, piloerección, hipertermia (empeora con agitación prolongada y calor ambiental). Coreoatetosis y psicosis por dopamina. Presión de pulso amplia con β2 agonistas.",
+    ex:["CK: rabdomiólisis","Función renal: LRA","Glicemia: hiperglicemia","K⁺ y lactato: hipokalemia y lactacidemia con β2","Troponina si hay dolor torácico o cambios en el ECG","TC cerebro si hay cefalea o focalidad (hemorragia)"],
+    ddx:["Abstinencia de alcohol o GHB","Antimuscarínico moderado a grave (piel seca)","Serotoninérgico (clonus)","SNM, desacople, hipertermia maligna, golpe de calor","Tirotoxicosis, feocromocitoma"],
+    mx:["<b>Benzodiacepinas en bolos titulados</b> para agitación, convulsiones, HTA, taquicardia e hipertermia","Enfriamiento activo","SCA, hemorragia intracraneana y rabdomiólisis según manejo estándar","Nitratos si persiste la HTA"],
+    dosis:"Diazepam 5–10 mg IV o midazolam 2,5–5 mg IV cada 5–10 min hasta sedación tranquila (los requerimientos pueden ser altos).",
+    perla:"La hipertermia en el estimulado es un signo de muerte inminente: sedar y enfriar es tratamiento, no cosmética."},
+  se:{mn:"SHIVERS",
+    mec:"Exceso de serotonina sináptica (más liberación, menos recaptación o agonismo directo), sobre todo en 5-HT1A y 5-HT2A del SNC; también efectos GI directos.",
+    causas:["Más liberación: MDMA y anfetaminas","Menos recaptación: ISRS, IRSN, ADT, cocaína, tramadol, dextrometorfano, petidina","IMAO: linezolid, moclobemida, fenelzina, hierba de San Juan","Agonistas: LSD, psilocina"],
+    clin:"Agitación, convulsiones, taquicardia, HTA, midriasis, diaforesis, rubicundez, hipertermia, <b>hipertonía (EEII > EESS), mioclonías, hiperreflexia con clonus</b> (aquiliano, ocular), trismus, bruxismo, diarrea.",
+    ex:["CK si es prolongado","En casos graves sin exposición de riesgo: buscar tirotoxicosis o feocromocitoma"],
+    ddx:["Otros síndromes febril–rígidos","Antimuscarínico, SNM, desacople","Abstinencia de alcohol o GHB","Hipertermia maligna, golpe de calor, estatus no convulsivo","Pista: clonus y mioclonías no están en los otros"],
+    mx:["Suspender serotoninérgicos","Benzodiacepinas tituladas para agitación, convulsiones e hipertermia","Enfriamiento activo; si es grave, sedación y parálisis","Posible rol de <b>ciproheptadina</b> o <b>clorpromazina</b> (antagonistas 5-HT)"],
+    dosis:"Ciproheptadina 12 mg VO o por SNG de carga, luego 2 mg cada 2 h si persisten los síntomas (mantención 8 mg cada 6 h). Clorpromazina IV solo con volemia adecuada (hipotensión).",
+    perla:"IMAO + ISRS: puede haber toxicidad incluso con dosis terapéuticas. Pregunta por el linezolid."},
+  am:{mn:"Rojo, seco, ciego, loco, caliente",
+    mec:"Antagonismo competitivo de receptores muscarínicos → predominio simpático, <b>excepto en las glándulas sudoríparas</b> (colinérgicas): por eso no hay sudor.",
+    causas:["ADT","Antihistamínicos sedantes: prometazina, difenhidramina, clorfenamina, doxilamina","Antipsicóticos sedantes: clorpromazina, quetiapina, olanzapina","Benztropina, trihexifenidilo, orfenadrina","Hioscina, escopolamina, atropina","Plantas: <i>Datura</i>, <i>Brugmansia</i> (floripondio), contaminación de alimentos"],
+    clin:"Delirio hiperactivo, alucinaciones visuales y auditivas, habla anormal, agitación, taquicardia, midriasis con visión borrosa, <b>piel seca y roja, anhidrosis</b>, hipertermia, mucosas secas, íleo, <b>retención urinaria</b>. Formas de predominio central o periférico.",
+    ex:["Rabdomiólisis poco frecuente","ECG: QRS ancho si hay ADT"],
+    ddx:["Alcohol, psilocibina","Infección del SNC, sepsis","Trastornos metabólicos o electrolíticos","Hipertermia maligna, golpe de calor","No mejoran con inhibidores de colinesterasa"],
+    mx:["<b>Ambiente tranquilo y oscuro</b>, reducir estímulos","<b>Fisostigmina</b> (o rivastigmina) titulada: revierte el delirio","Benzodiacepinas para la agitación","Sonda Foley si hay retención"],
+    dosis:"Fisostigmina 0,5–1 mg IV lenta (2–5 min), repetir cada 10–15 min según respuesta, con monitor y atropina disponible. Precaución o contraindicación si el QRS está ancho o se sospecha ADT.",
+    perla:"El floripondio da cuadros en racimo. Delirio con piel seca y globo vesical: palpa la vejiga."},
+  mu:{mn:"DUMBBELS · SLUDGE",
+    mec:"Exceso de acetilcolina en receptores muscarínicos por inhibición de la AChE o agonismo directo.",
+    causas:["Organofosforados y carbamatos (pesticidas)","Agentes bélicos: sarín, tabún, VX, Novichok","Fármacos: donepezilo, rivastigmina, neostigmina, piridostigmina, fisostigmina","Hongos con muscarina; plantas"],
+    clin:"Diarrea, micción, <b>miosis</b>, <b>bradicardia, broncorrea, broncoespasmo</b>, emesis, lagrimeo, salivación, sudoración. Hipotensión e hipotermia. Olor a pesticida.",
+    ex:["<b>Colinesterasa &lt;30%</b> (preferir AChE eritrocitaria)","Electrolitos"],
+    ddx:["Herbicidas clorofenoxi","Amitraz","Picadura de araña de tela de embudo (funnel-web)","Pista: la colinesterasa baja confirma OP o carbamato"],
+    mx:["Descontaminación de piel y ropa; EPP para el equipo","<b>Atropina titulada</b> hasta la atropinización","Oximas: rol controvertido","Vía aérea: la broncorrea es lo que mata"],
+    dosis:"Atropina 1,8–3 mg IV en bolo, duplicando la dosis cada 5 min hasta la atropinización (tórax limpio, FC >80, PAS >80 mmHg, axilas secas, pupilas no puntiformes). Luego infusión de 10–20% de la dosis total de carga por hora.",
+    perla:"La meta de la atropina es secar los pulmones, no dilatar las pupilas ni llevar la FC a 140."},
+  ni:{mn:"MTWTF",
+    mec:"Hiperestimulación de nAChR: Nm en la placa motora, Nn en ganglios autonómicos, médula suprarrenal y SNC. Luego hay desensibilización.",
+    causas:["Nicotina (tabaco, <i>Nicotiana glauca</i>), citisina","Neonicotinoides (imidacloprid)","<i>Conium maculatum</i> (cicuta)","Inhibidores de AChE (OP, carbamatos, agentes bélicos)"],
+    clin:"Calambres, taquicardia, HTA, debilidad, contracciones, <b>fasciculaciones</b> y luego parálisis. Hiperventilación seguida de depresión respiratoria.",
+    ex:["Colinesterasa &lt;30% si es un inhibidor de AChE"],
+    ddx:["Herbicidas clorofenoxi","Funnel-web","Piretroides","Comparte rasgos con el simpaticomimético y el serotoninérgico"],
+    mx:["Soporte general; no hay antídoto específico","Vigilar la fuerza respiratoria (ventilación mecánica si es necesaria)","Oximas: rol controvertido"],
+    dosis:null,
+    perla:"<b>Síndrome intermedio</b> (OP): debilidad proximal, cervical y respiratoria a las 24–72 h que puede requerir ventilación. Evalúa la flexión del cuello antes del alta de la UCI."},
+  de:{mn:"FIRE STORM",
+    mec:"Inhibición de la cadena de transporte de electrones → déficit de ATP → glicólisis anaeróbica, calor y lactato.",
+    causas:["Dinitrofenol (“quemadores de grasa”)","Bromoxinil","Herbicidas clorofenoxi","Salicilatos (uno de sus mecanismos)"],
+    clin:"Agitación, confusión, <b>taquipnea</b>, taquicardia, hipotensión, hipertonía, <b>hipertermia</b>, rabdomiólisis, hipercapnia, acidosis láctica.",
+    ex:["Gases: alcalosis respiratoria → acidosis metabólica con hiperlactatemia (preterminal)","CK seriada","Salicilemia"],
+    ddx:["Otros febril–rígidos","Antimuscarínico, simpaticomimético o serotoninérgico grave","SNM, hipertermia maligna","Abstinencia, golpe de calor"],
+    mx:["<b>Enfriamiento activo</b> (la hipertermia grave suele ser preterminal)","Considerar terapias extracorpóreas","Salicilatos: alcalinización y hemodiálisis según criterios"],
+    dosis:null,
+    perla:"Joven gimnasta con hipertermia y taquipnea sin foco: pregunta por suplementos para “quemar grasa” (DNP)."},
+  sn:{mn:"FEVER",
+    mec:"Bloqueo D2 (patogenia incompleta). Antipsicóticos, o suspensión brusca de un agonista dopaminérgico (Parkinson).",
+    causas:["Antipsicóticos, sobre todo tras subir la dosis en días o semanas","Suspensión de levodopa o agonistas dopaminérgicos","Riesgo: daño cerebral orgánico, infección, deshidratación, desnutrición, trauma, endocrinopatía"],
+    clin:"Agitación y confusión, inestabilidad autonómica (variaciones de PA >30 mmHg y FC >30 lpm sobre la basal), <b>bradicinesia, temblor, rigidez</b>, hipertermia, diaforesis, rabdomiólisis. <b>Evoluciona en días</b> y resuelve en semanas.",
+    ex:["CK: elevada al ingreso, progresa y luego baja","Leucocitosis","Ferremia baja"],
+    ddx:["Otros febril–rígidos","Serotoninérgico (clonus, inicio en horas)","Desacople","Abstinencia, estatus no convulsivo, golpe de calor"],
+    mx:["Suspender el antipsicótico o reiniciar el agonista dopaminérgico suspendido","Benzodiacepinas","<b>Bromocriptina</b> (± dantroleno, evidencia limitada)","Enfriamiento y soporte. Reintroducir el neuroléptico con cautela, en dosis bajas y titulación lenta"],
+    dosis:"Bromocriptina 2,5 mg VO o por SNG cada 8 h (hasta ~10 mg cada 8 h). Dantroleno 1–2,5 mg/kg IV en rigidez o hipertermia grave (controvertido).",
+    perla:"Serotoninérgico en horas, con clonus y reflejos vivos. SNM en días, con rigidez en tubo de plomo y reflejos normales o ↓."}
+};
+const tabs = document.getElementById("tabs"), ficha = document.getElementById("ficha");
+tabs.innerHTML = T.map((t,i)=>`<button class="btn" role="tab" type="button" data-id="${t.id}" aria-pressed="${i===0}" style="--c:var(${t.c})">${t.n}</button>`).join("");
+const li = a => `<ul>${a.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+function showFicha(id){
+  const t=T.find(x=>x.id===id), f=F[id];
+  ficha.style.setProperty("--c",`var(${t.c})`);
+  ficha.innerHTML = `
+    <div class="ficha-head"><h3>${t.n === "SNM" ? "Síndrome neuroléptico maligno" : t.n === "Desacople fosf. oxidativa" ? "Desacople de la fosforilación oxidativa" : "Toxídrome " + t.n.toLowerCase()}</h3><span class="mn">${f.mn}</span></div>
+    <div class="fgrid">
+      <div><h4>Mecanismo</h4><p>${f.mec}</p></div>
+      <div><h4>Causas</h4>${li(f.causas)}</div>
+      <div><h4>Clínica</h4><p>${f.clin}</p></div>
+      <div><h4>Exámenes dirigidos</h4>${li(f.ex)}</div>
+      <div><h4>Diagnóstico diferencial</h4>${li(f.ddx)}</div>
+      <div><h4>Manejo</h4>${li(f.mx)}</div>
+    </div>
+    ${f.dosis?`<div class="dose"><span class="eyebrow">Dosis de referencia · complemento, no proviene del artículo</span><p>${f.dosis}</p></div>`:""}
+    <div class="callout" style="border-left-color:${`var(${t.c})`};background:color-mix(in srgb,var(${t.c}) var(--tint),transparent)"><strong style="color:var(--ink)">Perla</strong><p>${f.perla}</p></div>`;
+  tabs.querySelectorAll(".btn").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===id));
+}
+tabs.addEventListener("click",e=>{const b=e.target.closest(".btn"); if(b) showFicha(b.dataset.id);});
+showFicha("op");
+
+/* Flashcards */
+const cards = [
+  ["Midriasis + taquicardia + hipertermia. ¿Cómo distingues simpaticomimético de antimuscarínico en 5 segundos?","Toca la axila: el simpaticomimético suda, el antimuscarínico está seco (las glándulas sudoríparas son colinérgicas)."],
+  ["¿Qué signo es casi patognomónico del toxídrome serotoninérgico?","El clonus (inducible o espontáneo, aquiliano u ocular), con hipertonía de predominio en EEII y mioclonías."],
+  ["¿Qué marca la gravedad en el opioide y en el muscarínico, en vez de la hipertermia?","La hipotermia (y en el opioide, el coma)."],
+  ["Paciente sin respuesta a 0,4 mg de naloxona, con coma y miosis. Dos explicaciones.","Dosis insuficiente (fentanilos, nitazenos) o no es un opioide (α2 agonistas, OP, ictus pontino, antipsicóticos)."],
+  ["Drogas en orina positivas para anfetamina en un paciente con venlafaxina. ¿Qué concluyes?","Posible falso positivo. Un positivo confirma exposición, no intoxicación, y un negativo no excluye nada."],
+  ["Síntomas GI 10 h después de comer hongos recolectados. ¿Qué temes?","Amatoxinas (Amanita phalloides): hepatotoxicidad y muerte. Inicio >6 h = alto riesgo."],
+  ["Paciente con OP, aparentemente recuperado al día 2, presenta debilidad cervical y proximal. ¿Qué es?","Síndrome intermedio (24–72 h): riesgo de falla respiratoria y ventilación mecánica."],
+  ["Meta clínica de la atropinización en OP.","Tórax sin crépitos ni broncorrea, FC >80, PAS >80 mmHg, axilas secas, pupilas no puntiformes."],
+  ["Examen que debe pedirse en TODA ingesta intencional, aunque no haya toxídrome.","Paracetamolemia: no da toxídrome precoz y es tratable."],
+  ["SNM vs serotoninérgico: dos diferencias.","Tiempo (días vs horas) y examen neuromuscular (rigidez y bradicinesia con reflejos normales o ↓ vs clonus e hiperreflexia)."],
+  ["Varias personas inconscientes en una bodega cerrada. Primer paso.","Seguridad de la escena y EPP: knockdown (CO, H₂S, cianuro, asfixiantes). No entrar sin protección."],
+  ["Bradicardia + hipotensión + hiperkalemia + ST en cubeta.","Glicósidos cardiacos (digoxina, adelfa amarilla)."]
+];
+const deck = document.getElementById("deck");
+deck.innerHTML = cards.map(c=>`<button class="card" type="button" aria-pressed="false"><span class="front">${c[0]}</span><span class="back">${c[1]}</span><span class="hint">Toca para voltear</span></button>`).join("");
+deck.addEventListener("click",e=>{const c=e.target.closest(".card"); if(c) c.setAttribute("aria-pressed", c.getAttribute("aria-pressed")!=="true");});
+</script>
+
+</body>
+</html>
