@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Antivirales en Urgencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: guía de estudio de una columna con navegación fija; color semántico tomado de la tinción de Gram (violeta = Gram+, safranina = Gram−) y escala tipo agar para el espectro. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --surface-2:#f5f7f9; --ink:#17202b; --muted:#566170; --line:#d5dbe3;
+  --accent:#0f6f66; --accent-soft:#dcefec;
+  --gpos:#5a3ea6; --gneg:#b8325f; --ana:#7a6528; --ati:#2f6690; --res:#3d4652;
+  --h0:#eef1f4; --h1:#cde6e1; --h2:#5fae9f; --h3:#0f6f66; --h-ink:#17202b; --h2-ink:#0d1f1c; --h3-ink:#ffffff;
+  --ok:#2c7a4b; --ok-bg:#e2f1e7; --warn:#9a5900; --warn-bg:#fbefd9; --bad:#b3261e; --bad-bg:#fbe4e1;
+  --t-pared:#5a3ea6; --t-ribo:#0f6f66; --t-adn:#9a5900; --t-mem:#b8325f; --t-fol:#2f6690;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1418; --surface:#172027; --surface-2:#1c262e; --ink:#e4e9ee; --muted:#9aa6b2; --line:#2a3640;
+  --accent:#4cc2b2; --accent-soft:#173a36;
+  --gpos:#a891f0; --gneg:#f0799f; --ana:#d1bb7f; --ati:#86b9e2; --res:#b5c0cc;
+  --h0:#1a242b; --h1:#1d4540; --h2:#2b8a7d; --h3:#5fd3c2; --h-ink:#e4e9ee; --h2-ink:#0f1418; --h3-ink:#0f1418;
+  --ok:#6cc58f; --ok-bg:#16301f; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714;
+  --t-pared:#a891f0; --t-ribo:#4cc2b2; --t-adn:#e3a94f; --t-mem:#f0799f; --t-fol:#86b9e2;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f1418; --surface:#172027; --surface-2:#1c262e; --ink:#e4e9ee; --muted:#9aa6b2; --line:#2a3640;
+  --accent:#4cc2b2; --accent-soft:#173a36;
+  --gpos:#a891f0; --gneg:#f0799f; --ana:#d1bb7f; --ati:#86b9e2; --res:#b5c0cc;
+  --h0:#1a242b; --h1:#1d4540; --h2:#2b8a7d; --h3:#5fd3c2; --h-ink:#e4e9ee; --h2-ink:#0f1418; --h3-ink:#0f1418;
+  --ok:#6cc58f; --ok-bg:#16301f; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714;
+  --t-pared:#a891f0; --t-ribo:#4cc2b2; --t-adn:#e3a94f; --t-mem:#f0799f; --t-fol:#86b9e2;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important; animation:none!important} }
+body{background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px; margin:0 auto; padding-inline:clamp(16px,4vw,40px)}
+h1,h2,h3,h4{font-family:var(--f-display); text-wrap:balance; line-height:1.15; margin:0}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem); font-weight:800; font-stretch:88%; letter-spacing:-.01em}
+h3{font-size:1.2rem; font-weight:700; font-stretch:95%}
+h4{font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--muted)}
+p{margin:0}
+.mono{font-family:var(--f-mono); font-size:.88em}
+.muted{color:var(--muted)}
+.prose{max-width:68ch}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+
+/* Hero */
+header.hero{padding-block:44px 28px; border-bottom:1px solid var(--line); background:var(--surface)}
+.hero .eyebrow{font-family:var(--f-mono); font-size:.8rem; color:var(--accent); letter-spacing:.04em}
+.hero h1{font-size:clamp(2.3rem,6.4vw,4.4rem); font-weight:800; font-stretch:72%; letter-spacing:-.02em; margin-top:8px}
+.hero h1 .pos{color:var(--gpos)} .hero h1 .neg{color:var(--gneg)}
+.hero .lede{margin-top:14px; max-width:62ch; color:var(--muted); font-size:1.05rem}
+.legend-row{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:20px; font-size:.86rem}
+.legend-row span{display:inline-flex; align-items:center; gap:7px}
+.dot{width:11px; height:11px; border-radius:50%; display:inline-block; flex:none}
+
+/* Nav */
+nav.toc{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex; gap:4px; overflow-x:auto; padding-block:8px; scrollbar-width:none}
+nav.toc .wrap::-webkit-scrollbar{display:none}
+nav.toc a{flex:none; text-decoration:none; color:var(--muted); font-size:.86rem; padding:6px 11px; border-radius:999px; white-space:nowrap}
+nav.toc a:hover{color:var(--ink); background:var(--surface)}
+nav.toc a .n{font-family:var(--f-mono); font-size:.75rem; color:var(--accent); margin-right:5px}
+
+section.block{padding-block:52px 12px}
+.sec-head{display:grid; gap:10px; margin-bottom:26px}
+.sec-head .num{font-family:var(--f-mono); color:var(--accent); font-size:.85rem}
+.sec-head p{color:var(--muted); max-width:68ch}
+
+.grid{display:grid; gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px; min-width:0}
+.panel h3{margin-bottom:8px}
+.panel p+p{margin-top:8px}
+ul.tight{margin:6px 0 0; padding-left:1.1em} ul.tight li{margin:3px 0}
+.callout{border-left:3px solid var(--accent); background:var(--accent-soft); padding:12px 16px; border-radius:0 var(--radius) var(--radius) 0; margin-top:16px}
+.callout b{font-family:var(--f-display)}
+
+/* Tablas */
+.tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table{border-collapse:collapse; width:100%; font-size:.9rem}
+th,td{padding:9px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display); font-weight:700; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); background:var(--surface-2)}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:700}
+
+/* PK/PD */
+.pk-fig{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px; overflow-x:auto}
+.pk-fig svg{display:block; width:100%; min-width:520px; height:auto}
+.idx{display:grid; gap:4px}
+.idx .k{font-family:var(--f-mono); font-size:1.05rem; color:var(--accent); font-weight:500}
+
+/* Dianas */
+.mech-fig{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:14px; overflow-x:auto}
+.mech-fig svg{display:block; width:100%; min-width:640px; height:auto}
+
+/* Familias */
+.controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:18px}
+.search{flex:1 1 240px; min-width:0; padding:10px 14px; border:1px solid var(--line); border-radius:999px; background:var(--surface); color:var(--ink); font:inherit}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:5px 11px; border-radius:999px; font:inherit; font-size:.82rem; cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+.fam{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); margin-bottom:18px; overflow:hidden}
+.fam-head{padding:18px 20px 14px; display:grid; gap:10px; border-bottom:1px solid var(--line); position:relative}
+.fam-head::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--tc)}
+.fam-head .top{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline}
+.fam-head h3{font-size:1.45rem; font-stretch:85%}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{font-size:.74rem; padding:3px 8px; border-radius:6px; background:var(--surface-2); border:1px solid var(--line); color:var(--muted); white-space:nowrap}
+.tag.t{color:var(--tc); border-color:color-mix(in srgb,var(--tc) 40%,var(--line))}
+.fam-body{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:14px 22px; padding:14px 20px 18px}
+.fam-body > div{min-width:0}
+.fam-body p{font-size:.92rem; margin-top:4px}
+.perla{grid-column:1/-1; background:var(--surface-2); border-radius:8px; padding:10px 14px; font-size:.92rem}
+.perla b{color:var(--accent)}
+details.drug{border-top:1px solid var(--line)}
+details.drug summary{list-style:none; cursor:pointer; padding:12px 20px; display:grid; grid-template-columns:1fr auto; gap:6px 14px; align-items:center}
+details.drug summary::-webkit-details-marker{display:none}
+details.drug summary:hover{background:var(--surface-2)}
+.dn{font-weight:700; display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline; min-width:0}
+.dn .via{font-family:var(--f-mono); font-size:.74rem; color:var(--muted); font-weight:400}
+.dn .tm{font-family:var(--f-mono); font-size:.74rem; color:var(--accent); font-weight:400}
+.mini{display:flex; gap:2px}
+.mini i{width:10px; height:14px; border-radius:2px; display:block}
+.chev{transition:transform .2s; color:var(--muted); font-size:.8rem}
+details[open] .chev{transform:rotate(90deg)}
+.sum-right{display:flex; align-items:center; gap:12px}
+.drug-body{padding:4px 20px 18px; display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:12px 22px}
+.drug-body > div{min-width:0}
+.drug-body p{font-size:.9rem; margin-top:3px}
+.drug-body .wide{grid-column:1/-1}
+.dose{font-family:var(--f-mono); font-size:.84rem; background:var(--surface-2); padding:8px 10px; border-radius:6px; margin-top:4px}
+.preg{display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:700; padding:2px 8px; border-radius:999px}
+.preg.s{color:var(--ok); background:var(--ok-bg)} .preg.p{color:var(--warn); background:var(--warn-bg)} .preg.e{color:var(--bad); background:var(--bad-bg)}
+.empty{padding:28px; text-align:center; color:var(--muted)}
+
+/* Espectro */
+.spec-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; min-width:0; border-top:3px solid var(--sc)}
+.spec-card h3{font-size:1.05rem; color:var(--sc)}
+.spec-card p{font-size:.88rem; color:var(--muted); margin-top:6px}
+.pills{display:flex; flex-wrap:wrap; gap:5px; margin-top:10px}
+.pill{font-size:.78rem; padding:3px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line)}
+
+/* Esquemas */
+.emp{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px; display:grid; gap:10px; min-width:0}
+.emp .hd{display:flex; justify-content:space-between; gap:10px; align-items:baseline; flex-wrap:wrap}
+.emp h3{font-size:1.08rem}
+.emp .lbl{font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; font-family:var(--f-display)}
+.emp p{font-size:.9rem}
+.emp .note{font-size:.86rem; color:var(--muted); border-top:1px dashed var(--line); padding-top:8px}
+.etag{font-size:.72rem; padding:2px 8px; border-radius:999px; font-weight:700}
+.etag.crit{background:var(--bad-bg); color:var(--bad)} .etag.resp{background:var(--accent-soft); color:var(--accent)}
+.etag.uri{background:var(--warn-bg); color:var(--warn)} .etag.piel{background:color-mix(in srgb,var(--gpos) 14%,var(--surface)); color:var(--gpos)}
+.etag.abd{background:color-mix(in srgb,var(--ana) 16%,var(--surface)); color:var(--ana)}
+.emp-filter{margin-bottom:16px}
+
+/* Heatmap */
+.hm-controls{display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; margin-bottom:14px}
+.hm-controls label{font-size:.9rem; color:var(--muted)}
+select{font:inherit; padding:8px 12px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--ink); max-width:100%}
+.hm-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface)}
+table.hm{font-size:.82rem; min-width:760px}
+table.hm th, table.hm td{padding:0; border-bottom:1px solid var(--line); text-align:center; vertical-align:middle}
+table.hm thead th{padding:10px 4px; font-size:.7rem; position:sticky; top:0}
+table.hm thead th.pos{color:var(--gpos)} table.hm thead th.neg{color:var(--gneg)} table.hm thead th.ana{color:var(--ana)} table.hm thead th.ati{color:var(--ati)}
+table.hm th.rowh{text-align:left; padding:6px 12px; font-family:var(--f-body); text-transform:none; letter-spacing:0; font-size:.84rem; font-weight:700; color:var(--ink); background:var(--surface); position:sticky; left:0; z-index:1; white-space:nowrap; border-right:1px solid var(--line)}
+table.hm tr.fam-row td{background:var(--surface-2); text-align:left; padding:6px 12px; font-family:var(--f-display); font-size:.72rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}
+table.hm td.c{width:64px; height:34px; border-left:2px solid var(--surface)}
+.c0{background:var(--h0); color:var(--muted)} .c1{background:var(--h1); color:var(--h-ink)} .c2{background:var(--h2); color:var(--h2-ink)} .c3{background:var(--h3); color:var(--h3-ink); font-weight:700}
+table.hm td.c span{font-family:var(--f-mono); font-size:.78rem}
+table.hm .dim{opacity:.28}
+.hm-legend{display:flex; flex-wrap:wrap; gap:8px 16px; margin-top:12px; font-size:.84rem; align-items:center}
+.hm-legend i{display:inline-block; width:22px; height:14px; border-radius:3px; vertical-align:middle; margin-right:6px; border:1px solid var(--line)}
+.colkey{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr)); gap:4px 18px; margin-top:12px; font-size:.82rem; color:var(--muted)}
+.colkey b{font-family:var(--f-mono); color:var(--ink); font-weight:500}
+
+/* Tarjetas */
+.cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr)); gap:14px}
+.card{perspective:900px; background:none; border:none; padding:0; font:inherit; color:inherit; text-align:left; cursor:pointer; min-height:190px}
+.card .inner{position:relative; width:100%; height:100%; min-height:190px; transition:transform .45s; transform-style:preserve-3d}
+.card[aria-pressed="true"] .inner{transform:rotateY(180deg)}
+.card .face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--line); overflow:auto}
+.card .front{background:var(--surface)}
+.card .front .q{font-family:var(--f-display); font-weight:700; font-size:1.08rem; font-stretch:92%}
+.card .front .hint{margin-top:auto; font-size:.76rem; color:var(--muted); font-family:var(--f-mono)}
+.card .back{background:var(--accent); color:var(--h3-ink); transform:rotateY(180deg); font-size:.9rem}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card .back{color:#0f1418} }
+:root[data-theme="dark"] .card .back{color:#0f1418}
+.cards-actions{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap}
+.btn{border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:7px 14px; border-radius:8px; font:inherit; font-size:.86rem; cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+
+footer{margin-top:56px; padding-block:28px 48px; border-top:1px solid var(--line); color:var(--muted); font-size:.86rem}
+footer .grid{gap:20px}
+footer ul{padding-left:1.1em; margin:6px 0 0}
+.badge-res{display:inline-block; font-family:var(--f-mono); font-size:.72rem; padding:1px 6px; border-radius:4px; background:var(--surface-2); border:1px solid var(--line); margin-right:4px}
+@media (max-width:520px){
+  details.drug summary{grid-template-columns:1fr; }
+  .sum-right{justify-content:space-between}
+}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Farmacología clínica · Medicina de urgencia · Adulto, pediatría, embarazo, obesidad y ERC</div>
+    <h1>Antivirales en <span class="pos">Ur</span><span class="neg">gencia</span></h1>
+    <p class="lede">Herpesvirus, influenza, SARS-CoV-2, VIH y hepatitis: en qué paso del ciclo viral actúa cada fármaco, cuánto dura, cuánto se da, cómo se hace resistente el virus y en qué paciente se complica. Al final, el mapa de espectro y tarjetas para repasar.</p>
+    <div class="legend-row">
+      <span><i class="dot" style="background:var(--gpos)"></i>Herpesvirus</span>
+      <span><i class="dot" style="background:var(--gneg)"></i>Respiratorios</span>
+      <span><i class="dot" style="background:var(--ati)"></i>VIH</span>
+      <span><i class="dot" style="background:var(--ana)"></i>Hepatitis</span>
+      <span><span class="preg s">Seguro</span><span class="preg p">Precaución</span><span class="preg e">Evitar</span> en el embarazo</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <div class="wrap">
+    <a href="#pkpd"><span class="n">1</span>Principios</a>
+    <a href="#dianas"><span class="n">2</span>Ciclo viral</a>
+    <a href="#familias"><span class="n">3</span>Familias y dosis</a>
+    <a href="#espectro"><span class="n">4</span>Por espectro</a>
+    <a href="#resistencias"><span class="n">5</span>Resistencias</a>
+    <a href="#toxicidad"><span class="n">6</span>Toxicidad e interacciones</a>
+    <a href="#poblaciones"><span class="n">7</span>Poblaciones especiales</a>
+    <a href="#empiricos"><span class="n">8</span>Esquemas</a>
+    <a href="#resumen"><span class="n">9</span>Resumen visual</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section class="block" id="pkpd">
+  <div class="sec-head">
+    <span class="num">01 · Fundamentos</span>
+    <h2>Farmacología antiviral: el reloj manda</h2>
+    <p>Los antivirales frenan la replicación, pero no matan al virus ni eliminan la latencia. Funcionan mientras el virus se está copiando: por eso casi todo depende de cuándo empiezas.</p>
+  </div>
+
+  <h3 style="margin-bottom:12px">Ventanas terapéuticas</h3>
+  <div class="pk-fig" aria-label="Ventanas de inicio de tratamiento">
+    <svg id="winSvg" viewBox="0 0 720 340" role="img"></svg>
+  </div>
+  <p class="muted" style="font-size:.86rem;margin-top:8px">Barra sólida: ventana ideal. Barra clara: límite aceptado. En el paciente grave o inmunosuprimido, la ventana no impide tratar.</p>
+
+  <div class="grid g3" style="margin-top:16px">
+    <div class="panel idx">
+      <span class="k">EC50 · Cmin</span>
+      <h3>Sin CMI clásica</h3>
+      <p>La potencia se mide como concentración inhibitoria 50 o 90 (EC50/IC50). En VIH, el objetivo es mantener la concentración valle por encima de la IC90 ajustada a proteínas: un olvido baja la Cmin y abre la puerta a la resistencia.</p>
+    </div>
+    <div class="panel idx">
+      <span class="k">Profármaco → trifosfato</span>
+      <h3>Activación intracelular</h3>
+      <p>Los análogos de nucleósido se activan dentro de la célula. La vida media del trifosfato intracelular manda sobre la plasmática: tenofovir difosfato dura días, y eso permite una toma diaria con margen ante olvidos.</p>
+    </div>
+    <div class="panel idx">
+      <span class="k">Barrera genética</span>
+      <h3>Cuántas mutaciones hacen falta</h3>
+      <p>Baja (una mutación basta): lamivudina, emtricitabina, efavirenz, raltegravir, baloxavir. Alta: dolutegravir, bictegravir, darunavir, tenofovir, entecavir. En VIH, la resistencia queda archivada en el reservorio para siempre.</p>
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:16px">
+    <div class="panel">
+      <h3>Potenciadores farmacocinéticos</h3>
+      <p><b>Ritonavir</b> y <b>cobicistat</b> no se usan por su efecto antiviral. Inhiben el CYP3A4 y la gp-P para subir los niveles de darunavir o nirmatrelvir.</p>
+      <p>El precio es una lista enorme de interacciones: estatinas, anticoagulantes directos, antiarrítmicos, inmunosupresores, corticoides inhalados, sedantes y antiepilépticos inductores (que además hacen fallar el antiviral).</p>
+    </div>
+    <div class="panel">
+      <h3>Profármacos que cambian la biodisponibilidad</h3>
+      <div class="tbl-wrap" style="border:none">
+      <table><tbody>
+        <tr><td>Aciclovir VO</td><td class="mono">15–30%</td></tr>
+        <tr><td>Valaciclovir</td><td class="mono">~55% (de aciclovir)</td></tr>
+        <tr><td>Famciclovir</td><td class="mono">~77% (de penciclovir)</td></tr>
+        <tr><td>Ganciclovir VO (ya no se usa)</td><td class="mono">~6%</td></tr>
+        <tr><td>Valganciclovir</td><td class="mono">~60% (con comida)</td></tr>
+        <tr><td>Oseltamivir</td><td class="mono">~80% (carboxilato)</td></tr>
+      </tbody></table>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Penetración en el SNC</h3>
+      <p><b>Útil:</b> aciclovir (LCR ~50% del plasma), ganciclovir, foscarnet, zidovudina, dolutegravir (moderada).</p>
+      <p><b>Pobre:</b> oseltamivir, tenofovir, IP. En el SNC el aciclovir EV en dosis plena es insustituible.</p>
+    </div>
+    <div class="panel">
+      <h3>Virustático no es curativo</h3>
+      <ul class="tight">
+        <li>Herpesvirus y VHB quedan latentes: el tratamiento acorta el episodio pero no evita recurrencias.</li>
+        <li>VIH: la supresión sostenida (indetectable = intransmisible) requiere tratamiento de por vida.</li>
+        <li>VHC es la excepción: los AAD curan en más del 95% de los casos.</li>
+        <li>Influenza y SARS-CoV-2: el beneficio es reducir gravedad, duración y excreción viral.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="dianas">
+  <div class="sec-head">
+    <span class="num">02 · Mecanismos de acción</span>
+    <h2>Un fármaco para cada paso del ciclo viral</h2>
+    <p>El virus no tiene metabolismo propio: usa la maquinaria de la célula. Los antivirales atacan las pocas enzimas que son solo del virus. Ahí está su selectividad.</p>
+  </div>
+  <div class="mech-fig">
+    <svg viewBox="0 0 850 470" role="img" aria-labelledby="cyT">
+      <title id="cyT">Ciclo de replicación viral y sitios de acción de los antivirales</title>
+      <rect x="20" y="50" width="390" height="390" rx="46" fill="var(--surface-2)" stroke="var(--t-mem)" stroke-width="4"/>
+      <ellipse cx="200" cy="270" rx="105" ry="78" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 5"/>
+      <text x="200" y="335" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="var(--muted)">núcleo</text>
+      <circle cx="90" cy="32" r="20" fill="var(--gneg)" opacity=".85"/>
+      <circle cx="350" cy="32" r="16" fill="var(--gneg)" opacity=".55"/>
+      <path d="M90 60 L 90 120 L 150 200 L 200 240 L 240 280 L 300 380 L 360 200 L 350 60" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <g font-family="IBM Plex Mono,monospace" font-size="13" font-weight="500" text-anchor="middle">
+        <circle cx="90" cy="60" r="14" fill="var(--t-mem)"/><text x="90" y="65" fill="var(--surface)">1</text>
+        <circle cx="90" cy="120" r="14" fill="var(--t-mem)"/><text x="90" y="125" fill="var(--surface)">2</text>
+        <circle cx="150" cy="200" r="14" fill="var(--t-fol)"/><text x="150" y="205" fill="var(--surface)">3</text>
+        <circle cx="200" cy="240" r="14" fill="var(--t-fol)"/><text x="200" y="245" fill="var(--surface)">4</text>
+        <circle cx="240" cy="280" r="14" fill="var(--t-adn)"/><text x="240" y="285" fill="var(--surface)">5</text>
+        <circle cx="300" cy="380" r="14" fill="var(--t-ribo)"/><text x="300" y="385" fill="var(--surface)">6</text>
+        <circle cx="360" cy="200" r="14" fill="var(--t-ribo)"/><text x="360" y="205" fill="var(--surface)">7</text>
+        <circle cx="350" cy="60" r="14" fill="var(--t-pared)"/><text x="350" y="65" fill="var(--surface)">8</text>
+      </g>
+      <g font-family="Atkinson Hyperlegible,system-ui,sans-serif" font-size="13" fill="var(--ink)">
+        <text x="440" y="40" font-weight="700" fill="var(--t-mem)">1 · Unión, entrada y fusión</text>
+        <text x="440" y="57" fill="var(--muted)">Maraviroc (CCR5), enfuvirtida, anticuerpos (nirsevimab)</text>
+        <text x="440" y="90" font-weight="700" fill="var(--t-mem)">2 · Desnudamiento</text>
+        <text x="440" y="107" fill="var(--muted)">Adamantanos (obsoletos), lenacapavir (cápside VIH)</text>
+        <text x="440" y="140" font-weight="700" fill="var(--t-fol)">3 · Transcripción inversa</text>
+        <text x="440" y="157" fill="var(--muted)">ITIAN, ITINN (VIH) · entecavir, tenofovir (VHB)</text>
+        <text x="440" y="190" font-weight="700" fill="var(--t-fol)">4 · Integración</text>
+        <text x="440" y="207" fill="var(--muted)">Dolutegravir, bictegravir, raltegravir, cabotegravir</text>
+        <text x="440" y="240" font-weight="700" fill="var(--t-adn)">5 · Replicación y transcripción</text>
+        <text x="440" y="257" fill="var(--muted)">Aciclovir, ganciclovir, foscarnet, cidofovir, remdesivir,</text>
+        <text x="440" y="273" fill="var(--muted)">molnupiravir, sofosbuvir, ribavirina · baloxavir (PA)</text>
+        <text x="440" y="306" font-weight="700" fill="var(--t-ribo)">6 · Traducción y corte de poliproteínas</text>
+        <text x="440" y="323" fill="var(--muted)">IP del VIH, nirmatrelvir (Mpro), glecaprevir (NS3/4A)</text>
+        <text x="440" y="356" font-weight="700" fill="var(--t-ribo)">7 · Ensamblaje y empaquetamiento</text>
+        <text x="440" y="373" fill="var(--muted)">Letermovir (terminasa), velpatasvir y pibrentasvir (NS5A)</text>
+        <text x="440" y="406" font-weight="700" fill="var(--t-pared)">8 · Liberación</text>
+        <text x="440" y="423" fill="var(--muted)">Oseltamivir, zanamivir, peramivir (neuraminidasa)</text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<section class="block" id="familias">
+  <div class="sec-head">
+    <span class="num">03 · Revisión por familia</span>
+    <h2>Familias, fármacos y dosis</h2>
+    <p>Cada familia muestra su mecanismo, resistencias y perla clínica. Abre un fármaco para ver vida media, dosis de adulto, ajuste renal, pediatría, embarazo, obesidad y toxicidad. La barrita de colores resume su espectro con el mismo orden del mapa final.</p>
+  </div>
+  <div class="controls">
+    <input id="q" class="search" type="search" placeholder="Buscar fármaco, virus o efecto adverso…" aria-label="Buscar">
+    <div class="chips" id="famChips" role="group" aria-label="Filtrar por familia"></div>
+  </div>
+  <div id="famList"></div>
+</section>
+
+<section class="block" id="espectro">
+  <div class="sec-head">
+    <span class="num">04 · Agrupación por espectro</span>
+    <h2>Ordenados por virus</h2>
+    <p>A diferencia de los antibacterianos, casi todos los antivirales son de espectro estrecho. Primero identifica (o sospecha) el virus y después eliges.</p>
+  </div>
+  <div class="grid g2" id="specGrid"></div>
+  <div class="callout"><b>Lo que no tiene antiviral.</b> Para la mayoría de los virus respiratorios (rinovirus, metapneumovirus, parainfluenza), para el dengue y para el hantavirus no hay antiviral eficaz: el tratamiento es de soporte. El aciclovir no sirve para la mononucleosis por VEB.</div>
+</section>
+
+<section class="block" id="resistencias">
+  <div class="sec-head">
+    <span class="num">05 · Resistencia</span>
+    <h2>Mutar es el oficio del virus</h2>
+    <p>Los virus ARN copian con muchos errores y generan variantes resistentes con facilidad. La resistencia aparece donde hay replicación alta con presión farmacológica insuficiente: monoterapia, mala adherencia o inmunosupresión prolongada.</p>
+  </div>
+  <div class="grid g2">
+    <div class="panel"><h3>1 · Falla de la activación</h3>
+      <p>Mutación de la enzima viral que activa al profármaco: <b>TK (UL23)</b> del VHS frente a aciclovir; <b>UL97</b> del CMV frente a ganciclovir. Se rescata con fármacos que no necesitan esa enzima (foscarnet, cidofovir).</p></div>
+    <div class="panel"><h3>2 · Cambio de la diana</h3>
+      <ul class="tight">
+        <li>Polimerasa: UL30 (VHS), UL54 (CMV), YMDD (VHB).</li>
+        <li>Neuraminidasa: <b>H275Y</b> (oseltamivir). Endonucleasa: <b>PA I38T</b> (baloxavir).</li>
+        <li>Transcriptasa inversa: <b>M184V</b>, K65R, <b>K103N</b>.</li>
+        <li>Integrasa: N155H, Q148H, R263K. Proteasa: mutaciones acumuladas.</li>
+        <li>NS5A del VHC: Y93H.</li>
+      </ul></div>
+    <div class="panel"><h3>3 · Barrera genética y adherencia</h3>
+      <p>Una sola mutación basta para inactivar efavirenz o lamivudina. Dolutegravir y darunavir requieren varias. Por eso en VIH nunca se usa monoterapia y en VHB se prefiere entecavir o tenofovir.</p></div>
+    <div class="panel"><h3>4 · Huéspedes de riesgo</h3>
+      <p>Trasplantados, pacientes con VIH avanzado y en quimioterapia: replicación prolongada, cargas altas y cursos largos. Son la fuente de VHS resistente a aciclovir, CMV resistente a ganciclovir e influenza con H275Y.</p></div>
+  </div>
+
+  <h3 style="margin:30px 0 12px">Resistencias intrínsecas que hay que saber de memoria</h3>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Virus</th><th>No responde a</th><th>Por qué / implicancia</th></tr></thead>
+      <tbody>
+        <tr><td>CMV</td><td>Aciclovir, valaciclovir (útil solo en profilaxis con dosis altas)</td><td>No tiene TK: se activa con UL97 → ganciclovir.</td></tr>
+        <tr><td>VEB</td><td>Aciclovir (sin beneficio clínico)</td><td>En mononucleosis el tratamiento es de soporte.</td></tr>
+        <tr><td>VIH-2</td><td>ITINN (efavirenz, rilpivirina, doravirina), enfuvirtida</td><td>Bolsillo alostérico distinto. Usa INSTI + ITIAN.</td></tr>
+        <tr><td>Influenza A actual</td><td>Amantadina, rimantadina (~100%)</td><td>Mutación S31N de la proteína M2: obsoletos.</td></tr>
+        <tr><td>Influenza B</td><td>Adamantanos</td><td>Carece de la proteína M2.</td></tr>
+        <tr><td>VHS y VVZ</td><td>Letermovir</td><td>La terminasa UL56 diana es exclusiva del CMV.</td></tr>
+        <tr><td>VHB</td><td>AAD del VHC</td><td>Puede reactivarse durante el tratamiento del VHC: pide HBsAg antes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel" style="margin-top:16px">
+    <h3>Contexto chileno</h3>
+    <ul class="tight">
+      <li><b>VIH:</b> Chile ha tenido uno de los mayores aumentos de nuevos diagnósticos de la región en la última década. La TAR está garantizada (GES) y la PrEP se entrega en la red pública. La resistencia transmitida a ITINN en Latinoamérica supera el 10%, una de las razones para preferir INSTI.</li>
+      <li><b>PEP:</b> está disponible en servicios de urgencia de la red pública, en el contexto de exposición sexual (incluida la violencia sexual) y ocupacional. Usa el kit y el protocolo de tu servicio.</li>
+      <li><b>Influenza:</b> el MINSAL sugiere oseltamivir en adultos hospitalizados, iniciado apenas se sospecha y sin esperar el resultado del test ni el traslado.</li>
+      <li><b>Hantavirus (virus Andes):</b> endémico desde Valparaíso hasta Aysén, con transmisión de persona a persona descrita. No hay antiviral eficaz: la clave es la sospecha precoz y el traslado oportuno a un centro con ECMO.</li>
+      <li><b>Hepatitis B y C:</b> ambas tienen tratamiento garantizado. La hepatitis C se cura con AAD pangenotípicos en 8–12 semanas.</li>
+      <li><b>Mpox:</b> hubo brote desde 2022. El tecovirimat es de acceso especial; el pilar es aislamiento, manejo del dolor y estudio de otras ITS.</li>
+    </ul>
+    <p class="muted" style="margin-top:10px">Verifica la disponibilidad de cada fármaco y los protocolos en tu establecimiento.</p>
+  </div>
+</section>
+
+<section class="block" id="toxicidad">
+  <div class="sec-head">
+    <span class="num">06 · Seguridad</span>
+    <h2>Toxicidad e interacciones que aparecen en urgencia</h2>
+  </div>
+  <div class="grid g2">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Órgano</th><th>Culpables principales</th></tr></thead>
+        <tbody>
+          <tr><td>Riñón</td><td>Aciclovir EV (cristales), foscarnet, cidofovir (Fanconi), TDF (tubulopatía)</td></tr>
+          <tr><td>SNC</td><td>Aciclovir y valaciclovir (encefalopatía en ERC), efavirenz (neuropsiquiátrico), oseltamivir (raro, niños)</td></tr>
+          <tr><td>Médula ósea</td><td>Ganciclovir y valganciclovir (neutropenia), zidovudina (anemia), ribavirina (hemólisis)</td></tr>
+          <tr><td>Electrolitos</td><td>Foscarnet (Ca iónico, Mg, P, K)</td></tr>
+          <tr><td>Corazón</td><td>Rilpivirina (QT), sofosbuvir con amiodarona (bradicardia), remdesivir (bradicardia sinusal)</td></tr>
+          <tr><td>Hígado</td><td>Remdesivir (transaminasas), ITINN, IP, glecaprevir en cirrosis descompensada</td></tr>
+          <tr><td>Hipersensibilidad</td><td>Abacavir (HLA-B*5701), darunavir (sulfonamida)</td></tr>
+          <tr><td>Metabolismo</td><td>INSTI y TAF (aumento de peso), IP (dislipidemia)</td></tr>
+          <tr><td>Hueso</td><td>TDF (osteopenia)</td></tr>
+          <tr><td>Teratogenicidad</td><td>Ribavirina, ganciclovir, valganciclovir, molnupiravir</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Interacción</th><th>Consecuencia y conducta</th></tr></thead>
+        <tbody>
+          <tr><td>Ritonavir o cobicistat + estatinas (simva, lova), colchicina, amiodarona, ACOD, ticagrelor</td><td>Toxicidad grave. Suspende o cambia antes de iniciar.</td></tr>
+          <tr><td>Ritonavir + fluticasona o budesonida</td><td>Cushing iatrogénico y crisis suprarrenal al suspender.</td></tr>
+          <tr><td>Ritonavir + midazolam oral, triazolam</td><td>Sedación prolongada: usa lorazepam.</td></tr>
+          <tr><td>Carbamazepina, fenitoína, rifampicina + IP, INSTI, nirmatrelvir</td><td>Inducción: falla del antiviral.</td></tr>
+          <tr><td>Sofosbuvir + amiodarona</td><td>Asistolia: contraindicado.</td></tr>
+          <tr><td>INSTI o baloxavir + Ca, Mg, Al, Fe</td><td>Quelación: separa las tomas.</td></tr>
+          <tr><td>Rilpivirina + IBP</td><td>Absorción nula: contraindicado.</td></tr>
+          <tr><td>Dolutegravir + metformina</td><td>Metformina ×1,8: limita a 1 g/día.</td></tr>
+          <tr><td>Valganciclovir + micofenolato o TMP-SMX</td><td>Mielosupresión aditiva.</td></tr>
+          <tr><td>TDF + AINE en dosis altas</td><td>Lesión renal aguda.</td></tr>
+          <tr><td>Efavirenz + metadona</td><td>Abstinencia por inducción.</td></tr>
+          <tr><td>Letermovir + tacrolimus, ciclosporina, voriconazol</td><td>Sube los inmunosupresores y baja el voriconazol.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="poblaciones">
+  <div class="sec-head">
+    <span class="num">07 · Poblaciones especiales</span>
+    <h2>Riñón, peso, embarazo y niños</h2>
+  </div>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>Insuficiencia renal y diálisis</h3>
+      <ul class="tight">
+        <li><b>Requieren ajuste:</b> aciclovir, valaciclovir, famciclovir, ganciclovir, valganciclovir, foscarnet, cidofovir (contraindicado), oseltamivir, peramivir, TDF, lamivudina, emtricitabina, entecavir, nirmatrelvir/r.</li>
+        <li><b>Sin ajuste:</b> INSTI, IP, ITINN, abacavir, baloxavir, remdesivir (desde 2023), letermovir, AAD del VHC.</li>
+        <li><b>Hemodiálisis:</b> aciclovir, ganciclovir y oseltamivir se dializan: dar después de la sesión.</li>
+        <li>Prefiere <b>TAF</b> sobre TDF en ERC u osteoporosis.</li>
+        <li>Dolutegravir, bictegravir, rilpivirina y cobicistat elevan la creatinina sin reducir el filtrado real (bloqueo de la secreción tubular).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>Obesidad</h3>
+      <div class="tbl-wrap" style="border:none">
+      <table><tbody>
+        <tr><td>Peso ideal</td><td>Aciclovir EV (ajustado en obesidad mórbida grave o encefalitis)</td></tr>
+        <tr><td>Peso ajustado</td><td>Ganciclovir y foscarnet (evidencia limitada)</td></tr>
+        <tr><td>Dosis fija mayor</td><td>Baloxavir 80 mg si ≥80 kg</td></tr>
+        <tr><td>Dosis estándar</td><td>Oseltamivir, nirmatrelvir/r, remdesivir y antirretrovirales orales</td></tr>
+      </tbody></table>
+      </div>
+      <p class="muted" style="font-size:.84rem;margin-top:6px">La obesidad mórbida es un factor de riesgo de influenza y COVID-19 graves: indica tratamiento con umbral bajo.</p>
+    </div>
+    <div class="panel">
+      <h3>Embarazo</h3>
+      <p><span class="preg s">Seguro</span> Aciclovir, valaciclovir, oseltamivir, remdesivir, nirmatrelvir/r, tenofovir, emtricitabina, lamivudina, dolutegravir, raltegravir, darunavir/r (c/12 h), zidovudina.</p>
+      <p><span class="preg p">Precaución</span> Famciclovir, zanamivir, baloxavir, foscarnet, efavirenz, entecavir, AAD del VHC (diferir).</p>
+      <p><span class="preg e">Evitar</span> Ribavirina (ambos sexos, 6 meses), ganciclovir, valganciclovir, cidofovir, molnupiravir.</p>
+      <p class="muted">Embarazada con influenza o COVID-19 es población de riesgo: trata sin demora. Con VIH, la meta es carga viral indetectable antes del parto.</p>
+    </div>
+    <div class="panel">
+      <h3>Pediatría</h3>
+      <ul class="tight">
+        <li><b>Neonato con VHS:</b> aciclovir 20 mg/kg c/8 h EV ×14 días (piel-ojo-boca) o ×21 días (SNC o diseminado). Ante sospecha (fiebre, convulsión o vesículas en <6 semanas), no esperes la PCR.</li>
+        <li><b>Influenza:</b> oseltamivir por peso desde el nacimiento. Los <5 años, y sobre todo los <2, son grupo de riesgo.</li>
+        <li><b>Varicela en niño sano:</b> el aciclovir no es de rutina. Sí en >12 años, enfermedad crónica de piel o pulmón, uso de corticoides o salicilatos, o caso secundario en el hogar.</li>
+        <li><b>Hijo de madre con VIH:</b> zidovudina (± otros antirretrovirales según riesgo) desde las primeras 6 horas.</li>
+        <li><b>VRS:</b> tratamiento de soporte. La prevención es con nirsevimab en lactantes.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="empiricos">
+  <div class="sec-head">
+    <span class="num">08 · Aplicación</span>
+    <h2>Esquemas del adulto en urgencia</h2>
+    <p>Son puntos de partida. Ajústalos a la función renal, las interacciones y el protocolo de tu establecimiento. La dosis pediátrica de cada fármaco está en la sección 3.</p>
+  </div>
+  <div class="chips emp-filter" id="empChips" role="group" aria-label="Filtrar por escenario"></div>
+  <div class="grid g2" id="empGrid"></div>
+</section>
+
+<section class="block" id="resumen">
+  <div class="sec-head">
+    <span class="num">09 · Resumen visual</span>
+    <h2>Mapa de espectro</h2>
+    <p>Cada celda es la actividad clínica esperable frente al virus. Usa el selector para ver solo lo que cubre un virus concreto.</p>
+  </div>
+  <div class="hm-controls">
+    <label for="hmCol">Mostrar fármacos activos frente a</label>
+    <select id="hmCol"><option value="">Todos los virus</option></select>
+  </div>
+  <div class="hm-wrap"><table class="hm" id="hm"></table></div>
+  <div class="hm-legend" id="hmLegend"></div>
+  <div class="colkey" id="colKey"></div>
+
+  <h2 style="margin:44px 0 8px">Tarjetas de repaso</h2>
+  <p class="muted" style="margin-bottom:16px">Piensa la respuesta y toca la tarjeta para darla vuelta.</p>
+  <div class="cards-actions">
+    <button class="btn" id="shuffle" type="button">Barajar</button>
+    <button class="btn" id="flipAll" type="button">Dar vuelta todas</button>
+    <button class="btn" id="resetAll" type="button">Ocultar respuestas</button>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap grid g2">
+    <div>
+      <h4>Advertencia</h4>
+      <p style="margin-top:6px">Material de estudio. Las dosis corresponden a función hepática normal salvo que se indique otra cosa. Verifícalas, junto con las interacciones, en el formulario de tu institución, las fichas técnicas vigentes y un verificador de interacciones (por ejemplo, Universidad de Liverpool) antes de prescribir.</p>
+    </div>
+    <div>
+      <h4>Referencias principales</h4>
+      <ul>
+        <li>MINSAL. Guía de práctica clínica de influenza: recomendación de oseltamivir en adultos hospitalizados.</li>
+        <li>Uyeki TM, et al. IDSA Clinical Practice Guidelines for Influenza. Clin Infect Dis 2019.</li>
+        <li>NIH COVID-19 Treatment Guidelines (versión final, 2024) · RECOVERY (dexametasona) · Butler CC, et al. PANORAMIC. Lancet 2023.</li>
+        <li>CDC. Guidelines for nPEP after Sexual, Injection Drug Use, or Other Nonoccupational Exposure to HIV, 2025.</li>
+        <li>DHHS. Guidelines for the Use of Antiretroviral Agents in Adults and Adolescents with HIV.</li>
+        <li>Tunkel AR, et al. Management of Encephalitis. IDSA. Clin Infect Dis 2008.</li>
+        <li>Kotton CN, et al. International Consensus Guidelines on CMV in Solid Organ Transplant. Transplantation 2018.</li>
+        <li>EASL/AASLD: guías de hepatitis B y C · Liverpool HIV/COVID/Hep Drug Interactions.</li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== ANTIVIRALES ===== */
+const COLS = [
+  {k:"hsv", s:"VHS", l:"Virus herpes simple 1 y 2", g:"pos"},
+  {k:"vzv", s:"VVZ", l:"Virus varicela-zóster", g:"pos"},
+  {k:"cmv", s:"CMV", l:"Citomegalovirus", g:"pos"},
+  {k:"flu", s:"Influenza", l:"Influenza A y B", g:"neg"},
+  {k:"cov", s:"SARS-CoV-2", l:"SARS-CoV-2 (COVID-19)", g:"neg"},
+  {k:"vrs", s:"VRS", l:"Virus respiratorio sincicial", g:"neg"},
+  {k:"vih", s:"VIH", l:"Virus de la inmunodeficiencia humana", g:"ati"},
+  {k:"vhb", s:"VHB", l:"Virus hepatitis B", g:"ana"},
+  {k:"vhc", s:"VHC", l:"Virus hepatitis C", g:"ana"}
+];
+const LEVELS = ["Sin actividad útil","Limitada / solo en situaciones especiales","Activo","Elección"];
+const TARGETS = {
+  entrada:{l:"Entrada y fusión",v:"--t-mem"},
+  ti:{l:"Transcripción inversa",v:"--t-fol"},
+  integ:{l:"Integración",v:"--t-fol"},
+  pol:{l:"Polimerasa viral",v:"--t-adn"},
+  prot:{l:"Proteasa / maduración",v:"--t-ribo"},
+  endo:{l:"Endonucleasa (cap-snatching)",v:"--t-pared"},
+  lib:{l:"Liberación (neuraminidasa)",v:"--t-pared"},
+  ens:{l:"Ensamblaje y empaquetamiento",v:"--t-ribo"}
+};
+const EMP_TAGS = {crit:"Grave / SNC", resp:"Respiratorio", piel:"Piel y mucosas", uri:"VIH, ITS y exposición", abd:"Inmunosuprimido / hepatitis"};
+
+const FAMS = [
+ {id:"herp", n:"Análogos de nucleósido antiherpes", grp:"Aciclovir y profármacos", tg:"pol", pk:"Requieren fosforilación por la timidina quinasa (TK) viral", cid:"Virustático",
+  mec:"Aciclovir y penciclovir son análogos de guanosina. La TK del virus los monofosforila y las quinasas celulares completan el trifosfato, que compite con dGTP y termina la cadena de ADN viral. Como solo se activan en células infectadas, son muy selectivos.",
+  intr:"CMV (no codifica TK; actividad mínima). VEB con poca utilidad clínica. Los virus sin replicación activa (latencia) no responden: no erradican el reservorio.",
+  adq:"Mutaciones de la TK (gen UL23), en ~95% de los casos, o de la ADN polimerasa (UL30). Son raras en inmunocompetentes (<1%) y llegan a ~5–10% en trasplante de médula. Se tratan con foscarnet o cidofovir.",
+  perla:"Valaciclovir y famciclovir son profármacos con 3–5 veces más biodisponibilidad: la dosis oral alcanza niveles útiles para el zóster."},
+ {id:"cmv", n:"Antivirales anti-CMV", grp:"Ganciclovir, foscarnet, cidofovir, letermovir", tg:"pol", pk:"Ganciclovir: fosforilado por la quinasa UL97 del CMV", cid:"Virustático",
+  mec:"Ganciclovir y valganciclovir: análogo de guanosina activado por UL97, inhibe la ADN polimerasa UL54. Foscarnet: análogo de pirofosfato que bloquea la polimerasa directamente, sin activación previa. Cidofovir: análogo de nucleótido que ya trae un fosfato. Letermovir: inhibe la terminasa (UL56) que empaqueta el ADN.",
+  intr:"Letermovir no tiene actividad frente a VHS ni VVZ. Ganciclovir es activo frente a VHS y VVZ, pero es demasiado tóxico para usarlo en ellos.",
+  adq:"UL97: resistencia a ganciclovir. UL54: resistencia cruzada variable a ganciclovir, cidofovir y foscarnet. UL56: resistencia a letermovir.",
+  perla:"Foscarnet y cidofovir no dependen de la TK: son el rescate del VHS resistente a aciclovir."},
+ {id:"nai", n:"Inhibidores de neuraminidasa", grp:"Anti-influenza", tg:"lib", pk:"Beneficio tiempo-dependiente: máximo antes de 48 h", cid:"Virustático",
+  mec:"Bloquean la neuraminidasa, que corta el ácido siálico para liberar los viriones nuevos. Sin ella, los viriones quedan pegados a la célula que los produjo y se agregan entre sí.",
+  intr:"Sin actividad frente a otros virus respiratorios.",
+  adq:"H275Y en N1 (oseltamivir y peramivir; zanamivir conserva actividad). Es esporádica y aparece sobre todo en inmunosuprimidos con tratamiento prolongado.",
+  perla:"En el paciente hospitalizado o grave se indica aunque hayan pasado más de 48 h desde el inicio de los síntomas."},
+ {id:"endo", n:"Inhibidores de endonucleasa cap-dependiente", grp:"Anti-influenza", tg:"endo", pk:"Dosis única (t½ ~80 h)", cid:"Virustático",
+  mec:"Baloxavir inhibe la endonucleasa de la subunidad PA. El virus ya no puede «robar» el capuchón de los ARNm celulares para transcribir los suyos.",
+  intr:"Sin actividad frente a otros virus.",
+  adq:"Mutación PA I38T, que aparece durante el tratamiento (más en niños). Reduce la susceptibilidad entre 10 y 50 veces.",
+  perla:"Una sola dosis acorta la excreción viral más rápido que oseltamivir. Sirve como profilaxis postexposición en el hogar."},
+ {id:"cov", n:"Antivirales anti-SARS-CoV-2", grp:"Proteasa y polimerasa", tg:"prot", pk:"Ventana de inicio: ≤5 días (ambulatorio) · ≤7 días (remdesivir)", cid:"Virustático",
+  mec:"Nirmatrelvir inhibe la proteasa principal (Mpro o 3CLpro); el ritonavir solo actúa como potenciador farmacocinético. Remdesivir es un análogo de adenosina que termina la cadena de la ARN polimerasa dependiente de ARN. Molnupiravir induce mutagénesis letal (error catastrófico).",
+  intr:"Sin actividad útil frente a otros virus respiratorios en la práctica clínica.",
+  adq:"Mutaciones de Mpro (E166V) y de la polimerasa nsp12 descritas pero poco frecuentes. Las variantes que escapan a los anticuerpos monoclonales no afectan a estos fármacos.",
+  perla:"El riesgo de nirmatrelvir/ritonavir está en el ritonavir: revisa las interacciones antes de indicarlo."},
+ {id:"riba", n:"Análogos de guanosina de amplio espectro", grp:"Ribavirina", tg:"pol", pk:"Acumulación intraeritrocitaria (t½ terminal de semanas)", cid:"Virustático",
+  mec:"Varios mecanismos: depleción de GTP (inhibe la IMP deshidrogenasa), mutagénesis letal e inhibición de la polimerasa y del capuchón del ARNm.",
+  intr:"Actividad clínica escasa en la mayoría de los virus en monoterapia.",
+  adq:"Poco relevante clínicamente.",
+  perla:"Fue estudiada en el síndrome cardiopulmonar por hantavirus Andes en Chile sin demostrar beneficio: el manejo es de soporte, con ECMO en centros de referencia."},
+ {id:"itian", n:"Inhibidores de transcriptasa inversa análogos de nucleósido/nucleótido (ITIAN)", grp:"Antirretrovirales", tg:"ti", pk:"El metabolito activo intracelular tiene t½ larga, lo que da margen ante olvidos", cid:"Virustático",
+  mec:"Análogos que se fosforilan dentro de la célula. Al incorporarse a la cadena de ADN proviral no tienen grupo 3'-OH, por lo que terminan la elongación. Son la «columna vertebral» de la terapia antirretroviral.",
+  intr:"Activos frente a VIH-1 y VIH-2. Tenofovir, emtricitabina y lamivudina también actúan sobre el VHB.",
+  adq:"M184V (lamivudina y emtricitabina; barrera baja, pero reduce la capacidad replicativa del virus). K65R (tenofovir). TAM con zidovudina.",
+  perla:"En coinfección VIH/VHB, suspender el tenofovir o la emtricitabina puede desencadenar una hepatitis fulminante."},
+ {id:"itinn", n:"Inhibidores de transcriptasa inversa no análogos (ITINN)", grp:"Antirretrovirales", tg:"ti", pk:"t½ larga (efavirenz 40–55 h)", cid:"Virustático",
+  mec:"Se unen a un bolsillo alostérico de la transcriptasa inversa, cerca del sitio activo, y la inactivan sin necesidad de fosforilarse.",
+  intr:"VIH-2 y VIH-1 del grupo O.",
+  adq:"Barrera genética baja: una sola mutación (K103N, Y181C) inactiva efavirenz y nevirapina. La resistencia transmitida en Latinoamérica supera el 10%.",
+  perla:"Efavirenz puede dar falsos positivos en el tamizaje de cannabinoides y benzodiazepinas en orina."},
+ {id:"inti", n:"Inhibidores de integrasa (INSTI)", grp:"Antirretrovirales", tg:"integ", pk:"Concentración valle (Cmin) como objetivo", cid:"Virustático",
+  mec:"Bloquean la transferencia de hebra de la integrasa: el ADN viral no se inserta en el genoma de la célula.",
+  intr:"Activos frente a VIH-1 y VIH-2.",
+  adq:"Barrera alta para dolutegravir y bictegravir; baja para raltegravir (N155H, Q148H). La resistencia aparece casi solo con mala adherencia prolongada.",
+  perla:"Los cationes polivalentes (Ca, Mg, Al, Fe y antiácidos) los quelan: hay que separar las tomas."},
+ {id:"ip", n:"Inhibidores de proteasa del VIH (IP)", grp:"Antirretrovirales", tg:"prot", pk:"Siempre potenciados con ritonavir o cobicistat", cid:"Virustático",
+  mec:"Inhiben la proteasa que corta la poliproteína Gag-Pol. Los viriones que se forman son inmaduros y no infecciosos.",
+  intr:"Activos frente a VIH-1 y VIH-2.",
+  adq:"Barrera genética muy alta (darunavir): se necesitan varias mutaciones acumuladas.",
+  perla:"El potenciador inhibe el CYP3A4: con corticoides inhalados o nasales (fluticasona, budesonida) produce Cushing iatrogénico."},
+ {id:"vhb", n:"Antivirales anti-VHB", grp:"Nucleós(t)idos", tg:"ti", pk:"Supresión crónica (rara vez se curan)", cid:"Virustático",
+  mec:"Inhiben la polimerasa y transcriptasa inversa del VHB, que convierte el ARN pregenómico en ADN. No eliminan el ADNccc nuclear, por lo que el tratamiento suele ser indefinido.",
+  intr:"Entecavir tiene actividad parcial frente al VIH y selecciona M184V si el VIH no está tratado.",
+  adq:"Lamivudina: YMDD (rtM204V/I) en ~70% a los 5 años. Entecavir y tenofovir: barrera muy alta (<1,5% a 5 años en pacientes sin tratamiento previo).",
+  perla:"Antes de rituximab, quimioterapia o corticoides en dosis altas, pide HBsAg y anti-HBc: la profilaxis previene la reactivación."},
+ {id:"aad", n:"Antivirales de acción directa anti-VHC (AAD)", grp:"Pangenotípicos", tg:"ens", pk:"Curación (RVS12) >95% en 8–12 semanas", cid:"Curativo",
+  mec:"Combinan dos dianas. Sofosbuvir: análogo de uridina que inhibe la polimerasa NS5B. Velpatasvir y pibrentasvir: inhiben NS5A (replicación y ensamblaje). Glecaprevir: inhibe la proteasa NS3/4A.",
+  intr:"Sin actividad frente a VHB, lo que explica que este pueda reactivarse durante el tratamiento del VHC.",
+  adq:"RAS en NS5A (Y93H); poco relevantes con los esquemas actuales.",
+  perla:"Sofosbuvir con amiodarona puede causar bradicardia grave y asistolia: es una contraindicación."}
+];
+
+const DRUGS = [
+ {f:"herp", n:"Aciclovir", via:"EV/VO", t:"2,5–3 h",
+  d:"Encefalitis o VHS/VVZ grave: 10 mg/kg c/8 h EV (14–21 días) · VHS genital primoinfección: 400 mg c/8 h VO ×7–10 días · zóster VO: 800 mg 5 veces al día ×7 días",
+  r:"EV: ClCr 25–50: c/12 h · 10–25: c/24 h · <10: 5 mg/kg c/24 h · HD: dosis post-diálisis",
+  p:"VHS neonatal: 20 mg/kg c/8 h EV ×14–21 días · encefalitis 3 meses–12 años: 10–15 mg/kg c/8 h · varicela VO: 20 mg/kg (máx 800) 4 veces al día ×5 días",
+  e:"s", et:"Seguro en todo el embarazo. Indicado en varicela de la embarazada y como supresión desde la semana 36 en herpes genital.",
+  o:"EV por peso ideal (algunos usan peso ajustado en obesidad mórbida y encefalitis).",
+  tox:"Nefropatía por cristales (hidratar e infundir en 1 h), neurotoxicidad (temblor, alucinaciones, coma) en ERC y adulto mayor, flebitis.",
+  pe:"Ante sospecha de encefalitis, empieza el aciclovir antes de la punción lumbar o de tener la PCR.",
+  sp:[3,3,0,0,0,0,0,0,0]},
+ {f:"herp", n:"Valaciclovir", via:"VO", t:"2,5–3,3 h (aciclovir)",
+  d:"Zóster: 1 g c/8 h ×7 días · VHS genital 1er episodio: 1 g c/12 h ×7–10 días · recurrencia: 500 mg c/12 h ×3 días · herpes labial: 2 g c/12 h ×1 día · supresión: 500 mg–1 g c/24 h",
+  r:"Zóster: ClCr 30–49: 1 g c/12 h · 10–29: 1 g c/24 h · <10: 500 mg c/24 h",
+  p:"≥2 años, varicela: 20 mg/kg c/8 h (máx 1 g) ×5 días",
+  e:"s", et:"Seguro.",
+  o:"Dosis estándar.",
+  tox:"Encefalopatía por aciclovir en ERC no ajustada. Microangiopatía trombótica con dosis altas en inmunosuprimidos.",
+  pe:"En el adulto mayor con ERC es una causa clásica de delirium en urgencia: ajusta la dosis siempre.",
+  sp:[3,3,1,0,0,0,0,0,0]},
+ {f:"herp", n:"Famciclovir", via:"VO", t:"2–3 h (penciclovir; intracelular 7–20 h)",
+  d:"Zóster: 500 mg c/8 h ×7 días · herpes labial: 1.500 mg dosis única · VHS genital recurrente: 1 g c/12 h ×1 día",
+  r:"ClCr 40–59: 500 mg c/12 h · 20–39: 500 mg c/24 h · <20: 250 mg c/24 h",
+  p:"Datos limitados; no recomendado de rutina",
+  e:"p", et:"Datos limitados; preferir aciclovir o valaciclovir.",
+  o:"Dosis estándar.",
+  tox:"Cefalea, náuseas.",
+  pe:"Equivalente a valaciclovir, con menos disponibilidad en Chile.",
+  sp:[3,3,0,0,0,0,0,0,0]},
+ {f:"cmv", n:"Ganciclovir", via:"EV", t:"2,5–3,5 h",
+  d:"Inducción: 5 mg/kg c/12 h ×14–21 días · mantención: 5 mg/kg c/24 h",
+  r:"ClCr 50–69: 2,5 mg/kg c/12 h · 25–49: 2,5 mg/kg c/24 h · 10–24: 1,25 mg/kg c/24 h · HD: 1,25 mg/kg 3 veces por semana post-HD",
+  p:"5 mg/kg c/12 h · CMV congénito: 6 mg/kg c/12 h",
+  e:"e", et:"Evitar: teratogénico y carcinogénico en animales.",
+  o:"Peso ajustado (evidencia limitada).",
+  tox:"Neutropenia y trombocitopenia (hemograma 2 veces por semana), azoospermia. Se manipula como citotóxico.",
+  pe:"Con micofenolato o TMP-SMX la mielotoxicidad se potencia.",
+  sp:[2,2,3,0,0,0,0,0,0]},
+ {f:"cmv", n:"Valganciclovir", via:"VO", t:"4 h (ganciclovir)",
+  d:"Inducción: 900 mg c/12 h · mantención o profilaxis: 900 mg c/24 h (con comida)",
+  r:"ClCr 40–59: 450 mg c/12 h · 25–39: 450 mg c/24 h · 10–24: 450 mg c/48 h",
+  p:"mg = 7 × SC × ClCr (Schwartz), máx 900 mg",
+  e:"e", et:"Evitar.",
+  o:"Dosis estándar.",
+  tox:"Igual que ganciclovir.",
+  pe:"Biodisponibilidad ~60%: equivale a ganciclovir EV en enfermedad no grave.",
+  sp:[2,2,3,0,0,0,0,0,0]},
+ {f:"cmv", n:"Foscarnet", via:"EV", t:"3–4 h (larga en hueso)",
+  d:"CMV: 90 mg/kg c/12 h (o 60 mg/kg c/8 h) · VHS resistente a aciclovir: 40 mg/kg c/8 h",
+  r:"Ajuste estricto por ClCr/kg según ficha técnica; hidratación con 0,5–1 L de SF por dosis",
+  p:"Mismas dosis en mg/kg",
+  e:"p", et:"Solo si no hay alternativa.",
+  o:"Peso ajustado.",
+  tox:"Nefrotoxicidad, hipocalcemia iónica, hipomagnesemia e hipofosfatemia (convulsiones, QT largo), úlceras genitales.",
+  pe:"Parestesias peribucales durante la infusión = hipocalcemia iónica: frena la infusión y mide el calcio.",
+  sp:[2,2,3,0,0,0,1,0,0]},
+ {f:"cmv", n:"Cidofovir", via:"EV", t:"2,6 h (difosfato intracelular 17–65 h)",
+  d:"5 mg/kg semanal ×2 y luego c/2 semanas, con probenecid y SF",
+  r:"Contraindicado si ClCr ≤55 o creatinina >1,5 mg/dL",
+  p:"Uso especializado (adenovirus en trasplante)",
+  e:"e", et:"Evitar.",
+  o:"Peso real.",
+  tox:"Nefrotoxicidad tubular proximal (Fanconi), neutropenia, uveítis e hipotonía ocular.",
+  pe:"También es activo frente a adenovirus y poxvirus.",
+  sp:[2,2,3,0,0,0,0,0,0]},
+ {f:"cmv", n:"Letermovir", via:"VO/EV", t:"~12 h",
+  d:"Profilaxis: 480 mg c/24 h (240 mg con ciclosporina)",
+  r:"Sin ajuste si ClCr >10",
+  p:"Aprobado en ≥6 meses (TPH) con dosis por peso",
+  e:"p", et:"Datos insuficientes.",
+  o:"Dosis estándar.",
+  tox:"Bien tolerado. No es mielotóxico.",
+  pe:"Solo es profilaxis (trasplante de progenitores hematopoyéticos y renal), no tratamiento. Sube ciclosporina y tacrolimus, y baja voriconazol.",
+  sp:[0,0,2,0,0,0,0,0,0]},
+ {f:"nai", n:"Oseltamivir", via:"VO", t:"6–10 h (carboxilato)",
+  d:"75 mg c/12 h ×5 días · profilaxis: 75 mg c/24 h ×7–10 días",
+  r:"ClCr 30–60: 30 mg c/12 h · 10–30: 30 mg c/24 h · HD: 30 mg post-HD",
+  p:"<1 año: 3 mg/kg c/12 h · ≥1 año: ≤15 kg 30 mg · 15–23 kg 45 mg · 23–40 kg 60 mg · >40 kg 75 mg, c/12 h",
+  e:"s", et:"Seguro. La embarazada y la puérpera son grupo de riesgo: trata sin esperar confirmación.",
+  o:"Dosis estándar.",
+  tox:"Náuseas y vómitos (tomar con comida). Eventos neuropsiquiátricos raros, descritos en niños.",
+  pe:"Hospitalizado o grave: inicia apenas sospeches influenza, sin esperar el test ni la ventana de 48 h (MINSAL).",
+  sp:[0,0,0,3,0,0,0,0,0]},
+ {f:"nai", n:"Zanamivir", via:"Inhalada (EV en uso especial)", t:"2,5–5 h",
+  d:"10 mg (2 inhalaciones) c/12 h ×5 días · EV: 600 mg c/12 h",
+  r:"Inhalado sin ajuste · EV: ajustar por ClCr",
+  p:"≥7 años (tratamiento), ≥5 años (profilaxis): dosis de adulto",
+  e:"p", et:"Absorción sistémica baja, pero se prefiere oseltamivir.",
+  o:"Dosis estándar.",
+  tox:"Broncoespasmo: evitar en asma y EPOC.",
+  pe:"Activo frente a la cepa con H275Y resistente a oseltamivir.",
+  sp:[0,0,0,3,0,0,0,0,0]},
+ {f:"nai", n:"Peramivir", via:"EV", t:"~20 h",
+  d:"600 mg EV dosis única",
+  r:"ClCr 30–49: 200 mg · 10–29: 100 mg",
+  p:"≥6 meses: 12 mg/kg (máx 600 mg)",
+  e:"p", et:"Datos limitados.",
+  o:"Dosis estándar.",
+  tox:"Diarrea, neutropenia.",
+  pe:"Útil si no se tolera la vía oral; disponibilidad limitada en Chile.",
+  sp:[0,0,0,2,0,0,0,0,0]},
+ {f:"endo", n:"Baloxavir marboxil", via:"VO", t:"~79 h",
+  d:"40 mg dosis única (40–79 kg) · 80 mg (≥80 kg) · antes de 48 h",
+  r:"Sin ajuste",
+  p:"≥5 años: <20 kg 2 mg/kg · 20–79 kg 40 mg · ≥80 kg 80 mg",
+  e:"p", et:"Datos insuficientes; preferir oseltamivir.",
+  o:"80 mg si ≥80 kg.",
+  tox:"Bien tolerado.",
+  pe:"No lo tomes con lácteos, antiácidos ni suplementos de calcio o hierro (quelación).",
+  sp:[0,0,0,3,0,0,0,0,0]},
+ {f:"cov", n:"Nirmatrelvir/ritonavir", via:"VO", t:"~6 h",
+  d:"300/100 mg c/12 h ×5 días, antes de 5 días desde el inicio",
+  r:"ClCr 30–60: 150/100 mg c/12 h · <30 y HD: pauta reducida especial (consulta la ficha vigente)",
+  p:"≥12 años y ≥40 kg: dosis de adulto",
+  e:"s", et:"Recomendado en la embarazada de alto riesgo (NIH); datos tranquilizadores.",
+  o:"Dosis estándar.",
+  tox:"Disgeusia, diarrea, rebote clínico (~5–10%).",
+  pe:"Contraindicado con amiodarona, rivaroxabán, ticagrelor, simvastatina, colchicina (en ERC), sildenafil para HTP, carbamazepina, fenitoína y rifampicina. Usa el verificador de Liverpool.",
+  sp:[0,0,0,0,3,0,0,0,0]},
+ {f:"cov", n:"Remdesivir", via:"EV", t:"~1 h (GS-441524 ~27 h)",
+  d:"200 mg el día 1 y luego 100 mg c/24 h · ambulatorio de alto riesgo: 3 días · hospitalizado con O₂: 5 días",
+  r:"Sin restricción por ClCr (FDA 2023; incluye diálisis)",
+  p:"≥28 días y ≥3 kg: 5 mg/kg el día 1, luego 2,5 mg/kg c/24 h",
+  e:"s", et:"Puede usarse; datos de registro favorables.",
+  o:"Dosis estándar.",
+  tox:"Alza de transaminasas, bradicardia sinusal, reacción a la infusión.",
+  pe:"Beneficio en hospitalizado con oxígeno de bajo flujo. En ventilación mecánica el beneficio es mínimo.",
+  sp:[0,0,0,0,3,0,0,0,0]},
+ {f:"cov", n:"Molnupiravir", via:"VO", t:"~3 h",
+  d:"800 mg c/12 h ×5 días",
+  r:"Sin ajuste",
+  p:"No autorizado en <18 años",
+  e:"e", et:"Contraindicado (mutagénico). Anticoncepción durante el tratamiento.",
+  o:"Dosis estándar.",
+  tox:"Bien tolerado.",
+  pe:"Eficacia modesta (PANORAMIC: no redujo hospitalización). Es la última opción.",
+  sp:[0,0,0,0,1,0,0,0,0]},
+ {f:"riba", n:"Ribavirina", via:"VO/inhalada/EV", t:"~12 días (estado estable)",
+  d:"VHC (combinación): 1.000–1.200 mg/día ÷ c/12 h · VRS en inmunosuprimidos: aerosol o VO según protocolo",
+  r:"ClCr <50: reducir o evitar",
+  p:"VRS: aerosol en centros especializados",
+  e:"e", et:"Contraindicada en ambos sexos hasta 6 meses después (teratogénica).",
+  o:"Dosis por peso en VHC.",
+  tox:"Anemia hemolítica dosis-dependiente, teratogenicidad, exposición del personal con el aerosol.",
+  pe:"Sin beneficio demostrado en hantavirus Andes.",
+  sp:[0,0,0,0,0,1,0,0,1]},
+ {f:"itian", n:"Tenofovir (TDF / TAF)", via:"VO", t:"TDF 17 h · TFV-DP intracelular >60 h",
+  d:"TDF 300 mg c/24 h · TAF 25 mg c/24 h (10 mg con potenciadores, en coformulaciones)",
+  r:"TDF: ClCr 30–49 c/48 h; <30 evitar · TAF: sin ajuste si ClCr ≥15 o en HD",
+  p:"TDF ≥2 años: 8 mg/kg c/24 h (máx 300) · TAF por peso en coformulaciones",
+  e:"s", et:"Preferido en el embarazo (VIH y VHB con carga alta).",
+  o:"Dosis estándar.",
+  tox:"TDF: tubulopatía proximal (Fanconi), osteopenia. TAF: aumento de peso y lípidos.",
+  pe:"Pilar de la PEP y la PrEP. En coinfección con VHB, no lo suspendas.",
+  sp:[0,0,0,0,0,0,3,3,0]},
+ {f:"itian", n:"Emtricitabina / lamivudina", via:"VO", t:"FTC 10 h · 3TC 5–7 h",
+  d:"FTC 200 mg c/24 h · 3TC 300 mg c/24 h (o 150 mg c/12 h)",
+  r:"FTC ClCr 30–49: c/48 h · 3TC 30–49: 150 mg c/24 h · ajuste mayor si <30",
+  p:"3TC: 4–5 mg/kg c/12 h · FTC: 6 mg/kg c/24 h (máx 200)",
+  e:"s", et:"Seguras.",
+  o:"Dosis estándar.",
+  tox:"Muy bien toleradas. FTC: hiperpigmentación palmoplantar.",
+  pe:"La mutación M184V aparece rápido en monoterapia: nunca las uses solas.",
+  sp:[0,0,0,0,0,0,3,2,0]},
+ {f:"itian", n:"Abacavir", via:"VO", t:"1,5 h (intracelular 12–26 h)",
+  d:"600 mg c/24 h",
+  r:"Sin ajuste (evitar en insuficiencia hepática moderada a grave)",
+  p:"8 mg/kg c/12 h o 16 mg/kg c/24 h (máx 600)",
+  e:"s", et:"Seguro.",
+  o:"Dosis estándar.",
+  tox:"Hipersensibilidad grave ligada a HLA-B*5701 (puede ser fatal al reexponer). Posible aumento de riesgo de infarto.",
+  pe:"Fiebre, rash y síntomas digestivos en las primeras 6 semanas: suspende y no lo reintroduzcas nunca.",
+  sp:[0,0,0,0,0,0,2,0,0]},
+ {f:"itian", n:"Zidovudina (AZT)", via:"VO/EV", t:"1 h (intracelular 7 h)",
+  d:"300 mg c/12 h · intraparto: 2 mg/kg EV en 1 h y luego 1 mg/kg/h hasta el pinzamiento del cordón",
+  r:"ClCr <15: 100 mg c/8 h",
+  p:"Profilaxis del recién nacido: 4 mg/kg c/12 h VO ×4–6 semanas (ajustar en prematuros)",
+  e:"s", et:"Usada en la prevención de la transmisión vertical.",
+  o:"Dosis estándar.",
+  tox:"Anemia macrocítica, neutropenia, miopatía, lipoatrofia.",
+  pe:"En urgencia obstétrica aparece como AZT EV intraparto si la carga viral es >1.000 copias o desconocida.",
+  sp:[0,0,0,0,0,0,2,0,0]},
+ {f:"itinn", n:"Efavirenz", via:"VO", t:"40–55 h",
+  d:"600 mg (o 400 mg) c/24 h al acostarse, en ayunas",
+  r:"Sin ajuste",
+  p:"≥3 meses: por peso",
+  e:"p", et:"Hoy se acepta en el embarazo; hay alternativas preferidas.",
+  o:"Dosis estándar.",
+  tox:"Mareo, sueños vívidos, insomnio, depresión e ideación suicida. Inductor del CYP3A4.",
+  pe:"Falso positivo para cannabinoides y benzodiazepinas en el tamizaje de orina.",
+  sp:[0,0,0,0,0,0,2,0,0]},
+ {f:"itinn", n:"Rilpivirina / doravirina", via:"VO (rilpivirina también IM de acción prolongada)", t:"RPV ~50 h · DOR ~15 h",
+  d:"RPV 25 mg c/24 h con comida · DOR 100 mg c/24 h",
+  r:"Sin ajuste",
+  p:"RPV ≥12 años y ≥35 kg",
+  e:"p", et:"RPV aceptada; DOR con datos limitados.",
+  o:"Dosis estándar.",
+  tox:"RPV: QT largo, depresión. DOR: muy bien tolerada.",
+  pe:"Los IBP están contraindicados con rilpivirina (necesita ácido para absorberse).",
+  sp:[0,0,0,0,0,0,2,0,0]},
+ {f:"inti", n:"Dolutegravir", via:"VO", t:"~14 h",
+  d:"50 mg c/24 h · 50 mg c/12 h con rifampicina o resistencia a INSTI",
+  r:"Sin ajuste (sube la creatinina ~0,1–0,15 mg/dL por bloqueo de OCT2, sin daño real)",
+  p:"≥4 semanas y ≥3 kg: comprimidos dispersables por peso · ≥20 kg: 50 mg",
+  e:"s", et:"Preferido (la señal de defectos del tubo neural no se confirmó en Tsepamo).",
+  o:"Dosis estándar.",
+  tox:"Insomnio, cefalea, aumento de peso.",
+  pe:"Sube los niveles de metformina (limita a 1 g/día). Separa los cationes: toma el antirretroviral 2 h antes o 6 h después.",
+  sp:[0,0,0,0,0,0,3,0,0]},
+ {f:"inti", n:"Bictegravir/FTC/TAF", via:"VO", t:"~17 h",
+  d:"1 comprimido (50/200/25 mg) c/24 h",
+  r:"No recomendado si ClCr 15–30 sin diálisis; aprobado en HD crónica",
+  p:"≥14 kg: formulación pediátrica",
+  e:"s", et:"Aceptado (datos crecientes).",
+  o:"Dosis estándar.",
+  tox:"Muy bien tolerado.",
+  pe:"Esquema de una sola pastilla. Contraindicado con rifampicina y dofetilida.",
+  sp:[0,0,0,0,0,0,3,2,0]},
+ {f:"inti", n:"Raltegravir", via:"VO", t:"~9 h",
+  d:"400 mg c/12 h (o 1.200 mg c/24 h)",
+  r:"Sin ajuste",
+  p:"Desde el nacimiento, por peso",
+  e:"s", et:"Seguro; útil al final del embarazo por su rápida caída de la carga viral.",
+  o:"Dosis estándar.",
+  tox:"CK elevada y miopatía (rara).",
+  pe:"Casi sin interacciones: alternativa cuando el paciente usa muchos otros fármacos.",
+  sp:[0,0,0,0,0,0,2,0,0]},
+ {f:"ip", n:"Darunavir potenciado", via:"VO", t:"~15 h (con ritonavir)",
+  d:"800/100 mg c/24 h (o con cobicistat 150 mg) · 600/100 mg c/12 h en embarazo o resistencia",
+  r:"Sin ajuste",
+  p:"≥3 años: por peso",
+  e:"s", et:"Aceptado con DRV/r c/12 h en el embarazo (no con cobicistat).",
+  o:"Dosis estándar.",
+  tox:"Rash (contiene grupo sulfonamida), dislipidemia, hepatotoxicidad.",
+  pe:"Fluticasona o budesonida con ritonavir → Cushing y supresión suprarrenal. Midazolam oral contraindicado.",
+  sp:[0,0,0,0,0,0,3,0,0]},
+ {f:"vhb", n:"Entecavir", via:"VO", t:"128–149 h (terminal)",
+  d:"0,5 mg c/24 h en ayunas (1 mg si hay resistencia previa a lamivudina o cirrosis descompensada)",
+  r:"ClCr 30–49: 0,25 mg c/24 h · 10–29: 0,15 mg c/24 h · <10: 0,05 mg c/24 h",
+  p:"≥2 años: por peso (máx 0,5 mg)",
+  e:"p", et:"Datos limitados; preferir tenofovir.",
+  o:"Dosis estándar.",
+  tox:"Acidosis láctica (rara, en cirrosis descompensada).",
+  pe:"No lo uses si el paciente tiene VIH sin tratar: selecciona M184V.",
+  sp:[0,0,0,0,0,0,1,3,0]},
+ {f:"aad", n:"Sofosbuvir/velpatasvir", via:"VO", t:"Sofosbuvir 0,5 h (GS-331007 ~25 h) · velpatasvir 15 h",
+  d:"400/100 mg c/24 h ×12 semanas (pangenotípico)",
+  r:"Sin ajuste, incluso en diálisis",
+  p:"≥3 años: por peso",
+  e:"p", et:"Datos limitados; se recomienda diferir hasta después del parto.",
+  o:"Dosis estándar.",
+  tox:"Cefalea, fatiga.",
+  pe:"Amiodarona: bradicardia grave o asistolia (contraindicado). Los IBP en dosis altas reducen la absorción de velpatasvir.",
+  sp:[0,0,0,0,0,0,0,0,3]},
+ {f:"aad", n:"Glecaprevir/pibrentasvir", via:"VO", t:"6 h · 13 h",
+  d:"300/120 mg (3 comprimidos) c/24 h con comida ×8 semanas",
+  r:"Sin ajuste",
+  p:"≥3 años: por peso",
+  e:"p", et:"Datos limitados.",
+  o:"Dosis estándar.",
+  tox:"Cefalea. Hepatotoxicidad en cirrosis descompensada.",
+  pe:"Contraindicado en Child B o C. Interactúa con etinilestradiol (alza de ALT), atazanavir, rifampicina y dabigatrán.",
+  sp:[0,0,0,0,0,0,0,0,3]}
+];
+
+const SPECTRUM = [
+ {t:"Herpesvirus alfa (VHS, VVZ)", c:"pos", d:"Necesitan TK viral. Valaciclovir es el estándar oral y aciclovir EV el grave.", m:["Aciclovir","Valaciclovir","Famciclovir","Foscarnet (resistentes)","Cidofovir (resistentes)"]},
+ {t:"Herpesvirus beta (CMV)", c:"pos", d:"Sin TK: usan la quinasa UL97 o actúan directamente sobre la polimerasa.", m:["Ganciclovir","Valganciclovir","Foscarnet","Cidofovir","Letermovir (profilaxis)","Maribavir (refractario)"]},
+ {t:"Influenza", c:"neg", d:"Mayor beneficio antes de 48 h, pero el paciente grave se trata siempre.", m:["Oseltamivir","Zanamivir","Peramivir","Baloxavir"]},
+ {t:"SARS-CoV-2", c:"neg", d:"Para el paciente con factores de riesgo, en los primeros 5–7 días.", m:["Nirmatrelvir/ritonavir","Remdesivir","Molnupiravir"]},
+ {t:"VRS", c:"neg", d:"El tratamiento es de soporte. La prevención usa anticuerpos y vacunas.", m:["Ribavirina (inmunosuprimidos)","Nirsevimab (prevención, lactantes)","Vacuna materna y del adulto mayor"]},
+ {t:"VIH", c:"ati", d:"Terapia triple: dos ITIAN más un fármaco «ancla» (INSTI preferido).", m:["TDF/TAF + FTC/3TC","Dolutegravir","Bictegravir","Darunavir potenciado","Efavirenz","Cabotegravir de acción prolongada"]},
+ {t:"Activos frente a VIH y VHB", c:"ana", d:"En coinfección, el esquema debe incluir tenofovir y no se suspende sin plan.", m:["Tenofovir (TDF/TAF)","Emtricitabina","Lamivudina","Entecavir (solo VHB)"]},
+ {t:"VHC", c:"ana", d:"Curación en 8–12 semanas con esquemas pangenotípicos.", m:["Sofosbuvir/velpatasvir","Glecaprevir/pibrentasvir"]}
+];
+
+const CARDS = [
+ {q:"¿Por qué el aciclovir casi no daña la célula sana?", a:"Necesita la timidina quinasa viral para su primera fosforilación: solo se activa donde hay replicación del VHS o el VVZ."},
+ {q:"VHS resistente a aciclovir: ¿qué uso?", a:"Foscarnet (o cidofovir). No necesitan TK, que es donde suele estar la mutación (UL23)."},
+ {q:"Adulto mayor con ERC, zóster y delirium", a:"Piensa en encefalopatía por aciclovir/valaciclovir no ajustado. Suspende y considera hemodiálisis si es grave."},
+ {q:"Encefalitis: ¿espero la PCR?", a:"No. Aciclovir 10 mg/kg c/8 h desde la sospecha. La PCR puede ser negativa en las primeras 72 h: repítela si la clínica es compatible."},
+ {q:"Influenza grave con 4 días de evolución", a:"Oseltamivir igual. Las 48 h aplican al ambulatorio sano; el hospitalizado o de riesgo se trata siempre."},
+ {q:"Nirmatrelvir/ritonavir: ¿quién es el villano?", a:"El ritonavir, inhibidor potente del CYP3A4. Revisa estatinas, anticoagulantes, antiarrítmicos, inmunosupresores y anticonvulsivantes."},
+ {q:"PEP de VIH: ventana y esquema", a:"Lo antes posible (ideal <2 h, máximo 72 h). TDF/FTC + dolutegravir (o bictegravir/FTC/TAF) ×28 días."},
+ {q:"Coinfección VIH/VHB y suspende el tenofovir", a:"Riesgo de hepatitis aguda grave por rebote del VHB. No lo suspendas sin un plan."},
+ {q:"Fiebre y rash con abacavir", a:"Reacción de hipersensibilidad (HLA-B*5701). Suspéndelo para siempre: la reexposición puede ser fatal."},
+ {q:"Paciente con darunavir/ritonavir y Cushing", a:"Interacción con fluticasona o budesonida inhalada o nasal. El ritonavir bloquea su metabolismo."},
+ {q:"Sofosbuvir + amiodarona", a:"Bradicardia grave o asistolia. Contraindicado."},
+ {q:"Parestesias peribucales con foscarnet", a:"Hipocalcemia iónica por quelación. Frena la infusión, mide calcio y magnesio y vigila el QT."},
+ {q:"Embarazada seronegativa expuesta a varicela", a:"Inmunoglobulina anti-VVZ antes de 10 días. Si aparece la varicela: aciclovir o valaciclovir (aciclovir EV si hay neumonía)."},
+ {q:"Antes de rituximab o quimioterapia", a:"Pide HBsAg y anti-HBc. Si alguno es positivo, profilaxis con entecavir o tenofovir para evitar la reactivación."},
+ {q:"Efavirenz y tamizaje de drogas", a:"Falso positivo para cannabinoides (y benzodiazepinas). Confirma con cromatografía."},
+ {q:"Hantavirus Andes: ¿ribavirina?", a:"No mostró beneficio. El tratamiento es de soporte: ventilación protectora, manejo hemodinámico y ECMO precoz en centro de referencia."}
+];
+
+const EMP = [
+ {s:"Encefalitis o meningoencefalitis viral", tag:"crit",
+  a:"Aciclovir 10 mg/kg c/8 h EV (peso ideal) ×14–21 días, junto al esquema antibacteriano empírico mientras se descarta etiología bacteriana.",
+  b:"VHS resistente o falla: foscarnet 60 mg/kg c/8 h o 90 mg/kg c/12 h.",
+  n:"Hidrata para evitar la nefropatía por cristales. Repite la PCR si la primera es negativa en las primeras 72 h y la clínica es compatible."},
+ {s:"Herpes zóster en inmunocompetente", tag:"piel",
+  a:"Valaciclovir 1 g c/8 h ×7 días, antes de 72 h desde la aparición de las lesiones.",
+  b:"Aciclovir 800 mg 5 veces al día ×7 días, o famciclovir 500 mg c/8 h.",
+  n:"Trata después de 72 h si hay lesiones nuevas, compromiso oftálmico o paciente >50 años. Maneja el dolor de forma agresiva."},
+ {s:"Zóster oftálmico, diseminado o en inmunosuprimido", tag:"crit",
+  a:"Aciclovir 10 mg/kg c/8 h EV hasta la mejoría; luego valaciclovir VO hasta completar 10–14 días.",
+  b:"Foscarnet si hay resistencia.",
+  n:"Signo de Hutchinson (lesión en la punta nasal): evaluación oftalmológica urgente. El diseminado requiere aislamiento aéreo y de contacto."},
+ {s:"Herpes genital", tag:"piel",
+  a:"Primer episodio: valaciclovir 1 g c/12 h ×7–10 días. Recurrencia: 500 mg c/12 h ×3 días.",
+  b:"Aciclovir 400 mg c/8 h ×7–10 días.",
+  n:"Estudia otras ITS (VIH, sífilis). En la embarazada: supresión desde la semana 36."},
+ {s:"Varicela en adulto o embarazada", tag:"piel",
+  a:"Valaciclovir 1 g c/8 h ×7 días, antes de 24 h desde el exantema. Con neumonía, encefalitis o inmunosupresión: aciclovir 10 mg/kg c/8 h EV.",
+  b:"Aciclovir 800 mg 5 veces al día VO.",
+  n:"Neumonía por varicela en la embarazada: hospitaliza. Expuesta seronegativa: inmunoglobulina anti-VVZ antes de 10 días."},
+ {s:"Influenza", tag:"resp",
+  a:"Oseltamivir 75 mg c/12 h ×5 días en grupos de riesgo, hospitalizados y graves, sin esperar confirmación.",
+  b:"Zanamivir inhalado (sin asma) o baloxavir dosis única en ambulatorio.",
+  n:"Grupos de riesgo: embarazo y puerperio, ≥65 años, <5 años, comorbilidad crónica, inmunosupresión, obesidad mórbida. Profilaxis del contacto de riesgo: 75 mg c/24 h ×7–10 días."},
+ {s:"COVID-19 ambulatorio con factores de riesgo", tag:"resp",
+  a:"Nirmatrelvir/ritonavir 300/100 mg c/12 h ×5 días, antes de 5 días desde el inicio.",
+  b:"Remdesivir ×3 días si hay interacción insalvable; molnupiravir como última opción.",
+  n:"Revisa todas las interacciones. Ajusta a 150/100 mg si el ClCr es 30–60."},
+ {s:"COVID-19 hospitalizado con oxígeno", tag:"resp",
+  a:"Remdesivir ×5 días + dexametasona 6 mg c/24 h ×10 días.",
+  b:"Hipoxemia progresiva con PCR elevada: añade tocilizumab o baricitinib.",
+  n:"La dexametasona no se usa sin requerimiento de oxígeno (RECOVERY). Tromboprofilaxis según riesgo."},
+ {s:"Profilaxis postexposición (PEP) a VIH", tag:"uri",
+  a:"TDF/FTC 300/200 mg c/24 h + dolutegravir 50 mg c/24 h ×28 días, idealmente antes de 2 h y como máximo a las 72 h.",
+  b:"Bictegravir/FTC/TAF 1 comprimido c/24 h ×28 días.",
+  n:"Basal: VIH, VHB, VHC, sífilis, creatinina y test de embarazo. Agrega vacuna e inmunoglobulina anti-VHB si corresponde, y anticoncepción de emergencia en violencia sexual. Seguimiento a las 4–6 semanas y a los 3 meses."},
+ {s:"Paciente con VIH en urgencia", tag:"uri",
+  a:"No suspendas la terapia antirretroviral. Si hay que pausarla, suspende todos los fármacos a la vez (excepto en coinfección con VHB).",
+  b:"Revisa interacciones antes de cada fármaco nuevo (ritonavir, cobicistat, efavirenz).",
+  n:"Ante un deterioro tras iniciar TAR, piensa en síndrome inflamatorio de reconstitución inmune (IRIS). Si los CD4 son <200, piensa en Pneumocystis."},
+ {s:"CMV en paciente trasplantado", tag:"abd",
+  a:"Ganciclovir 5 mg/kg c/12 h EV (enfermedad grave) o valganciclovir 900 mg c/12 h VO (no grave), ajustados a ClCr.",
+  b:"Resistencia: foscarnet o maribavir.",
+  n:"Hemograma 2 veces por semana. Reduce la inmunosupresión junto al equipo tratante."},
+ {s:"VHB en reactivación o hepatitis aguda grave", tag:"abd",
+  a:"Tenofovir (TDF o TAF) o entecavir 0,5 mg c/24 h.",
+  b:"Ajusta a la función renal; prefiere TAF o entecavir si hay ERC u osteoporosis.",
+  n:"Hepatitis B aguda con falla hepática (INR >1,5): inicia el antiviral y deriva a un centro de trasplante."}
+];
+
+/* Ventanas terapéuticas (días desde el inicio de los síntomas o la exposición) */
+const WINDOWS = [
+ {l:"PEP de VIH", ideal:0.083, max:3, c:"var(--ati)", note:"ideal <2 h · máx 72 h"},
+ {l:"Varicela (adulto)", ideal:1, max:1, c:"var(--gpos)", note:"<24 h del exantema"},
+ {l:"Influenza (ambulatorio)", ideal:2, max:2, c:"var(--gneg)", note:"<48 h (grave: siempre)"},
+ {l:"Herpes zóster", ideal:3, max:3, c:"var(--gpos)", note:"<72 h (o lesiones nuevas)"},
+ {l:"COVID-19 · nirmatrelvir/r", ideal:3, max:5, c:"var(--gneg)", note:"≤5 días"},
+ {l:"COVID-19 · remdesivir ambulatorio", ideal:3, max:7, c:"var(--gneg)", note:"≤7 días"},
+ {l:"Exposición a varicela · IG anti-VVZ", ideal:4, max:10, c:"var(--gpos)", note:"ideal ≤4 d · máx 10 d"},
+ {l:"Encefalitis por VHS", ideal:0.25, max:0.25, c:"var(--bad)", note:"inmediato: cada hora cuenta"}
+];
+
+</script>
+<script>
+(function(){
+  const $ = (s,el=document)=>el.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const TARGET = TARGETS;
+  const PREG = {s:"Seguro",p:"Precaución",e:"Evitar"};
+  const famById = Object.fromEntries(FAMS.map(f=>[f.id,f]));
+
+  /* ---------- PK/PD figure ---------- */
+  (function pk(){
+    const svg = $("#pkSvg"); if(!svg) return;
+    const W=640,H=300,L=56,R=24,T=24,B=64, w=W-L-R, h=H-T-B;
+    const ka=1.6, ke=0.28, D=10.5, tmax=12;
+    const C=t=> D*(Math.exp(-ke*t)-Math.exp(-ka*t));
+    let peak=0,tp=0; for(let t=0;t<=tmax;t+=0.01){const c=C(t); if(c>peak){peak=c;tp=t;}}
+    const ymax=Math.ceil(peak+1);
+    const X=t=>L+t/tmax*w, Y=c=>T+h-c/ymax*h;
+    const mic=2.2;
+    let pts=[]; for(let t=0;t<=tmax+1e-9;t+=0.1) pts.push([X(t),Y(C(t))]);
+    const path="M"+pts.map(p=>p[0].toFixed(1)+" "+p[1].toFixed(1)).join(" L");
+    const area=path+` L${X(tmax).toFixed(1)} ${Y(0)} L${X(0)} ${Y(0)} Z`;
+    // T>MIC bounds
+    let t1=null,t2=null; for(let t=0;t<=tmax;t+=0.01){const c=C(t); if(c>=mic&&t1===null)t1=t; if(c>=mic)t2=t;}
+    const ns="http://www.w3.org/2000/svg";
+    let g=`<rect x="${L}" y="${T}" width="${w}" height="${h}" fill="var(--surface)"/>`;
+    for(let i=0;i<=ymax;i+=2){g+=`<line x1="${L}" x2="${L+w}" y1="${Y(i)}" y2="${Y(i)}" stroke="var(--line)" stroke-width="1"/>`;}
+    g+=`<path d="${area}" fill="var(--accent)" opacity=".13"/>`;
+    g+=`<rect x="${X(t1)}" y="${Y(0)+6}" width="${X(t2)-X(t1)}" height="8" rx="3" fill="var(--gneg)" opacity=".85"/>`;
+    g+=`<line x1="${X(t1)}" x2="${X(t1)}" y1="${Y(mic)}" y2="${Y(0)+6}" stroke="var(--gneg)" stroke-dasharray="3 3"/>`;
+    g+=`<line x1="${X(t2)}" x2="${X(t2)}" y1="${Y(mic)}" y2="${Y(0)+6}" stroke="var(--gneg)" stroke-dasharray="3 3"/>`;
+    g+=`<line x1="${L}" x2="${L+w}" y1="${Y(mic)}" y2="${Y(mic)}" stroke="var(--gpos)" stroke-width="2" stroke-dasharray="7 5"/>`;
+    g+=`<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="3"/>`;
+    g+=`<circle cx="${X(tp)}" cy="${Y(peak)}" r="5" fill="var(--accent)"/>`;
+    const tx=(x,y,s,a="start",fill="var(--ink)",fw="400",fs=13)=>`<text x="${x}" y="${y}" text-anchor="${a}" fill="${fill}" font-weight="${fw}" font-size="${fs}" font-family="Atkinson Hyperlegible,system-ui,sans-serif">${s}</text>`;
+    g+=tx(X(tp)+10,Y(peak)+4,"Cmax","start","var(--accent)","700");
+    g+=tx(L+w-4,Y(mic)-8,"CMI","end","var(--gpos)","700");
+    g+=tx((X(t1)+X(t2))/2,Y(0)+32,"T &gt; CMI","middle","var(--gneg)","700");
+    g+=tx(X(2.4),Y(1.1),"AUC","middle","var(--accent)","700",14);
+    g+=`<line x1="${L}" x2="${L}" y1="${T}" y2="${T+h}" stroke="var(--muted)"/><line x1="${L}" x2="${L+w}" y1="${T+h}" y2="${T+h}" stroke="var(--muted)"/>`;
+    for(let t=0;t<=tmax;t+=2) g+=tx(X(t),T+h+54,t+" h","middle","var(--muted)","400",11);
+    g+=`<text transform="translate(18 ${T+h/2}) rotate(-90)" text-anchor="middle" fill="var(--muted)" font-size="12" font-family="Atkinson Hyperlegible,system-ui,sans-serif">Concentración libre</text>`;
+    svg.insertAdjacentHTML("beforeend", g);
+  })();
+
+
+  /* ---------- Ventanas terapéuticas ---------- */
+  (function win(){
+    const svg=$("#winSvg"); if(!svg||typeof WINDOWS==="undefined") return;
+    const L=230,R=20,T=30,rowH=34,W=720,days=10,w=W-L-R,H=T+WINDOWS.length*rowH+40;
+    svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const X=d=>L+d/days*w; let g="";
+    const tx=(x,y,s,a="start",fill="var(--ink)",fw="400",fs=13)=>`<text x="${x}" y="${y}" text-anchor="${a}" fill="${fill}" font-weight="${fw}" font-size="${fs}" font-family="Atkinson Hyperlegible,system-ui,sans-serif">${s}</text>`;
+    for(let d=0;d<=days;d++){g+=`<line x1="${X(d)}" x2="${X(d)}" y1="${T-8}" y2="${H-34}" stroke="var(--line)"/>`+tx(X(d),H-16,d===0?"0":d+" d","middle","var(--muted)","400",11);}
+    WINDOWS.forEach((r,i)=>{const y=T+i*rowH;
+      g+=tx(L-12,y+16,r.l,"end","var(--ink)","700",13);
+      g+=`<rect x="${X(0)}" y="${y+4}" width="${Math.max(3,X(r.max)-X(0))}" height="16" rx="4" fill="${r.c}" opacity=".28"/>`;
+      g+=`<rect x="${X(0)}" y="${y+4}" width="${Math.max(3,X(r.ideal)-X(0))}" height="16" rx="4" fill="${r.c}"/>`;
+      g+= r.max>=6 ? tx(X(r.max)-8,y+16,r.note,"end","var(--ink)","700",12) : tx(X(r.max)+8,y+16,r.note,"start","var(--muted)","400",12);
+    });
+    svg.innerHTML=`<title>Ventanas terapéuticas</title>`+g;
+  })();
+
+  /* ---------- helpers ---------- */
+  const heatVar = v => ["var(--h0)","var(--h1)","var(--h2)","var(--h3)"][v];
+  const mini = sp => `<span class="mini" aria-label="Espectro">${sp.map((v,i)=>`<i style="background:${heatVar(v)};outline:1px solid var(--line)" title="${esc(COLS[i].s)}: ${esc(LEVELS[v])}"></i>`).join("")}</span>`;
+
+  /* ---------- Familias ---------- */
+  let famFilter = "all", query = "";
+  const chipBox = $("#famChips");
+  const chipData = [{id:"all",n:"Todas"}].concat(FAMS.map(f=>({id:f.id,n:f.n})));
+  chipBox.innerHTML = chipData.map(c=>`<button type="button" class="chip" data-f="${c.id}" aria-pressed="${c.id==='all'}">${esc(c.n)}</button>`).join("");
+  chipBox.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(!b) return; famFilter=b.dataset.f; chipBox.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderFams();});
+  $("#q").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase(); renderFams();});
+
+  function drugHTML(d, open){
+    return `<details class="drug"${open?" open":""}>
+      <summary>
+        <span class="dn">${esc(d.n)} <span class="via">${esc(d.via)}</span> <span class="tm">t½ ${esc(d.t)}</span></span>
+        <span class="sum-right">${mini(d.sp)}<span class="preg ${d.e}">${PREG[d.e]}</span><span class="chev" aria-hidden="true">▶</span></span>
+      </summary>
+      <div class="drug-body">
+        <div class="wide"><h4>Dosis adulto</h4><div class="dose">${esc(d.d)}</div></div>
+        <div><h4>Ajuste renal</h4><p>${esc(d.r)}</p></div>
+        <div><h4>Pediatría</h4><p>${esc(d.p)}</p></div>
+        <div><h4>Embarazo</h4><p><span class="preg ${d.e}">${PREG[d.e]}</span> ${esc(d.et)}</p></div>
+        <div><h4>Obesidad</h4><p>${esc(d.o)}</p></div>
+        <div><h4>Toxicidad</h4><p>${esc(d.tox)}</p></div>
+        <div><h4>Perla de urgencia</h4><p>${esc(d.pe)}</p></div>
+      </div>
+    </details>`;
+  }
+  function renderFams(){
+    const out=[];
+    FAMS.forEach(f=>{
+      if(famFilter!=="all" && famFilter!==f.id) return;
+      let drugs = DRUGS.filter(d=>d.f===f.id);
+      const famText = (f.n+" "+f.mec+" "+f.intr+" "+f.adq+" "+f.perla).toLowerCase();
+      let famMatch = !query || famText.includes(query);
+      if(query){
+        const dm = drugs.filter(d=>Object.values(d).join(" ").toLowerCase().includes(query));
+        if(!famMatch && !dm.length) return;
+        if(!famMatch) drugs = dm;
+      }
+      const tg = TARGET[f.tg];
+      const openDrugs = !!query && !famMatch;
+      out.push(`<article class="fam" style="--tc:var(${tg.v})">
+        <div class="fam-head">
+          <div class="top"><h3>${esc(f.n)}</h3><span class="muted" style="font-size:.88rem">${esc(f.grp)}</span></div>
+          <div class="tags"><span class="tag t">Diana: ${tg.l}</span><span class="tag">${esc(f.pk)}</span><span class="tag">${esc(f.cid)}</span></div>
+        </div>
+        <div class="fam-body">
+          <div><h4>Mecanismo de acción</h4><p>${esc(f.mec)}</p></div>
+          <div><h4>Resistencia intrínseca</h4><p>${esc(f.intr)}</p></div>
+          <div><h4>Resistencia adquirida</h4><p>${esc(f.adq)}</p></div>
+          <div class="perla"><b>Perla:</b> ${esc(f.perla)}</div>
+        </div>
+        ${drugs.map(d=>drugHTML(d, openDrugs)).join("")}
+      </article>`);
+    });
+    $("#famList").innerHTML = out.length? out.join("") : `<div class="empty">No hay coincidencias para «${esc(query)}».</div>`;
+  }
+  renderFams();
+
+  /* ---------- Espectro ---------- */
+  const SC = {pos:"var(--gpos)",neg:"var(--gneg)",amp:"var(--accent)",ana:"var(--ana)",ati:"var(--ati)",res:"var(--res)"};
+  $("#specGrid").innerHTML = SPECTRUM.map(s=>`<div class="spec-card" style="--sc:${SC[s.c]}"><h3>${esc(s.t)}</h3><p>${esc(s.d)}</p><div class="pills">${s.m.map(m=>`<span class="pill">${esc(m)}</span>`).join("")}</div></div>`).join("");
+
+  /* ---------- Empíricos ---------- */
+  const ET = Object.assign({all:"Todos"}, EMP_TAGS);
+  let empF="all";
+  const ec=$("#empChips");
+  ec.innerHTML=Object.entries(ET).map(([k,v])=>`<button type="button" class="chip" data-k="${k}" aria-pressed="${k==='all'}">${v}</button>`).join("");
+  ec.addEventListener("click",e=>{const b=e.target.closest(".chip"); if(!b) return; empF=b.dataset.k; ec.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderEmp();});
+  function renderEmp(){
+    $("#empGrid").innerHTML = EMP.filter(x=>empF==="all"||x.tag===empF).map(x=>`<article class="emp">
+      <div class="hd"><h3>${esc(x.s)}</h3><span class="etag ${x.tag}">${ET[x.tag]}</span></div>
+      <div><div class="lbl">Primera línea</div><p>${esc(x.a)}</p></div>
+      <div><div class="lbl">Alternativa / alergia</div><p>${esc(x.b)}</p></div>
+      <p class="note">${esc(x.n)}</p>
+    </article>`).join("");
+  }
+  renderEmp();
+
+  /* ---------- Heatmap ---------- */
+  const sel=$("#hmCol");
+  COLS.forEach((c,i)=>sel.insertAdjacentHTML("beforeend",`<option value="${i}">${esc(c.l)}</option>`));
+  sel.addEventListener("change",renderHM);
+  const SYM=["–","±","+","++"];
+  function renderHM(){
+    const ci = sel.value===""? null : +sel.value;
+    let h=`<thead><tr><th class="rowh" style="z-index:2;background:var(--surface-2)">Fármaco</th>${COLS.map((c,i)=>`<th class="${c.g}" title="${esc(c.l)}" style="${ci===i?'background:var(--accent-soft)':''}">${esc(c.s)}</th>`).join("")}</tr></thead><tbody>`;
+    FAMS.forEach(f=>{
+      let ds = DRUGS.filter(d=>d.f===f.id);
+      if(ci!==null) ds = ds.filter(d=>d.sp[ci]>=2).sort((a,b)=>b.sp[ci]-a.sp[ci]);
+      if(!ds.length) return;
+      h+=`<tr class="fam-row"><td colspan="${COLS.length+1}">${esc(f.n)}</td></tr>`;
+      ds.forEach(d=>{
+        h+=`<tr><th class="rowh" scope="row">${esc(d.n.replace(/ \(.*\)$/,""))}</th>${d.sp.map((v,i)=>`<td class="c c${v}${ci!==null&&ci!==i?' dim':''}" title="${esc(COLS[i].l)}: ${esc(LEVELS[v])}"><span>${SYM[v]}</span></td>`).join("")}</tr>`;
+      });
+    });
+    h+="</tbody>";
+    $("#hm").innerHTML=h;
+  }
+  renderHM();
+  $("#hmLegend").innerHTML = LEVELS.map((l,i)=>`<span><i class="c${i}"></i><b class="mono">${SYM[i]}</b> ${esc(l)}</span>`).join("");
+  $("#colKey").innerHTML = COLS.map(c=>`<span><b>${esc(c.s)}</b> ${esc(c.l)}</span>`).join("");
+
+  /* ---------- Tarjetas ---------- */
+  let order = CARDS.map((_,i)=>i);
+  function renderCards(){
+    $("#cards").innerHTML = order.map(i=>{const c=CARDS[i]; return `<button type="button" class="card" aria-pressed="false" aria-label="Tarjeta: ${esc(c.q)}">
+      <span class="inner"><span class="face front"><span class="q">${esc(c.q)}</span><span class="hint">Toca para ver la respuesta</span></span>
+      <span class="face back">${esc(c.a)}</span></span></button>`;}).join("");
+  }
+  renderCards();
+  $("#cards").addEventListener("click",e=>{const b=e.target.closest(".card"); if(!b) return; b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});
+  $("#shuffle").addEventListener("click",()=>{for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} renderCards();});
+  $("#flipAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","true")));
+  $("#resetAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","false")));
+})();
+</script>
+
+
+</body>
+</html>

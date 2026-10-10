@@ -85,6 +85,28 @@
         "antibióticos"
       ],
       "fecha": "2026-10-10"
+    },
+    {
+      "id": "antivirales-en-urgencia",
+      "titulo": "Antivirales en Urgencia",
+      "tema": "farmacologia",
+      "archivo": "farmacologia/antivirales-en-urgencia.html",
+      "descripcion": "Ventanas terapéuticas, ciclo viral, 29 fármacos con dosis (adulto, renal, pediatría, embarazo, obesidad), resistencias, interacciones, esquemas (encefalitis, zóster, influenza, COVID-19, PEP), mapa de espectro y tarjetas.",
+      "etiquetas": [
+        "antivirales"
+      ],
+      "fecha": "2026-10-10"
+    },
+    {
+      "id": "antifungicos-en-urgencia",
+      "titulo": "Antifúngicos en Urgencia",
+      "tema": "farmacologia",
+      "archivo": "farmacologia/antifungicos-en-urgencia.html",
+      "descripcion": "PK/PD y penetración por sitio, dianas, 18 fármacos con dosis por población, resistencias (C. auris), interacciones, esquemas (candidemia, criptococo, aspergilosis, mucormicosis, Pneumocystis), mapa de espectro y tarjetas.",
+      "etiquetas": [
+        "antifúngicos"
+      ],
+      "fecha": "2026-10-10"
     }
   ]
 }
