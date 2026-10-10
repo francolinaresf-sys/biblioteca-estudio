@@ -188,20 +188,18 @@ table.hm .dim{opacity:.28}
 
 /* Tarjetas */
 .cards{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr)); gap:14px}
-.card{display:block; width:100%; background:none; border:none; padding:0; margin:0; font:inherit; color:inherit; text-align:left; cursor:pointer; -webkit-appearance:none; appearance:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation}
-.card .inner{display:block}
-.card .face{min-height:190px; border-radius:var(--radius); padding:16px; display:flex; flex-direction:column; gap:10px; border:1px solid var(--line)}
+.card{display:block; position:relative; min-height:170px; padding:16px; border-radius:var(--radius); border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent}
+.card:hover{border-color:var(--accent)}
+.card .face{display:block}
 .card .back{display:none}
-.card[aria-pressed="true"] .front{display:none}
-.card[aria-pressed="true"] .back{display:flex; animation:cardIn .28s ease-out}
-@keyframes cardIn{from{opacity:0; transform:scale(.97)} to{opacity:1; transform:none}}
-.card .front{background:var(--surface)}
-.card .front .q{font-family:var(--f-display); font-weight:700; font-size:1.08rem; font-stretch:92%}
-.card .front .hint{margin-top:auto; font-size:.76rem; color:var(--muted); font-family:var(--f-mono)}
-.card .back{background:var(--accent); color:var(--h3-ink); font-size:.9rem}
-.card .back .hint{margin-top:auto; font-size:.76rem; opacity:.8; font-family:var(--f-mono)}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .card .back{color:#0f1418} }
-:root[data-theme="dark"] .card .back{color:#0f1418}
+.card.on{background:var(--accent); border-color:var(--accent)}
+.card.on .front{display:none}
+.card.on .back{display:block; animation:cardIn .25s ease-out}
+@keyframes cardIn{from{opacity:0} to{opacity:1}}
+.card .q{margin:0; font-family:var(--f-display); font-weight:700; font-size:1.08rem; font-stretch:92%; color:var(--ink)}
+.card .a{margin:0; font-size:.92rem; color:var(--h3-ink)}
+.card .hint{margin:16px 0 0; font-size:.76rem; font-family:var(--f-mono); color:var(--muted)}
+.card.on .hint{color:var(--h3-ink); opacity:.8}
 .cards-actions{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap}
 .btn{border:1px solid var(--line); background:var(--surface); color:var(--ink); padding:7px 14px; border-radius:8px; font:inherit; font-size:.86rem; cursor:pointer}
 .btn:hover{border-color:var(--accent)}
@@ -1413,15 +1411,17 @@ const EMP = [
   /* ---------- Tarjetas ---------- */
   let order = CARDS.map((_,i)=>i);
   function renderCards(){
-    $("#cards").innerHTML = order.map(i=>{const c=CARDS[i]; return `<button type="button" class="card" aria-pressed="false" aria-label="Tarjeta: ${esc(c.q)}">
-      <span class="inner"><span class="face front"><span class="q">${esc(c.q)}</span><span class="hint">Toca para ver la respuesta</span></span>
-      <span class="face back"><span>${esc(c.a)}</span><span class="hint">Toca para volver a la pregunta</span></span></span></button>`;}).join("");
+    $("#cards").innerHTML = order.map(i=>{const c=CARDS[i]; return `<div class="card" role="button" tabindex="0" aria-pressed="false">
+      <div class="face front"><p class="q">${esc(c.q)}</p><p class="hint">Toca para ver la respuesta</p></div>
+      <div class="face back"><p class="a">${esc(c.a)}</p><p class="hint">Toca para volver a la pregunta</p></div></div>`;}).join("");
   }
   renderCards();
-  $("#cards").addEventListener("click",e=>{const b=e.target.closest(".card"); if(!b) return; b.setAttribute("aria-pressed", b.getAttribute("aria-pressed")!=="true");});
+  const setCard=(el,on)=>{el.classList.toggle("on",on); el.setAttribute("aria-pressed",on?"true":"false");};
+  $("#cards").addEventListener("click",e=>{const b=e.target.closest(".card"); if(b) setCard(b,!b.classList.contains("on"));});
+  $("#cards").addEventListener("keydown",e=>{const b=e.target.closest(".card"); if(b&&(e.key==="Enter"||e.key===" ")){e.preventDefault(); setCard(b,!b.classList.contains("on"));}});
   $("#shuffle").addEventListener("click",()=>{for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];} renderCards();});
-  $("#flipAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","true")));
-  $("#resetAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>c.setAttribute("aria-pressed","false")));
+  $("#flipAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>setCard(c,true)));
+  $("#resetAll").addEventListener("click",()=>document.querySelectorAll(".card").forEach(c=>setCard(c,false)));
 })();
 </script>
 
