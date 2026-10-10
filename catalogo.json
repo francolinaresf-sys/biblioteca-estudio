@@ -1,0 +1,23 @@
+{
+  "titulo": "Biblioteca de Estudio",
+  "subtitulo": "Medicina de Urgencia",
+  "temas": [
+    { "id": "ultrasonido",        "nombre": "Ultrasonido",               "icono": "📡", "color": "#0e7490" },
+    { "id": "cardiologia",        "nombre": "Cardiología",               "icono": "❤️", "color": "#be123c" },
+    { "id": "toxicologia",        "nombre": "Toxicología",               "icono": "🧪", "color": "#6d28d9" },
+    { "id": "politrauma",         "nombre": "Politrauma",                "icono": "🚑", "color": "#c2410c" },
+    { "id": "drogas-vasoactivas", "nombre": "Drogas vasoactivas",        "icono": "💉", "color": "#b45309" },
+    { "id": "farmacologia",       "nombre": "Revisiones farmacológicas", "icono": "💊", "color": "#15803d" }
+  ],
+  "artefactos": [
+    {
+      "id": "ejemplo-fast",
+      "titulo": "eFAST en 5 ventanas",
+      "tema": "ultrasonido",
+      "archivo": "ultrasonido/ejemplo-fast.html",
+      "descripcion": "Tarjetas interactivas con las ventanas del eFAST, qué buscar en cada una y trampas frecuentes. Artefacto de ejemplo.",
+      "etiquetas": ["FAST", "trauma", "POCUS"],
+      "fecha": "2026-10-10"
+    }
+  ]
+}

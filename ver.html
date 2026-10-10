@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Artefacto · Biblioteca de Estudio</title>
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/estilos.css">
+<style>
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; height: 100dvh; padding: 0; overflow: hidden; }
+  .barra {
+    flex: none; display: flex; align-items: center; gap: 8px;
+    padding: calc(env(safe-area-inset-top) + 6px) max(10px, env(safe-area-inset-right)) 6px max(10px, env(safe-area-inset-left));
+    background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 12px;
+    border: 0; border-radius: 10px; background: var(--surface-2); color: var(--text);
+    font: inherit; font-size: .92rem; font-weight: 500; text-decoration: none; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; flex: none;
+  }
+  .btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .info { flex: 1; min-width: 0; line-height: 1.2; }
+  .info small { display: block; font-size: .72rem; font-weight: 600; color: var(--c, var(--muted)); }
+  .info strong { display: block; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .star { position: static; }
+  iframe { flex: 1; width: 100%; border: 0; background: #fff; }
+  .error { padding: 24px 16px; }
+  @media (max-width: 420px) { .btn .lbl { display: none; } }
+</style>
+</head>
+<body>
+  <div class="barra">
+    <a class="btn" href="./" aria-label="Volver a la biblioteca">
+      <svg viewBox="0 0 24 24"><path d="M15 18 9 12l6-6"/></svg><span class="lbl">Biblioteca</span>
+    </a>
+    <div class="info"><small id="tema"></small><strong id="nombre">Cargando…</strong></div>
+    <button id="fav" class="star" aria-pressed="false" aria-label="Favorito" hidden>
+      <svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>
+    </button>
+    <a id="abrir" class="btn" target="_blank" rel="noopener" aria-label="Abrir solo, a pantalla completa" hidden>
+      <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+    </a>
+  </div>
+  <iframe id="marco" title="Artefacto" allow="fullscreen; clipboard-write" allowfullscreen></iframe>
+
+<script>
+(async () => {
+  const store = {
+    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  const id = new URLSearchParams(location.search).get('id');
+  const fallo = msg => { document.getElementById('nombre').textContent = 'No encontrado';
+    document.getElementById('marco').replaceWith(Object.assign(document.createElement('div'), { className: 'error muted', textContent: msg })); };
+
+  let cat;
+  try { cat = await (await fetch('catalogo.json', { cache: 'no-cache' })).json(); }
+  catch { return fallo('No se pudo cargar el catálogo.'); }
+
+  const a = cat.artefactos.find(x => x.id === id);
+  if (!a) return fallo('Este artefacto no está en catalogo.json.');
+  const t = cat.temas.find(x => x.id === a.tema) || { nombre: a.tema, icono: '📄', color: '#64748b' };
+
+  document.title = a.titulo + ' · ' + (cat.titulo || 'Biblioteca');
+  document.querySelector('.info').style.setProperty('--c', t.color);
+  document.getElementById('tema').textContent = `${t.icono} ${t.nombre}`;
+  document.getElementById('nombre').textContent = a.titulo;
+  document.getElementById('marco').src = a.archivo;
+  const abrir = document.getElementById('abrir'); abrir.href = a.archivo; abrir.hidden = false;
+
+  const favs = new Set(store.get('favoritos', []));
+  const fav = document.getElementById('fav'); fav.hidden = false;
+  const pintar = () => fav.setAttribute('aria-pressed', favs.has(a.id));
+  pintar();
+  fav.onclick = () => { favs.has(a.id) ? favs.delete(a.id) : favs.add(a.id); store.set('favoritos', [...favs]); pintar(); };
+
+  const rec = store.get('recientes', []).filter(x => x !== a.id);
+  rec.unshift(a.id); store.set('recientes', rec.slice(0, 12));
+})();
+</script>
+</body>
+</html>

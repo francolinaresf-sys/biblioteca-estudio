@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Biblioteca de Estudio</title>
+<meta name="description" content="Biblioteca personal de artefactos de estudio en medicina de urgencia">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Estudio">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="assets/icon-192.png">
+<link rel="stylesheet" href="assets/estilos.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <img src="assets/icon-192.png" alt="" width="40" height="40">
+    <div>
+      <h1 id="titulo">Biblioteca de Estudio</h1>
+      <p id="subtitulo" class="muted"></p>
+    </div>
+  </div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Buscar tema, título o etiqueta…" autocomplete="off" enterkeyhint="search">
+  </div>
+  <nav id="chips" class="chips" aria-label="Temáticas"></nav>
+</header>
+
+<main id="main">
+  <section id="recientes" class="recientes" hidden>
+    <h2>Vistos recientemente</h2>
+    <div id="recientesLista" class="scroller"></div>
+  </section>
+  <div id="contenido"></div>
+</main>
+
+<footer class="pie muted">
+  <span id="total"></span> · Actualizado <span id="actualizado"></span>
+</footer>
+
+<script src="assets/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+</script>
+</body>
+</html>
