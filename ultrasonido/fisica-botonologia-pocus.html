@@ -1,0 +1,1202 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Física y Botonología POCUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: consola de ecógrafo — índice lateral fijo + columna de lectura; los simuladores son "pantallas" negras con panel de perillas */
+:root{
+  --bg:#eef1f3; --surface:#ffffff; --surface-2:#f6f8f9; --ink:#15202a; --muted:#566573; --line:#d3dae0;
+  --accent:#c4620f; --accent-ink:#9a4a06; --accent-soft:#fbe9d8;
+  --red:#c92f2a; --blue:#1d5ec2; --ok:#2b7a4b; --warn:#a86b12; --crit:#b8322a;
+  --screen:#06080a; --screen-ink:#cfdae2; --screen-dim:#6f7f8a;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1216; --surface:#141b21; --surface-2:#11171c; --ink:#e2e8ed; --muted:#97a6b2; --line:#26313a;
+  --accent:#f09a45; --accent-ink:#f5b06b; --accent-soft:#2c2014;
+  --red:#ff6a5f; --blue:#6aa6ff; --ok:#58c287; --warn:#e6ad4f; --crit:#ff7a6e; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0d1216; --surface:#141b21; --surface-2:#11171c; --ink:#e2e8ed; --muted:#97a6b2; --line:#26313a;
+  --accent:#f09a45; --accent-ink:#f5b06b; --accent-soft:#2c2014;
+  --red:#ff6a5f; --blue:#6aa6ff; --ok:#58c287; --warn:#e6ad4f; --crit:#ff7a6e; color-scheme:dark;}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;padding-inline:16px;padding-block:0}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700;margin-top:.4rem}
+p{margin:0}
+a{color:var(--accent-ink)}
+code,.mono{font-family:var(--f-mono);font-size:.92em}
+.shell{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-block:28px;max-height:100vh;overflow:auto}
+nav.toc .brand{font-family:var(--f-display);font-weight:800;font-size:1.05rem;margin-bottom:14px;display:block;color:var(--ink);text-decoration:none}
+nav.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;counter-reset:t}
+nav.toc a{display:flex;gap:10px;padding:6px 8px;border-radius:6px;color:var(--muted);text-decoration:none;font-size:.9rem;line-height:1.3}
+nav.toc a span{font-family:var(--f-mono);font-size:.75rem;color:var(--accent-ink);padding-top:2px;min-width:1.4em}
+nav.toc a:hover,nav.toc a.on{background:var(--surface);color:var(--ink)}
+main{min-width:0;padding-block:28px 80px;display:flex;flex-direction:column;gap:72px}
+section{display:flex;flex-direction:column;gap:18px;scroll-margin-top:16px}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.lead{font-size:1.08rem;color:var(--muted);max-width:68ch}
+.prose{max-width:70ch;display:flex;flex-direction:column;gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.card h4{font-size:1rem;margin-bottom:6px}
+.card p,.card li{font-size:.94rem}
+.card ul{margin:6px 0 0;padding-left:1.1em}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted)}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;max-width:72ch;font-size:.96rem}
+.note b.k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);display:block;margin-bottom:2px}
+.note.trap{border-left-color:var(--crit);background:color-mix(in srgb,var(--crit) 9%,transparent)}
+.note.trap b.k{color:var(--crit)}
+.note.bed{border-left-color:var(--ok);background:color-mix(in srgb,var(--ok) 9%,transparent)}
+.note.bed b.k{color:var(--ok)}
+.eq{font-family:var(--f-mono);font-size:1.05rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:inline-block}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:560px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--f-mono)}
+.group-row td{background:var(--surface-2);font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink)}
+
+/* hero */
+header.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:28px;align-items:center}
+header.hero h1{font-size:clamp(2.3rem,5.4vw,3.9rem);font-weight:800;letter-spacing:-.025em}
+header.hero h1 em{font-style:normal;color:var(--accent-ink)}
+.hero-copy{display:flex;flex-direction:column;gap:14px}
+.hero-fig{background:var(--screen);border-radius:14px;padding:12px;color:var(--screen-ink)}
+.hero-fig svg{width:100%;height:auto;display:block}
+.pulse-down{animation:pd 2.6s linear infinite}
+.pulse-up{animation:pu 2.6s linear infinite}
+@keyframes pd{0%{transform:translateY(0);opacity:1}45%{transform:translateY(150px);opacity:1}50%,100%{transform:translateY(150px);opacity:0}}
+@keyframes pu{0%,45%{transform:translateY(150px);opacity:0}50%{transform:translateY(150px);opacity:1}95%{transform:translateY(0);opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.pulse-down,.pulse-up{animation:none}.pulse-up{opacity:.0}}
+
+/* consoles */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.console.wide{grid-template-columns:minmax(0,1fr)}
+.screen{background:var(--screen);padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;justify-content:center}
+.screen canvas{width:100%;height:auto;display:block;border-radius:6px;image-rendering:auto}
+.screen .readout{font-family:var(--f-mono);font-size:.78rem;color:var(--screen-ink);display:flex;flex-wrap:wrap;gap:6px 16px}
+.screen .readout b{color:#f2a85a;font-weight:500}
+.panel{padding:16px 18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.panel h4{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center}
+.ctl label{font-size:.9rem;font-weight:500}
+.ctl output{font-family:var(--f-mono);font-size:.82rem;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.ctl input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--accent)}
+.ctl small{grid-column:1/-1;color:var(--muted);font-size:.8rem;line-height:1.35}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+button,.seg label{font-family:var(--f-body);font-size:.86rem;font-weight:500;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:7px 12px;border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] button.primary{color:#1a1006}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.primary{color:#1a1006}}
+button:focus-visible,input:focus-visible,select:focus-visible,.seg input:focus-visible+label{outline:2px solid var(--accent);outline-offset:2px}
+select{font-family:var(--f-body);font-size:.9rem;padding:7px 10px;border-radius:7px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);width:100%}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+label{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.hints{display:flex;flex-direction:column;gap:6px}
+.hint{font-size:.86rem;line-height:1.4;padding:8px 10px;border-radius:7px;background:var(--surface-2);border:1px solid var(--line);display:flex;gap:8px}
+.hint i{font-style:normal;font-family:var(--f-mono);font-size:.7rem;padding:1px 6px;border-radius:4px;height:fit-content;white-space:nowrap}
+.hint.ok i{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.hint.warn i{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--warn)}
+.hint.crit i{background:color-mix(in srgb,var(--crit) 18%,transparent);color:var(--crit)}
+.checklist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px;font-size:.84rem}
+.checklist span{display:flex;gap:6px;align-items:center}
+.checklist span::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--crit);flex:none}
+.checklist span.y::before{background:var(--ok)}
+.stats{display:flex;flex-wrap:wrap;gap:10px}
+.stat{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;min-width:110px}
+.stat b{display:block;font-family:var(--f-mono);font-size:1.1rem;font-variant-numeric:tabular-nums;font-weight:500}
+.stat small{color:var(--muted);font-size:.76rem}
+figure{margin:0}
+figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto}
+figure.diagram svg{display:block;width:100%;height:auto;min-width:520px}
+figcaption{font-size:.84rem;color:var(--muted);margin-top:8px}
+.svg-ink{fill:var(--ink)} .svg-muted{fill:var(--muted)} .svg-line{stroke:var(--line)} .svg-acc{fill:var(--accent)} .svg-acc-s{stroke:var(--accent)}
+svg text{font-family:var(--f-body)}
+.knobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.knob{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.knob .kname{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.knob .kname h4{font-size:1rem}
+.knob p{font-size:.88rem}
+.knob .tr{font-size:.82rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:6px;margin-top:auto}
+.knob .tr b{color:var(--ink);font-weight:600}
+.cat{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px}
+.q p.qt{font-weight:600;margin-bottom:10px}
+.q .opts{display:flex;flex-direction:column;gap:6px}
+.q .opts button{text-align:left;background:var(--surface-2)}
+.q .opts button.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.q .opts button.wrong{border-color:var(--crit);background:color-mix(in srgb,var(--crit) 12%,transparent)}
+.q .exp{margin-top:10px;font-size:.9rem;color:var(--muted)}
+.score{font-family:var(--f-mono);font-size:.9rem}
+footer{border-top:1px solid var(--line);padding-top:18px;font-size:.86rem;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.wave-wrap{background:var(--screen);border-radius:10px;padding:10px}
+.wave-wrap canvas{width:100%;height:auto;display:block}
+
+@media (max-width: 980px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0}
+  nav.toc{position:sticky;z-index:5;background:var(--bg);padding-block:10px;max-height:none;border-bottom:1px solid var(--line);margin-inline:-16px;padding-inline:16px}
+  nav.toc .brand{display:none}
+  nav.toc ol{flex-direction:row;overflow-x:auto;gap:4px;scrollbar-width:none}
+  nav.toc a{white-space:nowrap;font-size:.84rem}
+  header.hero{grid-template-columns:minmax(0,1fr)}
+  .console{grid-template-columns:minmax(0,1fr)}
+  .knobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 600px){
+  .grid2,.grid3,.knobs{grid-template-columns:minmax(0,1fr)}
+  .checklist{grid-template-columns:minmax(0,1fr)}
+  main{gap:56px}
+}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contenido">
+  <a class="brand" href="#top">Física &amp; Botonología</a>
+  <ol>
+    <li><a href="#sonido"><span>01</span>El sonido</a></li>
+    <li><a href="#transductor"><span>02</span>El transductor</a></li>
+    <li><a href="#tejidos"><span>03</span>Sonido vs. tejidos</a></li>
+    <li><a href="#resolucion"><span>04</span>Resolución</a></li>
+    <li><a href="#sondas"><span>05</span>Sondas y modos</a></li>
+    <li><a href="#modob"><span>06</span>Simulador modo B</a></li>
+    <li><a href="#botones"><span>07</span>El panel completo</a></li>
+    <li><a href="#doppler"><span>08</span>Física Doppler</a></li>
+    <li><a href="#espectral"><span>09</span>Doppler espectral</a></li>
+    <li><a href="#filtro"><span>10</span>Filtro de pared</a></li>
+    <li><a href="#color"><span>11</span>Doppler color</a></li>
+    <li><a href="#artefactos"><span>12</span>Artefactos</a></li>
+    <li><a href="#seguridad"><span>13</span>Bioefectos</a></li>
+    <li><a href="#quiz"><span>14</span>Autoevaluación</a></li>
+  </ol>
+</nav>
+
+<main id="top">
+<header class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">Master Ultrasonido Clínico · Módulo 1 ampliado</span>
+    <h1>Toda imagen es un <em>cronómetro</em> de ecos</h1>
+    <p class="lead">El equipo no "ve": grita un pulso, se calla y cronometra cuánto tarda el eco en volver. Asumiendo 1540 m/s en tejido blando, cada 13 µs de ida y vuelta equivalen a 1 cm de profundidad. Todo lo demás (ganancia, foco, Doppler, filtros) es el arte de interpretar bien ese cronómetro.</p>
+    <div class="eq">profundidad = (c × t) / 2 &nbsp;·&nbsp; c = 1540 m/s</div>
+  </div>
+  <figure class="hero-fig" aria-label="Esquema pulso-eco">
+    <svg viewBox="0 0 360 250" role="img" aria-label="Pulso que baja desde el transductor y eco que vuelve">
+      <rect x="0" y="0" width="360" height="250" fill="#06080a"/>
+      <rect x="130" y="8" width="100" height="26" rx="6" fill="#2a333b"/>
+      <rect x="138" y="30" width="84" height="8" rx="2" fill="#f09a45"/>
+      <text x="180" y="25" text-anchor="middle" fill="#cfdae2" font-size="11">transductor</text>
+      <rect x="20" y="44" width="320" height="40" fill="#1b2329"/>
+      <rect x="20" y="84" width="320" height="104" fill="#2a3238"/>
+      <rect x="20" y="188" width="320" height="6" fill="#e9eef2"/>
+      <rect x="20" y="194" width="320" height="46" fill="#11161a"/>
+      <text x="30" y="68" fill="#8a9aa5" font-size="10">grasa · 1450 m/s</text>
+      <text x="30" y="140" fill="#8a9aa5" font-size="10">hígado · ~1540 m/s</text>
+      <text x="30" y="214" fill="#8a9aa5" font-size="10">interfaz (alto ΔZ) → eco fuerte</text>
+      <g class="pulse-down"><path d="M150 42 q30 10 60 0" stroke="#f09a45" stroke-width="3" fill="none"/></g>
+      <g class="pulse-up"><path d="M150 42 q30 -10 60 0" stroke="#6aa6ff" stroke-width="3" fill="none"/></g>
+      <text x="350" y="60" text-anchor="end" fill="#f09a45" font-size="10">emite ~1%</text>
+      <text x="350" y="74" text-anchor="end" fill="#6aa6ff" font-size="10">escucha ~99%</text>
+      <line x1="300" y1="44" x2="300" y2="188" stroke="#6f7f8a" stroke-dasharray="3 3"/>
+      <text x="306" y="120" fill="#cfdae2" font-size="10" transform="rotate(90 306 120)">t ida+vuelta</text>
+    </svg>
+  </figure>
+</header>
+
+<!-- 01 SONIDO -->
+<section id="sonido">
+  <span class="eyebrow">01 · Qué es el sonido</span>
+  <h2>Una onda que empuja moléculas</h2>
+  <div class="prose">
+    <p>El sonido es una <b>onda mecánica longitudinal</b>: las partículas del medio oscilan en la misma dirección en que viaja la onda, alternando zonas de <b>compresión</b> (alta presión) y <b>rarefacción</b> (baja presión). Necesita un medio: en el vacío no hay ecografía (ni gritos).</p>
+    <p>Llamamos <b>ultrasonido</b> a frecuencias &gt; 20 kHz. La ecografía diagnóstica usa entre 1 y 20 MHz, unas mil veces por encima de lo que un murciélago considera agudo.</p>
+  </div>
+  <figure class="diagram">
+    <svg viewBox="0 0 760 120" role="img" aria-label="Espectro acústico">
+      <rect x="20" y="40" width="160" height="30" fill="var(--line)"/>
+      <rect x="180" y="40" width="200" height="30" fill="var(--surface-2)" stroke="var(--line)"/>
+      <rect x="380" y="40" width="160" height="30" fill="var(--accent-soft)" stroke="var(--line)"/>
+      <rect x="540" y="40" width="200" height="30" fill="var(--accent)"/>
+      <text x="100" y="60" text-anchor="middle" class="svg-ink" font-size="13">Infrasonido</text>
+      <text x="280" y="60" text-anchor="middle" class="svg-ink" font-size="13">Audible</text>
+      <text x="460" y="60" text-anchor="middle" class="svg-ink" font-size="13">Ultrasonido</text>
+      <text x="640" y="60" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Diagnóstico 1–20 MHz</text>
+      <g class="svg-muted" font-size="11" font-family="IBM Plex Mono, monospace">
+        <text x="180" y="88" text-anchor="middle">20 Hz</text><text x="380" y="88" text-anchor="middle">20 kHz</text>
+        <text x="540" y="88" text-anchor="middle">1 MHz</text><text x="740" y="88" text-anchor="end">20 MHz</text>
+      </g>
+      <text x="20" y="26" class="svg-muted" font-size="11">escala logarítmica de frecuencia</text>
+      <text x="740" y="108" text-anchor="end" class="svg-muted" font-size="11">el Doppler "suena" porque Δf cae en el rango audible</text>
+    </svg>
+  </figure>
+
+  <h3>Juega con la frecuencia</h3>
+  <div class="console">
+    <div class="screen">
+      <div class="wave-wrap" style="padding:0"><canvas id="wave" width="640" height="170" aria-label="Onda longitudinal animada"></canvas></div>
+      <div class="readout"><span>puntos = moléculas · bandas densas = <b>compresión</b> · claras = rarefacción</span></div>
+    </div>
+    <div class="panel">
+      <div class="ctl"><label for="fq">Frecuencia del transductor</label><output id="fqo">3.5 MHz</output>
+        <input type="range" id="fq" min="1" max="15" step="0.5" value="3.5"></div>
+      <div class="stats">
+        <div class="stat"><small>Longitud de onda λ</small><b id="s-lam">0.44 mm</b></div>
+        <div class="stat"><small>Período T</small><b id="s-T">0.29 µs</b></div>
+        <div class="stat"><small>Resolución axial ≈</small><b id="s-ax">0.66 mm</b></div>
+        <div class="stat"><small>Penetración útil ≈</small><b id="s-pen">17 cm</b></div>
+      </div>
+      <p id="s-probe" class="hint ok" style="display:block"></p>
+      <small style="color:var(--muted);font-size:.8rem">Resolución axial ≈ ½ longitud espacial del pulso (pulso de ~3 ciclos). Penetración estimada con atenuación de 0,5 dB/cm/MHz y ~60 dB de rango útil: regla práctica, no dato del fabricante.</small>
+    </div>
+  </div>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Propiedad</th><th>Qué es</th><th>Quién la decide</th><th>Por qué te importa</th></tr></thead>
+    <tbody>
+      <tr><td><b>Frecuencia (f)</b></td><td>Ciclos por segundo (MHz)</td><td>El transductor</td><td>↑f = mejor resolución, menor penetración. El gran trade-off.</td></tr>
+      <tr><td><b>Período (T)</b></td><td>Duración de un ciclo, T = 1/f</td><td>El transductor</td><td>Inverso de f.</td></tr>
+      <tr><td><b>Longitud de onda (λ)</b></td><td>Distancia entre dos compresiones</td><td>Transductor + medio</td><td>Define la resolución axial mínima. λ = c / f.</td></tr>
+      <tr><td><b>Velocidad (c)</b></td><td>Rapidez de propagación</td><td>Solo el medio (rigidez ↑, densidad ↓)</td><td>El equipo asume 1540 m/s; si el tejido difiere, la profundidad se dibuja mal.</td></tr>
+      <tr><td><b>Amplitud</b></td><td>Magnitud de la variación de presión (dB)</td><td>Potencia de salida</td><td>Más amplitud = ecos más fuertes = más brillo (y más energía al paciente).</td></tr>
+      <tr><td><b>Potencia / Intensidad</b></td><td>Energía por tiempo (W) / por área (W/cm²)</td><td>Botón de potencia y presets</td><td>La intensidad determina bioefectos térmicos. ALARA.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="grid2">
+    <div class="tbl"><table style="min-width:0">
+      <thead><tr><th>Medio</th><th>c (m/s)</th></tr></thead>
+      <tbody>
+        <tr><td>Aire</td><td class="num">≈ 330</td></tr>
+        <tr><td>Pulmón</td><td class="num">≈ 500</td></tr>
+        <tr><td>Grasa</td><td class="num">≈ 1450</td></tr>
+        <tr><td>Tejido blando (asumido)</td><td class="num"><b>1540</b></td></tr>
+        <tr><td>Hueso</td><td class="num">≈ 3500</td></tr>
+      </tbody></table></div>
+    <div class="note"><b class="k">Perla</b>Rigidez acelera, densidad frena. El hueso es denso pero tan rígido que el sonido lo cruza a ~3500 m/s; el pulmón es lento. Por eso una capa gruesa de grasa (más lenta) hace que lo profundo se dibuje un poco <i>más abajo</i> de lo real: artefacto de velocidad de propagación.</div>
+  </div>
+</section>
+
+<!-- 02 TRANSDUCTOR -->
+<section id="transductor">
+  <span class="eyebrow">02 · El transductor</span>
+  <h2>Un cristal que habla 1% y escucha 99%</h2>
+  <div class="prose">
+    <p><b>Efecto piezoeléctrico</b>: un voltaje deforma el cristal (cerámica PZT) y genera presión; el eco que vuelve lo deforma y genera voltaje. Algunos equipos de bolsillo reemplazan el cristal por un chip de silicio (<b>CMUT</b>), una membrana-condensador que puede cambiar de frecuencia, y así una sola sonda imita varias.</p>
+  </div>
+  <div class="grid2">
+    <figure class="diagram" style="overflow:visible">
+      <svg viewBox="0 0 380 250" role="img" aria-label="Capas del transductor" style="min-width:0">
+        <rect x="70" y="20" width="240" height="70" rx="6" fill="var(--surface-2)" stroke="var(--line)"/>
+        <text x="190" y="58" text-anchor="middle" class="svg-ink" font-size="13">Material de respaldo (backing)</text>
+        <rect x="70" y="92" width="240" height="40" fill="var(--accent)"/>
+        <g stroke="#fff" stroke-opacity=".6">
+          <line x1="100" y1="92" x2="100" y2="132"/><line x1="130" y1="92" x2="130" y2="132"/><line x1="160" y1="92" x2="160" y2="132"/><line x1="190" y1="92" x2="190" y2="132"/><line x1="220" y1="92" x2="220" y2="132"/><line x1="250" y1="92" x2="250" y2="132"/><line x1="280" y1="92" x2="280" y2="132"/>
+        </g>
+        <text x="190" y="117" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">Cristales piezoeléctricos</text>
+        <rect x="70" y="134" width="240" height="22" fill="var(--blue)" opacity=".75"/>
+        <text x="190" y="149" text-anchor="middle" fill="#fff" font-size="12">Capa de acoplamiento (matching)</text>
+        <path d="M70 158 Q190 196 310 158 Z" fill="var(--muted)" opacity=".35"/>
+        <text x="190" y="176" text-anchor="middle" class="svg-ink" font-size="12">Lente acústica</text>
+        <rect x="40" y="205" width="300" height="30" fill="var(--line)" opacity=".6"/>
+        <text x="190" y="224" text-anchor="middle" class="svg-ink" font-size="12">gel → piel del paciente</text>
+      </svg>
+      <figcaption>El respaldo amortigua la vibración (pulsos cortos = mejor resolución axial). La capa de acoplamiento reduce el salto de impedancia cristal-piel; sin ella se reflejaría ~80% del sonido. El gel elimina el aire, que reflejaría casi todo.</figcaption>
+    </figure>
+    <figure class="diagram" style="overflow:visible">
+      <svg viewBox="0 0 380 250" role="img" aria-label="Forma del haz" style="min-width:0">
+        <rect x="150" y="10" width="80" height="16" rx="4" class="svg-ink"/>
+        <path d="M150 26 L230 26 L210 120 L170 120 Z" fill="var(--accent)" opacity=".25"/>
+        <path d="M170 120 L210 120 L215 140 L165 140 Z" fill="var(--accent)" opacity=".55"/>
+        <path d="M165 140 L215 140 L290 240 L90 240 Z" fill="var(--accent)" opacity=".18"/>
+        <line x1="40" y1="130" x2="340" y2="130" stroke="var(--accent)" stroke-dasharray="4 4"/>
+        <text x="40" y="75" class="svg-ink" font-size="12">Campo cercano</text><text x="40" y="90" class="svg-muted" font-size="11">(Fresnel)</text>
+        <text x="300" y="126" class="svg-ink" font-size="12" text-anchor="end">zona focal</text>
+        <text x="300" y="148" class="svg-muted" font-size="11" text-anchor="end">haz más angosto</text>
+        <text x="40" y="205" class="svg-ink" font-size="12">Campo lejano</text><text x="40" y="220" class="svg-muted" font-size="11">(Fraunhofer, diverge)</text>
+        <text x="190" y="20" text-anchor="middle" fill="var(--surface)" font-size="10">sonda</text>
+      </svg>
+      <figcaption>El haz tiene forma de reloj de arena: la <b>resolución lateral es máxima en el foco</b>. Frecuencia más alta o apertura más grande alargan el campo cercano.</figcaption>
+    </figure>
+  </div>
+  <div class="grid3">
+    <div class="card"><h4>PRF y PRP</h4><p><b>PRF</b>: pulsos por segundo. <b>PRP</b>: tiempo entre pulsos (emitir + escuchar). Más profundidad exige escuchar más tiempo: PRF máx ≈ 77 000 / profundidad(cm) Hz.</p></div>
+    <div class="card"><h4>Ancho de banda</h4><p>Rango de frecuencias que la sonda puede emitir/recibir (ej. "C5-2"). Pulsos cortos = banda ancha = mejor resolución axial y permite armónicos.</p></div>
+    <div class="card"><h4>Pulso-eco</h4><p>Duración y longitud espacial del pulso (SPL) mandan sobre la resolución axial: <b>axial ≈ SPL / 2</b>. El backing existe para acortarlo.</p></div>
+  </div>
+</section>
+
+<!-- 03 TEJIDOS -->
+<section id="tejidos">
+  <span class="eyebrow">03 · Interacción con tejidos</span>
+  <h2>Lo que le pasa al pulso en el camino</h2>
+  <div class="prose"><p>Desde que sale hasta que vuelve, el haz pierde energía (<b>atenuación</b>, ~0,5 dB/cm/MHz en tejido blando) por cuatro vías. Solo la <b>reflexión que vuelve a la sonda</b> forma imagen; todo lo demás es pérdida… o artefacto.</p></div>
+  <div class="grid2">
+    <div class="card"><h4>Reflexión especular y difusa</h4><p>Ángulo de incidencia = ángulo de reflexión. Interfaces lisas y perpendiculares (diafragma, pared vesical, aguja) devuelven mucho eco; a 90° del haz brillan, en ángulo "desaparecen". Interfaces rugosas reflejan disperso.</p></div>
+    <div class="card"><h4>Refracción</h4><p>Cambio de dirección al cruzar oblicuamente medios con distinta velocidad (ley de Snell). Origina sombras de borde y duplicaciones (ej. rectos abdominales).</p></div>
+    <div class="card"><h4>Dispersión (scatter)</h4><p>Reflectores más pequeños que λ (células, alvéolos) esparcen el sonido en todas direcciones. Genera el <i>speckle</i>, la textura de cada órgano. Aumenta con la frecuencia. Los glóbulos rojos son <b>dispersores Rayleigh</b>: la base del Doppler.</p></div>
+    <div class="card"><h4>Absorción</h4><p>Energía acústica convertida en calor. Principal causa de atenuación en tejido blando; crece con frecuencia y profundidad. Base de los bioefectos térmicos.</p></div>
+  </div>
+
+  <h3>Calculadora de impedancia acústica</h3>
+  <p class="lead" style="font-size:1rem">Z = densidad × velocidad. Lo que decide cuánto se refleja en una interfaz es la <b>diferencia</b> de impedancia: R = ((Z₂ − Z₁) / (Z₂ + Z₁))².</p>
+  <div class="console">
+    <div class="screen" style="justify-content:center">
+      <svg id="zsvg" viewBox="0 0 420 200" role="img" aria-label="Porcentaje reflejado y transmitido">
+        <rect x="0" y="0" width="420" height="200" fill="#06080a"/>
+        <rect id="zA" x="20" y="30" width="180" height="140" fill="#2a3238"/>
+        <rect id="zB" x="220" y="30" width="180" height="140" fill="#3a434a"/>
+        <text id="zAt" x="110" y="22" text-anchor="middle" fill="#cfdae2" font-size="12">Medio 1</text>
+        <text id="zBt" x="310" y="22" text-anchor="middle" fill="#cfdae2" font-size="12">Medio 2</text>
+        <line x1="210" y1="30" x2="210" y2="170" stroke="#e9eef2" stroke-width="2"/>
+        <rect x="40" y="88" width="160" height="10" fill="#f09a45"/>
+        <rect id="zT" x="210" y="88" width="160" height="10" fill="#f09a45"/>
+        <rect id="zR" x="40" y="108" width="160" height="10" fill="#6aa6ff"/>
+        <text x="40" y="82" fill="#f09a45" font-size="11">incidente →</text>
+        <text x="40" y="134" fill="#6aa6ff" font-size="11">← reflejado</text>
+        <text id="zRt" x="110" y="160" text-anchor="middle" fill="#6aa6ff" font-size="20" font-family="IBM Plex Mono, monospace">R</text>
+        <text id="zTt" x="310" y="160" text-anchor="middle" fill="#f09a45" font-size="20" font-family="IBM Plex Mono, monospace">T</text>
+      </svg>
+    </div>
+    <div class="panel">
+      <div class="ctl"><label for="zm1">Medio 1</label><span></span><select id="zm1"></select></div>
+      <div class="ctl"><label for="zm2">Medio 2</label><span></span><select id="zm2"></select></div>
+      <div class="stats"><div class="stat"><small>Z₁ (MRayl)</small><b id="zv1">–</b></div><div class="stat"><small>Z₂ (MRayl)</small><b id="zv2">–</b></div><div class="stat"><small>Reflejado</small><b id="zvr">–</b></div></div>
+      <p id="zmsg" class="hint ok" style="display:block"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 RESOLUCION -->
+<section id="resolucion">
+  <span class="eyebrow">04 · Resolución</span>
+  <h2>Cuatro formas de "ver dos puntos como dos"</h2>
+  <figure class="diagram">
+    <svg viewBox="0 0 760 220" role="img" aria-label="Tipos de resolución">
+      <g transform="translate(20,10)">
+        <rect x="60" y="0" width="60" height="12" rx="3" class="svg-ink"/>
+        <path d="M60 12 L120 12 L100 100 L80 100 Z" fill="var(--accent)" opacity=".25"/>
+        <circle cx="90" cy="60" r="5" class="svg-ink"/><circle cx="90" cy="76" r="5" class="svg-ink"/>
+        <text x="90" y="130" text-anchor="middle" class="svg-ink" font-size="13" font-weight="600">Axial</text>
+        <text x="90" y="148" text-anchor="middle" class="svg-muted" font-size="11">a lo largo del haz</text>
+        <text x="90" y="164" text-anchor="middle" class="svg-muted" font-size="11">↑ con f alta / pulso corto</text>
+      </g>
+      <g transform="translate(200,10)">
+        <rect x="60" y="0" width="60" height="12" rx="3" class="svg-ink"/>
+        <path d="M60 12 L120 12 L100 100 L80 100 Z" fill="var(--accent)" opacity=".25"/>
+        <circle cx="80" cy="66" r="5" class="svg-ink"/><circle cx="100" cy="66" r="5" class="svg-ink"/>
+        <text x="90" y="130" text-anchor="middle" class="svg-ink" font-size="13" font-weight="600">Lateral</text>
+        <text x="90" y="148" text-anchor="middle" class="svg-muted" font-size="11">perpendicular al haz</text>
+        <text x="90" y="164" text-anchor="middle" class="svg-muted" font-size="11">↑ en el foco</text>
+      </g>
+      <g transform="translate(380,10)">
+        <path d="M60 12 L120 12 L125 100 L55 100 Z" fill="var(--blue)" opacity=".2"/>
+        <rect x="60" y="0" width="60" height="12" rx="3" class="svg-ink"/>
+        <circle cx="90" cy="60" r="18" fill="none" stroke="var(--blue)" stroke-width="2"/>
+        <circle cx="90" cy="60" r="4" class="svg-ink"/>
+        <text x="90" y="130" text-anchor="middle" class="svg-ink" font-size="13" font-weight="600">Elevacional</text>
+        <text x="90" y="148" text-anchor="middle" class="svg-muted" font-size="11">grosor del corte</text>
+        <text x="90" y="164" text-anchor="middle" class="svg-muted" font-size="11">→ volumen parcial</text>
+      </g>
+      <g transform="translate(560,10)">
+        <g class="svg-line" stroke-width="2"><rect x="40" y="20" width="30" height="40" fill="none" stroke="var(--muted)"/><rect x="80" y="20" width="30" height="40" fill="none" stroke="var(--muted)"/><rect x="120" y="20" width="30" height="40" fill="none" stroke="var(--muted)"/></g>
+        <path d="M45 50 q10 -20 20 0" stroke="var(--accent)" fill="none" stroke-width="2"/><path d="M85 40 q10 -20 20 0" stroke="var(--accent)" fill="none" stroke-width="2"/><path d="M125 50 q10 -20 20 0" stroke="var(--accent)" fill="none" stroke-width="2"/>
+        <text x="95" y="130" text-anchor="middle" class="svg-ink" font-size="13" font-weight="600">Temporal</text>
+        <text x="95" y="148" text-anchor="middle" class="svg-muted" font-size="11">cuadros por segundo</text>
+        <text x="95" y="164" text-anchor="middle" class="svg-muted" font-size="11">↓ con profundidad, focos, sector</text>
+      </g>
+    </svg>
+    <figcaption>Frame rate ≈ c / (2 × profundidad × líneas × focos). Más profundidad, más líneas (sector ancho) o más focos = imagen más "lenta". En taquicardia, estrecha el sector y baja la profundidad.</figcaption>
+  </figure>
+</section>
+
+<!-- 05 SONDAS Y MODOS -->
+<section id="sondas">
+  <span class="eyebrow">05 · Sondas y modos</span>
+  <h2>Tres sondas resuelven &gt;90% de la urgencia</h2>
+  <div class="grid3">
+    <div class="card"><span class="tag">6–15 MHz</span><h4 style="margin-top:8px">Lineal</h4><p>Huella plana, imagen rectangular, alta resolución superficial. Vascular, accesos, pleura, MSK, vía aérea, partes blandas, ocular.</p></div>
+    <div class="card"><span class="tag">2–5 MHz</span><h4 style="margin-top:8px">Convexa</h4><p>Huella amplia curva, gran campo y buena resolución lateral en profundidad. FAST, abdomen, pelvis, aorta, renal.</p></div>
+    <div class="card"><span class="tag">1–5 MHz</span><h4 style="margin-top:8px">Sectorial (phased array)</h4><p>Huella pequeña, imagen en abanico, alto frame rate y Doppler potente (CW). Corazón, ventanas intercostales; comodín si solo tienes una.</p></div>
+    <div class="card"><span class="tag">5–10 MHz</span><h4 style="margin-top:8px">Endocavitaria</h4><p>Campo de hasta ~180°, alta frecuencia muy cerca del órgano. Embarazo precoz, ectópico, absceso periamigdalino.</p></div>
+    <div class="card"><span class="tag">3–8 MHz</span><h4 style="margin-top:8px">Microconvexa</h4><p>Curva pequeña: pediatría, espacios estrechos, abdomen y tórax sin cambiar de sonda.</p></div>
+    <div class="card"><span class="tag">Vector</span><h4 style="margin-top:8px">Lineal "trapezoidal"</h4><p>Lineal que dirige el haz para abrir un trapecio: ver ambos testículos en un plano con Doppler.</p></div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Modo</th><th>Qué muestra</th><th>Uso en urgencia</th></tr></thead>
+    <tbody>
+      <tr><td><b>A</b> (amplitud)</td><td>Picos de amplitud vs. profundidad en una línea</td><td>Histórico; biometría ocular.</td></tr>
+      <tr><td><b>B</b> (brillo)</td><td>Cada eco = un punto; brillo ∝ amplitud. Escala de 256 grises</td><td>Todo el POCUS.</td></tr>
+      <tr><td><b>M</b> (movimiento)</td><td>Una línea del modo B a lo largo del tiempo (Y = profundidad, X = tiempo). Altísima resolución temporal</td><td>Deslizamiento pleural (orilla de mar vs. código de barras), TAPSE, EPSS, VCI, FCF fetal (en vez de Doppler).</td></tr>
+      <tr><td><b>Doppler color</b></td><td>Velocidad media y dirección codificadas en color sobre el modo B</td><td>Permeabilidad, insuficiencias, ubicar vasos.</td></tr>
+      <tr><td><b>Power Doppler</b></td><td>Amplitud de la señal Doppler, sin dirección</td><td>Flujo lento: testículo, ovario, sinovitis.</td></tr>
+      <tr><td><b>PW / CW / TDI</b></td><td>Espectro velocidad-tiempo de un punto (PW), de toda la línea (CW) o del tejido (TDI)</td><td>VTI del TSVI, E/A, PSAP por IT, e′.</td></tr>
+      <tr><td><b>Dúplex / Tríplex</b></td><td>B + color o B + espectral / B + color + espectral</td><td>Estudio vascular completo.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 06 SIMULADOR B -->
+<section id="modob">
+  <span class="eyebrow">06 · Simulador de botonología, modo B</span>
+  <h2>Hipocondrio derecho: vesícula con cálculo, vena porta y riñón</h2>
+  <p class="lead">Fantoma simulado con sonda convexa. Mueve las perillas y observa la física: refuerzo posterior bajo la vesícula, sombra del cálculo, sombras de borde, pérdida de penetración con frecuencias altas y ruido electrónico cuando la ganancia "inventa" señal.</p>
+  <div class="console">
+    <div class="screen">
+      <canvas id="bmode" width="440" height="360" aria-label="Imagen ecográfica simulada en modo B"></canvas>
+      <div class="readout" id="bm-read"></div>
+    </div>
+    <div class="panel">
+      <div class="row">
+        <button class="primary" id="bm-challenge">Desafío: arregla esta imagen</button>
+        <button id="bm-opt">Optimizar</button>
+      </div>
+      <div class="checklist" id="bm-check"></div>
+      <div class="ctl"><label for="bm-gain">Ganancia</label><output id="o-gain"></output><input type="range" id="bm-gain" min="-20" max="20" step="1" value="0"></div>
+      <div class="ctl"><label for="bm-depth">Profundidad</label><output id="o-depth"></output><input type="range" id="bm-depth" min="4" max="22" step="1" value="16"></div>
+      <div class="ctl"><label for="bm-focus">Foco</label><output id="o-focus"></output><input type="range" id="bm-focus" min="1" max="20" step="0.5" value="6.5"></div>
+      <div class="ctl"><label for="bm-nf">Número de focos</label><output id="o-nf"></output><input type="range" id="bm-nf" min="1" max="3" step="1" value="1"></div>
+      <div class="ctl"><label for="bm-freq">Frecuencia</label><output id="o-freq"></output><input type="range" id="bm-freq" min="2" max="6" step="0.5" value="3"></div>
+      <div class="ctl"><label for="bm-dr">Rango dinámico</label><output id="o-dr"></output><input type="range" id="bm-dr" min="30" max="90" step="5" value="60"></div>
+      <h4>TGC (compensación ganancia-tiempo)</h4>
+      <div class="ctl"><label for="bm-tn">Cercano</label><output id="o-tn"></output><input type="range" id="bm-tn" min="-15" max="15" step="1" value="0"></div>
+      <div class="ctl"><label for="bm-tm">Medio</label><output id="o-tm"></output><input type="range" id="bm-tm" min="-15" max="15" step="1" value="0"></div>
+      <div class="ctl"><label for="bm-tf">Lejano</label><output id="o-tf"></output><input type="range" id="bm-tf" min="-15" max="15" step="1" value="0"></div>
+      <div class="seg" role="group" aria-label="Armónicos">
+        <input type="radio" name="thi" id="thi1" value="1" checked><label for="thi1">THI encendido</label>
+        <input type="radio" name="thi" id="thi0" value="0"><label for="thi0">THI apagado</label>
+      </div>
+      <div class="hints" id="bm-hints" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="note bed"><b class="k">En la cama del paciente · "ABC del knob"</b>Preset correcto → profundidad (estructura en ~2/3 de la pantalla) → ganancia general (líquido negro, hueso blanco) → TGC (sin bandas) → foco a la estructura blanco. Recién ahí, frecuencia, armónicos y rango dinámico.</div>
+</section>
+
+<!-- 07 PANEL COMPLETO -->
+<section id="botones">
+  <span class="eyebrow">07 · El panel completo</span>
+  <h2>Cada perilla tiene un precio</h2>
+  <p class="lead">No hay ajustes gratis: casi todo lo que mejora la imagen cuesta frame rate, penetración, energía o introduce artefactos. La línea punteada de cada tarjeta dice qué pagas.</p>
+  <p class="cat">Imagen básica</p>
+  <div class="knobs">
+    <div class="knob"><div class="kname"><h4>Preset</h4><span class="tag">empieza aquí</span></div><p>Cargas en bloque frecuencia, rango dinámico, persistencia, potencia y filtros optimizados por aplicación.</p><p class="tr"><b>Precio:</b> nada; usar el equivocado (ej. abdomen en el ojo) sí cuesta: sin el preset ocular, la potencia supera los límites oftálmicos.</p></div>
+    <div class="knob"><div class="kname"><h4>Profundidad</h4><span class="tag">la más usada</span></div><p>Define cuánto "escucha" el equipo. Estructura de interés en ~2/3 de la pantalla, viendo algo por detrás.</p><p class="tr"><b>Precio:</b> más profundidad = estructuras pequeñas, menor PRF y menor frame rate.</p></div>
+    <div class="knob"><div class="kname"><h4>Ganancia</h4><span class="tag">post-recepción</span></div><p>Amplifica la señal ya recibida, igual en toda la imagen. No cambia lo que entra al paciente.</p><p class="tr"><b>Precio:</b> sobreganancia rellena líquidos de ecos falsos y borra hallazgos sutiles; subganancia esconde líquido libre.</p></div>
+    <div class="knob"><div class="kname"><h4>TGC</h4><span class="tag">por profundidad</span></div><p>Ganancia diferencial por bandas de profundidad para compensar la atenuación.</p><p class="tr"><b>Precio:</b> deslizadores olvidados = bandas oscuras o brillantes que simulan o esconden patología.</p></div>
+    <div class="knob"><div class="kname"><h4>Foco</h4><span class="tag">lateral</span></div><p>Estrecha el haz a la profundidad elegida: mejor resolución lateral ahí. Ponlo a nivel o justo bajo la estructura.</p><p class="tr"><b>Precio:</b> cada foco extra divide el frame rate.</p></div>
+    <div class="knob"><div class="kname"><h4>Frecuencia</h4><span class="tag">Res / Gen / Pen</span></div><p>Usa la más alta que aún alcance la profundidad necesaria.</p><p class="tr"><b>Precio:</b> ↑f = menos penetración; ↓f = imagen más tosca.</p></div>
+  </div>
+  <p class="cat">Imagen avanzada</p>
+  <div class="knobs">
+    <div class="knob"><div class="kname"><h4>Armónicos (THI)</h4><span class="tag">H-Gen / H-Pen</span></div><p>El tejido "devuelve" múltiplos de la frecuencia emitida (2f). Escuchar solo el armónico elimina ruido de lóbulos laterales y reverberación cercana: líquidos más negros, bordes más nítidos. Gran aliado en pacientes obesos y corazón.</p><p class="tr"><b>Precio:</b> algo de penetración y resolución axial; puede engrosar aparentemente válvulas.</p></div>
+    <div class="knob"><div class="kname"><h4>Rango dinámico</h4><span class="tag">compresión</span></div><p>Cuántos dB de ecos se reparten en los grises. Bajo = imagen contrastada "blanco y negro"; alto = imagen suave con más matices.</p><p class="tr"><b>Precio:</b> muy bajo pierde ecos débiles (trombo fresco, sedimento); muy alto "lava" el contraste.</p></div>
+    <div class="knob"><div class="kname"><h4>Compuesto espacial</h4><span class="tag">SonoCT, CrossBeam</span></div><p>Promedia varias líneas de vista con distinto ángulo: menos speckle y anisotropía, bordes más continuos.</p><p class="tr"><b>Precio:</b> frame rate, y atenúa sombras y refuerzos que a veces quieres ver (cálculos pequeños).</p></div>
+    <div class="knob"><div class="kname"><h4>Persistencia</h4><span class="tag">promedio temporal</span></div><p>Promedia cuadros sucesivos: imagen más suave y menos ruido.</p><p class="tr"><b>Precio:</b> estela de movimiento; bájala en corazón y pleura.</p></div>
+    <div class="knob"><div class="kname"><h4>Sector / FOV</h4><span class="tag">ancho</span></div><p>Ancho del abanico. Estrecharlo concentra líneas en lo que importa.</p><p class="tr"><b>Precio:</b> sector ancho = más líneas = menor frame rate (clave en taquicardia).</p></div>
+    <div class="knob"><div class="kname"><h4>Zoom</h4><span class="tag">read vs write</span></div><p>Zoom <i>write</i> (pre-proceso, como bajar profundidad) dedica más líneas y píxeles al área: mejora resolución real. Zoom <i>read</i> (post-proceso) solo agranda píxeles.</p><p class="tr"><b>Precio:</b> el read-zoom no agrega información.</p></div>
+    <div class="knob"><div class="kname"><h4>Potencia acústica</h4><span class="tag">ALARA</span></div><p>Aumenta la amplitud emitida: ecos más fuertes y mejor relación señal-ruido.</p><p class="tr"><b>Precio:</b> más energía al paciente (TI, MI). Primero ganancia, después potencia.</p></div>
+    <div class="knob"><div class="kname"><h4>Steer de aguja</h4><span class="tag">needle enhance</span></div><p>Dirige el haz para que golpee la aguja más perpendicular: reflexión especular = aguja brillante.</p><p class="tr"><b>Precio:</b> artefactos en el resto del campo; no reemplaza un buen ángulo.</p></div>
+    <div class="knob"><div class="kname"><h4>Optimizar automático</h4><span class="tag">iScan, Auto</span></div><p>El equipo ajusta ganancia y TGC según la imagen.</p><p class="tr"><b>Precio:</b> no conoce tu pregunta clínica. Úsalo de partida, no de final.</p></div>
+  </div>
+  <p class="cat">Flujo de trabajo</p>
+  <div class="knobs">
+    <div class="knob"><div class="kname"><h4>Freeze / Cine</h4></div><p>Congela y permite retroceder cuadro a cuadro: mide en el cuadro correcto (fin de diástole, máxima VCI).</p></div>
+    <div class="knob"><div class="kname"><h4>Calipers / Paquete de cálculo</h4></div><p>Mediciones con la etiqueta correcta (VTI, TAPSE, IR) quedan en el informe.</p></div>
+    <div class="knob"><div class="kname"><h4>Guardar clip / DICOM</h4></div><p>Clips de 3–6 s para documentación y control de calidad; DICOM al PACS.</p></div>
+  </div>
+</section>
+
+<!-- 08 DOPPLER FISICA -->
+<section id="doppler">
+  <span class="eyebrow">08 · Física Doppler</span>
+  <h2>La ambulancia que cambia de tono</h2>
+  <div class="prose">
+    <p>Cuando el haz rebota en glóbulos rojos en movimiento, el eco vuelve con otra frecuencia: más aguda si se acercan, más grave si se alejan. Ese <b>desplazamiento Doppler (Δf)</b> es proporcional a la velocidad y al <b>coseno del ángulo</b> entre el haz y el flujo.</p>
+  </div>
+  <div class="eq">Δf = 2 · f₀ · v · cos θ / c &nbsp;&nbsp;⇒&nbsp;&nbsp; v = Δf · c / (2 · f₀ · cos θ)</div>
+  <div class="console">
+    <div class="screen">
+      <svg id="cos-svg" viewBox="0 0 440 260" role="img" aria-label="Curva del coseno del ángulo"></svg>
+      <div class="readout" id="cos-read"></div>
+    </div>
+    <div class="panel">
+      <div class="ctl"><label for="dp-th">Ángulo de insonación θ</label><output id="o-th"></output><input type="range" id="dp-th" min="0" max="90" step="1" value="60"></div>
+      <div class="ctl"><label for="dp-v">Velocidad real de la sangre</label><output id="o-v"></output><input type="range" id="dp-v" min="10" max="200" step="5" value="100"></div>
+      <div class="ctl"><label for="dp-f">Frecuencia Doppler f₀</label><output id="o-f0"></output><input type="range" id="dp-f" min="2" max="8" step="0.5" value="5"></div>
+      <div class="stats">
+        <div class="stat"><small>Δf (audible)</small><b id="dp-df">–</b></div>
+        <div class="stat"><small>cos θ</small><b id="dp-cos">–</b></div>
+        <div class="stat"><small>Error si θ falla 5°</small><b id="dp-err">–</b></div>
+      </div>
+      <div class="hints" id="dp-hints"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="note"><b class="k">Perla vascular</b>En vasos periféricos, mantén θ ≤ 60° y corrige el ángulo alineando el cursor con la pared. Sobre 60° el coseno cae en picada y un error de pocos grados se vuelve un error grande de velocidad.</div>
+    <div class="note"><b class="k">Perla cardíaca</b>En eco no se corrige ángulo: se busca alinear el haz casi paralelo al flujo (θ &lt; 20°). Cualquier desalineación <b>subestima</b> la velocidad (gradiente de una estenosis aórtica, PSAP).</div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Modalidad</th><th>Cómo muestrea</th><th>Ventaja</th><th>Límite</th></tr></thead>
+    <tbody>
+      <tr><td><b>Color</b></td><td>Pulsado, velocidad media por píxel en una caja</td><td>Mapa anatómico de flujo y dirección</td><td>Aliasing; baja el frame rate; dependiente de ángulo</td></tr>
+      <tr><td><b>Power</b></td><td>Amplitud total de la señal Doppler</td><td>~3–5× más sensible a flujo lento; casi independiente del ángulo; sin aliasing</td><td>Sin dirección ni velocidad; artefacto de movimiento (flash)</td></tr>
+      <tr><td><b>PW</b></td><td>Un cristal emite y escucha; analiza solo la "puerta" (volumen de muestra)</td><td>Sabes <i>dónde</i> mides (resolución de rango)</td><td>Velocidad máxima = límite de Nyquist (PRF/2)</td></tr>
+      <tr><td><b>HPRF</b></td><td>PW con varios pulsos en vuelo</td><td>Sube el Nyquist</td><td>Aparecen varias puertas: ambigüedad de rango</td></tr>
+      <tr><td><b>CW</b></td><td>Un cristal emite continuo, otro recibe continuo</td><td>Sin aliasing: estenosis aórtica, IT (PSAP)</td><td>Mide todo a lo largo de la línea: no sabes de qué profundidad viene</td></tr>
+      <tr><td><b>TDI</b></td><td>PW sobre el miocardio (alta amplitud, baja velocidad)</td><td>e′ anular: función diastólica, E/e′</td><td>Requiere filtro de pared bajo y ganancia baja (el inverso del Doppler de sangre)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 09 ESPECTRAL -->
+<section id="espectral">
+  <span class="eyebrow">09 · Simulador Doppler espectral</span>
+  <h2>Escala, línea de base, ángulo y el límite de Nyquist</h2>
+  <p class="lead">En PW, el equipo toma "fotos" del flujo a la frecuencia de repetición (PRF). Si la sangre gira más rápido de lo que alcanzas a fotografiar, parece ir hacia atrás, como las ruedas de un auto en una película: eso es el <b>aliasing</b>. Límite de Nyquist = PRF / 2.</p>
+  <div class="console wide">
+    <div class="screen">
+      <canvas id="spec" width="760" height="280" aria-label="Espectro Doppler simulado"></canvas>
+      <div class="readout" id="sp-read"></div>
+    </div>
+    <div class="panel" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 22px">
+      <div class="ctl"><label for="sp-vessel">Vaso / escenario</label><span></span>
+        <select id="sp-vessel">
+          <option value="fem">Arteria femoral (alta resistencia, trifásica)</option>
+          <option value="low">Arteria de baja resistencia (testicular, renal, ACI)</option>
+          <option value="vein">Vena femoral común (fásica)</option>
+          <option value="lvot">TSVI apical 5C (VTI)</option>
+          <option value="as">Estenosis aórtica severa, jet ~4 m/s</option>
+        </select></div>
+      <div class="ctl"><label>Modo</label><span></span>
+        <div class="seg" role="group" aria-label="Modo espectral">
+          <input type="radio" name="spm" id="spm-pw" value="pw" checked><label for="spm-pw">PW</label>
+          <input type="radio" name="spm" id="spm-cw" value="cw"><label for="spm-cw">CW</label>
+        </div></div>
+      <div class="ctl"><label for="sp-scale">Escala (Nyquist)</label><output id="o-scale"></output><input type="range" id="sp-scale" min="5" max="150" step="1" value="80"><small id="sp-scale-note"></small></div>
+      <div class="ctl"><label for="sp-base">Línea de base</label><output id="o-base"></output><input type="range" id="sp-base" min="-0.8" max="0.8" step="0.05" value="0"></div>
+      <div class="ctl"><label for="sp-wf">Filtro de pared</label><output id="o-wf"></output><input type="range" id="sp-wf" min="0" max="40" step="1" value="5"></div>
+      <div class="ctl"><label for="sp-th">Ángulo de insonación θ</label><output id="o-spth"></output><input type="range" id="sp-th" min="0" max="90" step="1" value="60"></div>
+      <div class="ctl"><label for="sp-gain">Ganancia Doppler</label><output id="o-spg"></output><input type="range" id="sp-gain" min="0" max="100" step="1" value="50"></div>
+      <div class="row" style="align-items:flex-end"><button id="sp-reset">Ajuste recomendado</button></div>
+      <div class="hints" id="sp-hints" style="grid-column:1/-1" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="grid3">
+    <div class="card"><h4>Si hay aliasing (PW)</h4><ul><li>Sube la escala (PRF)</li><li>Baja la línea de base</li><li>Reduce la profundidad de la puerta / cambia de ventana</li><li>Baja la frecuencia Doppler</li><li>Si no alcanza: <b>CW</b> o HPRF</li></ul></div>
+    <div class="card"><h4>Volumen de muestra</h4><ul><li>Vascular: ~⅓ del diámetro, centrado, cursor de ángulo paralelo a la pared</li><li>TSVI: 3–5 mm, ~0,5 cm bajo la válvula aórtica</li><li>Mitral E/A: en la punta de los velos</li></ul></div>
+    <div class="card"><h4>Índices</h4><p><b>IR</b> = (VPS − VFD) / VPS<br><b>IP</b> = (VPS − VFD) / V media<br>Alta resistencia: femoral en reposo. Baja resistencia (flujo diastólico continuo): cerebro, riñón, testículo, hígado.</p></div>
+  </div>
+</section>
+
+<!-- 10 FILTRO DE PARED -->
+<section id="filtro">
+  <span class="eyebrow">10 · Filtro de pared</span>
+  <h2>El portero que deja pasar solo lo rápido</h2>
+  <div class="prose">
+    <p>Las paredes del vaso, las válvulas y el tejido que late también se mueven y generan desplazamiento Doppler. Su señal es <b>muy fuerte</b> (40–60 dB más que la de la sangre) pero de <b>baja velocidad</b>. Si no se elimina, satura el espectro con ruido junto a la línea de base (artefacto de <i>thump</i>) o "pinta" de color el tejido (<i>flash</i>).</p>
+    <p>El filtro de pared es un <b>filtro pasa-altos</b>: borra todo desplazamiento por debajo de un umbral (en Hz o cm/s). El problema es que no distingue pared de sangre lenta.</p>
+  </div>
+  <figure class="diagram">
+    <svg viewBox="0 0 760 240" role="img" aria-label="Espectro de señal: clutter de pared de baja velocidad y gran amplitud, sangre de mayor velocidad y menor amplitud, filtro pasa altos">
+      <line x1="60" y1="200" x2="730" y2="200" stroke="var(--muted)"/>
+      <line x1="60" y1="20" x2="60" y2="200" stroke="var(--muted)"/>
+      <text x="730" y="222" text-anchor="end" class="svg-muted" font-size="12">velocidad / Δf →</text>
+      <text x="20" y="30" class="svg-muted" font-size="12" transform="rotate(-90 20 110)" >amplitud de señal (dB)</text>
+      <rect x="60" y="20" width="110" height="180" fill="var(--accent)" opacity=".12"/>
+      <line x1="170" y1="20" x2="170" y2="200" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="176" y="36" class="svg-acc" font-size="13" font-weight="600">corte del filtro</text>
+      <path d="M62 40 C 90 40, 110 120, 150 190" stroke="var(--crit)" stroke-width="3" fill="none"/>
+      <text x="74" y="34" fill="var(--crit)" font-size="12">pared / tejido</text>
+      <path d="M95 175 C 140 150, 220 128, 330 130 S 520 150, 620 190" stroke="var(--blue)" stroke-width="3" fill="none"/>
+      <text x="330" y="118" fill="var(--blue)" font-size="12">sangre</text>
+      <path d="M100 172 C 120 160, 150 150, 170 146" stroke="var(--blue)" stroke-width="3" fill="none" stroke-dasharray="3 3" opacity=".9"/>
+      <text x="180" y="172" class="svg-ink" font-size="12">← flujo lento (diástole, venas, testículo):</text>
+      <text x="180" y="188" class="svg-ink" font-size="12">si el corte es alto, también se borra</text>
+    </svg>
+    <figcaption>Filtro bajo: ves flujo lento pero también ruido de pared. Filtro alto: espectro limpio pero puedes borrar la diástole o un flujo venoso real.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Situación</th><th>Filtro</th><th>Si te equivocas</th></tr></thead>
+    <tbody>
+      <tr><td>Venas (TVP, VCI, porta)</td><td>Bajo</td><td>Alto → flujo venoso desaparece → <b>falsa trombosis</b>.</td></tr>
+      <tr><td>Testículo / ovario / renal</td><td>El más bajo posible, escala baja, power Doppler</td><td>Alto → se pierde la diástole (IR falso = 1,0) o no aparece flujo intraparenquimatoso → <b>falsa torsión</b>.</td></tr>
+      <tr><td>Arterias periféricas</td><td>Bajo-medio</td><td>Alto → borra el componente reverso y el flujo diastólico tardío; cambia la morfología (tri/mono-fásica).</td></tr>
+      <tr><td>PW/CW cardíaco (TSVI, mitral, jets)</td><td>Medio-alto</td><td>Bajo → <i>thump</i> de apertura/cierre valvular que ensucia el VTI.</td></tr>
+      <tr><td>Doppler tisular (TDI)</td><td>Muy bajo (+ ganancia baja)</td><td>Alto → borra justamente la señal que buscas (e′ = 8–15 cm/s).</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note trap"><b class="k">Trampa</b>En muchos equipos, <b>subir la escala sube el filtro de pared automáticamente</b> (va enlazado al PRF). Si buscas un flujo lento y no aparece, baja la escala primero y revisa el filtro después. "Ausencia de flujo" solo es diagnóstica con escala baja, filtro bajo, ganancia alta hasta ruido y ángulo adecuado, y comparando con el lado sano.</div>
+</section>
+
+<!-- 11 COLOR -->
+<section id="color">
+  <span class="eyebrow">11 · Simulador Doppler color</span>
+  <h2>BART: Blue Away, Red Towards</h2>
+  <p class="lead">El color depende de la dirección relativa al transductor, nunca de si es arteria o vena. El mismo vaso cambia de rojo a azul al inclinar la sonda. Aquí puedes reproducir aliasing, ausencia de color a 90°, "blooming" por sobreganancia y el falso defecto de llenado por filtro alto o subganancia.</p>
+  <div class="console">
+    <div class="screen">
+      <canvas id="cdop" width="640" height="300" aria-label="Doppler color simulado de un vaso"></canvas>
+      <div class="readout" id="cd-read"></div>
+    </div>
+    <div class="panel">
+      <div class="seg" role="group" aria-label="Tipo de flujo">
+        <input type="radio" name="cdv" id="cdv-a" value="art" checked><label for="cdv-a">Arteria (pulsátil)</label>
+        <input type="radio" name="cdv" id="cdv-v" value="vein"><label for="cdv-v">Vena (lenta)</label>
+      </div>
+      <div class="ctl"><label for="cd-tilt">Inclinación del vaso</label><output id="o-tilt"></output><input type="range" id="cd-tilt" min="-30" max="30" step="1" value="20"></div>
+      <div class="ctl"><label for="cd-steer">Steer de la caja color</label><output id="o-steer"></output><input type="range" id="cd-steer" min="-20" max="20" step="10" value="20"></div>
+      <div class="ctl"><label for="cd-scale">Escala (Nyquist)</label><output id="o-cdscale"></output><input type="range" id="cd-scale" min="5" max="100" step="1" value="60"></div>
+      <div class="ctl"><label for="cd-wf">Filtro de pared</label><output id="o-cdwf"></output><input type="range" id="cd-wf" min="0" max="30" step="1" value="3"></div>
+      <div class="ctl"><label for="cd-gain">Ganancia color</label><output id="o-cdg"></output><input type="range" id="cd-gain" min="0" max="100" step="1" value="55"></div>
+      <div class="hints" id="cd-hints" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h4>Optimizar el color, en orden</h4><ul>
+      <li>Baja la ganancia 2D antes de activar color (evita que el color "pierda" contra el gris).</li>
+      <li>Caja pequeña y superficial: más PRF, más frame rate.</li>
+      <li>Steer o angulación heel-toe para θ &lt; 60°.</li>
+      <li>Escala según el flujo: venas ~10–20 cm/s, arterias ~30–60 cm/s (orientativo).</li>
+      <li>Ganancia color: súbela hasta que aparezca ruido fuera del vaso y retrocede un poco.</li>
+      <li>Filtro bajo para flujo lento; ensemble/persistencia alta mejora sensibilidad a costa de frame rate.</li>
+    </ul></div>
+    <div class="card"><h4>Mosaico vs. turbulencia</h4><p>El <b>aliasing de color</b> pasa por los tonos claros (amarillo → celeste) sin atravesar negro, en el centro del vaso donde la velocidad es máxima. La <b>inversión real</b> de flujo pasa por el negro (velocidad cero) entre rojo y azul. El modo <i>varianza</i> agrega verde para turbulencia.</p></div>
+  </div>
+</section>
+
+<!-- 12 ARTEFACTOS -->
+<section id="artefactos">
+  <span class="eyebrow">12 · Artefactos</span>
+  <h2>Mentiras útiles y mentiras peligrosas</h2>
+  <p class="lead">Todo artefacto nace de una suposición del equipo que no se cumplió: el sonido viaja en línea recta, a 1540 m/s, se atenúa parejo y cada eco viene del haz principal y de un solo rebote.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Artefacto</th><th>Suposición rota</th><th>Clínica</th></tr></thead>
+    <tbody>
+      <tr class="group-row"><td colspan="3">Atenuación</td></tr>
+      <tr><td><b>Sombra acústica</b></td><td>Atenuación pareja (un reflector fuerte se lleva casi todo)</td><td>Cálculos, costillas, calcificaciones. Sombra "limpia" (hueso, cálculo) vs. "sucia" (gas).</td></tr>
+      <tr><td><b>Refuerzo posterior</b></td><td>Atenuación pareja (el líquido atenúa poco)</td><td>Confirma contenido líquido. Puede esconder líquido libre tras la vejiga: baja el TGC lejano.</td></tr>
+      <tr><td><b>Sombra de borde</b></td><td>Línea recta (refracción en superficies curvas)</td><td>Bordes de vesícula y vejiga; no confundir con cálculo: sigue la sombra hasta su origen.</td></tr>
+      <tr><td><b>Anisotropía</b></td><td>Reflexión independiente del ángulo</td><td>Tendón hipoecoico si el haz no es perpendicular: falsa rotura. Balancea la sonda.</td></tr>
+      <tr class="group-row"><td colspan="3">Propagación</td></tr>
+      <tr><td><b>Reverberación (líneas A)</b></td><td>Un solo rebote</td><td>Copias equidistantes de la pleura: aire subpleural normal (o neumotórax sin deslizamiento).</td></tr>
+      <tr><td><b>Cola de cometa / ring-down (líneas B)</b></td><td>Un solo rebote, resonancia</td><td>≥3 por espacio intercostal = síndrome intersticial.</td></tr>
+      <tr><td><b>Imagen en espejo</b></td><td>Trayecto directo</td><td>Hígado "sobre" el diafragma; su ausencia + líquido = derrame pleural.</td></tr>
+      <tr><td><b>Lóbulos laterales</b></td><td>Todo eco viene del haz central</td><td>Falso sedimento en vejiga o vesícula. Cambia el ángulo: el artefacto se mueve, el sedimento no.</td></tr>
+      <tr><td><b>Volumen parcial</b></td><td>Corte infinitamente delgado</td><td>Ecos falsos dentro de quistes o vesícula: rota a eje corto.</td></tr>
+      <tr><td><b>Velocidad de propagación</b></td><td>c = 1540 m/s</td><td>Aguja que se "quiebra" al cruzar grasa (bayoneta); profundidades mal medidas.</td></tr>
+      <tr class="group-row"><td colspan="3">Doppler</td></tr>
+      <tr><td><b>Aliasing</b></td><td>Velocidad &lt; Nyquist</td><td>Mosaico color o espectro envuelto. Solución: escala, línea de base, CW.</td></tr>
+      <tr><td><b>Flash / movimiento</b></td><td>Solo la sangre se mueve</td><td>Destello de color por respiración o latido; peor en power Doppler. Filtro de pared, pausar respiración.</td></tr>
+      <tr><td><b>Blooming</b></td><td>El color se limita a la luz</td><td>Sobreganancia de color que "desborda" la pared y tapa un trombo mural.</td></tr>
+      <tr><td><b>Espejo espectral</b></td><td>Dirección inequívoca</td><td>Copia simétrica bajo la línea de base con ganancia alta o θ cerca de 90°.</td></tr>
+      <tr><td><b>Twinkling</b></td><td>Solo el flujo genera color</td><td>Color tras superficies rugosas: delata litiasis renal o ureteral pequeña.</td></tr>
+      <tr><td><b>Ausencia de color a 90°</b></td><td>Ángulo favorable</td><td>cos 90° = 0: falso vaso trombosado. Angula.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 13 SEGURIDAD -->
+<section id="seguridad">
+  <span class="eyebrow">13 · Bioefectos y seguridad</span>
+  <h2>ALARA: tan bajo como sea razonablemente posible</h2>
+  <div class="grid3">
+    <div class="card"><h4>Índice térmico (TI)</h4><p>Estima el aumento de temperatura. Variantes: <b>TIS</b> (tejido blando), <b>TIB</b> (hueso, crítico en feto 2º–3º trimestre), <b>TIC</b> (hueso craneal, transcraneal).</p></div>
+    <div class="card"><h4>Índice mecánico (MI)</h4><p>Probabilidad de cavitación (burbujas por presión negativa). Relevante en pulmón, intestino y con contraste. Sube con la presión pico y con frecuencias bajas.</p></div>
+    <div class="card"><h4>Dónde importa</h4><p><b>Obstétrico y ocular</b>: usa siempre su preset (salida dentro de límites FDA; en ojo MI ≤ 0,23). El PW concentra energía en un punto: en el primer trimestre, documenta la FCF con <b>modo M</b>.</p></div>
+  </div>
+  <div class="note"><b class="k">Perla</b>No hay evidencia de daño con ecografía diagnóstica, pero el tiempo de exposición también es dosis: escanea con pregunta, congela para medir y no "estaciones" el PW sobre un feto.</div>
+</section>
+
+<!-- 14 QUIZ -->
+<section id="quiz">
+  <span class="eyebrow">14 · Autoevaluación</span>
+  <h2>Siete perillas, siete preguntas</h2>
+  <p class="score" id="qscore">0 / 7</p>
+  <div class="quiz" id="qbox"></div>
+</section>
+
+<footer>
+  <p><b>Fuentes del proyecto:</b> Módulo 1 – Física y Generalidades (Master Ultrasonido Clínico); Scruggs W, Fox JC, Hicks BG. Chapter 1: Equipment, en Ma &amp; Mateer's Emergency Ultrasound, 4ª ed.; Shokoohi H, Chu D, Al Jalbout N. Ultrasound Physics. Emerg Med Clin N Am 2024;42:711–730.</p>
+  <p>Los simuladores son modelos didácticos simplificados (no reproducen un equipo real) y los valores de escala y filtro son orientativos; cada fabricante usa sus propias unidades y rangos.</p>
+</footer>
+</main>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function hintsHTML(list){return list.map(h=>`<div class="hint ${h[0]}"><i>${h[0]==='ok'?'OK':h[0]==='warn'?'OJO':'ALERTA'}</i><span>${h[1]}</span></div>`).join('');}
+
+/* ---------- TOC highlight ---------- */
+const links=[...document.querySelectorAll('nav.toc a[href^="#"]')].filter(a=>a.getAttribute('href').length>1 && a.getAttribute('href')!=='#top');
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));}});},{rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('main section').forEach(s=>io.observe(s));
+}
+
+/* ---------- 01 Wave ---------- */
+(function(){
+  const cv=$('wave'),cx=cv.getContext('2d'),W=cv.width,H=cv.height;let f=3.5,ph=0,vis=true;
+  function stats(){
+    const lam=1.54/f; $('fqo').textContent=f.toFixed(1)+' MHz';
+    $('s-lam').textContent=lam.toFixed(2)+' mm'; $('s-T').textContent=(1/f).toFixed(2)+' µs';
+    $('s-ax').textContent=(1.5*lam).toFixed(2)+' mm';
+    const pen=60/f; $('s-pen').textContent=(pen>24?'> 24':pen.toFixed(pen<10?1:0))+' cm';
+    let t; if(f<=2.5) t='Territorio de sectorial/convexa a baja frecuencia: corazón difícil, abdomen obeso, aorta profunda.';
+    else if(f<=5) t='Convexa o sectorial: FAST, abdomen, corazón, pelvis. El caballo de batalla.';
+    else if(f<=8) t='Microconvexa/endocavitaria: estructuras a pocos cm con buen detalle.';
+    else t='Lineal: vasos, pleura, nervios, ojo, partes blandas. Detalle fino, poca profundidad.';
+    $('s-probe').innerHTML='<b>¿Qué sonda?</b> '+t;
+  }
+  function draw(){
+    cx.fillStyle='#06080a';cx.fillRect(0,0,W,H);
+    const lamPx=Math.max(14,230/f), k=2*Math.PI/lamPx, A=Math.min(9,lamPx/5);
+    // pressure curve
+    cx.strokeStyle='#f09a45';cx.lineWidth=2;cx.beginPath();
+    for(let x=0;x<=W;x+=2){const y=34-18*Math.cos(k*x-ph);x?cx.lineTo(x,y):cx.moveTo(x,y);} cx.stroke();
+    cx.fillStyle='#8a9aa5';cx.font='11px IBM Plex Mono, monospace';cx.fillText('presión',6,64);
+    // particles
+    const cols=150, rows=7;
+    for(let i=0;i<cols;i++){const x0=i*(W/cols)+2;const dx=A*Math.sin(k*x0-ph);for(let j=0;j<rows;j++){const y=86+j*11+((i%2)?5:0);cx.fillStyle='#cfdae2';cx.fillRect(x0+dx,y,2,2);}}
+    // lambda bracket
+    const x1=20,x2=20+lamPx; cx.strokeStyle='#6aa6ff';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(x1,166);cx.lineTo(x1,160);cx.lineTo(Math.min(x2,W-4),160);cx.lineTo(Math.min(x2,W-4),166);cx.stroke();
+    cx.fillStyle='#6aa6ff';cx.fillText('λ',x1+Math.min(lamPx,W-30)/2-3,156);
+  }
+  function loop(){ if(vis){ph+=0.08;draw();} if(!reduce) requestAnimationFrame(loop);}
+  if('IntersectionObserver' in window){new IntersectionObserver(e=>{vis=e[0].isIntersecting;}).observe(cv);}
+  $('fq').addEventListener('input',e=>{f=+e.target.value;stats();if(reduce)draw();});
+  stats();draw();if(!reduce)requestAnimationFrame(loop);
+})();
+
+/* ---------- 03 Impedance ---------- */
+(function(){
+  const M=[['Aire',0.0004],['Pulmón',0.18],['Grasa',1.38],['Agua / gel',1.48],['Sangre',1.61],['Hígado',1.65],['Músculo',1.70],['Hueso cortical',7.8],['Cristal PZT',30]];
+  const s1=$('zm1'),s2=$('zm2');
+  M.forEach((m,i)=>{s1.add(new Option(m[0],i));s2.add(new Option(m[0],i));});
+  s1.value=5;s2.value=0;
+  function upd(){
+    const a=M[s1.value],b=M[s2.value];const R=Math.pow((b[1]-a[1])/(b[1]+a[1]),2);
+    $('zv1').textContent=a[1];$('zv2').textContent=b[1];$('zvr').textContent=(R*100<0.1?(R*100).toFixed(3):(R*100).toFixed(1))+' %';
+    $('zAt').textContent=a[0];$('zBt').textContent=b[0];
+    $('zT').setAttribute('width',Math.max(1,160*(1-R)));$('zR').setAttribute('width',Math.max(1,160*R));
+    $('zRt').textContent='R '+(R*100).toFixed(R<0.01?2:0)+'%';$('zTt').textContent='T '+((1-R)*100).toFixed(R>0.99?2:0)+'%';
+    let m,cls='ok';
+    if(R>0.9){m='Interfaz casi opaca: casi todo rebota. Por eso el gel (sin aire) y por eso no se ve detrás del pulmón aireado ni del intestino con gas.';cls='crit';}
+    else if(R>0.25){m='Reflexión fuerte: eco brillante y sombra posterior (hueso, cálculos). Ves la superficie, no lo que hay detrás.';cls='warn';}
+    else if(R>0.002){m='Reflexión moderada: lo ideal para formar imagen. Suficiente eco para dibujar la interfaz y suficiente transmisión para seguir viendo más profundo.';}
+    else {m='Diferencia mínima: casi todo se transmite. Interfaz difícil de ver (isoecoica).';}
+    if((a[0]==='Cristal PZT'||b[0]==='Cristal PZT'))m+=' La capa de acoplamiento de la sonda existe precisamente para suavizar este salto.';
+    const z=$('zmsg');z.className='hint '+cls;z.textContent=m;
+  }
+  s1.addEventListener('change',upd);s2.addEventListener('change',upd);upd();
+})();
+
+/* ---------- 06 B-mode simulator ---------- */
+(function(){
+  const cv=$('bmode'),cx=cv.getContext('2d'),W=cv.width,H=cv.height,N=W*H;
+  const rawS=new Float32Array(N),rawN=new Float32Array(N);
+  const ray=()=>Math.sqrt(-2*Math.log(1-Math.random()))/1.2533;
+  for(let i=0;i<N;i++){rawS[i]=ray();rawN[i]=ray();}
+  const inside=new Uint8Array(N),dArr=new Float32Array(N),dbPre=new Float32Array(N);
+  const refl=new Float32Array(N),tmp=new Float32Array(N),sp=new Float32Array(N),post=new Float32Array(N),addv=new Float32Array(N);
+  const st={gain:0,depth:16,focus:6.5,nf:1,freq:3,dr:60,thi:true,tn:0,tm:0,tf:0};
+  const R=3.2,HA=0.55,ALPHA=0.5;
+  let geoKey='',geo={};
+  const GB={cx:-1.6,cz:6.2,a:2.4,b:1.25}, PV={cx:2.4,cz:8.6,a:0.65,b:0.65}, ST={cx:-1.2,cz:7.05,a:0.38,b:0.38}, KD={cx:1.0,cz:13.0,a:3.0,b:1.6};
+  function inter(o,sn,cs){ // ray from apex (0,-R) dir (sn,cs)
+    const ox=-o.cx, oz=-R-o.cz, a2=o.a*o.a, b2=o.b*o.b;
+    const A=sn*sn/a2+cs*cs/b2, B=2*(ox*sn/a2+oz*cs/b2), C=ox*ox/a2+oz*oz/b2-1, D=B*B-4*A*C;
+    if(D<=0) return null; const q=Math.sqrt(D); return [(-B-q)/(2*A),(-B+q)/(2*A)];
+  }
+  const db=x=>Math.pow(10,x/20);
+  function computeGeo(){
+    const D=st.depth,f=st.freq,thi=st.thi;
+    const ppc=H/(D+R*(1-Math.cos(HA))), Rpx=R*ppc, apexY=-Rpx*Math.cos(HA);
+    const attF=thi?1.25:1.0;
+    const foci=[];for(let i=0;i<st.nf;i++)foci.push(st.focus+i*2.5);
+    for(let py=0;py<H;py++){for(let px=0;px<W;px++){
+      const i=py*W+px, dx=px-W/2, dy=py-apexY, rpx=Math.hypot(dx,dy), th=Math.atan2(dx,dy), d=rpx/ppc-R;
+      if(Math.abs(th)>HA||d<0||d>D){inside[i]=0;refl[i]=0;addv[i]=0;post[i]=0;continue;}
+      inside[i]=1;dArr[i]=d;
+      const sn=Math.sin(th),cs=Math.cos(th),r=R+d,X=r*sn,Z=r*cs-R;
+      let L; // dB reflectivity
+      if(d<0.18)L=-2;
+      else if(d<1.3)L=(Math.abs(Math.sin(d*9+X*0.8))>0.975)?-16:-31;
+      else if(d<1.42)L=-8;
+      else if(d<2.5)L=(Math.sin(d*38+X*1.5)>0.85)?-18:-26;
+      else if(d<2.62)L=-9;
+      else{
+        L=-22;
+        const eg=((X-GB.cx)/GB.a)**2+((Z-GB.cz)/GB.b)**2;
+        const ep=((X-PV.cx)/PV.a)**2+((Z-PV.cz)/PV.b)**2;
+        const es=((X-ST.cx)/ST.a)**2+((Z-ST.cz)/ST.b)**2;
+        const ek=((X-KD.cx)/KD.a)**2+((Z-KD.cz)/KD.b)**2;
+        if(Z>16.6)L=-24-(Math.sin(Z*6+X)>0.9?-6:0);
+        if(ek<1){const es2=((X-KD.cx)/1.7)**2+((Z-KD.cz)/0.65)**2; L=ek>0.86?-8:(es2<1?-12+ (Math.sin(X*7+Z*3)>0.7?4:0):-27);}
+        if(ep<1.38&&ep>=1)L=-8; if(ep<1)L=-200;
+        if(eg<1.13&&eg>=1)L=-7; if(eg<1)L=-200;
+        if(es<1)L=4;
+      }
+      refl[i]=L<-150?0:db(L);
+      // clutter in fluid + near-field haze
+      let ad=0; if(L<-150) ad+=db(thi?-58:-40);
+      if(!thi&&d<7) ad+=db(-36)*(1-d/7);
+      addv[i]=ad;
+      // ray path: fluid length & shadows
+      let fl=0, sh=1;
+      const g=inter(GB,sn,cs); if(g){fl+=Math.max(0,Math.min(r,g[1])-Math.max(g[0],R)); if(g[1]-g[0]<0.35&&r>g[1])sh*=0.3;}
+      const p=inter(PV,sn,cs); if(p){fl+=Math.max(0,Math.min(r,p[1])-Math.max(p[0],R));}
+      const s=inter(ST,sn,cs); if(s&&r>s[0]+0.25*ST.a)sh*=0.025;
+      const att=ALPHA*f*2*attF*Math.max(0,d-fl);
+      const comp=Math.min(62,ALPHA*f*2*attF*d);
+      post[i]=sh*db(-att); tmp[i]=comp; // store comp temporarily
+    }}
+    // resolution kernels
+    const axmm=0.66*3.5/f*(thi?1.15:1);
+    const ra=Math.max(0,Math.round(axmm/10*ppc/2));
+    const rl=new Int32Array(H);
+    for(let py=0;py<H;py++){
+      const d=(py-apexY)/ppc-R; let md=99; for(const fz of foci)md=Math.min(md,Math.abs(d-fz));
+      let wmm=(1.2*3.5/f+0.42*md)*(thi?0.8:1);
+      rl[py]=Math.max(0,Math.round(wmm/10*ppc/2));
+    }
+    // blur reflectivity & speckle: vertical (ra) then horizontal (rl[row])
+    function blur(src,out,restore){
+      const v=new Float32Array(N);
+      if(ra>0){for(let x=0;x<W;x++){let acc=0;const n=2*ra+1;for(let y=-ra;y<=ra;y++)acc+=src[clamp(y,0,H-1)*W+x];for(let y=0;y<H;y++){v[y*W+x]=acc/n;acc+=src[clamp(y+ra+1,0,H-1)*W+x]-src[clamp(y-ra,0,H-1)*W+x];}}}
+      else v.set(src);
+      for(let y=0;y<H;y++){const r=rl[y],n=2*r+1;let acc=0;for(let x=-r;x<=r;x++)acc+=v[y*W+clamp(x,0,W-1)];
+        const fac=restore?Math.sqrt((2*ra+1)*n):1;
+        for(let x=0;x<W;x++){let val=acc/n;if(restore)val=Math.max(0.04,1+(val-1)*fac);out[y*W+x]=val;acc+=v[y*W+clamp(x+r+1,0,W-1)]-v[y*W+clamp(x-r,0,W-1)];}}
+    }
+    const rb=new Float32Array(N); blur(refl,rb,false); blur(rawS,sp,true);
+    const nf=db(-86);
+    for(let i=0;i<N;i++){ if(!inside[i])continue;
+      const e=(rb[i]*sp[i]+addv[i]*sp[i])*post[i]+nf*rawN[i];
+      dbPre[i]=20*Math.log10(e+1e-9)+tmp[i];
+    }
+    geo={ppc,Rpx,apexY,foci};
+  }
+  const img=cx.createImageData(W,H);
+  function render(){
+    const key=[st.depth,st.freq,st.thi,st.focus,st.nf].join('|');
+    if(key!==geoKey){computeGeo();geoKey=key;}
+    const D=st.depth,dr=st.dr,data=img.data;
+    for(let i=0;i<N;i++){const o=i*4;
+      if(!inside[i]){data[o]=data[o+1]=data[o+2]=0;data[o+3]=255;continue;}
+      const t=dArr[i]/D; const tg=t<0.5?st.tn+(st.tm-st.tn)*(t/0.5):st.tm+(st.tf-st.tm)*((t-0.5)/0.5);
+      let b=0.5+(dbPre[i]+st.gain+tg+17)/dr; b=clamp(b,0,1); const v=Math.round(255*Math.pow(b,1.1));
+      data[o]=v;data[o+1]=v;data[o+2]=Math.min(255,v+3);data[o+3]=255;}
+    cx.putImageData(img,0,0);
+    // depth scale
+    const {ppc,apexY,Rpx}=geo; const top=apexY+Rpx; const step=D>12?2:1;
+    cx.fillStyle='#cfdae2';cx.strokeStyle='#cfdae2';cx.font='10px IBM Plex Mono, monospace';cx.textAlign='right';
+    for(let c=0;c<=D;c+=step){const y=top+c*ppc;if(y>H-2)break;cx.fillRect(W-12,y,8,1);if(c%(step*2)===0||D<=8)cx.fillText(String(c),W-14,y+3);}
+    // focus markers
+    cx.fillStyle='#f09a45';
+    for(const fz of geo.foci){const y=top+fz*ppc; if(y<H){cx.beginPath();cx.moveTo(6,y-5);cx.lineTo(13,y);cx.lineTo(6,y+5);cx.fill();}}
+    cx.textAlign='left';cx.fillStyle='#cfdae2';cx.fillText('C5-2  ABDOMEN',8,14);
+  }
+  const fr=()=>77000/(st.depth*128*st.nf);
+  function readout(){
+    $('bm-read').innerHTML=`<span>FR <b>${fr().toFixed(0)} Hz</b></span><span>PRF máx <b>${(77000/st.depth/1000).toFixed(1)} kHz</b></span><span>${st.freq.toFixed(1)} MHz ${st.thi?'<b>THI</b>':'fund.'}</span><span>DR <b>${st.dr}</b></span><span>G <b>${st.gain>0?'+':''}${st.gain}</b></span>`;
+    $('o-gain').textContent=(st.gain>0?'+':'')+st.gain+' dB';$('o-depth').textContent=st.depth+' cm';$('o-focus').textContent=st.focus.toFixed(1)+' cm';
+    $('o-nf').textContent=st.nf;$('o-freq').textContent=st.freq.toFixed(1)+' MHz';$('o-dr').textContent=st.dr+' dB';
+    ['tn','tm','tf'].forEach(k=>$('o-'+k).textContent=(st[k]>0?'+':'')+st[k]+' dB');
+  }
+  function goals(){return [
+    ['Ganancia equilibrada',Math.abs(st.gain)<=5],
+    ['TGC sin bandas',Math.abs(st.tn)<=5&&Math.abs(st.tm)<=5&&Math.abs(st.tf)<=5],
+    ['Profundidad: riñón completo',st.depth>=15&&st.depth<=18],
+    ['Foco en la vesícula',st.focus>=5.5&&st.focus<=8],
+    ['Frecuencia que penetra',st.freq<=3.5],
+    ['Rango dinámico 50–70',st.dr>=50&&st.dr<=70],
+    ['Armónicos encendidos',st.thi],
+    ['Frame rate ≥ 25 Hz',fr()>=25]
+  ];}
+  function hints(){
+    const h=[];
+    if(st.gain>6)h.push(['crit','Sobreganancia: la vesícula y la porta dejan de ser anecoicas y el hígado se "quema". Puedes perder un cálculo pequeño o inventar sedimento.']);
+    if(st.gain<-6)h.push(['crit','Subganancia: el parénquima se apaga y un líquido libre fino (Morison) se vuelve invisible.']);
+    if(st.tf<-6)h.push(['warn','TGC lejano muy bajo: banda oscura profunda. El polo renal y el espacio posterior desaparecen.']);
+    if(st.tf>6)h.push(['warn','TGC lejano alto: amplifica ruido electrónico profundo (nieve) y exagera el refuerzo posterior.']);
+    if(st.tn>6)h.push(['warn','TGC cercano alto: pared y grasa saturadas; reverberaciones más visibles en la vesícula.']);
+    if(st.tn<-6||Math.abs(st.tm)>6)h.push(['warn','Banda de TGC desajustada: revisa los deslizadores antes de escanear.']);
+    if(st.depth<12)h.push(['warn','Profundidad corta: el riñón y lo que está detrás de la vesícula quedan fuera. Ganas detalle y frame rate.']);
+    if(st.depth>19)h.push(['warn','Demasiada profundidad: estructuras pequeñas, pantalla desperdiciada y menor frame rate.']);
+    if(st.focus<4.5||st.focus>9)h.push(['warn',`Foco a ${st.focus.toFixed(1)} cm: la vesícula (~5–7,5 cm) queda fuera de la zona de mejor resolución lateral; mira cómo se "ensancha" el speckle.`]);
+    if(st.nf>1)h.push(['warn',`${st.nf} focos: mejor resolución lateral en profundidad, pero el frame rate cae a ${fr().toFixed(0)} Hz.`]);
+    if(st.freq>=4.5)h.push(['warn','Frecuencia alta para esta profundidad: detalle superficial fino, pero el campo lejano se llena de ruido (atenuación ∝ f × profundidad).']);
+    if(st.dr<45)h.push(['warn','Rango dinámico bajo: imagen muy contrastada; se pierden ecos débiles (barro biliar, trombo fresco).']);
+    if(st.dr>75)h.push(['warn','Rango dinámico alto: imagen "lavada", líquidos menos negros.']);
+    if(!st.thi)h.push(['warn','Sin armónicos: neblina de lóbulos laterales y reverberación dentro de la vesícula. A cambio, algo más de penetración.']);
+    if(!h.length)h.push(['ok','Imagen optimizada. Observa el refuerzo posterior bajo la vesícula, la sombra limpia del cálculo y las finas sombras de borde a los lados de la vesícula.']);
+    $('bm-hints').innerHTML=hintsHTML(h.slice(0,4));
+    $('bm-check').innerHTML=goals().map(g=>`<span class="${g[1]?'y':''}">${g[0]}</span>`).join('');
+  }
+  const ids={gain:'bm-gain',depth:'bm-depth',focus:'bm-focus',nf:'bm-nf',freq:'bm-freq',dr:'bm-dr',tn:'bm-tn',tm:'bm-tm',tf:'bm-tf'};
+  function sync(){for(const k in ids)$(ids[k]).value=st[k];$('thi1').checked=st.thi;$('thi0').checked=!st.thi;}
+  let raf=0;function update(){readout();hints();if(!raf)raf=requestAnimationFrame(()=>{raf=0;render();});}
+  for(const k in ids)$(ids[k]).addEventListener('input',e=>{st[k]=+e.target.value;update();});
+  document.querySelectorAll('input[name=thi]').forEach(r=>r.addEventListener('change',e=>{st.thi=e.target.value==='1';update();}));
+  $('bm-opt').addEventListener('click',()=>{Object.assign(st,{gain:0,depth:16,focus:6.5,nf:1,freq:3,dr:60,thi:true,tn:0,tm:0,tf:0});sync();update();});
+  $('bm-challenge').addEventListener('click',()=>{
+    const pick=a=>a[Math.floor(Math.random()*a.length)];
+    Object.assign(st,{gain:pick([-14,-11,10,13,16]),depth:pick([8,9,21,22]),focus:pick([2,2.5,13,15]),nf:pick([1,3]),freq:pick([5,5.5,6]),dr:pick([35,40,85,90]),thi:false,tn:pick([-10,9,12]),tm:pick([-9,0,8]),tf:pick([-13,-10,11])});
+    sync();update();
+  });
+  sync();update();
+})();
+
+/* ---------- 08 Doppler equation ---------- */
+(function(){
+  const svg=$('cos-svg');
+  function upd(){
+    const th=+$('dp-th').value,v=+$('dp-v').value,f0=+$('dp-f').value,c=1540;
+    const cs=Math.cos(th*Math.PI/180),df=2*f0*1e6*(v/100)*cs/c;
+    $('o-th').textContent=th+'°';$('o-v').textContent=v+' cm/s';$('o-f0').textContent=f0.toFixed(1)+' MHz';
+    $('dp-df').textContent=(df/1000).toFixed(2)+' kHz';$('dp-cos').textContent=cs.toFixed(2);
+    const th2=Math.min(89.9,th+5),err=th>=89?Infinity:(cs/Math.cos(th2*Math.PI/180)-1)*100;
+    $('dp-err').textContent=isFinite(err)?'+'+err.toFixed(0)+' %':'∞';
+    // plot
+    const X=a=>50+a/90*360,Y=c=>210-c*170;let p='';for(let a=0;a<=90;a++)p+=(a?'L':'M')+X(a).toFixed(1)+' '+Y(Math.cos(a*Math.PI/180)).toFixed(1);
+    let g=`<rect x="0" y="0" width="440" height="260" fill="#06080a"/>`;
+    g+=`<rect x="${X(60)}" y="40" width="${X(90)-X(60)}" height="170" fill="#c92f2a" opacity=".16"/>`;
+    g+=`<text x="${X(75)}" y="56" fill="#ff8a80" font-size="11" text-anchor="middle">zona de error</text>`;
+    for(const a of [0,30,60,90])g+=`<line x1="${X(a)}" y1="40" x2="${X(a)}" y2="210" stroke="#26313a"/><text x="${X(a)}" y="228" fill="#8a9aa5" font-size="11" text-anchor="middle" font-family="IBM Plex Mono, monospace">${a}°</text>`;
+    for(const c2 of [0,0.5,1])g+=`<line x1="50" y1="${Y(c2)}" x2="410" y2="${Y(c2)}" stroke="#26313a"/><text x="42" y="${Y(c2)+4}" fill="#8a9aa5" font-size="11" text-anchor="end" font-family="IBM Plex Mono, monospace">${c2}</text>`;
+    g+=`<path d="${p}" stroke="#f09a45" stroke-width="2.5" fill="none"/>`;
+    g+=`<circle cx="${X(th)}" cy="${Y(cs)}" r="6" fill="#6aa6ff"/><line x1="${X(th)}" y1="${Y(cs)}" x2="${X(th)}" y2="210" stroke="#6aa6ff" stroke-dasharray="3 3"/>`;
+    g+=`<text x="50" y="24" fill="#cfdae2" font-size="12">cos θ: fracción de la velocidad que "ve" el Doppler</text>`;
+    g+=`<text x="230" y="250" fill="#8a9aa5" font-size="11" text-anchor="middle">ángulo entre haz y flujo</text>`;
+    svg.innerHTML=g;
+    $('cos-read').innerHTML=`<span>el equipo "ve" <b>${(v*cs).toFixed(0)} cm/s</b> de ${v}</span><span>Δf = 2·${f0}MHz·${(v/100).toFixed(2)}m/s·${cs.toFixed(2)}/1540</span>`;
+    const h=[];
+    if(th>=88)h.push(['crit','A 90° el desplazamiento Doppler es cero: el vaso "no tiene flujo" aunque esté permeable. Angula la sonda o la caja.']);
+    else if(th>60)h.push(['warn',`Sobre 60°: si tu cursor de ángulo se equivoca por 5°, la velocidad calculada se infla ${err.toFixed(0)}%. Recoloca la sonda.`]);
+    else if(th<=20)h.push(['ok','Casi paralelo: lo ideal en eco cardíaco. La velocidad medida ≈ la real.']);
+    else h.push(['ok','Rango aceptable para Doppler vascular con corrección de ángulo (≤ 60°).']);
+    h.push(['ok',`Δf de ${(df/1000).toFixed(1)} kHz cae en el rango audible: por eso el equipo puede convertir el Doppler en sonido.`]);
+    $('dp-hints').innerHTML=hintsHTML(h);
+  }
+  ['dp-th','dp-v','dp-f'].forEach(id=>$(id).addEventListener('input',upd));upd();
+})();
+
+/* ---------- 09 Spectral simulator ---------- */
+(function(){
+  const cv=$('spec'),cx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  const g=(p,m,s)=>Math.exp(-0.5*((p-m)/s)**2);
+  const P={
+    fem:{name:'Femoral',kind:'art',f0:5,depth:3,th:60,Vn:70,base:-0.2,wf:4,gain:50,T:2.4,band:0.78,thump:3,
+      v:t=>{const p=(t%0.8)/0.8;return 105*g(p,.12,.035)-30*g(p,.24,.035)+14*g(p,.36,.045);}},
+    low:{name:'Baja resistencia',kind:'art',f0:5,depth:2,th:45,Vn:40,base:-0.35,wf:2,gain:55,T:2.4,band:0.72,thump:0,
+      v:t=>{const p=(t%0.8)/0.8;return 15+9*Math.exp(-p/0.5)+28*g(p,.12,.04);}},
+    vein:{name:'Vena femoral',kind:'vein',f0:5,depth:3,th:55,Vn:20,base:0.3,wf:2,gain:55,T:4.8,band:0.45,thump:0,
+      v:t=>-(16+7*Math.sin(2*Math.PI*t/4))},
+    lvot:{name:'TSVI',kind:'card',f0:2.5,depth:12,th:5,Vn:90,base:0.45,wf:12,gain:50,T:2.4,band:0.82,thump:14,
+      v:t=>{const p=(t%0.8)/0.8;return (p>.06&&p<.38)?-95*Math.pow(Math.sin(Math.PI*(p-.06)/.32),1.5):0;}},
+    as:{name:'Estenosis aórtica',kind:'card',f0:2.5,depth:13,th:5,Vn:90,base:0.45,wf:15,gain:50,T:2.4,band:0.0,thump:16,
+      v:t=>{const p=(t%0.8)/0.8;return (p>.06&&p<.42)?-400*Math.pow(Math.sin(Math.PI*(p-.06)/.36),1.2):0;}}
+  };
+  let cur='fem',mode='pw',s={};
+  const vnMax=()=>mode==='cw'?500:Math.floor(154000*(154000/(2*P[cur].depth))/(4*P[cur].f0*1e6)*1)/1;
+  function load(k){cur=k;const p=P[k];s={Vn:p.Vn,base:p.base,wf:p.wf,th:p.th,gain:p.gain};if(k==='as'){mode='cw';$('spm-cw').checked=true;s.Vn=450;}else{mode='pw';$('spm-pw').checked=true;}syncUI();draw();}
+  function syncUI(){
+    const mx=Math.min(mode==='cw'?500:150,vnMax());const sc=$('sp-scale');sc.max=mode==='cw'?500:Math.max(10,Math.min(150,mx));s.Vn=Math.min(s.Vn,+sc.max);
+    sc.value=s.Vn;$('sp-base').value=s.base;$('sp-wf').value=s.wf;$('sp-th').value=s.th;$('sp-gain').value=s.gain;
+  }
+  const rnd=(()=>{let x=12345;return()=>{x^=x<<13;x^=x>>>17;x^=x<<5;return ((x>>>0)%100000)/100000;};})();
+  function draw(){
+    const p=P[cur],Vn=s.Vn,b=s.base,U=Vn*(1+b),L=-Vn*(1-b);
+    const x0=58,x1=W-10,top=14,bot=H-26,ph=bot-top,ppc=ph/(2*Vn),y0=top+U*ppc;
+    const cs=Math.cos(s.th*Math.PI/180),gs=Math.pow(10,(s.gain-50)/40);
+    cx.fillStyle='#06080a';cx.fillRect(0,0,W,H);
+    const pw=x1-x0,img=cx.getImageData(x0,top,pw,ph),d=img.data;const I=new Float32Array(pw*ph);
+    const wrap=v=>{if(mode==='cw')return v;let k=0;while(v>U&&k<8){v-=2*Vn;k++;}while(v<L&&k<16){v+=2*Vn;k++;}return v;};
+    const put=(xi,v,a)=>{const y=Math.round((U-v)*ppc);if(y>=0&&y<ph)I[y*pw+xi]+=a;};
+    const mirror=(s.gain>78?(s.gain-78)/40:0)+(s.th>80?(s.th-80)/20:0);
+    let psv=0,edv=1e9,maxAbs=0,peakSeen=0,wfKill=0,total=0;
+    for(let xi=0;xi<pw;xi++){
+      const t=xi/pw*p.T; const vt=p.v(t), vm=vt*cs; maxAbs=Math.max(maxAbs,Math.abs(vm));
+      const n=mode==='cw'?60:36;
+      const lo=mode==='cw'?0.04:p.band;
+      for(let j=0;j<n;j++){
+        let fr=lo+(1-lo)*(j/(n-1)); let v=vm*fr+(rnd()-0.5)*Math.max(1.2,Math.abs(vm)*0.06);
+        let w=wrap(v); total++;
+        if(Math.abs(w)<s.wf){wfKill++;continue;}
+        const a=(0.5+0.5*fr)*0.32*(Math.abs(vm)>0.5?1:0.6);
+        put(xi,w,a); if(mirror>0)put(xi,-w,a*mirror*0.6);
+      }
+      // thump: wall/valve motion — strong, low velocity
+      if(p.thump){const pp=(t%0.8)/0.8;const near=Math.min(Math.abs(pp-0.06),Math.abs(pp-(p.kind==='card'?(cur==='as'?0.42:0.38):0.12)));
+        if(near<0.012){for(let j=0;j<26;j++){const v=(rnd()*2-1)*p.thump; if(Math.abs(v)>=s.wf)put(xi,v,1.2);}}}
+      // measured envelope stats (after WF, in true direction)
+      if(p.kind==='art'){const ab=Math.abs(vm);const shown=ab>=s.wf?ab:0;psv=Math.max(psv,shown);const pp=(t%0.8)/0.8;if(pp>0.7&&pp<0.78)edv=Math.min(edv,shown);}
+      else peakSeen=Math.max(peakSeen,Math.abs(vm)>=s.wf?Math.abs(vm):0);
+    }
+    const noise=Math.max(0,(s.gain-45)/55)*0.25+0.015;
+    for(let k=0;k<I.length;k++){let v=I[k]*gs+noise*Math.pow(rnd(),3);v=Math.min(1,v);const o=k*4,c=Math.round(255*v);d[o]=c;d[o+1]=c;d[o+2]=Math.min(255,c+6);d[o+3]=255;}
+    cx.putImageData(img,x0,top);
+    // WF band (didactic)
+    if(s.wf>0){const ya=y0-s.wf*ppc,yb=y0+s.wf*ppc;cx.fillStyle='rgba(240,154,69,0.13)';cx.fillRect(x0,Math.max(top,ya),pw,Math.min(bot,yb)-Math.max(top,ya));}
+    // baseline & axis
+    cx.strokeStyle='#f09a45';cx.lineWidth=1;cx.beginPath();cx.moveTo(x0,y0+0.5);cx.lineTo(x1,y0+0.5);cx.stroke();
+    cx.fillStyle='#cfdae2';cx.font='11px IBM Plex Mono, monospace';cx.textAlign='right';
+    const stepV=Vn>200?100:Vn>80?40:Vn>40?20:Vn>15?10:5;
+    for(let v=Math.ceil(L/stepV)*stepV;v<=U;v+=stepV){const y=top+(U-v)*ppc;cx.fillRect(x0-5,y,5,1);cx.fillText(String(v),x0-8,y+4);}
+    cx.textAlign='left';cx.fillStyle='#6f7f8a';cx.fillText('cm/s',6,12);
+    cx.fillText(mode.toUpperCase()+'  '+p.name,x0+6,H-8);
+    if(s.wf>0){cx.fillStyle='#f09a45';cx.fillText('filtro de pared ±'+s.wf,x1-150,H-8);}
+    // readout
+    const prf=4*p.f0*1e6*(Vn/100)/1540;
+    const corr=(p.kind==='art'?psv:peakSeen)/Math.max(0.05,cs);
+    const ir=(p.kind==='art'&&psv>0)?((psv-(edv===1e9?0:edv))/psv):null;
+    $('sp-read').innerHTML=`<span>Nyquist <b>+${U.toFixed(0)} / ${L.toFixed(0)} cm/s</b></span><span>PRF <b>${(prf/1000).toFixed(1)} kHz</b></span><span>f₀ ${p.f0} MHz · puerta a ${p.depth} cm</span><span>θ ${s.th}°</span><span>V pico corregida <b>${isFinite(corr)?corr.toFixed(0):'–'} cm/s</b></span>${ir!==null?`<span>IR <b>${ir.toFixed(2)}</b></span>`:''}`;
+    $('o-scale').textContent='±'+Vn+' cm/s';$('o-base').textContent=(b>0?'+':'')+b.toFixed(2);$('o-wf').textContent=s.wf+' cm/s';$('o-spth').textContent=s.th+'°';$('o-spg').textContent=s.gain+'%';
+    $('sp-scale-note').textContent=mode==='pw'?`Máximo posible a ${p.depth} cm con ${p.f0} MHz: ±${Math.min(999,vnMax())} cm/s (PRF máx = c / 2·profundidad).`:'CW: sin límite de Nyquist, pero mide toda la línea.';
+    // hints
+    const h=[];
+    const aliased=mode==='pw'&&(maxAbs*1>U||-maxAbs<L)&&(p.v(0.1)*cs>U||p.v(0.1)*cs<L||maxAbs>Math.min(U,-L));
+    if(mode==='pw'){const pk=[];for(let t=0;t<p.T;t+=0.01)pk.push(p.v(t)*cs);const mxv=Math.max(...pk),mnv=Math.min(...pk);
+      if(mxv>U||mnv<L){h.push(['crit',cur==='as'?'Aliasing inevitable: un jet de 4 m/s a 13 cm supera cualquier Nyquist posible en PW. Cambia a CW.':'Aliasing: el pico se "envuelve" al otro lado. Sube la escala o mueve la línea de base.']);}
+      else if(Math.max(mxv,-mnv)<Vn*0.33&&Vn>10)h.push(['warn','Escala demasiado alta: la onda ocupa una franja pequeña y pierdes precisión al medir. Ajusta para que llene ~2/3.']);}
+    if(mode==='cw'&&cur!=='as')h.push(['warn','CW suma todas las velocidades de la línea: el espectro se rellena y no sabes de qué profundidad viene cada una. Para un vaso o el TSVI, usa PW.']);
+    if(p.kind==='art'&&cur==='low'&&edv!==1e9&&edv===0&&psv>0)h.push(['crit','El filtro de pared borró la diástole: IR = 1,00. En testículo/ovario/riñón esto simula alta resistencia o "ausencia de flujo diastólico": falso positivo de torsión o de rechazo.']);
+    if(p.kind==='vein'&&peakSeen===0)h.push(['crit','Flujo venoso completamente filtrado: parece una vena sin flujo (¡falsa TVP!). Baja el filtro y la escala.']);
+    else if(p.kind==='vein'&&wfKill/total>0.25)h.push(['warn','El filtro está mordiendo el flujo venoso en la fase espiratoria: la fasicidad se ve interrumpida.']);
+    if(p.thump&&s.wf<p.thump*0.6)h.push(['warn','Filtro bajo: aparecen los "thumps" de pared/válvula, espigas brillantes junto a la línea de base que ensucian el trazado del VTI.']);
+    if(cur==='fem'&&s.wf>=12)h.push(['warn','Filtro alto en arteria periférica: el componente reverso de protodiástole desaparece y una onda trifásica puede parecer monofásica.']);
+    if(p.kind!=='card'&&s.th>60)h.push(['warn',`θ = ${s.th}°: sobre 60°, pequeños errores del cursor de ángulo inflan mucho la velocidad.`]);
+    if(p.kind==='card'&&s.th>20)h.push(['warn',`En cardio no se corrige ángulo: con θ = ${s.th}° subestimas la velocidad real en ${(100*(1-cs)).toFixed(0)}%.`]);
+    if(s.gain>78)h.push(['warn','Ganancia Doppler alta: ruido de fondo y espejo espectral bajo la línea de base. Bájala hasta que el fondo quede negro.']);
+    if(s.gain<25)h.push(['warn','Ganancia Doppler baja: la envolvente se fragmenta y subestimas el pico.']);
+    if(!h.length)h.push(['ok','Espectro bien ajustado: llena ~2/3 de la escala, sin aliasing, ventana espectral limpia y filtro sin morder el flujo útil.']);
+    $('sp-hints').innerHTML=hintsHTML(h.slice(0,4));
+  }
+  $('sp-vessel').addEventListener('change',e=>load(e.target.value));
+  document.querySelectorAll('input[name=spm]').forEach(r=>r.addEventListener('change',e=>{mode=e.target.value;if(mode==='cw')s.Vn=Math.max(s.Vn,150);syncUI();draw();}));
+  const map={'sp-scale':'Vn','sp-base':'base','sp-wf':'wf','sp-th':'th','sp-gain':'gain'};
+  for(const id in map)$(id).addEventListener('input',e=>{s[map[id]]=+e.target.value;draw();});
+  $('sp-reset').addEventListener('click',()=>load(cur));
+  load('fem');
+})();
+
+/* ---------- 11 Color Doppler ---------- */
+(function(){
+  const cv=$('cdop'),cx=cv.getContext('2d'),W=cv.width,H=cv.height,N=W*H;
+  const bg=new Uint8ClampedArray(N),noise=new Float32Array(N);for(let i=0;i<N;i++)noise[i]=Math.random();
+  const st={type:'art',tilt:20,steer:20,Vn:60,wf:3,gain:55};
+  const Rv=30,cxv=W/2,cyv=H/2+6,bx0=170,bx1=470,by0=40,by1=H-30;
+  let bgKey='';
+  function makeBg(){
+    const phi=st.tilt*Math.PI/180,sn=Math.sin(phi),cs=Math.cos(phi);
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x;const dd=Math.abs((x-cxv)*sn-(y-cyv)*cs);
+      let v=70*(0.4+0.9*Math.sqrt(-2*Math.log(1-noise[i]))/1.25);
+      if(dd<Rv)v=6+8*noise[i]; else if(dd<Rv+3)v=175+40*noise[i];
+      if(y<10)v=150*noise[i];
+      bg[i]=Math.min(255,v*(1-0.35*y/H));}
+    bgKey=st.tilt;
+  }
+  function colorOf(v,Vn){ // v in [-Vn,Vn]
+    const a=Math.min(1,Math.abs(v)/Vn);
+    if(v>0){return a<0.75?[90+200*a,10+20*a,10]:[255,40+(a-0.75)*4*200,30+(a-0.75)*4*60];}
+    return a<0.75?[10,30+60*a,90+200*a]:[30+(a-0.75)*4*80,90+(a-0.75)*4*160,255];
+  }
+  const img=cx.createImageData(W,H);let t0=performance.now(),vis=true;
+  function frame(now){
+    if(bgKey!==st.tilt)makeBg();
+    const t=reduce?0.12:((now-t0)/1000);
+    const phi=st.tilt*Math.PI/180,u=[Math.cos(phi),Math.sin(phi)],s=st.steer*Math.PI/180,b=[Math.sin(s),Math.cos(s)];
+    const dot=u[0]*b[0]+u[1]*b[1];
+    const p=(t%0.9)/0.9;
+    const Vmax=st.type==='art'?(18+72*Math.exp(-0.5*((p-0.15)/0.06)**2)):(13+4*Math.sin(2*Math.PI*t/4));
+    const g=st.gain/100, bloom=g>0.7?1+(g-0.7)*1.4:1, drop=g<0.45?(0.45-g)*2.2:0, spk=g>0.72?(g-0.72)*0.5:0;
+    const d=img.data;const sn=Math.sin(phi),cs=Math.cos(phi),tn=Math.tan(s);
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+      const i=y*W+x,o=i*4;let r=bg[i],gg=bg[i],bb=bg[i];
+      const sx=x-(y-by0)*tn;
+      if(y>=by0&&y<=by1&&sx>=bx0&&sx<=bx1){
+        const dd=Math.abs((x-cxv)*sn-(y-cyv)*cs)/Rv;
+        let col=null;
+        if(dd<bloom){const rr=Math.min(dd/bloom,1);const v=Vmax*(1-rr*rr*0.92);let vm=-v*dot;
+          const nz=noise[(i*7+Math.floor(t*30)*131)%N];
+          if(Math.abs(vm)>=st.wf && !(drop>0&&nz<drop*(0.4+rr))){let w=vm;let k=0;while(w>st.Vn&&k<6){w-=2*st.Vn;k++;}while(w<-st.Vn&&k<12){w+=2*st.Vn;k++;}
+            if(Math.abs(vm)>st.Vn*0.04||g>0.6)col=colorOf(w,st.Vn);}
+        } else if(spk>0){const nz=noise[(i*13+Math.floor(t*25)*977)%N];if(nz<spk*0.35)col=colorOf((nz*2-0.5)*st.Vn*1.6,st.Vn);}
+        if(col){r=col[0];gg=col[1];bb=col[2];}
+      }
+      d[o]=r;d[o+1]=gg;d[o+2]=bb;d[o+3]=255;}
+    cx.putImageData(img,0,0);
+    // box outline
+    cx.strokeStyle='#cfdae2';cx.lineWidth=1;cx.beginPath();cx.moveTo(bx0,by0);cx.lineTo(bx1,by0);cx.lineTo(bx1+(by1-by0)*tn,by1);cx.lineTo(bx0+(by1-by0)*tn,by1);cx.closePath();cx.stroke();
+    // color bar
+    const cbx=W-24,cby=40,cbh=180;for(let k=0;k<cbh;k++){const v=st.Vn*(1-2*k/cbh);const c=colorOf(v,st.Vn);cx.fillStyle=`rgb(${c[0]|0},${c[1]|0},${c[2]|0})`;cx.fillRect(cbx,cby+k,12,1);}
+    cx.fillStyle='#06080a';cx.fillRect(cbx,cby+cbh/2-1,12,2);
+    cx.fillStyle='#cfdae2';cx.font='10px IBM Plex Mono, monospace';cx.textAlign='right';cx.fillText('+'+st.Vn,W-28,cby+8);cx.fillText('−'+st.Vn,W-28,cby+cbh);cx.fillText('cm/s',W-4,cby-6);
+    cx.textAlign='left';
+    // probe at top
+    cx.fillStyle='#f09a45';cx.fillRect(bx0,2,bx1-bx0,5);
+    if(!reduce&&vis)requestAnimationFrame(frame);
+  }
+  function info(){
+    const phi=st.tilt*Math.PI/180,s=st.steer*Math.PI/180;const dot=Math.cos(phi)*Math.sin(s)+Math.sin(phi)*Math.cos(s);
+    const th=Math.acos(Math.min(1,Math.abs(dot)))*180/Math.PI;const peak=(st.type==='art'?90:17)*Math.abs(dot);const slow=(st.type==='art'?18:9)*Math.abs(dot);
+    $('o-tilt').textContent=st.tilt+'°';$('o-steer').textContent=st.steer+'°';$('o-cdscale').textContent='±'+st.Vn+' cm/s';$('o-cdwf').textContent=st.wf+' cm/s';$('o-cdg').textContent=st.gain+'%';
+    $('cd-read').innerHTML=`<span>θ haz-flujo <b>${th.toFixed(0)}°</b></span><span>cos θ <b>${Math.abs(dot).toFixed(2)}</b></span><span>pico visto ≈ <b>${peak.toFixed(0)} cm/s</b></span><span>Nyquist ±${st.Vn}</span>`;
+    const h=[];
+    if(th>80)h.push(['crit','Haz casi perpendicular al vaso: cos θ ≈ 0 y el color desaparece. Inclina la caja (steer) o haz heel-toe con la sonda.']);
+    if(th>60&&th<=80)h.push(['warn',`θ = ${th.toFixed(0)}°: el color se debilita y la velocidad se subestima. Inclina la caja o angula la sonda para bajar de 60°.`]);
+    if(peak>st.Vn&&th<=80)h.push(['warn','Aliasing: el centro del vaso salta de amarillo a celeste sin pasar por negro. Sube la escala o baja la línea de base.']);
+    if(st.wf>slow&&th<=80)h.push(['crit',st.type==='vein'?'El filtro de pared supera la velocidad venosa: el vaso queda sin color, ¡parece trombosado!':'El filtro borra el flujo lento cerca de las paredes y en diástole: la columna de color se adelgaza y parpadea.']);
+    if(st.type==='vein'&&st.Vn>35)h.push(['warn','Escala alta para flujo venoso: poca sensibilidad y color pobre. Bájala a ~10–20 cm/s.']);
+    if(st.type==='art'&&st.Vn<20&&th<=80)h.push(['warn','Escala muy baja para una arteria: aliasing masivo en todo el lumen.']);
+    if(st.gain>72)h.push(['warn','Sobreganancia de color: blooming (el color sobrepasa la pared y puede tapar un trombo mural) y motas de ruido en el tejido.']);
+    if(st.gain<45)h.push(['crit','Subganancia: el lumen no se llena; un defecto de llenado aquí puede ser solo técnica, no trombo.']);
+    if(!h.length)h.push(['ok',`Ajuste correcto: lumen lleno de pared a pared, sin desborde, color ${(-dot)>0?'rojo (flujo hacia la sonda)':'azul (flujo que se aleja)'}. Cambia la inclinación del vaso y verás que el color se invierte sin que cambie el flujo.`]);
+    $('cd-hints').innerHTML=hintsHTML(h.slice(0,3));
+  }
+  const ids={tilt:'cd-tilt',steer:'cd-steer',Vn:'cd-scale',wf:'cd-wf',gain:'cd-gain'};
+  for(const k in ids)$(ids[k]).addEventListener('input',e=>{st[k]=+e.target.value;info();if(reduce)frame(0);});
+  document.querySelectorAll('input[name=cdv]').forEach(r=>r.addEventListener('change',e=>{st.type=e.target.value;if(st.type==='vein'){st.Vn=15;st.wf=2;}else{st.Vn=60;st.wf=3;}$('cd-scale').value=st.Vn;$('cd-wf').value=st.wf;info();if(reduce)frame(0);}));
+  if('IntersectionObserver' in window){new IntersectionObserver(e=>{const was=vis;vis=e[0].isIntersecting;if(vis&&!was&&!reduce)requestAnimationFrame(frame);}).observe(cv);}
+  makeBg();info();frame(performance.now());
+})();
+
+/* ---------- 14 Quiz ---------- */
+(function(){
+  const Q=[
+    ['Cambias de la convexa (3 MHz) a la lineal (10 MHz) para ver la pleura. ¿Qué ganas y qué pierdes?',['Ganas penetración, pierdes resolución','Ganas resolución axial, pierdes penetración','Ganas frame rate, pierdes Doppler','Nada cambia: la velocidad del sonido es constante'],1,'λ = c/f: a 10 MHz la longitud de onda es ~0,15 mm (mejor resolución axial), pero la atenuación crece con la frecuencia y la penetración útil cae a ~6 cm.'],
+    ['Vena femoral compresible pero sin color en Doppler. ¿Primer ajuste?',['Subir la escala para captar más velocidad','Diagnosticar trombosis no oclusiva','Bajar escala y filtro de pared y angular a menos de 60°','Subir la potencia acústica'],2,'El flujo venoso es lento: escala alta y filtro alto lo borran, y a ~90° el cos θ es 0. "Sin flujo" solo vale con el equipo optimizado.'],
+    ['Testículo con IR = 1,0 y filtro de pared alto. ¿Interpretación?',['Torsión confirmada','Puede ser artefacto: el filtro borró el flujo diastólico lento','Orquitis','Aliasing'],1,'El filtro pasa-altos elimina las velocidades bajas; si corta la diástole, VFD = 0 e IR = 1,0. Baja filtro y escala, usa power Doppler y compara con el lado sano.'],
+    ['Zona brillante por detrás de la vejiga en una pelvis por FAST. ¿Qué haces?',['Nada, es líquido libre','Subir la ganancia general','Reconocer refuerzo posterior y bajar el TGC lejano para no ocultar líquido','Cambiar a lineal'],2,'El líquido atenúa poco y el equipo compensa como si fuera tejido: lo posterior se ve sobre-brillante y puede esconder una franja anecoica de líquido libre.'],
+    ['Jet de estenosis aórtica de ~4 m/s, ventana apical a 13 cm, en PW. ¿Qué ves y qué haces?',['Espectro limpio; mides','Aliasing inevitable; cambias a CW','Sin señal; subes la ganancia','Espejo espectral; bajas la ganancia'],1,'A 13 cm la PRF máxima limita el Nyquist a ~1 m/s con 2,5 MHz. El CW no tiene límite de Nyquist (a cambio pierde resolución de rango).'],
+    ['En Doppler color, el centro de la aorta pasa de amarillo a celeste sin cruzar negro. Es…',['Flujo reverso real','Disección','Aliasing','Twinkling'],2,'La inversión real pasa por el negro (velocidad cero). El salto entre tonos claros en la zona de máxima velocidad es aliasing: sube la escala o mueve la línea de base.'],
+    ['La imagen está oscura. ¿Ganancia o potencia primero?',['Potencia: más eco y mejor imagen','Ganancia: amplifica la señal recibida sin aumentar la energía al paciente','Da lo mismo','Rango dinámico'],1,'Ganancia es post-recepción; potencia aumenta la intensidad emitida (TI/MI). Por ALARA: primero ganancia y TGC, potencia solo si es necesario.']
+  ];
+  const box=$('qbox');let score=0,answered=0;
+  Q.forEach((q,qi)=>{const d=document.createElement('div');d.className='q';d.innerHTML=`<p class="qt">${qi+1}. ${q[0]}</p><div class="opts">${q[1].map((o,oi)=>`<button type="button" data-o="${oi}">${o}</button>`).join('')}</div><p class="exp" hidden></p>`;
+    d.querySelectorAll('button').forEach(bt=>bt.addEventListener('click',()=>{if(d.dataset.done)return;d.dataset.done=1;answered++;const oi=+bt.dataset.o;
+      d.querySelectorAll('button').forEach(x=>{if(+x.dataset.o===q[2])x.classList.add('right');});if(oi!==q[2])bt.classList.add('wrong');else score++;
+      const e=d.querySelector('.exp');e.hidden=false;e.innerHTML=(oi===q[2]?'<b>¡Correcto!</b> ':'<b>No exactamente.</b> ')+q[3];
+      $('qscore').textContent=`${score} / ${Q.length}`+(answered===Q.length?(score>=6?' · dominas el panel':score>=4?' · buen nivel, repasa Doppler':' · vuelve a los simuladores'):'');}));
+    box.appendChild(d);});
+})();
+})();
+</script>
+</body></html>

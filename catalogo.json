@@ -107,6 +107,17 @@
         "antifúngicos"
       ],
       "fecha": "2026-10-10"
+    },
+    {
+      "id": "fisica-botonologia-pocus",
+      "titulo": "Física y Botonología POCUS",
+      "tema": "ultrasonido",
+      "archivo": "ultrasonido/fisica-botonologia-pocus.html",
+      "descripcion": "Del sonido al Doppler: onda, transductor, impedancia, resolución, sondas y modos; simuladores de modo B, Doppler espectral y color; filtro de pared, artefactos, bioefectos y autoevaluación.",
+      "etiquetas": [
+        "Física y botonología POCUS"
+      ],
+      "fecha": "2026-10-14"
     }
   ]
 }
