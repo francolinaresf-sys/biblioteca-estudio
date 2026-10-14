@@ -18,7 +18,9 @@ biblioteca-estudio/
 ├── toxicologia/
 ├── politrauma/
 ├── drogas-vasoactivas/
-└── farmacologia/         ← "Revisiones farmacológicas"
+├── farmacologia/         ← "Revisiones farmacológicas"
+├── sintomas-cardinales/
+└── neurologia/
 ```
 
 ## 1 · Publicar por primera vez (≈10 minutos, una sola vez)
@@ -84,7 +86,7 @@ Claude sube el HTML a la carpeta correcta y actualiza `catalogo.json`.
 |---------------|:-----------:|-------------|
 | `id`          | ✔ | Identificador único, sin espacios. Se usa en la URL y en favoritos. |
 | `titulo`      | ✔ | Nombre visible de la tarjeta. |
-| `tema`        | ✔ | Uno de los `id` de `temas`: `ultrasonido`, `cardiologia`, `toxicologia`, `politrauma`, `drogas-vasoactivas`, `farmacologia`. |
+| `tema`        | ✔ | Uno de los `id` de `temas`: `ultrasonido`, `cardiologia`, `toxicologia`, `politrauma`, `drogas-vasoactivas`, `farmacologia`, `sintomas-cardinales`, `neurologia`. |
 | `archivo`     | ✔ | Ruta relativa al HTML. |
 | `descripcion` |   | 1–2 líneas que se muestran en la tarjeta. |
 | `etiquetas`   |   | Lista de palabras clave para la búsqueda. |

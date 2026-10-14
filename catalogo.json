@@ -37,6 +37,18 @@
       "nombre": "Revisiones farmacológicas",
       "icono": "💊",
       "color": "#15803d"
+    },
+    {
+      "id": "sintomas-cardinales",
+      "nombre": "Síntomas cardinales",
+      "icono": "🩺",
+      "color": "#0f766e"
+    },
+    {
+      "id": "neurologia",
+      "nombre": "Neurología",
+      "icono": "🧠",
+      "color": "#4338ca"
     }
   ],
   "artefactos": [
