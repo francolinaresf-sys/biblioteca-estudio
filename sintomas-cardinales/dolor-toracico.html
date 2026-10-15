@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dolor Torácico en Urgencias — Guía de estudio y docencia</title>
+<style>
+:root{color-scheme:light;
+--ink:#16242B;--muted:#5C6B73;--bg:#F4F7F8;--card:#FFFFFF;--line:#DAE3E7;
+--red:#B3261E;--teal:#0F7B86;--green:#2E7D52;--amber:#B5791A;--dark:#0E2A33;--dark2:#13363F;
+--redbg:#FBECEA;--tealbg:#E7F3F4;--greenbg:#E8F3EC;--amberbg:#F7EFDF;--docbg:#EEF2FF;--docbd:#6366F1;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,sans-serif;line-height:1.5;font-size:15px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px 80px}
+a{color:var(--teal)}
+/* header */
+header.top{background:linear-gradient(135deg,#0E2A33,#13363F);color:#fff;padding:34px 0 26px;border-bottom:6px solid var(--red)}
+header.top .wrap{padding-bottom:0}
+.kicker{color:#9FD0D6;font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase}
+header.top h1{font-family:Georgia,serif;font-size:34px;margin:6px 0 4px;line-height:1.1}
+header.top p.sub{color:#CFE3E6;font-style:italic;margin:0 0 14px;font-size:16px}
+header.top p.meta{color:#8FB6BC;font-size:12.5px;margin:0}
+/* controls */
+.controls{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(14,42,51,.06)}
+.controls .inner{max-width:1040px;margin:0 auto;padding:8px 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.modebtns{display:flex;gap:6px;background:var(--bg);border-radius:10px;padding:4px}
+.modebtns button{border:0;background:transparent;padding:7px 14px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;color:var(--muted)}
+.modebtns button.active{background:var(--dark);color:#fff}
+.hint{font-size:12.5px;color:var(--muted)}
+nav.toc{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+nav.toc a{font-size:12px;text-decoration:none;color:var(--dark2);background:var(--bg);padding:5px 9px;border-radius:7px;border:1px solid var(--line)}
+nav.toc a:hover{background:var(--tealbg)}
+/* sections */
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:20px 0;box-shadow:0 2px 10px rgba(14,42,51,.05)}
+section>h2{font-family:Georgia,serif;font-size:24px;margin:0 0 4px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.stag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--red)}
+h3{font-size:17px;margin:20px 0 6px;color:var(--dark2)}
+h4{font-size:14px;margin:14px 0 4px;color:var(--teal);text-transform:uppercase;letter-spacing:.5px}
+p{margin:6px 0}
+ul{margin:6px 0 6px 2px;padding-left:20px}
+li{margin:3px 0}
+small,.src{color:var(--muted);font-size:12px;font-style:italic}
+.src{display:block;margin-top:8px}
+.lead{font-size:16px;color:var(--dark2)}
+/* boxes */
+.box{border-radius:10px;padding:12px 15px;margin:12px 0;border:1px solid var(--line);background:var(--card)}
+.box .bt{font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.rule{background:var(--redbg);border-color:#E7B6B1}.rule .bt{color:var(--red)}
+.pearl{background:var(--amberbg);border-color:#E7D4A8}.pearl .bt{color:var(--amber)}
+.key{background:var(--tealbg);border-color:#BBD9DD}.key .bt{color:var(--teal)}
+.safe{background:var(--greenbg);border-color:#BFE0C9}.safe .bt{color:var(--green)}
+/* teaching box */
+.teach{background:var(--docbg);border:1px solid #C7CDF7;border-left:5px solid var(--docbd);border-radius:10px;padding:13px 16px;margin:14px 0}
+.teach .bt{color:#4338CA;font-weight:800;font-size:12.5px;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px}
+.teach .q{font-weight:600;color:#312E81;margin:4px 0}
+.teach .mini{font-size:12.5px;color:#4b4f8a;margin:6px 0 0}
+.teach ul{margin-top:4px}
+body.mode-study .teach{display:none}
+/* tables */
+.tblwrap{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:#fff}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+thead th{background:var(--dark2);color:#fff;font-size:12.5px}
+tbody tr:nth-child(even){background:#FAFCFC}
+td.c,th.c{text-align:center}
+.pos{color:var(--red);font-weight:700}.neg{color:var(--green);font-weight:700}
+/* cards grid */
+.grid{display:grid;gap:12px;margin:12px 0}
+.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:720px){.g3,.g2{grid-template-columns:1fr}nav.toc{display:none}}
+.minicard{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff}
+.minicard .h{font-weight:700;margin-bottom:3px}
+.chip{display:inline-block;background:var(--dark2);color:#fff;border-radius:7px;padding:3px 9px;font-size:12px;font-weight:600;margin:2px}
+/* ecg figure */
+.figrow{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:10px 0}
+figure{margin:0;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;flex:1 1 260px}
+figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:12px;color:var(--muted);margin-top:6px;text-align:center}
+.ecgbg{fill:#fff}
+.ecgline{fill:none;stroke:#13363F;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}
+.ecgaccentR{fill:none;stroke:var(--red);stroke-width:2.6}
+.ecgfill{fill:#F2B8B2;opacity:.6}
+.lbl{font:600 11px sans-serif;fill:var(--muted)}
+.lblk{font:700 11px sans-serif;fill:var(--dark2)}
+/* flow */
+.flow{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.step{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+.step .n{background:var(--teal);color:#fff;font-weight:800;min-width:40px;text-align:center;padding:12px 0;align-self:stretch;display:flex;align-items:center;justify-content:center}
+.step.r .n{background:var(--red)}.step.g .n{background:var(--green)}
+.step .t{padding:9px 14px;font-size:14px}
+/* case */
+.case{border:1px solid var(--line);border-radius:12px;padding:0;overflow:hidden;margin:16px 0}
+.case .ch{background:var(--dark2);color:#fff;padding:10px 16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.case .ch .tp{font-size:12px;color:#9FD0D6;font-weight:600}
+.case .body{padding:14px 16px}
+.scen{background:var(--bg);border-left:4px solid var(--dark2);border-radius:8px;padding:10px 14px;margin-bottom:10px}
+.qline{font-weight:600;color:var(--dark2);margin:8px 0}
+.reveal{border:0;background:var(--teal);color:#fff;font-weight:700;padding:8px 16px;border-radius:9px;cursor:pointer;font-size:13px}
+.reveal:hover{background:#0c6670}
+.answer{display:none;margin-top:12px;border-radius:10px;padding:12px 15px;background:var(--greenbg);border:1px solid #BFE0C9}
+.answer.show{display:block}
+.answer .at{font-weight:800;color:var(--green);text-transform:uppercase;font-size:12px;letter-spacing:1px}
+.answer .debrief{margin-top:8px;background:#fff;border:1px dashed #9db7ff;border-radius:8px;padding:9px 12px;font-size:13px}
+.answer .debrief b{color:#4338CA}
+body.mode-study .answer .debrief{display:none}
+/* rubric */
+.rubric th{background:var(--teal)}
+footer{color:var(--muted);font-size:12px;text-align:center;margin-top:30px}
+.pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.pill.red{background:var(--redbg);color:var(--red)}.pill.amber{background:var(--amberbg);color:var(--amber)}.pill.green{background:var(--greenbg);color:var(--green)}
+.obj{columns:2;column-gap:28px}@media(max-width:720px){.obj{columns:1}}
+.obj li{break-inside:avoid}
+</style>
+</head>
+<body class="mode-teach">
+
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Medicina de Urgencia · Material académico</div>
+    <h1>🫀 Enfrentamiento del Dolor Torácico en Urgencias</h1>
+    <p class="sub">Guía de estudio detallada + manual de docencia y tutoría clínica</p>
+    <p class="meta">Dr. Franco Linares F. · Residentes R1 · Fuentes: AHA/ACC 2021 · ESC 2023 · Rosen's Emergency Medicine · <strong>5ª Definición Universal de IAM (2026)</strong></p>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="inner">
+    <div class="modebtns" role="tablist" aria-label="Modo de visualización">
+      <button id="btnEstudio" onclick="setMode('study')">📘 Modo estudio</button>
+      <button id="btnDocencia" class="active" onclick="setMode('teach')">🎓 Modo docencia</button>
+    </div>
+    <span class="hint" id="hint">Modo docencia: se muestran las cajas 🎓 con preguntas socráticas, errores frecuentes y guion de tutoría.</span>
+    <nav class="toc">
+      <a href="#objetivos">Objetivos</a>
+      <a href="#inicial">Enfrentamiento</a>
+      <a href="#rosen">Rosen</a>
+      <a href="#ecg">ECG / OMI</a>
+      <a href="#examen">Examen físico</a>
+      <a href="#tropo">Troponina</a>
+      <a href="#udmi5">5ª Def. IAM 2026</a>
+      <a href="#scores">Scores</a>
+      <a href="#flujo">Flujograma</a>
+      <a href="#casos">Casos</a>
+      <a href="#tutor">Guía del tutor</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- CÓMO USAR -->
+<section id="uso">
+  <span class="stag">Cómo usar este artefacto</span>
+  <h2>Doble propósito: estudiar y enseñar</h2>
+  <div class="grid g2">
+    <div class="minicard"><div class="h">📘 Para estudiar</div>Lee el contenido en orden; cada sección trae criterios, umbrales con fuente y perlas. Usa los casos del final para autoevaluarte (botón <em>Revelar</em>).</div>
+    <div class="minicard"><div class="h">🎓 Para enseñar / tutoría</div>Activa <strong>Modo docencia</strong>: aparecen cajas con preguntas socráticas, errores frecuentes del residente, cómo evaluarlo a la cabecera y un guion para discutir cada caso. La <a href="#tutor">Guía del tutor</a> propone una sesión de 60 min y una rúbrica.</div>
+  </div>
+  <div class="box rule"><span class="bt">⚠️ Regla de oro</span>El objetivo en urgencias <strong>no</strong> es diagnosticar la causa exacta en todos, sino <strong>identificar rápido lo letal</strong> y estratificar el riesgo de forma eficiente.</div>
+</section>
+
+<!-- OBJETIVOS -->
+<section id="objetivos">
+  <span class="stag">Mapa de competencias</span>
+  <h2>Objetivos de aprendizaje</h2>
+  <p class="lead">Al finalizar, el residente R1 debe ser capaz de:</p>
+  <ul class="obj">
+    <li>Aplicar un enfrentamiento sistematizado en los primeros 10 minutos.</li>
+    <li>Reconocer las 6 causas letales y clasificar el diferencial (crítico / urgente / no urgente).</li>
+    <li>Interpretar el ECG de alto riesgo y los equivalentes de STEMI (concepto OMI).</li>
+    <li>Calcular e interpretar <em>puntaje a puntaje</em> HEART, Wells, TIMI y GRACE.</li>
+    <li>Explicar qué es la troponina, su cinética y el rol del dímero D.</li>
+    <li>Estimar el rendimiento (LR) de los hallazgos del examen físico torácico.</li>
+    <li>Integrar todo en una decisión: alta / observación / ingreso / reperfusión.</li>
+  </ul>
+  <div class="teach"><span class="bt">🎓 Encuadre docente</span>
+    <p class="q">Pregunta de apertura (activa el conocimiento previo): «Llega un paciente de 55 años con dolor torácico. Tienes 10 minutos. ¿Qué haces primero y por qué?»</p>
+    <p class="mini"><b>Objetivo de la sesión visible:</b> escribe en la pizarra los 3 verbos que guían todo: <strong>descartar lo letal → estratificar → decidir a tiempo.</strong></p>
+  </div>
+</section>
+
+<!-- ENFRENTAMIENTO INICIAL -->
+<section id="inicial">
+  <span class="stag">Enfrentamiento inicial</span>
+  <h2>Los primeros 10 minutos y las 6 causas letales</h2>
+  <p>El dolor torácico representa <strong>5–8%</strong> de las consultas de urgencia; <strong>15–25%</strong> tendrá un síndrome coronario agudo (SCA). El IAMCEST con reperfusión oportuna tiene mortalidad 4–6%, que sube a 25–30% sin reperfusión: «el tiempo es músculo» (cada 30 min de retraso ↑ mortalidad relativa ~7,5%).
+    <span class="src">Amsterdam EA, AHA/ACC. Circulation 2014;130:e344 · De Luca G, Circulation 2004;109:1223 · Pope JH, NEJM 2000.</span></p>
+
+  <h3>Los 6 Jinetes del Apocalipsis Torácico 🐎</h3>
+  <p>Descartar <strong>siempre primero</strong>:</p>
+  <div class="grid g3">
+    <div class="minicard"><div class="h" style="color:var(--red)">1 · SCA</div>IAMCEST / IAMSEST</div>
+    <div class="minicard"><div class="h" style="color:var(--red)">2 · Disección aórtica</div>Desgarro de la pared aórtica</div>
+    <div class="minicard"><div class="h" style="color:var(--red)">3 · Taponamiento</div>Compromiso del llenado cardíaco</div>
+    <div class="minicard"><div class="h" style="color:var(--teal)">4 · TEP</div>Oclusión de la circulación pulmonar</div>
+    <div class="minicard"><div class="h" style="color:var(--teal)">5 · Neumotórax a tensión</div>Colapso pulmonar + hipotensión</div>
+    <div class="minicard"><div class="h" style="color:var(--amber)">6 · Boerhaave</div>Ruptura esofágica espontánea</div>
+  </div>
+
+  <h3>Protocolo de los 6 pasos (&lt;10 min)</h3>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t"><strong>ECG de 12 derivaciones</strong> en &lt;10 min del contacto médico — el pilar del triage.</div></div>
+    <div class="step"><div class="n">2</div><div class="t"><strong>Signos vitales</strong> completos; PA en <em>ambos</em> brazos (descartar disección), SpO₂, FC, Tº.</div></div>
+    <div class="step"><div class="n">3</div><div class="t"><strong>Anamnesis OPQRST</strong> + examen físico dirigido (simultáneo).</div></div>
+    <div class="step"><div class="n">4</div><div class="t"><strong>Acceso venoso + laboratorio</strong>: hs-cTn basal, hemograma, creatinina, dímero D si corresponde.</div></div>
+    <div class="step"><div class="n">5</div><div class="t"><strong>Radiografía de tórax</strong>: mediastino ensanchado, neumotórax, consolidación, derrame.</div></div>
+    <div class="step"><div class="n">6</div><div class="t"><strong>Monitorización continua</strong>; O₂ solo si SpO₂ &lt;90%.</div></div>
+  </div>
+  <p class="src">ESC 2023 (Byrne RA, Eur Heart J 2023;44:3720) · AHA/ACC Chest Pain 2021 (Gulati M, Circulation 2021;144:e368).</p>
+
+  <h3>OPQRST y correlato diagnóstico</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Característica del dolor</th><th>Pensar en…</th><th>Bandera roja asociada</th></tr></thead>
+    <tbody>
+      <tr><td>Opresivo retroesternal, irradiado a brazo/mandíbula, diaforesis</td><td class="pos">SCA</td><td>Inicio con esfuerzo + factores de riesgo CV</td></tr>
+      <tr><td>Desgarrante, transfixiante, <em>máximo desde el inicio</em></td><td class="pos">Disección aórtica</td><td>Asimetría de pulsos / PA diferencial &gt;20 mmHg</td></tr>
+      <tr><td>Pleurítico + disnea súbita</td><td class="pos">TEP</td><td>Inmovilización / cirugía reciente / TVP</td></tr>
+      <tr><td>Pleurítico unilateral + disnea</td><td class="pos">Neumotórax</td><td>Desviación traqueal = tensión</td></tr>
+      <tr><td>Mejora al sentarse/inclinarse, frote</td><td>Pericarditis</td><td>Derrame → taponamiento</td></tr>
+      <tr><td>Epigástrico + vómitos violentos + enfisema subcutáneo</td><td class="pos">Boerhaave</td><td>Vómitos intensos previos</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="teach"><span class="bt">🎓 Caja docente — enfrentamiento</span>
+    <p class="q">Preguntas socráticas: «¿Por qué tomamos PA en ambos brazos?» · «Si la SpO₂ es 96%, ¿pones oxígeno? ¿por qué no?» · «Nombra las 6 letales en 20 segundos.»</p>
+    <p class="mini"><b>⚠️ Errores frecuentes del R1:</b> poner O₂ a todos; anclarse en «gastritis» antes de descartar lo letal; no repetir el ECG; olvidar la PA contralateral.</p>
+    <p class="mini"><b>🩺 A la cabecera:</b> pídele al residente que verbalice su hipótesis <em>antes</em> de pedir exámenes («¿qué estás descartando con esta radiografía?»).</p>
+  </div>
+</section>
+
+<!-- ROSEN -->
+<section id="rosen">
+  <span class="stag">Diagnóstico diferencial</span>
+  <h2>Clasificación por gravedad (esquema tipo Rosen)</h2>
+  <p>Ordenar el diferencial por <strong>urgencia de acción</strong>, no por frecuencia. Esta es una reorganización propia del contenido para estudio; la tabla original está en el pack de figuras.</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Sistema</th><th><span class="pill red">Críticos</span></th><th><span class="pill amber">Urgentes</span></th><th><span class="pill green">No urgentes</span></th></tr></thead>
+    <tbody>
+      <tr><td><strong>Cardiovascular</strong></td><td>IAM, angina inestable, disección aórtica, taponamiento</td><td>Angina de Prinzmetal, espasmo coronario, pericarditis/miocarditis</td><td>Valvulopatía, prolapso mitral, miocardiopatía hipertrófica</td></tr>
+      <tr><td><strong>Pulmonar</strong></td><td>Embolia pulmonar, neumotórax a tensión</td><td>Neumotórax (simple), mediastinitis, neumonía</td><td>Pleuritis, tumor</td></tr>
+      <tr><td><strong>Digestivo</strong></td><td>Rotura esofágica (Boerhaave)</td><td>Espasmo esofágico, Mallory-Weiss, colecistitis, pancreatitis</td><td>ERGE, úlcera péptica</td></tr>
+      <tr><td><strong>Pared / otros</strong></td><td>—</td><td>Herpes zóster</td><td>Costocondritis, dolor muscular, neuralgia, psicógeno, hiperventilación</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box key"><span class="bt">💡 Foco R1</span>Tu prioridad operativa es la columna <strong>«Críticos»</strong>: descártala activamente en todo dolor torácico antes de etiquetar algo como benigno.</div>
+  <div class="teach"><span class="bt">🎓 Caja docente — diferencial</span>
+    <p class="q">Ejercicio: da un síntoma (p. ej. «dolor que mejora inclinado hacia adelante») y pide al residente ubicarlo en la columna correcta y justificar la conducta.</p>
+    <p class="mini"><b>⚠️ Error frecuente:</b> confundir «poco probable» con «no urgente». Una causa poco frecuente puede ser crítica (p. ej. disección en paciente joven con Marfan).</p>
+  </div>
+</section>
+
+<!-- ECG / OMI -->
+<section id="ecg">
+  <span class="stag">Electrocardiograma · ECG de alto riesgo</span>
+  <h2>Criterios de IAMCEST, territorios y equivalentes de STEMI (OMI)</h2>
+  <p>Sensibilidad del ECG ~95% para IAMCEST bien interpretado, pero solo 50–60% para IAMSEST → <strong>ECG seriados</strong>. Interpretar en &lt;10 min.
+    <span class="src">Mills NL, 5ª UDMI. Circulation 2026 · Thygesen K, 4ª UDMI. Circulation 2018;138:e231.</span></p>
+
+  <h3>Criterios de elevación del ST (4ª / 5ª Definición Universal)</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Grupo</th><th>Umbral de elevación del ST</th></tr></thead>
+    <tbody>
+      <tr><td>Hombres &lt;40 años</td><td>≥ 2,5 mm en V2–V3 · ó ≥ 1 mm en las demás</td></tr>
+      <tr><td>Hombres ≥40 años</td><td>≥ 2,0 mm en V2–V3 · ó ≥ 1 mm en las demás</td></tr>
+      <tr><td>Mujeres (toda edad)</td><td>≥ 1,5 mm en V2–V3 · ó ≥ 1 mm en las demás</td></tr>
+      <tr><td class="pos">Depresión ST en V1–V3</td><td>Sospechar infarto <strong>posterior</strong> → derivaciones V7–V9</td></tr>
+      <tr><td class="pos">BRIHH nuevo/presumiblemente nuevo</td><td>Equivalente de STEMI → aplicar Sgarbossa modificado</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Territorios coronarios</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Derivaciones</th><th>Territorio</th><th>Arteria</th><th>Perla</th></tr></thead>
+    <tbody>
+      <tr><td>V1–V6, aVL</td><td>Anterior extenso</td><td>DA proximal</td><td>Alta mortalidad, riesgo de shock</td></tr>
+      <tr><td>V1–V4</td><td>Anteroseptal</td><td>DA</td><td>Alteraciones septales</td></tr>
+      <tr><td>I, aVL, V5–V6</td><td>Lateral</td><td>Circunfleja</td><td>Puede ser «silente» en 12 derivaciones</td></tr>
+      <tr><td>II, III, aVF</td><td>Inferior</td><td>CD (80%) / Cx (20%)</td><td><strong>Siempre V3R–V4R</strong> para descartar VD</td></tr>
+      <tr><td>V7–V9 (espejo V1–V3)</td><td>Posterior</td><td>CD o Cx</td><td>Depresión V1–V3 = equivalente posterior</td></tr>
+      <tr><td>V3R, V4R</td><td>Ventrículo derecho</td><td>CD proximal</td><td class="pos">NO nitratos ni diuréticos; dar volumen</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Equivalentes de STEMI — concepto OMI</h3>
+  <div class="box key"><span class="bt">💡 Concepto clave</span><strong>OMI = Occlusion MI.</strong> Patrón que indica oclusión coronaria aguda pero que <strong>no</strong> cumple criterios clásicos de elevación del ST. Misma urgencia de reperfusión que un STEMI.
+    <span class="src">Meyers HP, Am Heart J 2015 · Smith SW, Ann Emerg Med 2012.</span></div>
+
+  <p>Esquemas originales (líneas ilustrativas, no trazados reales). Los ECG reales están en el pack de figuras <code>Figuras_Presentacion_R1</code>.</p>
+  <div class="figrow">
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,70 H40 l6,-6 6,6 H70 l8,34 8,-56 8,22 H118 q10,8 22,10 q12,-2 18,-30 q4,-20 10,-20 q8,0 12,20 H240"/>
+        <path class="ecgaccentR" d="M118,70 q10,8 22,10"/>
+      </svg>
+      <figcaption><strong>de Winter:</strong> depresión J ascendente 1–3 mm en V1–V6 + T altas y simétricas. Estático. <em>Cateterismo urgente (oclusión DA).</em></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,66 H60 l6,-6 6,6 H96 l8,30 8,-50 8,20 H140 q14,-30 26,2 q8,18 16,2 H240"/>
+        <path class="ecgaccentR" d="M140,66 q14,-30 26,2 q8,18 16,2"/>
+      </svg>
+      <figcaption><strong>Wellens B:</strong> T profundamente invertidas y simétricas en V2–V3 (tipo A = bifásicas). En fase libre de dolor. <em>NUNCA prueba de esfuerzo → cateterismo.</em></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,74 H70 l6,-6 6,6 H92 l8,26 8,-44 8,18 H126 q18,-46 40,0 q0,2 0,2 H240"/>
+        <path class="ecgaccentR" d="M126,74 q18,-46 40,0"/>
+      </svg>
+      <figcaption><strong>T hiperaguda:</strong> T ancha en su base, amplia y simétrica. <em>El signo más precoz de oclusión</em> — ECG seriados cada 15–30 min.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,52 H70 l6,-5 6,5 H92 l10,18 8,-30 8,12 H128 q4,14 20,14 H240"/>
+        <path class="ecgfill" d="M128,52 q4,14 20,14 H200 V52 Z"/>
+        <line x1="70" y1="52" x2="210" y2="52" stroke="#9db7c2" stroke-width="1" stroke-dasharray="3,3"/>
+      </svg>
+      <figcaption><strong>Posterior (espejo):</strong> depresión ST horizontal V1–V4 con R&gt;S y T positiva. Confirmar V7–V9 (ST ≥0,5 mm). <em>Código infarto.</em></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,60 H70 l6,-6 6,6 H92 l8,-28 8,46 8,-18 H132 q0,0 0,0 l4,-14 H200 l0,14 H240"/>
+        <path class="ecgaccentR" d="M136,46 H200"/>
+      </svg>
+      <figcaption><strong>Sgarbossa (concordante):</strong> en BRIHH/marcapasos, elevación ST concordante ≥1 mm, o ratio ST/S ≥0,25. <em>Basta 1 criterio para reperfundir.</em></figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 110"><rect class="ecgbg" width="240" height="110"/>
+        <path class="ecgline" d="M6,58 H60 l5,-5 5,5 H84 l8,24 8,-40 8,16 H250"/>
+        <path class="ecgaccentR" d="M120,58 q2,-30 16,-30 q14,0 16,30"/>
+        <text class="lblk" x="118" y="24">aVR ↑ + depresión difusa</text>
+      </svg>
+      <figcaption><strong>aVR difuso:</strong> ST↑ en aVR ≥1 mm + depresión ST en ≥6 derivaciones → tronco izquierdo / 3 vasos. <em>Cateterismo; no esperar troponina.</em></figcaption>
+    </figure>
+  </div>
+
+  <h4>Otros patrones (criterios)</h4>
+  <ul>
+    <li><strong>Aslanger:</strong> SDST aislado en DIII + IDST en V4–V6 (T terminal positiva) + ST V1&gt;V2 → OMI inferior.</li>
+    <li><strong>Bandera de Sudáfrica:</strong> SDST en I, aVL y V2 + IDST en DIII → oclusión de la 1ª diagonal (rama de la DA).</li>
+    <li><strong>Northern OMI:</strong> SDST en aVR y aVL con T negativas + IDST en precordiales/inferiores.</li>
+    <li><strong>Precordial swirl:</strong> SDST V1–V2 + IDST V5–V6 → DA proximal a la 1ª septal (septum/ápex).</li>
+  </ul>
+  <p class="src">de Winter RJ, NEJM 2008;359:2071 · Rhinehardt J, Am J Emerg Med 2002 · Kosuge M, Am J Cardiol 2011 · Matetzky S, JACC 1999 · Dodd KW, Ann Emerg Med 2021 · patrones recientes: STEMI equivalents, Annals Emerg Med 2025.</p>
+
+  <div class="teach"><span class="bt">🎓 Caja docente — ECG/OMI</span>
+    <p class="q">Preguntas socráticas: «Este paciente tiene dolor típico y ECG sin SDST. ¿Lo mandas a casa?» · «¿Qué derivaciones agregarías y por qué?» · «¿Por qué Wellens contraindica la ergometría?»</p>
+    <p class="mini"><b>⚠️ Errores frecuentes:</b> leer solo el segmento ST y pasar por alto T hiperagudas/de Winter; no poner V7–V9 ni V3R–V4R; «esperar a que evolucione» un patrón estático.</p>
+    <p class="mini"><b>🩺 A la cabecera:</b> entrega 3 ECG (uno normal, uno con T hiperaguda, uno posterior) y cronometra la interpretación en 60 s cada uno.</p>
+  </div>
+</section>
+
+<!-- EXAMEN FÍSICO -->
+<section id="examen">
+  <span class="stag">Anexo · rendimiento diagnóstico</span>
+  <h2>Examen físico del tórax: sensibilidad, especificidad y LR</h2>
+  <p>El <strong>likelihood ratio (LR)</strong> indica cuánto mueve un hallazgo la probabilidad pre-prueba. LR+ &gt;10 o LR− &lt;0,1 cambian mucho la probabilidad; cerca de 1 aportan poco.</p>
+
+  <h3>Hallazgos pulmonares</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Hallazgo</th><th>Sugiere</th><th class="c">LR+</th><th class="c">LR−</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td>Matidez a la percusión</td><td class="pos">Derrame pleural</td><td class="c pos">8,7</td><td class="c">—</td><td><small>Wong, JAMA 2009</small></td></tr>
+      <tr><td>Frémito vocal táctil reducido (ausente)</td><td>Derrame pleural (descarta)</td><td class="c">—</td><td class="c neg">0,21</td><td><small>Wong, JAMA 2009</small></td></tr>
+      <tr><td>Egofonía / frémito ↑ / soplo tubárico</td><td class="pos">Neumonía (consolidación)</td><td class="c">alta especif.</td><td class="c">—</td><td><small>Metlay, JAMA 1997</small></td></tr>
+      <tr><td>Crépitos</td><td class="pos">Neumonía</td><td class="c">~2–3</td><td class="c">—</td><td><small>Metlay, JAMA 1997</small></td></tr>
+      <tr><td>Murmullo ↓/abolido + hiperresonancia</td><td class="pos">Neumotórax</td><td class="c">~5</td><td class="c">—</td><td><small>McGee, EBPD</small></td></tr>
+      <tr><td>Vitales + examen pulmonar normales</td><td>Neumonía muy improbable (&lt;0,4%)</td><td class="c">—</td><td class="c neg">bajo</td><td><small>Metlay, JAMA 1997</small></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Hallazgos cardiovasculares</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Hallazgo</th><th>Sugiere</th><th class="c">LR+</th><th class="c">LR−</th><th>Fuente</th></tr></thead>
+    <tbody>
+      <tr><td>Déficit de pulso / PA diferencial &gt;20 mmHg</td><td class="pos">Disección aórtica</td><td class="c pos">5,7</td><td class="c">—</td><td><small>Klompas, JAMA 2002</small></td></tr>
+      <tr><td>Déficit neurológico focal</td><td>Disección aórtica</td><td class="c pos">6,6–33</td><td class="c">—</td><td><small>Klompas, JAMA 2002</small></td></tr>
+      <tr><td>Soplo diastólico (insuf. aórtica)</td><td>Disección (poco útil)</td><td class="c">1,4</td><td class="c">—</td><td><small>Klompas, JAMA 2002</small></td></tr>
+      <tr><td>Pulso paradójico &gt;10 mmHg</td><td class="pos">Taponamiento (en derrame)</td><td class="c pos">3,3</td><td class="c neg">0,03</td><td><small>Roy, JAMA 2007</small></td></tr>
+      <tr><td>Tercer ruido (S3)</td><td class="pos">Insuf. cardíaca</td><td class="c pos">11</td><td class="c">—</td><td><small>Wang, JAMA 2005</small></td></tr>
+      <tr><td>Ingurgitación yugular</td><td>Insuf. cardíaca</td><td class="c pos">5,1</td><td class="c">—</td><td><small>Wang, JAMA 2005</small></td></tr>
+      <tr><td>Diaforesis observada</td><td class="pos">IAM</td><td class="c">~2 (OR 5,2)</td><td class="c">—</td><td><small>Panju, JAMA 1998</small></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="box pearl"><span class="bt">💡 Clave en SCA</span>El examen físico suele ser <strong>normal</strong> en el SCA: su valor está en detectar complicaciones (S3, hipotensión, soplo nuevo) y descartar mímicos. El dolor <strong>reproducible a la palpación</strong> baja la probabilidad de SCA pero <strong>no la excluye</strong>.</div>
+  <div class="teach"><span class="bt">🎓 Caja docente — examen físico</span>
+    <p class="q">Pregunta: «Si la matidez a la percusión tiene LR+ 8,7 para derrame, ¿basta para confirmarlo?» (No: confirmar con Rx/POCUS; el examen hace «rule-in» pero la imagen cierra el diagnóstico).</p>
+    <p class="mini"><b>⚠️ Error frecuente:</b> tratar el examen físico como dicotómico (presente/ausente) sin integrar la probabilidad pre-prueba. Enseña a razonar en términos de LR.</p>
+  </div>
+</section>
+
+<!-- TROPONINA -->
+<section id="tropo">
+  <span class="stag">Biomarcadores</span>
+  <h2>Troponina: qué es, cinética, protocolo y fisiología</h2>
+  <p>La troponina es parte del <strong>complejo regulador de la contracción</strong>; las isoformas cardíacas (<strong>cTnI, cTnT</strong>) son específicas del miocardio. La <strong>hs-cTn</strong> detecta concentraciones muy bajas, permitiendo descarte rápido.
+    <span class="src">Mills NL, et al. 5ª Definición Universal de IAM (2026). Circulation 2026;154 · Thygesen K, 4ª UDMI. Circulation 2018.</span></p>
+  <div class="box key"><span class="bt">🆕 Novedad 2026</span>La 5ª Definición Universal reemplaza los tipos numéricos (1, 2, 4a–c, 5) por una <strong>clasificación clínica</strong> —primario, secundario y relacionado con procedimiento— y define el daño miocárdico con <strong>URL del percentil 99 específicos por sexo</strong>. <a href="#udmi5">Ver sección dedicada ↓</a></div>
+  <div class="grid g2">
+    <div class="box rule"><span class="bt">IAM primario (antes «tipo 1»)</span>Isquemia por <strong>patología coronaria aguda</strong>: aterotrombosis, SCAD, embolia coronaria o vasoespasmo.</div>
+    <div class="box pearl"><span class="bt">IAM secundario (antes «tipo 2»)</span>Desbalance oferta/demanda por <strong>otra condición aguda</strong> (taquiarritmia, anemia, shock) — ahora <strong>requiere confirmar isquemia</strong> (EAC obstructiva o nueva alteración de motilidad / viabilidad).</div>
+  </div>
+  <p><strong>Daño miocárdico agudo</strong> = «rise and/or fall» de troponina con ≥1 valor &gt; URL del percentil 99 <em>específico por sexo</em>. <strong>Daño crónico</strong> = ≥2 valores &gt; URL en situación estable, <em>sin</em> dinámica (ERC, IC, amiloidosis).</p>
+
+  <h3>Cinética — «la película bioquímica del infarto»</h3>
+  <div class="figrow">
+    <figure style="flex:1 1 320px">
+      <svg viewBox="0 0 360 180"><rect class="ecgbg" width="360" height="180"/>
+        <line x1="40" y1="150" x2="350" y2="150" stroke="#9db7c2" stroke-width="1.5"/>
+        <line x1="40" y1="20" x2="40" y2="150" stroke="#9db7c2" stroke-width="1.5"/>
+        <text class="lbl" x="150" y="172">horas / días desde el inicio</text>
+        <text class="lbl" x="6" y="90" transform="rotate(-90 12,90)">concentración</text>
+        <path class="ecgline" style="stroke:var(--red)" d="M55,150 C95,150 100,40 150,40 C210,40 250,145 345,148"/>
+        <path class="ecgline" style="stroke:var(--teal);stroke-dasharray:5,4" d="M55,150 C80,150 90,70 120,70 C150,70 170,150 210,150"/>
+        <path class="ecgline" style="stroke:var(--amber);stroke-dasharray:2,3" d="M50,150 C65,150 70,110 85,110 C100,110 110,150 130,150"/>
+        <text class="lblk" x="150" y="32" style="fill:var(--red)">Troponina hs</text>
+        <text class="lbl" x="118" y="62" style="fill:var(--teal)">CK-MB</text>
+        <text class="lbl" x="60" y="104" style="fill:var(--amber)">Mioglobina</text>
+      </svg>
+      <figcaption>Curvas esquemáticas ilustrativas (no a escala).</figcaption>
+    </figure>
+    <div style="flex:1 1 300px">
+      <div class="tblwrap"><table>
+        <thead><tr><th>Marcador</th><th>Inicio</th><th>Pico</th><th>Normaliza</th></tr></thead>
+        <tbody>
+          <tr><td class="pos">Troponina hs</td><td>1–3 h</td><td>12–24 h</td><td>5–14 d</td></tr>
+          <tr><td>Troponina conv.</td><td>3–6 h</td><td>12–24 h</td><td>7–10 d</td></tr>
+          <tr><td>CK-MB</td><td>3–4 h</td><td>12–24 h</td><td>48–72 h</td></tr>
+          <tr><td>Mioglobina</td><td>1–2 h</td><td>6–12 h</td><td>24 h</td></tr>
+          <tr><td>BNP/NT-proBNP</td><td colspan="3">No dx de IAM; útil en IC y pronóstico</td></tr>
+        </tbody>
+      </table></div>
+      <p class="src">Apple FS, Clin Chem 2021 · Thygesen K, Circulation 2018.</p>
+    </div>
+  </div>
+  <div class="box key"><span class="bt">💡 Clave</span>Un valor único normal <em>precoz</em> no descarta infarto → por eso se serían las troponinas.</div>
+
+  <h3>Protocolo de descarte rápido 0h/1h (ej. hs-cTnT Roche)</h3>
+  <div class="grid g3">
+    <div class="minicard" style="border-color:#BFE0C9"><div class="h" style="color:var(--green)">DESCARTE (rule-out)</div>0h &lt;5 ng/L (dolor &gt;3 h) · ó 0h &lt;12 ng/L + Δ1h &lt;3 ng/L</div>
+    <div class="minicard" style="border-color:#E7D4A8"><div class="h" style="color:var(--amber)">ZONA GRIS</div>No cumple descarte ni ingreso → repetir hs-cTn a las 3 h + clínica</div>
+    <div class="minicard" style="border-color:#E7B6B1"><div class="h" style="color:var(--red)">INGRESO (rule-in)</div>0h ≥52 ng/L · ó Δ1h ≥5 ng/L</div>
+  </div>
+  <p class="src">VPN ~99,5% para descartar IAM, con alta más rápida que 0h/3h. Twerenbold R, Eur Heart J 2019;40:3632.</p>
+
+  <h3>Fisiología: complejo troponina–tropomiosina y contracción del miocito</h3>
+  <div class="figrow">
+    <figure>
+      <svg viewBox="0 0 240 150"><rect class="ecgbg" width="240" height="150"/>
+        <text class="lblk" x="10" y="16">EN REPOSO (sin Ca²⁺)</text>
+        <!-- actin -->
+        <g fill="#BFD7DD" stroke="#7FA8B2"><circle cx="30" cy="70" r="9"/><circle cx="54" cy="70" r="9"/><circle cx="78" cy="70" r="9"/><circle cx="102" cy="70" r="9"/><circle cx="126" cy="70" r="9"/><circle cx="150" cy="70" r="9"/><circle cx="174" cy="70" r="9"/><circle cx="198" cy="70" r="9"/></g>
+        <text class="lbl" x="24" y="92">Actina</text>
+        <!-- tropomyosin covering -->
+        <rect x="24" y="56" width="186" height="7" rx="3" fill="var(--red)"/>
+        <text class="lbl" x="150" y="50" style="fill:var(--red)">Tropomiosina (cubre sitio)</text>
+        <!-- troponin -->
+        <g><circle cx="104" cy="40" r="6" fill="#8AB6C0"/><circle cx="116" cy="40" r="6" fill="#8AB6C0"/><circle cx="128" cy="40" r="6" fill="#8AB6C0"/><text class="lbl" x="92" y="30">Tn C·I·T</text></g>
+        <!-- myosin -->
+        <rect x="20" y="128" width="200" height="8" fill="#9AA7AE"/>
+        <circle cx="96" cy="108" r="8" fill="#C0CBD0" stroke="#7A8990"/><line x1="96" y1="116" x2="96" y2="128" stroke="#9AA7AE" stroke-width="3"/>
+        <text class="lblk" x="20" y="124" style="fill:var(--red)">✕ sin unión</text>
+      </svg>
+      <figcaption>Reposo: la tropomiosina bloquea el sitio de unión en la actina.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 150"><rect class="ecgbg" width="240" height="150"/>
+        <text class="lblk" x="10" y="16" style="fill:var(--red)">CONTRACCIÓN (con Ca²⁺)</text>
+        <g fill="#BFD7DD" stroke="#7FA8B2"><circle cx="30" cy="66" r="9"/><circle cx="54" cy="66" r="9"/><circle cx="78" cy="66" r="9"/><circle cx="102" cy="66" r="9"/><circle cx="126" cy="66" r="9"/><circle cx="150" cy="66" r="9"/><circle cx="174" cy="66" r="9"/><circle cx="198" cy="66" r="9"/></g>
+        <text class="lbl" x="24" y="90">Actina</text>
+        <!-- tropomyosin shifted down -->
+        <rect x="24" y="78" width="186" height="7" rx="3" fill="#E7A6A0"/>
+        <!-- Ca on TnC -->
+        <circle cx="104" cy="36" r="6" fill="#E8B100"/><circle cx="116" cy="36" r="6" fill="#8AB6C0"/><circle cx="128" cy="36" r="6" fill="#8AB6C0"/>
+        <text x="90" y="24" style="font:700 11px sans-serif;fill:#B8860B">Ca²⁺ → TnC</text>
+        <!-- myosin attached -->
+        <rect x="20" y="128" width="200" height="8" fill="#9AA7AE"/>
+        <circle cx="150" cy="56" r="9" fill="var(--red)" stroke="#7A8990"/><line x1="150" y1="64" x2="150" y2="128" stroke="#9AA7AE" stroke-width="3"/>
+        <text class="lblk" x="20" y="124" style="fill:var(--green)">✓ sitio expuesto → golpe de fuerza</text>
+      </svg>
+      <figcaption>Con Ca²⁺: la TnC desplaza la tropomiosina, se expone el sitio y la miosina ejecuta el golpe de fuerza.</figcaption>
+    </figure>
+  </div>
+  <h4>Acoplamiento excitación–contracción (6 pasos)</h4>
+  <div class="grid g3">
+    <div class="minicard">1 · Potencial de acción despolariza el miocito</div>
+    <div class="minicard">2 · Entra Ca²⁺ por canales tipo L (túbulos T)</div>
+    <div class="minicard">3 · «Ca induce Ca»: liberación del retículo (RyR)</div>
+    <div class="minicard">4 · Ca²⁺ se une a Troponina C → desplaza tropomiosina</div>
+    <div class="minicard">5 · Miosina se une a actina → golpe de fuerza (ATP)</div>
+    <div class="minicard">6 · SERCA recapta Ca²⁺ → tropomiosina recubre → relajación</div>
+  </div>
+  <div class="box rule"><span class="bt">🌉 Puente clínico</span>En el sarcómero, la <strong>TnI (inhibitoria), TnT (une tropomiosina) y TnC (une calcio)</strong> forman un complejo. Ante daño del miocito, se libera a la sangre como <strong>complejo ternario íntegro y como fragmentos</strong> → es exactamente lo que medimos. Vida media: cTnI ~2 h, cTnT 2–4 h.
+    <span class="src">Mills NL, 5ª UDMI. Circulation 2026 · modelo de filamento deslizante, Gordon AM, Physiol Rev 2000.</span></div>
+  <div class="teach"><span class="bt">🎓 Caja docente — troponina</span>
+    <p class="q">Preguntas: «¿Por qué una troponina elevada no siempre es un IAM tipo 1?» · «¿Qué significa un Δ de 2 ng/L en 1 hora?» · «Conecta la fisiología: ¿por qué la troponina es tan específica del corazón?»</p>
+    <p class="mini"><b>⚠️ Error frecuente:</b> tratar toda troponina elevada como SCA (olvidar tipo 2 y daño crónico) y no valorar la <em>dinámica</em>.</p>
+  </div>
+</section>
+
+<!-- 5ª DEFINICIÓN UNIVERSAL -->
+<section id="udmi5">
+  <span class="stag">Actualización · consenso 2026</span>
+  <h2>🆕 5ª Definición Universal de Infarto (2026)</h2>
+  <p class="lead">Consenso conjunto ESC/ACC/AHA/WHF. Su cambio central: abandona los <strong>tipos numéricos</strong> (1, 2, 3, 4a-c, 5) y adopta una <strong>clasificación clínica basada en el mecanismo</strong>.
+    <span class="src">Mills NL, et al. Fifth Universal Definition of Myocardial Infarction (2026). Circulation 2026;154. DOI:10.1161/CIR.0000000000001477.</span></p>
+
+  <h3>Qué cambia respecto a la 4ª UDMI (2018)</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>4ª UDMI (2018)</th><th>5ª UDMI (2026) — novedad</th><th>Racional</th></tr></thead>
+    <tbody>
+      <tr><td>Tipos numéricos 1, 2, 3, 4a, 4b, 4c, 5</td><td><strong>3 tipos clínicos:</strong> primario · secundario · relacionado con procedimiento</td><td>Reflejar la fisiopatología y permitir aplicación consistente</td></tr>
+      <tr><td>Tipo 1 = solo aterotrombosis</td><td class="pos"><strong>Primario</strong> = toda patología coronaria aguda: aterotrombosis, SCAD, embolia, vasoespasmo, y fallo tardío de stent/injerto (&gt;30 d, «de novo»)</td><td>Prioriza <strong>sensibilidad</strong>: no perder ninguna oclusión tratable; empuja a angiografía/imagen</td></tr>
+      <tr><td>Tipo 2 = desbalance O₂ (amplio)</td><td class="pos"><strong>Secundario</strong> = desbalance por otra condición aguda <em>confirmado</em> con EAC obstructiva y/o nueva alteración de motilidad o ausencia de viabilidad</td><td>Prioriza <strong>especificidad</strong>: separar IAM real del simple daño miocárdico</td></tr>
+      <tr><td>Tipo 3 = muerte súbita con IAM probable</td><td>Término <strong>eliminado</strong> → se aplica la clasificación clínica según el contexto o la autopsia</td><td>Uso limitado en la práctica</td></tr>
+      <tr><td>Tipo 4a/4b/4c (PCI) y Tipo 5 (CABG), con umbrales &gt;5× y &gt;10× URL</td><td><strong>Relacionado con procedimiento:</strong> complicación coronaria &lt;30 d de cualquier procedimiento + daño miocárdico. <strong>Sin</strong> umbrales de troponina; mismos criterios para PCI y cirugía</td><td>Umbrales de biomarcador mal validados; criterios homogéneos permiten comparar</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Los tres tipos clínicos</h3>
+  <div class="grid g3">
+    <div class="minicard" style="border-color:#E7B6B1"><div class="h" style="color:var(--red)">🩸 Primario</div>Presentación espontánea por una patología coronaria aguda primaria. Se confirma el mecanismo con angiografía ± imagen intravascular/funcional.</div>
+    <div class="minicard" style="border-color:#E7D4A8"><div class="h" style="color:var(--amber)">⚖️ Secundario</div>Isquemia por desbalance oferta/demanda debido a otra condición aguda (anemia, sepsis, taquiarritmia, hipotensión). Requiere evidencia objetiva de isquemia.</div>
+    <div class="minicard" style="border-color:#BBD9DD"><div class="h" style="color:var(--teal)">🛠️ Relacionado con procedimiento</div>Complicación coronaria &lt;30 días de un procedimiento cardíaco (PCI o cirugía) que causa daño miocárdico.</div>
+  </div>
+
+  <h3>Otros conceptos actualizados</h3>
+  <ul>
+    <li><strong>Daño miocárdico (definición):</strong> agudo = «rise and/or fall» con ≥1 valor &gt; <strong>URL del percentil 99 específico por sexo</strong>; crónico = ≥2 valores &gt; URL en situación estable, sin dinámica.</li>
+    <li><strong>URL específico por sexo:</strong> el URL femenino es ~la mitad del masculino (para cTnT). Evita la <em>infra-diagnóstico</em> de IAM y daño miocárdico en mujeres. <span class="pill amber">ojo</span> los cortes del algoritmo 0h/1h de la ESC siguen siendo <strong>uniformes</strong> (sirven para <em>triage</em>, no para definir daño).</li>
+    <li><strong>Edad:</strong> 1 de cada 3 pacientes &gt;75 años tiene troponina elevada vs 1 de cada 20 &lt;50 años. Aún no hay URL ajustados por edad aprobados → interpretar con la dinámica y seriar.</li>
+    <li><strong>MINOCA:</strong> redefinido como «<em>myocardial <u>injury</u> with non-obstructive coronary arteries</em>» → es un <strong>diagnóstico de trabajo</strong>, no final; seguir investigando (CMR, etc.).</li>
+    <li><strong>Angina inestable:</strong> cada vez más rara con hs-cTn; se considera si hay síntomas isquémicos y el IAM se excluye con troponinas seriadas, confirmándose con patología coronaria en angiografía.</li>
+    <li><strong>Vías diagnósticas aceleradas con hs-cTn</strong> formalizadas: muestra única de descarte, series 0h/1h y 0h/2h, y convencional 0h/3h + score. También: ICD-11 alineado, guía para bajo recurso, criterios de IAM silente, y mención a IA/ML y al biomarcador cMyC.</li>
+  </ul>
+
+  <div class="box rule"><span class="bt">🔎 Mirada crítica — fortalezas</span>
+    <ul style="margin:4px 0 0">
+      <li>Clasificar por <strong>mecanismo</strong> es más intuitivo y accionable que los tipos numéricos; conecta diagnóstico con tratamiento.</li>
+      <li>Ampliar «primario» a SCAD/embolia/vasoespasmo <strong>reduce OMIs tratables perdidos</strong> y promueve la angiografía precoz (clave en jóvenes y mujeres).</li>
+      <li>Exigir evidencia objetiva para «secundario» combate el <em>cajón de sastre del tipo 2</em> y distingue IAM real de daño miocárdico aislado.</li>
+      <li>URL por sexo corrige una <strong>inequidad real</strong>; eliminar los umbrales arbitrarios 5×/10× en procedimientos es razonable.</li>
+    </ul>
+  </div>
+  <div class="box pearl"><span class="bt">⚠️ Mirada crítica — tensiones y límites</span>
+    <ul style="margin:4px 0 0">
+      <li><strong>Inercia y continuidad:</strong> años de guías, ensayos, registros y «órdenes» usan «IAM tipo 2». La transición genera confusión y costos de traducción en la historia clínica y la investigación.</li>
+      <li><strong>Secundario depende de imagen:</strong> exigir EAC obstructiva o alteración de motilidad/viabilidad sube el listón; en urgencias saturadas o de bajo recurso, muchos casos quedarán como «daño miocárdico agudo» — una etiqueta <em>sin vía terapéutica específica</em> (limbo diagnóstico). Además, el tratamiento óptimo del IAM secundario sigue <strong>sin evidencia sólida de RCT</strong>.</li>
+      <li><strong>Inconsistencia de umbrales:</strong> se promueve el URL por sexo para <em>definir</em> daño, pero los algoritmos 0h/1h usan cortes <em>uniformes</em> para disponer — el propio documento lo reconoce; en la práctica puede confundir.</li>
+      <li><strong>Edad sin resolver:</strong> enorme efecto (1/3 de los ancianos positivos) y aún sin URL ajustados → persiste sobre-diagnóstico/limbo en mayores.</li>
+      <li><strong>Equidad:</strong> la confirmación del mecanismo se apoya cada vez más en imagen coronaria/cardíaca, ampliando la brecha con entornos de bajo recurso (hay guía aparte, pero la dependencia persiste).</li>
+      <li>Corte de 30 días para «fallo tardío de stent = de novo» es fisiológicamente defendible pero <strong>arbitrario</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="box safe"><span class="bt">✅ Conclusiones para la práctica habitual</span>
+    <ul style="margin:4px 0 0">
+      <li><strong>Cambia la pregunta:</strong> en vez de «¿tipo 1 o tipo 2?», pregúntate «¿<u>primario</u> (patología coronaria aguda), <u>secundario</u> (desbalance por otra condición) o <u>relacionado con procedimiento</u>?».</li>
+      <li><strong>Umbral más bajo para angiografía/imagen</strong> ante presentaciones atípicas (joven, mujer, sin FR clásicos): busca SCAD, embolia y vasoespasmo.</li>
+      <li><strong>Troponina elevada + otra enfermedad aguda:</strong> no la etiquetes automáticamente como IAM. Distingue <em>daño miocárdico agudo</em> (solo troponina dinámica) de <em>IAM secundario</em> (necesita isquemia demostrada). La prioridad es tratar la causa de base; antiagregar/anticoagular no es automático.</li>
+      <li><strong>Pide a tu laboratorio el URL por sexo</strong> para definir daño — pero recuerda que los números del 0h/1h que usas para el alta son cortes uniformes de <em>estratificación</em>, no la definición de daño.</li>
+      <li><strong>En ancianos:</strong> prioriza la <em>dinámica</em> y la seriación por sobre un valor único.</li>
+      <li><strong>MINOCA = sigue investigando</strong> (no es diagnóstico final). Documenta el mecanismo y, si puedes, el código ICD-11 correspondiente.</li>
+      <li>El flujograma operativo de urgencias (ECG &lt;10 min, 0h/1h, HEART) <strong>no cambia</strong>: la 5ª UDMI refina el <em>diagnóstico y la clasificación</em>, no la disposición en el box.</li>
+    </ul>
+  </div>
+
+  <div class="teach"><span class="bt">🎓 Caja docente — 5ª UDMI</span>
+    <p class="q">Preguntas socráticas: «Paciente séptico con troponina en ascenso y ECG inespecífico: ¿IAM secundario o daño miocárdico agudo? ¿qué te falta para decidir?» · «¿Por qué el URL femenino es más bajo y qué pasa si usas uno uniforme?» · «Una trombosis de stent a los 2 años, ¿cómo se clasifica ahora?» (primario/de novo).</p>
+    <p class="mini"><b>⚠️ Error frecuente:</b> traducir mecánicamente «tipo 2 → secundario» sin exigir la evidencia de isquemia; usar los cortes del 0h/1h como si definieran daño miocárdico.</p>
+    <p class="mini"><b>🩺 A la cabecera:</b> con cada troponina elevada, pide al residente nombrar el <em>mecanismo</em> y la <em>implicación terapéutica</em> antes de escribir «IAM» en la ficha.</p>
+  </div>
+</section>
+
+<!-- SCORES -->
+<section id="scores">
+  <span class="stag">Estratificación de riesgo</span>
+  <h2>Scores: HEART, Wells, PERC, TIMI y GRACE</h2>
+  <p>Convierten la impresión clínica en probabilidad cuantificada. <strong>HEART/EDACS</strong> → urgencias, identifican bajo riesgo; <strong>TIMI/GRACE</strong> → pronóstico/estrategia invasiva en SCA; <strong>Wells + PERC</strong> → probabilidad de TEP. Un score orienta, <em>no reemplaza</em> el juicio.</p>
+
+  <h3>HEART Score — componentes (0–2 c/u, máx 10)</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Componente</th><th class="c">0</th><th class="c">1</th><th class="c">2</th></tr></thead>
+    <tbody>
+      <tr><td><strong>H</strong>istory</td><td class="c">No sospechosa</td><td class="c">Moderada</td><td class="c">Altamente sospechosa</td></tr>
+      <tr><td><strong>E</strong>CG</td><td class="c">Normal</td><td class="c">Alt. inespecíficas</td><td class="c">Desviación ST significativa</td></tr>
+      <tr><td><strong>A</strong>ge</td><td class="c">&lt;45</td><td class="c">45–64</td><td class="c">≥65</td></tr>
+      <tr><td><strong>R</strong>isk factors</td><td class="c">Ninguno</td><td class="c">1–2 FR</td><td class="c">≥3 FR o ateroesclerosis</td></tr>
+      <tr><td><strong>T</strong>roponina</td><td class="c">≤1× LSN</td><td class="c">1–3× LSN</td><td class="c">&gt;3× LSN</td></tr>
+    </tbody>
+  </table></div>
+  <h4>Interpretación (MACE a 6 semanas)</h4>
+  <div class="grid g3">
+    <div class="minicard" style="border-color:#BFE0C9"><div class="h" style="color:var(--green)">0–3 · BAJO</div>1,7% MACE → alta precoz con seguimiento</div>
+    <div class="minicard" style="border-color:#E7D4A8"><div class="h" style="color:var(--amber)">4–6 · INTERMEDIO</div>16,6% MACE → observación, troponina seriada</div>
+    <div class="minicard" style="border-color:#E7B6B1"><div class="h" style="color:var(--red)">7–10 · ALTO</div>50,1% MACE → manejo agresivo, estrategia invasiva</div>
+  </div>
+  <p class="src">Backus BE, Int J Cardiol 2013;168:2153.</p>
+  <div class="box safe"><span class="bt">✅ Perla</span>HEART ≤3 <strong>+ troponinas seriadas negativas</strong> → VPN muy alto para MACE → alta segura.</div>
+
+  <h3>Wells para TEP + regla PERC</h3>
+  <div class="grid g2">
+    <div>
+      <div class="tblwrap"><table>
+        <thead><tr><th>Criterio de Wells</th><th class="c">Pts</th></tr></thead>
+        <tbody>
+          <tr><td>Signos/síntomas clínicos de TVP</td><td class="c pos">3</td></tr>
+          <tr><td>TEP es el dx más probable (o igual)</td><td class="c pos">3</td></tr>
+          <tr><td>FC &gt;100 lpm</td><td class="c">1,5</td></tr>
+          <tr><td>Inmovilización ≥3 d o cirugía &lt;4 sem</td><td class="c">1,5</td></tr>
+          <tr><td>TVP/TEP previo</td><td class="c">1,5</td></tr>
+          <tr><td>Hemoptisis</td><td class="c">1</td></tr>
+          <tr><td>Cáncer activo</td><td class="c">1</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div>
+      <div class="box key"><span class="bt">Interpretación</span>
+        <strong>3 niveles:</strong> &lt;2 baja (~1,3%) · 2–6 intermedia (~16%) · &gt;6 alta (~40%).<br>
+        <strong>2 niveles (operativo):</strong> ≤4 «TEP improbable» → dímero D (si negativo, descarta) · &gt;4 «TEP probable» → angioTC directo.</div>
+      <div class="box pearl"><span class="bt">PERC</span>Probabilidad baja <strong>Y</strong> los 8 criterios PERC negativos → excluye TEP sin dímero D (sens. 97,4%, VPN 99,5%). Dímero D ajustado por edad (&gt;50 a: edad×10).
+        <span class="src">Kline JA, J Thromb Haemost 2004 · Wells PS 2000.</span></div>
+    </div>
+  </div>
+
+  <h3>TIMI y GRACE (SCA confirmado / IAMSEST)</h3>
+  <div class="grid g2">
+    <div class="box"><span class="bt" style="color:var(--red)">TIMI</span>7 variables dicotómicas (edad ≥65; ≥3 FR; estenosis previa ≥50%; desviación ST; ≥2 anginas/24 h; AAS en 7 d; marcadores elevados). TIMI 0–1 → evento 4,7%; TIMI ≥5 → 26,2%.<span class="src">Antman EM, JAMA 2000.</span></div>
+    <div class="box"><span class="bt" style="color:var(--teal)">GRACE</span>Edad, FC, PAS, creatinina, Killip, paro al ingreso, desviación ST, marcadores. Más preciso para mortalidad. GRACE &gt;140 → alto riesgo → estrategia invasiva precoz (&lt;24 h).<span class="src">Fox KA, BMJ 2006.</span></div>
+  </div>
+  <div class="teach"><span class="bt">🎓 Caja docente — scores</span>
+    <p class="q">Ejercicio: entrega un caso y pide calcular HEART en voz alta, justificando cada letra. Luego: «¿Qué harías distinto si el HEART fuera 6 en vez de 2?»</p>
+    <p class="mini"><b>⚠️ Error frecuente:</b> usar el score como «piloto automático» sin gestalt clínico; aplicar Wells/PERC en un paciente que no es de baja probabilidad.</p>
+  </div>
+</section>
+
+<!-- FLUJOGRAMA -->
+<section id="flujo">
+  <span class="stag">Integración</span>
+  <h2>Flujograma de decisión</h2>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><div class="t">Triage + signos vitales + <strong>ECG 12 derivaciones</strong> (&lt;10 min)</div></div>
+    <div class="step"><div class="n">2</div><div class="t">OPQRST + examen físico dirigido (simultáneo)</div></div>
+    <div class="step r"><div class="n">3</div><div class="t"><strong>Descartar las 6 causas letales</strong> (ECG + clínica)</div></div>
+    <div class="step r"><div class="n">4</div><div class="t">¿STEMI o equivalente? → <strong>SÍ:</strong> activar reperfusión / cateterismo</div></div>
+    <div class="step"><div class="n">5</div><div class="t">Si NO STEMI: <strong>hs-cTn basal (0h)</strong></div></div>
+    <div class="step"><div class="n">6</div><div class="t">Calcular <strong>HEART score</strong></div></div>
+    <div class="step"><div class="n">7</div><div class="t">Algoritmo <strong>0h/1h</strong>: segunda hs-cTn</div></div>
+    <div class="step g"><div class="n">8</div><div class="t"><strong>Decisión:</strong> alta (HEART ≤3 + troponinas negativas) / observación / ingreso</div></div>
+  </div>
+
+  <h3>Diagnósticos emergentes: clínica · dg · tratamiento</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Diagnóstico</th><th>Clínica clave</th><th>Dx pivote</th><th>Tratamiento inicial</th></tr></thead>
+    <tbody>
+      <tr><td class="pos">SCA (STEMI/equiv.)</td><td>Opresivo, irradiado, diaforesis</td><td>ECG + troponina hs</td><td>AAS + carga antiplaquetaria, reperfusión, anticoagulación (evitar nitratos en IAM de VD)</td></tr>
+      <tr><td class="pos">TEP</td><td>Disnea súbita, pleurítico, taquicardia</td><td>AngioTC (dímero D para descartar)</td><td>Anticoagulación; trombólisis si inestable</td></tr>
+      <tr><td class="pos">Disección aórtica</td><td>Desgarrante, asimetría PA &gt;20 mmHg</td><td>AngioTC de tórax</td><td>β-bloqueo IV primero (FC&lt;60) → vasodilatador; cirugía urgente (tipo A). <strong>NO anticoagular.</strong></td></tr>
+      <tr><td class="pos">Neumotórax a tensión</td><td>Disnea, hipotensión, MV abolido</td><td>Clínico (no esperar imagen)</td><td>Descompresión con aguja (2º EIC LMC) + drenaje</td></tr>
+      <tr><td class="pos">Taponamiento</td><td>Tríada de Beck</td><td>POCUS</td><td>Pericardiocentesis si inestable</td></tr>
+      <tr><td class="pos">Boerhaave</td><td>Post-vómito + enfisema subcut. (Mackler)</td><td>TC con contraste</td><td>ATB + cirugía; mortalidad &gt;50% si dx tardío</td></tr>
+    </tbody>
+  </table></div>
+  <p class="src">Hagan PG, IRAD JAMA 2000 · Konstantinides SV, ESC Eur Heart J 2020 · Spodick DH, NEJM 2003.</p>
+</section>
+
+<!-- CASOS -->
+<section id="casos">
+  <span class="stag">Evalúa tu comprensión</span>
+  <h2>🧩 5 casos clínicos</h2>
+  <p>En <strong>modo estudio</strong> úsalos para autoevaluarte (revela la respuesta). En <strong>modo docencia</strong> aparece además un <em>guion de tutoría</em> para dirigir la discusión.</p>
+
+  <div class="case">
+    <div class="ch"><span>Caso 1 — Dolor opresivo + ECG «raro»</span><span class="tp">Equivalente de STEMI</span></div>
+    <div class="body">
+      <div class="scen">Hombre de 58 años, HTA y tabaquismo. Dolor opresivo retroesternal de 40 min con diaforesis. PA 140/85, FC 92. ECG: depresión del punto J ascendente de 1–3 mm en V1–V6 con ondas T altas, positivas y simétricas; <strong>sin</strong> elevación del ST.</div>
+      <p class="qline">¿Esperas la troponina y un segundo ECG, o actúas ya? ¿Conducta?</p>
+      <button class="reveal" onclick="toggleAns(this)">Revelar respuesta</button>
+      <div class="answer"><span class="at">Respuesta · punto clave</span>
+        <ul><li><strong>Patrón de de Winter = equivalente de STEMI</strong> (oclusión aguda de la DA).</li>
+        <li>Activar <strong>reperfusión / cateterismo urgente</strong>.</li>
+        <li>NO esperar troponina ni que «evolucione» a STEMI: el patrón es <em>estático</em>.</li></ul>
+        <div class="debrief"><b>🎓 Guion de tutoría:</b> pregunta primero «¿qué te llama la atención del ECG?». Si solo miran el ST, reorienta hacia las T. Cierra con la regla: <em>dolor típico + ECG dinámico/atípico = activa el sistema, no esperes.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="ch"><span>Caso 2 — Depresión del ST anterior</span><span class="tp">Infarto posterior</span></div>
+    <div class="body">
+      <div class="scen">Mujer de 63 años, diabética. Dolor torácico con náuseas de 1 h. ECG: depresión horizontal del ST de 2 mm en V1–V3, con onda R prominente (R&gt;S) y T positiva en V2. Estable.</div>
+      <p class="qline">¿Es isquemia subendocárdica anterior? ¿Qué derivación falta y qué decides?</p>
+      <button class="reveal" onclick="toggleAns(this)">Revelar respuesta</button>
+      <div class="answer"><span class="at">Respuesta · punto clave</span>
+        <ul><li>Sospechar <strong>IAM posterior</strong> (imagen especular).</li>
+        <li>Colocar <strong>V7–V9</strong>: elevación ≥0,5 mm confirma. Es equivalente de STEMI → <strong>código infarto</strong>.</li>
+        <li>Añadir V3R–V4R si hay compromiso inferior.</li></ul>
+        <div class="debrief"><b>🎓 Guion de tutoría:</b> ancla la regla de oro: <em>toda depresión ST V1–V3 con dolor → V7–V9.</em> Pregunta por qué la R alta en V1–V2 es el «espejo» de una Q posterior.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="ch"><span>Caso 3 — La trampa terapéutica</span><span class="tp">Disección aórtica</span></div>
+    <div class="body">
+      <div class="scen">Hombre de 70 años, HTA mal controlada. Dolor «desgarrante» interescapular súbito, máximo desde el inicio. PA brazo derecho 180/100, izquierdo 150/85 (diferencial &gt;20 mmHg). ECG sin isquemia.</div>
+      <p class="qline">Un colega propone AAS + heparina por «posible SCA». ¿De acuerdo? ¿Conducta?</p>
+      <button class="reveal" onclick="toggleAns(this)">Revelar respuesta</button>
+      <div class="answer"><span class="at">Respuesta · punto clave</span>
+        <ul><li><strong>NO anticoagular:</strong> sugiere <strong>disección aórtica</strong> (desgarrante + asimetría PA, LR+ 5,7). Anticoagular sería catastrófico.</li>
+        <li><strong>AngioTC</strong> urgente.</li>
+        <li><strong>β-bloqueo IV primero</strong> (FC&lt;60) → vasodilatador, analgesia, consulta quirúrgica inmediata (tipo A).</li></ul>
+        <div class="debrief"><b>🎓 Guion de tutoría:</b> caso de seguridad del paciente. Discute el sesgo de anclaje («todo dolor torácico es SCA») y por qué el orden β-bloqueo → vasodilatador importa (evitar taquicardia refleja que aumenta el shear).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="ch"><span>Caso 4 — ¿Ingreso o alta segura?</span><span class="tp">Descarte de bajo riesgo</span></div>
+    <div class="body">
+      <div class="scen">Hombre de 44 años, único FR tabaquismo. Dolor punzante, atípico, 3 h, no relacionado al esfuerzo. ECG normal. hs-cTnT 0h = 6 ng/L y 1h = 7 ng/L (Δ 1 ng/L). HEART = 3.</div>
+      <p class="qline">Hay presión por «dejarlo en observación 24 h por si acaso». ¿Justificado?</p>
+      <button class="reveal" onclick="toggleAns(this)">Revelar respuesta</button>
+      <div class="answer"><span class="at">Respuesta · punto clave</span>
+        <ul><li>HEART ≤3 (bajo riesgo, ~1,7% MACE) + <strong>0h/1h cumple descarte</strong> (0h&lt;12 y Δ&lt;3).</li>
+        <li><strong>Alta precoz segura</strong> con seguimiento ambulatorio.</li>
+        <li>Evitar observación e imágenes innecesarias (uso racional de recursos).</li></ul>
+        <div class="debrief"><b>🎓 Guion de tutoría:</b> trabaja la tolerancia a la incertidumbre y el «miedo al alta». Pregunta: «¿qué VPN te daría tranquilidad? ¿qué le explicarías al paciente sobre señales de reconsulta?»</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="case">
+    <div class="ch"><span>Caso 5 — Dolor pleurítico + disnea</span><span class="tp">Tromboembolismo pulmonar</span></div>
+    <div class="body">
+      <div class="scen">Mujer de 52 años. Dolor torácico pleurítico y disnea súbita. Cirugía de rodilla hace 2 semanas. FC 104, SpO₂ 93% ambiente. Sin hemoptisis ni TVP evidente. ECG: taquicardia sinusal.</div>
+      <p class="qline">¿Cómo estratificas? ¿Dímero D o imagen directa? ¿Aplica PERC?</p>
+      <button class="reveal" onclick="toggleAns(this)">Revelar respuesta</button>
+      <div class="answer"><span class="at">Respuesta · punto clave</span>
+        <ul><li>Wells: cirugía reciente (1,5) + FC&gt;100 (1,5) + «TEP el dx más probable» (3) ≈ <strong>6</strong>.</li>
+        <li>2 niveles → «TEP probable» (&gt;4) → <strong>angioTC directo</strong> (no dímero D).</li>
+        <li><strong>PERC no aplica</strong>: la probabilidad no es baja (taquicardia + SpO₂&lt;95%).</li></ul>
+        <div class="debrief"><b>🎓 Guion de tutoría:</b> contrasta con un caso de baja probabilidad donde PERC sí aplicaría. Pregunta: «¿cuándo el dímero D hace <em>más</em> daño que bien?» (probabilidad alta → falso negativo peligroso / probabilidad muy baja con PERC+).</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUÍA DEL TUTOR -->
+<section id="tutor">
+  <span class="stag">Manual de docencia</span>
+  <h2>🎓 Guía para el tutor / docente</h2>
+
+  <h3>Sesión sugerida de 60 minutos</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th class="c">Min</th><th>Actividad</th><th>Objetivo</th></tr></thead>
+    <tbody>
+      <tr><td class="c">0–5</td><td>Pregunta de apertura (caso en 2 líneas)</td><td>Activar conocimiento previo</td></tr>
+      <tr><td class="c">5–20</td><td>Enfrentamiento inicial + 6 letales + diferencial de Rosen</td><td>Marco mental de triage</td></tr>
+      <tr><td class="c">20–35</td><td>ECG de alto riesgo / equivalentes (3 ECG cronometrados)</td><td>Reconocimiento de patrones</td></tr>
+      <tr><td class="c">35–45</td><td>Troponina + scores (cálculo guiado de HEART)</td><td>Razonamiento cuantitativo</td></tr>
+      <tr><td class="c">45–58</td><td>2–3 casos clínicos en voz alta (revelar al final)</td><td>Integración y decisión</td></tr>
+      <tr><td class="c">58–60</td><td>Cierre: los 3 verbos (descartar–estratificar–decidir)</td><td>Consolidación</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Rúbrica de evaluación del residente</h3>
+  <div class="tblwrap"><table class="rubric">
+    <thead><tr><th>Competencia</th><th>En desarrollo</th><th>Competente</th><th>Avanzado</th></tr></thead>
+    <tbody>
+      <tr><td>Triage &amp; ABC</td><td>Omite pasos o el orden</td><td>Completa los 6 pasos en &lt;10 min</td><td>Prioriza y delega bajo presión</td></tr>
+      <tr><td>Lectura de ECG</td><td>Solo evalúa el ST</td><td>Reconoce ≥2 equivalentes OMI</td><td>Pide derivaciones extra sin que se lo indiquen</td></tr>
+      <tr><td>Uso de biomarcadores</td><td>Pide 1 troponina y decide</td><td>Aplica 0h/1h y valora dinámica</td><td>Integra tipo 1/2 y daño crónico</td></tr>
+      <tr><td>Scores &amp; decisión</td><td>Score sin gestalt</td><td>HEART/Wells correctos → conducta</td><td>Justifica alta segura y comunica riesgo</td></tr>
+      <tr><td>Seguridad del paciente</td><td>Sesgo de anclaje</td><td>Descarta las 6 letales</td><td>Detecta la «trampa» (p. ej. disección)</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Checklist a la cabecera (bedside)</h3>
+  <div class="grid g2">
+    <div class="minicard"><div class="h">Antes de pedir exámenes</div>«¿Qué hipótesis estás descartando con esto?» · «¿Qué esperas encontrar?»</div>
+    <div class="minicard"><div class="h">Frente al ECG</div>«Léelo en 60 s» · «¿Qué derivaciones te faltan?» · «¿Es dinámico?»</div>
+    <div class="minicard"><div class="h">Antes del alta</div>«¿HEART? ¿0h/1h? ¿Señales de reconsulta explicadas?»</div>
+    <div class="minicard"><div class="h">Cierre reflexivo</div>«¿Qué harías distinto la próxima vez?» · un aprendizaje en una frase.</div>
+  </div>
+
+  <div class="box pearl"><span class="bt">💡 Errores frecuentes del R1 (resumen)</span>O₂ a todos · anclaje en causas benignas · leer solo el ST · no seriar ECG/troponina · no poner V7–V9/V3R–V4R · anticoagular una disección · «miedo al alta» en bajo riesgo.</div>
+</section>
+
+<section id="ref">
+  <span class="stag">Bibliografía</span>
+  <h2>Referencias principales</h2>
+  <ul style="font-size:13px">
+    <li>Amsterdam EA, et al. 2014 AHA/ACC NSTE-ACS Guideline. <em>Circulation</em> 2014;130:e344.</li>
+    <li>Byrne RA, et al. 2023 ESC Guidelines for the management of ACS. <em>Eur Heart J</em> 2023;44:3720.</li>
+    <li>Gulati M, et al. 2021 AHA/ACC Chest Pain Guideline. <em>Circulation</em> 2021;144:e368.</li>
+    <li><strong>Mills NL, et al. Fifth Universal Definition of Myocardial Infarction (2026). <em>Circulation</em> 2026;154. DOI:10.1161/CIR.0000000000001477.</strong></li>
+    <li>Thygesen K, et al. Fourth Universal Definition of Myocardial Infarction. <em>Circulation</em> 2018;138:e231.</li>
+    <li>Backus BE, et al. Validation of the HEART score. <em>Int J Cardiol</em> 2013;168:2153.</li>
+    <li>Antman EM (TIMI) <em>JAMA</em> 2000 · Fox KA (GRACE) <em>BMJ</em> 2006 · Kline JA (PERC) <em>J Thromb Haemost</em> 2004 · Wells PS 2000.</li>
+    <li>Smith SW / Meyers HP. Modified Sgarbossa criteria. <em>Ann Emerg Med</em> 2012 / <em>Am Heart J</em> 2015 · de Winter RJ, <em>NEJM</em> 2008.</li>
+    <li>Twerenbold R, <em>Eur Heart J</em> 2019 · Apple FS, <em>Clin Chem</em> 2021.</li>
+    <li>Examen físico: Klompas M (disección) <em>JAMA</em> 2002 · Wong CL (derrame) <em>JAMA</em> 2009 · Roy CL (taponamiento) <em>JAMA</em> 2007 · Wang CS (IC) <em>JAMA</em> 2005 · Metlay JP (neumonía) <em>JAMA</em> 1997 · Panju AA (IAM) <em>JAMA</em> 1998 · McGee S, <em>Evidence-Based Physical Diagnosis</em>.</li>
+    <li>Rosen's Emergency Medicine (diferencial y guía de manejo) · STEMI equivalents, <em>Annals of Emergency Medicine</em> 2025.</li>
+  </ul>
+</section>
+
+<footer>
+  Material académico de uso personal · Dr. Franco Linares F. · Diagramas SVG originales · Las figuras ECG escaneadas se encuentran en la carpeta <code>Figuras_Presentacion_R1</code>.
+</footer>
+
+</div>
+
+<script>
+function setMode(m){
+  document.body.classList.toggle('mode-study', m==='study');
+  document.body.classList.toggle('mode-teach', m==='teach');
+  document.getElementById('btnEstudio').classList.toggle('active', m==='study');
+  document.getElementById('btnDocencia').classList.toggle('active', m==='teach');
+  document.getElementById('hint').textContent = m==='study'
+    ? 'Modo estudio: enfocado en el contenido; las cajas de docencia están ocultas.'
+    : 'Modo docencia: se muestran las cajas 🎓 con preguntas socráticas, errores frecuentes y guion de tutoría.';
+}
+function toggleAns(btn){
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('show');
+  btn.textContent = open ? 'Ocultar respuesta' : 'Revelar respuesta';
+}
+</script>
+</body>
+</html>

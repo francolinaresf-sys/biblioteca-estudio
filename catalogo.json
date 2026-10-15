@@ -141,6 +141,17 @@
         "Física y botonología POCUS"
       ],
       "fecha": "2026-10-14"
+    },
+    {
+      "id": "dolor-toracico",
+      "titulo": "Enfrentamiento del dolor torácico",
+      "tema": "sintomas-cardinales",
+      "archivo": "sintomas-cardinales/dolor-toracico.html",
+      "descripcion": "Guía de estudio y docencia (doble modo): enfrentamiento inicial, Rosen, ECG de alto riesgo (equivalentes OMI), scores, troponina con la 5ª Definición Universal de IAM 2026 y su revisión crítica, examen físico (LR) y 5 casos clínicos.",
+      "etiquetas": [
+        "dolor torácico"
+      ],
+      "fecha": "2026-10-15"
     }
   ]
 }
