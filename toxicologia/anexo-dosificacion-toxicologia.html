@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anexo de Dosificación Toxicológica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: documento de referencia — cabecera de estado del documento, bloques por dominio, cada intervención como ficha de cinco campos; tablas y fichas con scroll propio */
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:70px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:root{
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#F3F5F8; --surface:#FFFFFF; --sunk:#E8ECF2; --line:#D2D8E3;
+  --ink:#151C28; --muted:#4F5A6E;
+  --ref:#23468C;        /* azul de referencia — acento del anexo */
+  --ref-soft:#E2E9F7;
+  --tx:#0B6460; --tx-soft:#DCF0EE;
+  --danger:#AE2318; --danger-soft:#FBE4E1;
+  --warn:#7E5900; --warn-soft:#F9F0D2;
+  --cite:#5B3A86; --cite-soft:#EDE5F7;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101419; --surface:#181E27; --sunk:#202733; --line:#303847;
+  --ink:#E5E9F0; --muted:#98A3B5;
+  --ref:#7FA8EE; --ref-soft:#1A2639;
+  --tx:#5BC8C0; --tx-soft:#12302E;
+  --danger:#F3877C; --danger-soft:#3A1D1B;
+  --warn:#E0B44B; --warn-soft:#332A12;
+  --cite:#BFA3E8; --cite-soft:#271C36;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101419; --surface:#181E27; --sunk:#202733; --line:#303847;
+  --ink:#E5E9F0; --muted:#98A3B5;
+  --ref:#7FA8EE; --ref-soft:#1A2639;
+  --tx:#5BC8C0; --tx-soft:#12302E;
+  --danger:#F3877C; --danger-soft:#3A1D1B;
+  --warn:#E0B44B; --warn-soft:#332A12;
+  --cite:#BFA3E8; --cite-soft:#271C36;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.14;margin:0}
+h1{font-size:clamp(1.95rem,5.5vw,3rem);font-weight:800;font-stretch:80%;letter-spacing:-.01em}
+h2{font-size:clamp(1.45rem,4vw,1.95rem);font-weight:750;font-stretch:85%}
+h3{font-size:1.14rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--ref)}
+:focus-visible{outline:2px solid var(--ref);outline-offset:2px}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+.num{font-variant-numeric:tabular-nums}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+nav.toc ul{list-style:none;margin:0 auto;padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:4px;overflow-x:auto;max-width:900px;scrollbar-width:none}
+nav.toc ul::-webkit-scrollbar{display:none}
+nav.toc a{display:block;white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.82rem;font-weight:600;padding:6px 10px;border-radius:6px}
+nav.toc a:hover{background:var(--sunk);color:var(--ink)}
+nav.toc a.on{background:var(--ref-soft);color:var(--ref)}
+
+header.hero{padding-block:36px 24px;display:grid;gap:16px}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ref)}
+.lede{font-size:1.06rem;color:var(--muted);max-width:64ch}
+
+/* banner de estado del documento */
+.estado{border:2px solid var(--danger);background:var(--danger-soft);border-radius:12px;padding:16px 18px;display:grid;gap:10px}
+.estado .t{font-family:var(--f-display);font-weight:750;font-stretch:88%;font-size:1.1rem;color:var(--danger)}
+.estado p{font-size:.95rem;max-width:72ch}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:4px}
+.meta div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.meta dt{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0}
+.meta dd{margin:2px 0 0;font-size:.92rem;font-weight:600}
+
+section.ch{padding-block:36px 10px;border-top:1px solid var(--line);display:grid;gap:18px}
+.chn{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);letter-spacing:.09em}
+.prose{display:grid;gap:12px;max-width:68ch}
+ul.tight,ol.tight{margin:0;padding-left:1.2em;display:grid;gap:7px;max-width:68ch}
+
+.box{border-radius:10px;padding:14px 16px;display:grid;gap:8px;max-width:72ch}
+.box .lbl{font-family:var(--f-mono);font-size:.71rem;letter-spacing:.11em;text-transform:uppercase;font-weight:500}
+.nota{background:var(--ref-soft)} .nota .lbl{color:var(--ref)}
+.tx{background:var(--tx-soft)} .tx .lbl{color:var(--tx)}
+.alerta{background:var(--danger-soft)} .alerta .lbl{color:var(--danger)}
+.mito{background:var(--warn-soft)} .mito .lbl{color:var(--warn)}
+
+/* ficha de intervención */
+.fichas{display:grid;gap:14px}
+.ficha{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ficha>.hd{background:var(--sunk);padding:11px 16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ficha>.hd b{font-family:var(--f-display);font-stretch:90%;font-size:1.06rem}
+.ficha>.hd .uso{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:0}
+.campo{padding:13px 16px;border-top:1px solid var(--line);border-right:1px solid var(--line);min-width:0;display:grid;gap:5px;align-content:start}
+.campo:last-child{border-right:0}
+.campo h5{margin:0;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ref);font-weight:600}
+.campo p,.campo ul{font-size:.92rem;margin:0}
+.campo ul{padding-left:1.1em;display:grid;gap:4px}
+.campo.dosis{background:var(--ref-soft)}
+.campo.dosis .d{font-family:var(--f-mono);font-size:.95rem;font-weight:600;line-height:1.45}
+.origen{display:inline-block;font-family:var(--f-mono);font-size:.69rem;padding:2px 7px;border-radius:4px;margin-top:3px}
+.origen.citada{background:var(--cite-soft);color:var(--cite)}
+.origen.local{background:var(--warn-soft);color:var(--warn)}
+sup.r{font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--cite)}
+sup.r a{color:inherit;text-decoration:none}
+sup.r a:hover{text-decoration:underline}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:620px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display);font-weight:700;font-stretch:90%;background:var(--sunk);font-size:.85rem}
+tr:last-child td{border-bottom:0}
+td.k{font-weight:600}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.71rem;padding:1px 7px;border-radius:4px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tag.c{background:var(--cite-soft);color:var(--cite)}
+.tag.l{background:var(--warn-soft);color:var(--warn)}
+
+.check{list-style:none;padding:0;margin:0;display:grid;gap:7px;max-width:70ch}
+.check li{display:grid;grid-template-columns:20px 1fr;gap:9px;font-size:.94rem}
+.check li::before{content:"□";color:var(--tx);font-family:var(--f-mono)}
+
+ol.refs{margin:0;padding-left:0;list-style:none;display:grid;gap:12px;counter-reset:ref}
+ol.refs li{display:grid;grid-template-columns:30px 1fr;gap:10px;font-size:.9rem}
+ol.refs li::before{counter-increment:ref;content:counter(ref);font-family:var(--f-mono);font-size:.78rem;color:var(--surface);background:var(--cite);border-radius:5px;width:24px;height:24px;display:grid;place-items:center;margin-top:3px}
+ol.refs .ti{font-weight:600}
+ol.refs .src{color:var(--muted);font-style:italic}
+ol.refs .doi{font-family:var(--f-mono);font-size:.82rem;word-break:break-word}
+
+footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);display:grid;gap:10px;max-width:72ch}
+</style>
+</head>
+<body>
+
+<nav class="toc" aria-label="Secciones">
+  <ul id="toc">
+    <li><a href="#como">Cómo leer</a></li>
+    <li><a href="#a">A · Simpaticomiméticos</a></li>
+    <li><a href="#b">B · Cardiotóxicos</a></li>
+    <li><a href="#c">C · Antídotos por toxídrome</a></li>
+    <li><a href="#d">D · Lo que no se fija</a></li>
+    <li><a href="#ratificacion">Ratificación</a></li>
+    <li><a href="#refs">Referencias</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Anexo · Toxicología de la UEH</div>
+  <h1>Anexo de dosificación toxicológica</h1>
+  <p class="lede">Complemento de los artefactos de toxicología de la biblioteca. Para cada intervención: indicación, fundamento, cifra con su fuente, variable de monitorización y criterio de suspensión. Las cifras provienen de literatura publicada y citada, no del protocolo institucional.</p>
+
+  <div class="estado">
+    <div class="t">Documento de estudio — requiere ratificación institucional antes de cualquier uso clínico</div>
+    <p>Las dosis de este anexo son <strong>propuestas tomadas de la literatura citada al pie</strong>, no recomendaciones institucionales. Cada cifra debe contrastarse con el formulario farmacológico local, el protocolo vigente de la UEH y la disponibilidad real de presentaciones antes de incorporarse a la práctica. Las celdas marcadas <span class="origen local">del formulario local</span> no tienen cifra aquí de forma deliberada: la literatura revisada no aporta un número único citable y la referencia correcta es la institucional. Ante un caso grave o atípico, la consulta al centro de información toxicológica precede a este documento.</p>
+    <dl class="meta">
+      <div><dt>Versión</dt><dd>v1.0 — borrador</dd></div>
+      <div><dt>Fecha de emisión</dt><dd>15 de octubre de 2026</dd></div>
+      <div><dt>Próxima revisión</dt><dd>Octubre de 2027</dd></div>
+      <div><dt>Estado</dt><dd>Sin ratificar</dd></div>
+    </dl>
+  </div>
+</header>
+
+<!-- ===== CÓMO LEER ===== -->
+<section class="ch" id="como">
+  <div class="chn">PRELIMINAR</div>
+  <h2>Cómo leer este anexo</h2>
+  <div class="prose">
+    <p>Cada intervención se presenta como ficha de cinco campos. El orden no es decorativo: reproduce la secuencia de preguntas que debe contestar quien indica un fármaco en urgencias.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Campo</th><th>Qué contesta</th><th>Por qué está</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Indicación</td><td>En qué paciente concreto, no en qué diagnóstico genérico</td><td>Evita el uso por etiqueta diagnóstica en lugar de por situación fisiológica</td></tr>
+        <tr><td class="k">Fundamento</td><td>Qué mecanismo interrumpe la intervención</td><td>Permite deducir conducta cuando el caso no calza con el protocolo</td></tr>
+        <tr><td class="k">Dosis y origen</td><td>La cifra y de dónde sale: <span class="tag c">citada</span> con número de referencia, o <span class="tag l">local</span> si debe venir del formulario</td><td>Separa lo verificable de lo que depende de la institución; sin esta distinción el documento aparenta una autoridad que no tiene</td></tr>
+        <tr><td class="k">Monitorización</td><td>Qué variable dirá si está funcionando</td><td>Una indicación sin variable de respuesta no se puede titular ni suspender</td></tr>
+        <tr><td class="k">Límite y suspensión</td><td>Cuándo detenerse, escalar o reconsiderar</td><td>El error más frecuente no es no iniciar, sino no saber cuándo parar</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box nota">
+    <div class="lbl">Sobre la honestidad de las cifras</div>
+    <p>Varias intervenciones de uso cotidiano en este cuadro —la sedación con benzodiazepinas entre ellas— no tienen en la literatura revisada una dosis única citable para intoxicación por simpaticomiméticos: las fuentes recomiendan el fármaco y la estrategia de titulación, no un número. Poner un número inventado donde la evidencia da una estrategia sería el peor resultado posible para un documento de estudio. En esos casos la ficha trae la estrategia completa y deja la cifra al formulario local.</p>
+  </div>
+</section>
+
+<!-- ===== BLOQUE A ===== -->
+<section class="ch" id="a">
+  <div class="chn">BLOQUE A</div>
+  <h2>Soporte del toxidromo simpaticomimético</h2>
+  <div class="prose">
+    <p>Complementa el artefacto <em>Intoxicación por simpaticomiméticos</em>. La revisión reciente de complicaciones cardiovasculares por drogas recreativas simpaticomiméticas establece la sedación precoz como elemento fundacional del manejo, junto a antihipertensivos y vasodilatadores cuando están indicados.<sup class="r"><a href="#r1">1</a></sup></p>
+  </div>
+
+  <div class="fichas">
+
+    <div class="ficha">
+      <div class="hd"><b>A1 · Benzodiazepinas</b><span class="uso">agitación, convulsión, control adrenérgico, dolor torácico</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Agitación psicomotora, convulsión, taquicardia e hipertensión por estímulo adrenérgico, dolor torácico asociado a cocaína. Primera línea en todas ellas.<sup class="r"><a href="#r1">1</a></sup><sup class="r"><a href="#r2">2</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Reduce el estímulo simpático central. Abolir la actividad motora corta a la vez la producción de calor, el consumo miocárdico de O₂, la lisis muscular y el tono adrenérgico: una intervención sobre las tres espirales de daño.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Titulación por dosis repetidas y escaladas hasta sedación efectiva, sin techo fijo preestablecido.</p><p>Las fuentes revisadas establecen el fármaco y la estrategia; no un número único para este toxidromo.<sup class="r"><a href="#r1">1</a></sup><sup class="r"><a href="#r2">2</a></sup></p><span class="origen local">cifra inicial del formulario local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Grado de agitación y actividad motora</li><li>Temperatura central</li><li>FC y PA</li><li>Ventilación y SpO₂</li><li>Repolarización en ECG seriado</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Vía aérea preparada <em>antes</em> de la sedación profunda</li><li>Agitación o hipertermia refractarias: escalar a intubación con bloqueo neuromuscular</li><li>Hipotensión al sedar: desenmascara hipovolemia, reponer volumen, no retirar la sedación</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A2 · Ketamina</b><span class="uso">agitación grave refractaria — con reservas</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Agitación grave o violenta que no cede con benzodiazepinas, cuando se requiere control rápido. No es primera línea en este toxidromo.</p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Sedación disociativa de instalación rápida por vía IM, útil sin acceso vascular. Contrapartida fisiológica relevante aquí: es simpaticomimético indirecto, de modo que puede sumarse al estímulo que se busca abolir.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Serie prehospitalaria: dosis IM promedio <span class="num">4,2</span> mg/kg como primer sedante.<sup class="r"><a href="#r3">3</a></sup></p><p>Dato descriptivo de práctica observada, <strong>no una recomendación de dosis</strong>; esa serie no es de pacientes intoxicados seleccionados.</p><span class="origen citada">descriptiva, ref. 3</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Vía aérea y secreciones</li><li>SpO₂ y ventilación</li><li>Temperatura central</li><li>FC y PA</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>En esa serie <span class="num">30,3</span>% presentó eventos adversos: hipoxia <span class="num">15,4</span>%, compromiso de vía aérea <span class="num">14,8</span>%, secreciones o vómito <span class="num">7,0</span>%; hubo tres paros cardíacos<sup class="r"><a href="#r3">3</a></sup></li><li>Exige equipo y operador preparados para manejo inmediato de vía aérea</li><li>Decisión de incorporarla: institucional, no individual</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A3 · Enfriamiento externo activo</b><span class="uso">hipertermia</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Hipertermia en el contexto del toxidromo. Simultáneo con la sedación, nunca posterior.</p></div>
+        <div class="campo"><h5>Fundamento</h5><p>No hay elevación del punto de ajuste hipotalámico: hay exceso de producción de calor con vía cutánea de disipación cerrada por vasoconstricción α₁. El tratamiento es físico y debe acompañarse de abolir la producción.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Técnica de alta tasa de transferencia (inmersión en agua helada o cobertura cutánea extensa con hielo), con temperatura central monitorizada de forma continua.</p><p>Umbral de inicio, objetivo y técnica disponible: definición institucional.</p><span class="origen local">umbral y técnica del protocolo local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Temperatura <strong>central</strong>, continua — la periférica subestima por la vasoconstricción</li><li>Tasa de descenso térmico</li><li>Estado de conciencia y actividad motora</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Suspender antes de la normotermia estricta, para evitar sobrecorrección</li><li>Los antipiréticos no tienen rol: el mecanismo que bloquean no participa</li><li>Si no desciende, revisar que la producción de calor esté efectivamente abolida</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A4 · Reposición volémica</b><span class="uso">hipovolemia, rabdomiólisis, protección renal</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Precoz y en paralelo a la sedación en todo paciente con agitación grave, hipertermia o sospecha de rabdomiólisis.</p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Restaura la perfusión cutánea necesaria para disipar calor, protege al túbulo de la carga de mioglobina, corrige pérdidas insensibles y tercer espacio, y mejora la precarga en un corazón con diástole acortada.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Cristaloides guiados por diuresis, perfusión y tolerancia cardiopulmonar.</p><p>Las fuentes revisadas no aportan una tasa de infusión única citable para este escenario.</p><span class="origen local">tasa y objetivo de diuresis del protocolo local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Diuresis horaria y color de la orina</li><li>CK seriada</li><li>Función renal, potasio, fosfato, calcio</li><li>Tolerancia respiratoria</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Vigilar sobrecarga, sobre todo con disfunción miocárdica asociada</li><li>Hiperkalemia, acidosis o sobrecarga refractarias: reconocer precozmente la indicación de terapia de reemplazo renal</li><li>Buscar síndrome compartimental si hubo inmovilidad o contención prolongada</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A5 · Bicarbonato de sodio</b><span class="uso">QRS ancho por bloqueo de canales de sodio</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>QRS ancho atribuible a bloqueo de canales rápidos de sodio. Documentado para cocaína entre otros agentes; eficacia incierta con bupropión, propranolol y plantas con taxinas.<sup class="r"><a href="#r4">4</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>La carga de sodio aumenta el gradiente electroquímico a través de canales parcialmente bloqueados y la alcalinización reduce la afinidad del tóxico por el canal. La literatura atribuye el efecto antidótico al aumento del sodio sérico, a la alcalemia, o a la combinación de ambos.<sup class="r"><a href="#r4">4</a></sup></p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Bolos repetidos titulados contra el ancho del QRS.</p><p>La revisión de referencia describe mecanismo y uso clínico; la dosis concreta y la concentración disponible dependen de la presentación local.</p><span class="origen local">dosis del bolo, del formulario local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li><strong>Ancho del QRS</strong> — es la variable de respuesta, no el bicarbonato del gas</li><li>pH, sodio y potasio</li><li>Ritmo y ectopia ventricular</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Vigilar alcalemia excesiva, hipernatremia e hipokalemia</li><li>Evitar antiarrítmicos de clase IA y IC, que suman bloqueo de sodio</li><li>En sobredosis masivas la cinética habitual no predice la duración del tratamiento<sup class="r"><a href="#r5">5</a></sup></li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A6 · Salino hipertónico al 3%</b><span class="uso">hiponatremia aguda sintomática</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Encefalopatía hiponatrémica aguda: cefalea, vómitos, confusión, convulsión o deterioro de conciencia con sodio bajo. Escenario típico: empatógenos tipo MDMA, actividad prolongada e ingesta abundante de agua libre.</p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Secreción inadecuada de ADH más ingesta de agua libre más pérdida de sodio por sudoración producen edema cerebral agudo. El objetivo es revertir el gradiente osmótico lo suficiente para resolver los síntomas, no normalizar la cifra.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Hasta tres bolos de <span class="num">100</span> mL de NaCl al 3%, separados por intervalos de <span class="num">10</span> minutos, hasta corregir los síntomas.<sup class="r"><a href="#r6">6</a></sup><sup class="r"><a href="#r7">7</a></sup></p><p>Guía general de hiponatremia como marco de corrección y de sus límites.<sup class="r"><a href="#r8">8</a></sup></p><span class="origen citada">refs. 6, 7, 8</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Sodio sérico seriado</li><li>Estado neurológico</li><li>Velocidad de corrección en 24 y 48 horas</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Respetar los límites de velocidad de corrección de la guía general para evitar desmielinización osmótica<sup class="r"><a href="#r8">8</a></sup></li><li>Más allá de los bolos iniciales, el volumen máximo seguro en un período dado está poco definido en la evidencia<sup class="r"><a href="#r7">7</a></sup></li><li>No reponer con soluciones hipotónicas mientras no se conozca el sodio</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>A7 · Vasodilatadores y bloqueo adrenérgico</b><span class="uso">hipertensión con daño de órgano blanco, isquemia</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Hipertensión con daño de órgano blanco o isquemia que persiste <em>después</em> de lograr sedación efectiva. Vasodilatadores cuando están indicados.<sup class="r"><a href="#r1">1</a></sup><sup class="r"><a href="#r2">2</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>El argumento clásico contra el bloqueo β aislado es que deja la vasoconstricción α₁ sin oposición. La revisión reciente plantea que los betabloqueadores <em>con propiedades alfabloqueadoras</em> pueden ser beneficiosos en pacientes seleccionados, y que la selección debe ser cautelosa según la sustancia involucrada.<sup class="r"><a href="#r1">1</a></sup></p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Agentes de acción corta y titulable, preferentemente en infusión.</p><p>La selección de agente y su dosificación dependen de la disponibilidad local y de la política del servicio sobre esta controversia.</p><span class="origen local">agente y dosis del protocolo local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>PA invasiva o no invasiva frecuente</li><li>ECG seriado y repolarización</li><li>Función del órgano blanco comprometido</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Reevaluar la indicación tras la sedación: la mayoría de las cifras alarmantes ceden</li><li>Riesgo de hipotensión cuando el estímulo adrenérgico desaparece</li><li>Área de controversia: la política institucional debe ser explícita y conocida por el equipo</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="box nota">
+    <div class="lbl">Estratificación del dolor torácico</div>
+    <p>Para el dolor torácico asociado a cocaína de bajo riesgo, la revisión de 2026 señala que la vía HEART puede orientar un alta segura en casos seleccionados.<sup class="r"><a href="#r1">1</a></sup> La adopción de esa vía y sus criterios locales de alta son decisión institucional, y conviene que quede escrita en el protocolo antes de aplicarse en este subgrupo.</p>
+  </div>
+</section>
+
+<!-- ===== BLOQUE B ===== -->
+<section class="ch" id="b">
+  <div class="chn">BLOQUE B</div>
+  <h2>Cardiotóxicos</h2>
+  <div class="prose">
+    <p>Complementa el artefacto <em>Cardiotóxicos en Urgencia</em>. Este bloque concentra las intervenciones con cifras mejor documentadas de todo el anexo.</p>
+  </div>
+
+  <div class="fichas">
+
+    <div class="ficha">
+      <div class="hd"><b>B1 · Insulina en altas dosis con euglicemia (HIET)</b><span class="uso">intoxicación grave por betabloqueadores y antagonistas del calcio</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Hipotensión, bradicardia y shock cardiogénico por betabloqueadores o antagonistas del calcio. La revisión de referencia propone considerarla <strong>terapia inicial</strong> en estas intoxicaciones, no de rescate.<sup class="r"><a href="#r9">9</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Tres mecanismos: aumento del inotropismo, aumento del transporte intracelular de glucosa y vasodilatación. El miocardio intoxicado pasa a depender del metabolismo de carbohidratos. A diferencia de las catecolaminas, no aumenta la resistencia vascular sistémica ni la demanda miocárdica de O₂.<sup class="r"><a href="#r9">9</a></sup></p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Bolo de <span class="num">1</span> U/kg, seguido de infusión continua de <span class="num">1–10</span> U/kg/h, con suplementación de glucosa.<sup class="r"><a href="#r9">9</a></sup></p><p>Esquema histórico más conservador: bolo de <span class="num">0,5</span> U/kg e infusión de <span class="num">0,5–1</span> U/kg/h. Se han administrado bolos de hasta <span class="num">10</span> U/kg e infusiones de hasta <span class="num">22</span> U/kg/h con buenos resultados y eventos adversos mínimos; el régimen óptimo sigue sin definirse.<sup class="r"><a href="#r9">9</a></sup></p><span class="origen citada">ref. 9</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Glicemia de forma regular</li><li>Potasio sérico</li><li>Respuesta hemodinámica: PA, FC, perfusión, gasto</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Eventos adversos principales anticipados: hipoglicemia e hipokalemia<sup class="r"><a href="#r9">9</a></sup></li><li>La suplementación de glucosa será probablemente necesaria durante toda la terapia y <strong>hasta 24 horas después</strong> de suspenderla<sup class="r"><a href="#r9">9</a></sup></li><li>El cambio del potasio refleja desplazamiento al espacio intracelular, no déficit corporal total<sup class="r"><a href="#r9">9</a></sup></li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>B2 · Fragmentos Fab antidigoxina</b><span class="uso">intoxicación por glucósidos cardíacos</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Intoxicación aguda o crónica por digoxina con arritmia, hiperkalemia o compromiso hemodinámico.</p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Unión del fármaco libre con desplazamiento del equilibrio desde el receptor, restaurando la actividad de la Na⁺/K⁺-ATPasa.</p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">La dosificación empírica clásica en adultos es de <span class="num">3–6</span> viales en intoxicación crónica y <span class="num">10–20</span> viales en la aguda.<sup class="r"><a href="#r10">10</a></sup></p><p>Esa serie encontró requerimientos medios reales muy inferiores —<span class="num">3,05</span> viales en crónica y <span class="num">6,33</span> en aguda—, concluyendo que los esquemas empíricos <strong>sobreestiman</strong> la necesidad.<sup class="r"><a href="#r10">10</a></sup> La práctica actual se ha desplazado a dosis menores tituladas en la aguda y un vial único en la crónica.<sup class="r"><a href="#r11">11</a></sup></p><span class="origen citada">refs. 10, 11</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Ritmo y frecuencia</li><li>Potasio sérico</li><li>Respuesta clínica y hemodinámica</li><li>La digoxinemia total pierde interpretabilidad tras el Fab</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Titular por respuesta en lugar de administrar el esquema empírico completo<sup class="r"><a href="#r10">10</a></sup><sup class="r"><a href="#r11">11</a></sup></li><li>Vigilar hipokalemia al revertir la intoxicación</li><li>Disponibilidad y costo del antídoto: verificar existencias locales antes de necesitarlas</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>B3 · Emulsión lipídica intravenosa (ILE)</b><span class="uso">toxicidad por anestésicos locales y otros — indicación restringida</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>El workgroup internacional <strong>recomienda</strong> ILE en paro cardíaco por bupivacaína. Si otras terapias fallan, la recomienda para bupivacaína y la sugiere para otros anestésicos locales, amitriptilina y bupropión.<sup class="r"><a href="#r12">12</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Secuestro del tóxico lipofílico en una fase lipídica intravascular, con efectos cardiotónicos y metabólicos adicionales propuestos. Toda la evidencia disponible es de calidad muy baja.<sup class="r"><a href="#r12">12</a></sup><sup class="r"><a href="#r13">13</a></sup><sup class="r"><a href="#r14">14</a></sup></p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">Para toxicidad por anestésicos locales se sugiere <strong>Intralipid al 20%</strong>, por ser la formulación más frecuentemente reportada.<sup class="r"><a href="#r12">12</a></sup></p><p>El panel se declara <strong>neutral respecto de la dosis y la duración de la infusión</strong> para agentes distintos de los anestésicos locales, por datos insuficientes; y no hay evidencia para recomendar una formulación.<sup class="r"><a href="#r12">12</a></sup></p><span class="origen local">dosis del protocolo local de anestesia / UEH</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Respuesta hemodinámica y del ritmo</li><li>Trigliceridemia si la infusión se prolonga</li><li>Interferencia analítica conocida en muestras lipémicas<sup class="r"><a href="#r12">12</a></sup></li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li><strong>Como primera línea se sugiere NO usar ILE</strong> en toxicidad por cocaína, antagonistas del calcio, betabloqueadores no liposolubles, amitriptilina, bupropión, difenhidramina, lamotrigina y malatión<sup class="r"><a href="#r12">12</a></sup></li><li>Para los demás tóxicos el panel es neutral: ausencia de recomendación no equivale a respaldo</li><li>Considerar interferencias de laboratorio y costos antes de indicarla</li></ul></div>
+      </div>
+    </div>
+
+    <div class="ficha">
+      <div class="hd"><b>B4 · ECMO venoarterial y ECPR</b><span class="uso">shock cardiogénico o paro refractarios por tóxicos</span></div>
+      <div class="campos">
+        <div class="campo"><h5>Indicación</h5><p>Se <strong>sugiere</strong> ECMO VA en shock cardiogénico refractario por intoxicación: shock persistente con disfunción miocárdica pese a volumen, soporte vasoactivo y terapias toxicológicas indicadas (glucagón, ILE, HIET u otras). Se <strong>considera fuertemente</strong> en paro cardíaco en instituciones estructuradas para ECPR efectiva.<sup class="r"><a href="#r15">15</a></sup></p></div>
+        <div class="campo"><h5>Fundamento</h5><p>Provee soporte hemodinámico o respiratorio mientras el paciente metaboliza o elimina el tóxico: a diferencia de otras causas de shock, aquí hay una noxa que se agota, lo que explica el mejor pronóstico comparativo. Los pacientes intoxicados en ECMO VA tienen menor mortalidad que los no intoxicados con la misma indicación.<sup class="r"><a href="#r15">15</a></sup></p></div>
+        <div class="campo dosis"><h5>Dosis y origen</h5><p class="d">No aplica dosificación. La decisión es de indicación, momento y capacidad institucional.</p><p>Umbrales de activación, criterios de canulación y logística: definición local.</p><span class="origen local">criterios de activación del programa local</span></div>
+        <div class="campo"><h5>Monitorización</h5><ul><li>Parámetros de perfusión y de circuito</li><li>Función miocárdica seriada</li><li>Progresión de la eliminación del tóxico</li></ul></div>
+        <div class="campo"><h5>Límite y suspensión</h5><ul><li>Contraindicado con comorbilidad previa de baja sobrevida esperada<sup class="r"><a href="#r15">15</a></sup></li><li>Contraindicaciones relativas según experiencia del centro: injuria cerebral grave, edad avanzada, disección aórtica no reparada o insuficiencia aórtica grave en VA, injuria orgánica irreversible, contraindicación de anticoagulación sistémica como hemorragia grave<sup class="r"><a href="#r15">15</a></sup></li><li>ECMO VV en SDRA o falla respiratoria grave según indicaciones tradicionales<sup class="r"><a href="#r15">15</a></sup></li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== BLOQUE C ===== -->
+<section class="ch" id="c">
+  <div class="chn">BLOQUE C</div>
+  <h2>Antídotos y agentes por toxídrome</h2>
+  <div class="prose">
+    <p>Complementa el artefacto <em>Toxídromes en Urgencia</em>. Esta tabla es un índice de decisión, no una tabla de dosis: indica para cada toxídrome qué agente se considera, con qué fundamento y de dónde debe venir la cifra.</p>
+  </div>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Toxídrome</th><th>Agente</th><th>Fundamento</th><th>Variable de respuesta</th><th>Origen de la dosis</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="k">Simpaticomimético</td>
+          <td>Benzodiazepinas</td>
+          <td>Reducción del estímulo adrenérgico central; corta las tres espirales<sup class="r"><a href="#r1">1</a></sup><sup class="r"><a href="#r2">2</a></sup></td>
+          <td>Agitación, temperatura central, FC, PA</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Serotoninérgico</td>
+          <td>Ciproheptadina; control de agitación y temperatura</td>
+          <td>Antagonismo 5-HT. Los componentes primarios de la terapia son suspender el agente y el soporte: control de agitación, vigilancia y tratamiento de la hipertermia y manejo de la inestabilidad autonómica<sup class="r"><a href="#r16">16</a></sup></td>
+          <td>Clonus, rigidez, temperatura, estado mental</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Anticolinérgico</td>
+          <td>Fisostigmina en casos seleccionados; soporte</td>
+          <td>Inhibición reversible de colinesterasa, que revierte el bloqueo muscarínico central y periférico</td>
+          <td>Estado mental, ruidos intestinales, globo vesical, FC</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Opioide</td>
+          <td>Naloxona titulada</td>
+          <td>Antagonismo competitivo del receptor μ; el objetivo es la ventilación, no el estado de alerta</td>
+          <td>Frecuencia respiratoria y ventilación efectiva</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Colinérgico</td>
+          <td>Atropina; oximas según agente</td>
+          <td>Antagonismo muscarínico; reactivación de colinesterasa en organofosforados</td>
+          <td>Secreciones bronquiales como variable principal, no la FC</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Sedante-hipnótico</td>
+          <td>Soporte; flumazenil con reservas importantes</td>
+          <td>Antagonismo del sitio benzodiazepínico, con riesgo de convulsión en coingesta proconvulsivante o dependencia</td>
+          <td>Ventilación y estado mental</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+        <tr>
+          <td class="k">Bloqueo de canales de sodio</td>
+          <td>Bicarbonato de sodio</td>
+          <td>Carga de sodio y alcalinización sobre el canal parcialmente bloqueado<sup class="r"><a href="#r4">4</a></sup></td>
+          <td>Ancho del QRS</td>
+          <td><span class="tag l">local</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box alerta">
+    <div class="lbl">Por qué esta tabla no trae cifras</div>
+    <p>Para estos antídotos la literatura revisada en este anexo establece indicación y fundamento, pero no entrega un número único citable que resista la variación de presentación, concentración y población. Una tabla de dosis de antídotos es exactamente el documento que debe ser institucional, ratificado y con fecha de revisión, porque se consulta bajo presión y sin tiempo de contrastar. Construirla es el trabajo que corresponde hacer con el formulario de la UEH a la vista.</p>
+  </div>
+</section>
+
+<!-- ===== BLOQUE D ===== -->
+<section class="ch" id="d">
+  <div class="chn">BLOQUE D</div>
+  <h2>Lo que este anexo deliberadamente no fija</h2>
+  <div class="prose">
+    <p>Declarar los límites de un documento de referencia es parte de hacerlo utilizable. Lo siguiente queda fuera por decisión, no por omisión.</p>
+  </div>
+  <ul class="tight">
+    <li><strong>Umbrales de dosis tóxica por sustancia.</strong> Varían con tolerancia, vía, coingesta, pureza y contexto. Un umbral numérico en un documento de estudio invita a usarlo como criterio de gravedad, cuando el criterio de gravedad es clínico.</li>
+    <li><strong>Catálogo de sustancias y su nomenclatura comercial o de calle.</strong> Cambia más rápido que cualquier ciclo de revisión documental, y la conducta no depende del nombre sino del síndrome.</li>
+    <li><strong>Dosis pediátricas.</strong> Requieren una revisión propia, con sus propias fuentes y su propia ratificación. No deben derivarse por regla de tres desde este documento.</li>
+    <li><strong>Ajuste en embarazo, falla renal y falla hepática.</strong> Mencionados como consideración en las fichas, sin cifras: cada uno exige fuentes específicas.</li>
+    <li><strong>Criterios de alta y de destino.</strong> Dependen de la capacidad de observación y monitorización de cada servicio.</li>
+    <li><strong>Decontaminación digestiva.</strong> Dominio con su propia controversia y sus propias recomendaciones de posición, fuera del alcance de un anexo de dosificación.</li>
+  </ul>
+</section>
+
+<!-- ===== RATIFICACIÓN ===== -->
+<section class="ch" id="ratificacion">
+  <div class="chn">PROCESO</div>
+  <h2>Pauta de ratificación institucional</h2>
+  <div class="prose">
+    <p>Para convertir este borrador en documento de la UEH. El orden importa: la verificación de existencias antes de la aprobación evita ratificar un esquema que no se puede ejecutar.</p>
+  </div>
+  <ul class="check">
+    <li>Contrastar cada cifra <span class="tag c">citada</span> con el formulario farmacológico local y con la presentación efectivamente disponible</li>
+    <li>Completar cada celda <span class="tag l">local</span> con la cifra del protocolo vigente, o declarar explícitamente que no existe y debe definirse</li>
+    <li>Verificar existencias y tiempo de acceso real de los antídotos: Fab antidigoxina, emulsión lipídica, fisostigmina, oximas</li>
+    <li>Definir la política institucional explícita sobre el bloqueo adrenérgico en toxicidad por simpaticomiméticos</li>
+    <li>Definir si se incorpora ketamina para agitación refractaria y bajo qué condiciones de vía aérea y operador</li>
+    <li>Definir umbral de inicio, técnica y objetivo del enfriamiento activo según los medios disponibles</li>
+    <li>Definir criterios de activación del programa de ECMO y la vía de contacto</li>
+    <li>Registrar el teléfono del centro de información toxicológica en el documento y en el box</li>
+    <li>Revisión y firma por quien corresponda según la gobernanza del servicio</li>
+    <li>Fijar fecha de próxima revisión y responsable nominado de mantenerla</li>
+    <li>Difundir con los artefactos de toxicología de la biblioteca, señalando qué cifras cambiaron respecto de este borrador</li>
+  </ul>
+  <div class="box tx">
+    <div class="lbl">Uso docente mientras no esté ratificado</div>
+    <p>Sin ratificar, este anexo sirve para enseñar la estructura de la decisión: qué se pregunta antes de indicar un fármaco, qué variable se vigila y cuándo se detiene. Ese contenido no depende de las cifras. En la tutoría, las celdas marcadas como locales son un ejercicio útil: pedir al residente que las complete con el formulario a la vista revela de inmediato cuánto del manejo conoce de memoria y cuánto repite sin fuente.</p>
+  </div>
+</section>
+
+<!-- ===== REFERENCIAS ===== -->
+<section class="ch" id="refs">
+  <div class="chn">FUENTES</div>
+  <h2>Referencias</h2>
+  <div class="prose">
+    <p>Según PubMed. Cada referencia se cita con su DOI. Las cifras de este anexo provienen exclusivamente de estas fuentes; donde una ficha no cita referencia, la cifra queda explícitamente remitida al formulario local.</p>
+  </div>
+  <ol class="refs">
+    <li id="r1"><div><span class="ti">Gresnigt FMJ.</span> Acute cardiovascular complications of sympathomimetic recreational drug use. <span class="src">Clin Toxicol (Phila).</span> 2026;64(10):850–864. <span class="doi"><a href="https://doi.org/10.1080/15563650.2026.2701369">DOI</a></span></div></li>
+    <li id="r2"><div><span class="ti">McCord J, Jneid H, Hollander JE, et al.</span> Management of cocaine-associated chest pain and myocardial infarction: a scientific statement from the American Heart Association Acute Cardiac Care Committee of the Council on Clinical Cardiology. <span class="src">Circulation.</span> 2008;117(14):1897–1907. <span class="doi"><a href="https://doi.org/10.1161/CIRCULATIONAHA.107.188950">DOI</a></span></div></li>
+    <li id="r3"><div><span class="ti">Kwong JL, Verbeek PR, Leong YC, et al.</span> Paramedic use of ketamine for severe agitation and violence. <span class="src">CJEM.</span> 2025;27(8):653–660. <span class="doi"><a href="https://doi.org/10.1007/s43678-025-00963-w">DOI</a></span></div></li>
+    <li id="r4"><div><span class="ti">Bruccoleri RE, Burns MM.</span> A literature review of the use of sodium bicarbonate for the treatment of QRS widening. <span class="src">J Med Toxicol.</span> 2016;12(1):121–129. <span class="doi"><a href="https://doi.org/10.1007/s13181-015-0483-y">DOI</a></span></div></li>
+    <li id="r5"><div><span class="ti">Elsamadisi P, Sclafani A, Eche IM.</span> Delayed cardiotoxicity from a massive nortriptyline overdose requiring prolonged treatment. <span class="src">J Pharm Pract.</span> 2020;33(4):543–547. <span class="doi"><a href="https://doi.org/10.1177/0897190019838700">DOI</a></span></div></li>
+    <li id="r6"><div><span class="ti">Hew-Butler T, Rosner MH, Fowkes-Godek S, et al.</span> Statement of the 3rd International Exercise-Associated Hyponatremia Consensus Development Conference, Carlsbad, California, 2015. <span class="src">Br J Sports Med.</span> 2015;49(22):1432–1446. <span class="doi"><a href="https://doi.org/10.1136/bjsports-2015-095004">DOI</a></span></div></li>
+    <li id="r7"><div><span class="ti">Elsaesser TF, Pang PS, Malik S, Chiampas GT.</span> Large-volume hypertonic saline therapy in endurance athlete with exercise-associated hyponatremic encephalopathy. <span class="src">J Emerg Med.</span> 2013;44(6):1132–1135. <span class="doi"><a href="https://doi.org/10.1016/j.jemermed.2012.11.048">DOI</a></span></div></li>
+    <li id="r8"><div><span class="ti">Spasovski G, Vanholder R, Allolio B, et al.</span> Clinical practice guideline on diagnosis and treatment of hyponatraemia. <span class="src">Nephrol Dial Transplant.</span> 2014;29(Suppl 2):i1–i39. <span class="doi"><a href="https://doi.org/10.1093/ndt/gfu040">DOI</a></span></div></li>
+    <li id="r9"><div><span class="ti">Engebretsen KM, Kaczmarek KM, Morgan J, Holger JS.</span> High-dose insulin therapy in beta-blocker and calcium channel-blocker poisoning. <span class="src">Clin Toxicol (Phila).</span> 2011;49(4):277–283. <span class="doi"><a href="https://doi.org/10.3109/15563650.2011.582471">DOI</a></span></div></li>
+    <li id="r10"><div><span class="ti">Chhabra N, Valento M, Bryant SM, Aks SE.</span> Digoxin-specific antibody fragment dosing: a case series. <span class="src">Am J Ther.</span> 2016;23(6):e1597–e1601. <span class="doi"><a href="https://doi.org/10.1097/MJT.0000000000000267">DOI</a></span></div></li>
+    <li id="r11"><div><span class="ti">Chan BS, Jeong J, Cairns R, Buckley NA.</span> Adherence to evidence-based practice in the treatment of digoxin poisoning in New South Wales, Australia. <span class="src">Br J Clin Pharmacol.</span> 2025;92(3):969–979. <span class="doi"><a href="https://doi.org/10.1002/bcp.70326">DOI</a></span></div></li>
+    <li id="r12"><div><span class="ti">Gosselin S, Hoegberg LCG, Hoffman RS, et al.</span> Evidence-based recommendations on the use of intravenous lipid emulsion therapy in poisoning. <span class="src">Clin Toxicol (Phila).</span> 2016;54(10):899–923. <span class="doi"><a href="https://doi.org/10.1080/15563650.2016.1214275">DOI</a></span></div></li>
+    <li id="r13"><div><span class="ti">Hoegberg LCG, Bania TC, Lavergne V, et al.</span> Systematic review of the effect of intravenous lipid emulsion therapy for local anesthetic toxicity. <span class="src">Clin Toxicol (Phila).</span> 2016;54(3):167–193. <span class="doi"><a href="https://doi.org/10.3109/15563650.2015.1121270">DOI</a></span></div></li>
+    <li id="r14"><div><span class="ti">Levine M, Hoffman RS, Lavergne V, et al.</span> Systematic review of the effect of intravenous lipid emulsion therapy for non-local anesthetics toxicity. <span class="src">Clin Toxicol (Phila).</span> 2016;54(3):194–221. <span class="doi"><a href="https://doi.org/10.3109/15563650.2015.1126286">DOI</a></span></div></li>
+    <li id="r15"><div><span class="ti">Upchurch C, Blumenberg A, Brodie D, et al.</span> Extracorporeal membrane oxygenation use in poisoning: a narrative review with clinical recommendations. <span class="src">Clin Toxicol (Phila).</span> 2021;59(10):877–887. <span class="doi"><a href="https://doi.org/10.1080/15563650.2021.1945082">DOI</a></span></div></li>
+    <li id="r16"><div><span class="ti">Spadaro A, Scott KR, Koyfman A, Long B.</span> High risk and low prevalence diseases: serotonin syndrome. <span class="src">Am J Emerg Med.</span> 2022;61:90–97. <span class="doi"><a href="https://doi.org/10.1016/j.ajem.2022.08.030">DOI</a></span></div></li>
+  </ol>
+</section>
+
+<footer>
+  <p><strong>Anexo de dosificación toxicológica</strong> · v1.0 borrador · 15 de octubre de 2026 · sin ratificar. Complemento de los artefactos <em>Intoxicación por simpaticomiméticos</em>, <em>Cardiotóxicos en Urgencia</em> y <em>Toxídromes en Urgencia</em> de la biblioteca.</p>
+  <p>Documento de estudio y docencia. No es un protocolo clínico. Las cifras citadas provienen de la literatura referenciada y requieren ratificación institucional, contraste con el formulario local y verificación de disponibilidad antes de cualquier aplicación a pacientes. Ante caso grave o atípico, consultar al centro de información toxicológica.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  if(!('IntersectionObserver' in window)||!secs.length)return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});
+    });
+  },{rootMargin:'-70px 0px -70% 0px'});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>
+</body>
+</html>

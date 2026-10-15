@@ -121,6 +121,18 @@
       "fecha": "2026-10-10"
     },
     {
+      "id": "anexo-dosificacion-toxicologia",
+      "titulo": "Anexo de Dosificación Toxicológica",
+      "tema": "toxicologia",
+      "archivo": "toxicologia/anexo-dosificacion-toxicologia.html",
+      "descripcion": "Complemento de los tres artefactos de toxicología: por intervención, indicación, fundamento, cifra con su fuente citada (o remisión explícita al formulario local), variable de monitorización y criterio de suspensión. HIET, Fab antidigoxina, ILE, ECMO, bicarbonato, salino hipertónico. Borrador sin ratificar, con pauta de ratificación institucional y 16 referencias con DOI.",
+      "etiquetas": [
+        "anexo de dosificación",
+        "intoxicación por simpaticomiméticos"
+      ],
+      "fecha": "2026-10-15"
+    },
+    {
       "id": "intoxicacion-por-simpaticomimeticos",
       "titulo": "Intoxicación por Simpaticomiméticos",
       "tema": "toxicologia",
