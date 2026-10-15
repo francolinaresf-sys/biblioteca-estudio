@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<title>Intoxicación por Simpaticomiméticos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: columna de lectura de 68ch con barra de capítulos pegajosa; esquemas, tablas y cadenas causales se ensanchan con scroll propio */
+:root{
+  --bg:#F4F6F8; --surface:#FFFFFF; --sunk:#EAEDF2; --line:#D4D9E2;
+  --ink:#17202E; --muted:#525C70;
+  --adr:#A8491A;        /* ámbar adrenérgico — eje fisiopatológico */
+  --adr-soft:#FBEADD;
+  --tx:#0B6460;         /* verde-azul — eje terapéutico */
+  --tx-soft:#DCF0EE;
+  --danger:#AE2318; --danger-soft:#FBE4E1;
+  --warn:#7E5900; --warn-soft:#F9F0D2;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151C; --surface:#191F28; --sunk:#212834; --line:#313A49;
+  --ink:#E6EAF0; --muted:#9BA5B7;
+  --adr:#F09A5E; --adr-soft:#38261A; --tx:#5BC8C0; --tx-soft:#12302E;
+  --danger:#F3877C; --danger-soft:#3A1D1B; --warn:#E0B44B; --warn-soft:#332A12;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151C; --surface:#191F28; --sunk:#212834; --line:#313A49;
+  --ink:#E6EAF0; --muted:#9BA5B7;
+  --adr:#F09A5E; --adr-soft:#38261A; --tx:#5BC8C0; --tx-soft:#12302E;
+  --danger:#F3877C; --danger-soft:#3A1D1B; --warn:#E0B44B; --warn-soft:#332A12;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.62;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+.wrap{max-width:880px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.14;margin:0}
+h1{font-size:clamp(2.05rem,6vw,3.3rem);font-weight:800;font-stretch:80%;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,4vw,2rem);font-weight:750;font-stretch:85%}
+h3{font-size:1.18rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--adr)}
+:focus-visible{outline:2px solid var(--adr);outline-offset:2px}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+.num{font-variant-numeric:tabular-nums}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+nav.toc ul{list-style:none;margin:0 auto;padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:4px;overflow-x:auto;max-width:880px;scrollbar-width:none}
+nav.toc ul::-webkit-scrollbar{display:none}
+nav.toc a{display:block;white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.82rem;font-weight:600;padding:6px 10px;border-radius:6px}
+nav.toc a:hover{background:var(--sunk);color:var(--ink)}
+nav.toc a.on{background:var(--adr-soft);color:var(--adr)}
+
+header.hero{padding-block:40px 30px;display:grid;gap:16px}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--adr)}
+.lede{font-size:1.08rem;color:var(--muted);max-width:64ch}
+.vitals{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.vital{font-family:var(--f-mono);font-size:.78rem;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;color:var(--muted)}
+.vital b{color:var(--adr);font-weight:500}
+
+section.ch{padding-block:38px 10px;border-top:1px solid var(--line);display:grid;gap:18px}
+.chn{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);letter-spacing:.09em}
+.prose{display:grid;gap:12px;max-width:68ch}
+ul.tight,ol.tight{margin:0;padding-left:1.2em;display:grid;gap:7px;max-width:68ch}
+
+.box{border-radius:10px;padding:14px 16px;display:grid;gap:8px;max-width:72ch}
+.box .lbl{font-family:var(--f-mono);font-size:.71rem;letter-spacing:.11em;text-transform:uppercase;font-weight:500}
+.perla{background:var(--adr-soft)} .perla .lbl{color:var(--adr)}
+.tx{background:var(--tx-soft)} .tx .lbl{color:var(--tx)}
+.alerta{background:var(--danger-soft)} .alerta .lbl{color:var(--danger)}
+.mito{background:var(--warn-soft)} .mito .lbl{color:var(--warn)}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,255px),1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:7px;align-content:start;min-width:0}
+.card h4{color:var(--adr)}
+.card p{font-size:.93rem}
+.card .sub{font-family:var(--f-mono);font-size:.74rem;color:var(--muted);letter-spacing:.04em}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:640px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display);font-weight:700;font-stretch:90%;background:var(--sunk);font-size:.85rem}
+tr:last-child td{border-bottom:0}
+td.k{font-weight:600}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.71rem;padding:1px 7px;border-radius:4px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tag.r{background:var(--danger-soft);color:var(--danger)}
+.tag.a{background:var(--adr-soft);color:var(--adr)}
+.tag.t{background:var(--tx-soft);color:var(--tx)}
+
+/* cadena causal */
+.chain{overflow-x:auto;padding-bottom:4px}
+.chain .row{display:flex;gap:8px;align-items:stretch;min-width:min-content}
+.chain .st{flex:0 0 auto;width:168px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.86rem;display:grid;gap:4px;align-content:start}
+.chain .st b{font-family:var(--f-display);font-stretch:90%;font-size:.95rem;color:var(--adr)}
+.chain .ar{flex:0 0 auto;align-self:center;color:var(--adr);font-family:var(--f-mono);font-size:1.1rem}
+.chain .st.end{border-color:var(--danger);background:var(--danger-soft)}
+.chain .st.end b{color:var(--danger)}
+
+/* algoritmo / pasos */
+.algo{display:grid}
+.step{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.step:last-child{border-bottom:0}
+.step .n{font-family:var(--f-display);font-weight:800;font-size:1.55rem;color:var(--tx);line-height:1}
+.step .b{display:grid;gap:7px;min-width:0}
+.step .why{font-size:.89rem;color:var(--muted);border-left:2px solid var(--tx);padding-left:10px}
+.step h4{color:var(--ink)}
+
+details.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+details.q summary{cursor:pointer;font-weight:600;list-style:none;display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.96rem}
+details.q summary::-webkit-details-marker{display:none}
+details.q summary .qn{font-family:var(--f-mono);color:var(--adr);font-weight:500}
+details.q[open] summary{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+details.q .ans{color:var(--muted);font-size:.93rem;display:grid;gap:7px}
+details.q .ans strong{color:var(--ink)}
+.qs{display:grid;gap:8px}
+
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stage .hd{background:var(--sunk);padding:11px 16px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.stage .hd b{font-family:var(--f-display);font-stretch:90%;font-size:1.02rem}
+.stage .hd span{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.stage .bd{padding:14px 16px;display:grid;gap:14px}
+.stage .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:16px}
+.stage h5{margin:0 0 5px;font-family:var(--f-mono);font-size:.71rem;letter-spacing:.11em;text-transform:uppercase;color:var(--adr);font-weight:500}
+.stage ul{margin:0;padding-left:1.1em;display:grid;gap:5px;font-size:.92rem}
+
+.check{list-style:none;padding:0;margin:0;display:grid;gap:7px;max-width:68ch}
+.check li{display:grid;grid-template-columns:20px 1fr;gap:9px;font-size:.94rem}
+.check li::before{content:"□";color:var(--tx);font-family:var(--f-mono)}
+
+.keys{counter-reset:k;display:grid;gap:10px;max-width:70ch}
+.keys li{display:grid;grid-template-columns:30px 1fr;gap:10px;list-style:none}
+.keys li::before{counter-increment:k;content:counter(k);font-family:var(--f-mono);font-size:.82rem;color:var(--surface);background:var(--adr);border-radius:5px;width:24px;height:24px;display:grid;place-items:center;margin-top:2px}
+.keys{padding:0;margin:0}
+
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted);display:grid;gap:10px;max-width:70ch}
+footer ol{margin:0;padding-left:1.3em;display:grid;gap:5px}
+</style>
+</head>
+<body>
+<nav class="toc" aria-label="Capítulos">
+  <ul id="toc">
+    <li><a href="#fisiologia">1 · Fisiología</a></li>
+    <li><a href="#cascada">2 · Cascada</a></li>
+    <li><a href="#sindrome">3 · Síndrome</a></li>
+    <li><a href="#complicaciones">4 · Complicaciones</a></li>
+    <li><a href="#principios">5 · Principios de manejo</a></li>
+    <li><a href="#errores">6 · Errores</a></li>
+    <li><a href="#revision">7 · Revisión final</a></li>
+    <li><a href="#tutoria">8 · Tutoría clínica</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Toxicología clínica · Medicina de urgencia</div>
+  <h1>Tormenta simpaticomimética</h1>
+  <p class="lede">Del receptor adrenérgico a la cama del paciente: por qué el exceso de catecolaminas sinápticas produce las complicaciones que matan, y cómo cada decisión de manejo se deduce de ese mecanismo. Con guía de tutoría clínica por nivel de residencia.</p>
+  <div class="vitals">
+    <span class="vital">Eje <b>razonamiento fisiopatológico</b></span>
+    <span class="vital">Foco <b>complicaciones y conducta</b></span>
+    <span class="vital">Nivel <b>R1–R2 y R3+</b></span>
+    <span class="vital">Escenario <b>UEH</b></span>
+  </div>
+</header>
+
+<!-- ============ 1 ============ -->
+<section class="ch" id="fisiologia">
+  <div class="chn">CAPÍTULO 1</div>
+  <h2>Fisiología del tono adrenérgico: el mapa que explica todo lo demás</h2>
+  <div class="prose">
+    <p>Toda la clínica del toxidromo simpaticomimético es la suma algebraica de la ocupación de cinco familias de receptores por un exceso de catecolaminas en la hendidura sináptica. Si el residente domina este mapa, no necesita memorizar listas de signos: los deduce.</p>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Receptor</th><th>Acoplamiento y segundo mensajero</th><th>Órgano blanco</th><th>Expresión clínica del exceso</th></tr></thead>
+      <tbody>
+        <tr><td class="k">α₁</td><td>Gq → fosfolipasa C → IP₃/DAG → ↑Ca²⁺ citosólico</td><td>Músculo liso vascular, esfínteres, iris, folículo piloso</td><td>Vasoconstricción, hipertensión, palidez, midriasis, piloerección, retención urinaria</td></tr>
+        <tr><td class="k">α₂</td><td>Gi → ↓AMPc (autorreceptor presináptico)</td><td>Terminal noradrenérgico, núcleos centrales</td><td>Freno fisiológico de la liberación: su saturación o bypass explica la pérdida de autorregulación</td></tr>
+        <tr><td class="k">β₁</td><td>Gs → ↑AMPc → PKA → fosforilación de canales L y RyR</td><td>Nodo sinusal, miocardio, sistema de conducción</td><td>Taquicardia, ↑contractilidad, ↑consumo miocárdico de O₂, automatismo ectópico</td></tr>
+        <tr><td class="k">β₂</td><td>Gs → ↑AMPc → relajación de músculo liso</td><td>Bronquio, vaso de músculo esquelético, hígado, membrana celular</td><td>Broncodilatación, vasodilatación muscular, glucogenólisis, hipokalemia por desplazamiento intracelular</td></tr>
+        <tr><td class="k">β₃</td><td>Gs → ↑AMPc → lipólisis / termogénesis</td><td>Tejido adiposo blanco y pardo</td><td>↑ácidos grasos libres, termogénesis — contribuyente a la hipertermia</td></tr>
+        <tr><td class="k">D₁ / 5-HT</td><td>Gs / múltiples</td><td>SNC, lecho esplácnico, plaqueta</td><td>Euforia, psicosis, agitación, estereotipias, vasoconstricción serotoninérgica, agregación plaquetaria</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box perla">
+    <div class="lbl">Perla de razonamiento</div>
+    <p>El balance α/β explica la presión arterial observada. Un agente con predominio α produce hipertensión con piel pálida y fría; uno con fuerte componente β₂ puede cursar con presión sorprendentemente normal o baja pese a taquicardia extrema, porque la vasodilatación muscular compensa la vasoconstricción esplácnica. Un paciente taquicárdico, diaforético y <em>normotenso</em> no está menos grave: está en un punto distinto del mismo espectro.</p>
+  </div>
+
+  <div class="box mito">
+    <div class="lbl">Distinción que importa</div>
+    <p>Los agentes de acción indirecta (que liberan o impiden la recaptación de catecolaminas endógenas) dependen de los depósitos presinápticos; los de acción directa ocupan el receptor sin requerirlos. Esto predice taquifilaxia en los primeros y respuesta sostenida en los segundos, y explica por qué un paciente con depleción catecolaminérgica tras horas de agitación puede colapsar hemodinámicamente al sedarse.</p>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="ch" id="cascada">
+  <div class="chn">CAPÍTULO 2</div>
+  <h2>La cascada: tres espirales que convergen</h2>
+  <div class="prose">
+    <p>La mortalidad no la produce la taquicardia. La producen tres espirales autoamplificadas que comparten un motor común: contracción muscular sostenida, vasoconstricción y pérdida de la capacidad de disipar calor. Reconocerlas como <em>espirales</em> —no como eventos aislados— es lo que justifica intervenir temprano y agresivamente.</p>
+  </div>
+
+  <h3>Espiral 1 — Térmico-muscular</h3>
+  <div class="chain">
+    <div class="row">
+      <div class="st"><b>Agitación</b>Actividad muscular involuntaria sostenida</div><div class="ar">→</div>
+      <div class="st"><b>Termogénesis</b>Producción de calor por contracción + termogénesis β₃</div><div class="ar">→</div>
+      <div class="st"><b>Vasoconstricción α₁</b>Se pierde la vía cutánea de disipación</div><div class="ar">→</div>
+      <div class="st"><b>Hipertermia</b>Temperatura central en ascenso</div><div class="ar">→</div>
+      <div class="st"><b>Más agitación</b>Encefalopatía térmica y acidosis aumentan la actividad motora</div><div class="ar">→</div>
+      <div class="st end"><b>Desnaturalización</b>Falla multiorgánica, CID, muerte celular</div>
+    </div>
+  </div>
+  <div class="box alerta">
+    <div class="lbl">Punto de no retorno</div>
+    <p>Por sobre aproximadamente 40–41 °C de temperatura central la injuria pasa de funcional a estructural: desnaturalización proteica, disfunción endotelial difusa, activación de la coagulación y citólisis. La ventana terapéutica se mide en minutos a decenas de minutos, no en horas. Este es el argumento fisiopatológico para que el enfriamiento y la sedación sean acciones <em>simultáneas</em> y no secuenciales.</p>
+  </div>
+
+  <h3>Espiral 2 — Isquémico-cardiovascular</h3>
+  <div class="chain">
+    <div class="row">
+      <div class="st"><b>Estímulo β₁</b>↑FC, ↑contractilidad, ↑tensión parietal</div><div class="ar">→</div>
+      <div class="st"><b>↑Demanda de O₂</b>El consumo miocárdico se multiplica</div><div class="ar">→</div>
+      <div class="st"><b>↓Aporte</b>Vasoconstricción coronaria α₁ + acortamiento diastólico</div><div class="ar">→</div>
+      <div class="st"><b>Protrombosis</b>Activación plaquetaria y disfunción endotelial</div><div class="ar">→</div>
+      <div class="st"><b>Isquemia</b>Desbalance aporte/demanda, con o sin placa</div><div class="ar">→</div>
+      <div class="st end"><b>Arritmia / falla</b>Isquemia que genera arritmia que agrava la isquemia</div>
+    </div>
+  </div>
+  <div class="box perla">
+    <div class="lbl">Perla de razonamiento</div>
+    <p>El dolor torácico en este contexto tiene al menos cuatro mecanismos simultáneos posibles, y no son mutuamente excluyentes: desbalance aporte/demanda, vasoespasmo coronario, trombosis sobre placa acelerada, y disección aórtica por el estrés de pared hipertensivo. El razonamiento diagnóstico debe mantener los cuatro abiertos, porque la conducta difiere radicalmente entre ellos.</p>
+  </div>
+
+  <h3>Espiral 3 — Metabólico-renal</h3>
+  <div class="chain">
+    <div class="row">
+      <div class="st"><b>Isquemia muscular</b>Contracción sostenida con aporte insuficiente</div><div class="ar">→</div>
+      <div class="st"><b>Rabdomiólisis</b>Falla de la ATPasa, ↑Ca²⁺ intracelular, lisis del miocito</div><div class="ar">→</div>
+      <div class="st"><b>Carga tubular</b>Mioglobina, fosfato, potasio, ácido úrico</div><div class="ar">→</div>
+      <div class="st"><b>Acidosis + hipovolemia</b>Pérdidas insensibles, tercer espacio, lactato</div><div class="ar">→</div>
+      <div class="st"><b>Obstrucción tubular</b>Precipitación de mioglobina en orina ácida</div><div class="ar">→</div>
+      <div class="st end"><b>LRA oligúrica</b>Hiperkalemia y acidosis que se autoalimentan</div>
+    </div>
+  </div>
+  <div class="box tx">
+    <div class="lbl">Consecuencia terapéutica directa</div>
+    <p>Las tres espirales comparten dos intervenciones que las atacan en su raíz y no en sus manifestaciones: <strong>sedación profunda</strong> (corta la producción de calor y el consumo de O₂ en los tres circuitos) y <strong>reposición volémica agresiva</strong> (restaura perfusión cutánea, renal y muscular). Casi todo el resto del manejo es coadyuvante.</p>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="ch" id="sindrome">
+  <div class="chn">CAPÍTULO 3</div>
+  <h2>Reconocer el síndrome y separarlo de sus imitadores</h2>
+  <div class="prose">
+    <p>El reconocimiento sindromático es clínico y no espera confirmación analítica. Dos pares de signos cargan casi todo el poder discriminativo frente a los toxidromos vecinos: el estado de la piel y el comportamiento de los ruidos intestinales.</p>
+  </div>
+
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Rasgo</th><th>Simpaticomimético</th><th>Anticolinérgico</th><th>Serotoninérgico</th><th>Abstinencia (OH/BZD)</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Piel</td><td><span class="tag a">Diaforética</span> húmeda, puede estar pálida</td><td><span class="tag r">Seca</span> caliente, rubicunda</td><td>Diaforética</td><td>Diaforética</td></tr>
+        <tr><td class="k">Ruidos intestinales</td><td>Presentes o aumentados</td><td><span class="tag r">Ausentes</span> íleo, globo vesical</td><td>Aumentados, diarrea</td><td>Presentes</td></tr>
+        <tr><td class="k">Tono neuromuscular</td><td>Agitación, temblor; sin clonus característico</td><td>Mioclonías, picking</td><td><span class="tag r">Clonus</span> hiperreflexia de predominio en extremidades inferiores, rigidez</td><td>Temblor, convulsiones</td></tr>
+        <tr><td class="k">Pupila</td><td>Midriasis reactiva</td><td>Midriasis arreactiva</td><td>Midriasis</td><td>Midriasis</td></tr>
+        <tr><td class="k">Mucosas</td><td>Normales o húmedas</td><td>Secas</td><td>Normales, sialorrea</td><td>Normales</td></tr>
+        <tr><td class="k">Pista temporal clave</td><td>Inicio agudo, contexto de consumo</td><td>Inicio agudo</td><td>Relación con cambio o adición de fármaco serotoninérgico</td><td>Latencia tras suspensión</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div class="sub">DIFERENCIAL OBLIGADO</div>
+      <h4>Lo que imita a esto y no lo es</h4>
+      <p>Sepsis, hipertiroidismo y tormenta tiroidea, hipoglicemia, hemorragia subaracnoidea, encefalitis, feocromocitoma, hipertermia maligna, síndrome neuroléptico maligno, abstinencia alcohólica. La glicemia capilar y la temperatura central son parte del reconocimiento, no de la evaluación posterior.</p>
+    </div>
+    <div class="card">
+      <div class="sub">TRAMPA DIAGNÓSTICA</div>
+      <h4>El toxidromo no excluye la coexistencia</h4>
+      <p>El paciente agitado con toxidromo simpaticomimético puede tener simultáneamente trauma craneoencefálico, hemorragia intracraneal, hipoglicemia o infección. La atribución prematura de todo el cuadro a la intoxicación es el error diagnóstico más frecuente y el de mayor letalidad en esta población.</p>
+    </div>
+    <div class="card">
+      <div class="sub">VALOR DEL LABORATORIO</div>
+      <h4>Qué cambia la conducta y qué no</h4>
+      <p>Cambian la conducta: temperatura central, glicemia, electrolitos, función renal, CK, lactato, gases, ECG, sodio. Rara vez la cambian en la hora inicial: los paneles cualitativos de orina, cuyos falsos positivos y negativos son frecuentes y cuyo resultado positivo no distingue consumo actual de consumo de días previos.</p>
+    </div>
+    <div class="card">
+      <div class="sub">MEDICIÓN CRÍTICA</div>
+      <h4>Temperatura central, no periférica</h4>
+      <p>La vasoconstricción α₁ hace que la medición axilar, timpánica o frontal subestime sistemáticamente la temperatura central, justo en el paciente donde esa cifra decide la agresividad del enfriamiento. En el paciente hipertérmico o con agitación grave, la medición debe ser central.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="ch" id="complicaciones">
+  <div class="chn">CAPÍTULO 4</div>
+  <h2>Complicaciones: mecanismo, reconocimiento y conducta</h2>
+  <div class="prose">
+    <p>Ocho complicaciones concentran la morbimortalidad. Para cada una, el mecanismo determina qué buscar y qué hacer; esta es la sección que conviene repasar antes de un turno.</p>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.1 · Agitación psicomotora grave y delirium agitado</b><span>la complicación que agrava a todas las demás</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Hiperdopaminergia mesolímbica y pérdida del control inhibitorio prefrontal</li>
+          <li>La actividad motora sostenida es el motor de las tres espirales: calor, consumo de O₂ y lisis muscular</li>
+          <li>La acidosis metabólica resultante agrava la encefalopatía y cierra el círculo</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Benzodiazepinas tituladas, en dosis repetidas y escaladas hasta lograr sedación efectiva</strong>: son el tratamiento causal, no sintomático</li>
+          <li>Preparar vía aérea antes de sedar profundamente; la depresión respiratoria es un riesgo asumible y manejable, la agitación persistente no lo es</li>
+          <li>Contención física solo como puente a la sedación química y por el menor tiempo posible</li>
+          <li>Agitación refractaria a dosis altas de benzodiazepinas: considerar intubación con bloqueo neuromuscular para abolir la producción de calor</li>
+        </ul></div>
+      </div>
+      <div class="box alerta"><div class="lbl">Riesgo específico de la contención</div><p>La contención física prolongada en un paciente que sigue luchando sostiene la contracción isométrica, acelera la rabdomiólisis y la acidosis, e impide la disipación de calor. La contención en posición prona o con compresión torácica se asocia a muerte súbita. Contener sin sedar simultáneamente es una conducta que empeora el pronóstico.</p></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.2 · Hipertermia</b><span>el predictor de mortalidad más potente y el más modificable</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Producción: contracción muscular + termogénesis β₃ + desacoplamiento mitocondrial</li>
+          <li>Disipación bloqueada: vasoconstricción cutánea α₁ anula el principal radiador del organismo</li>
+          <li>No es un punto de ajuste hipotalámico elevado: es un desbalance producción/eliminación</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Enfriamiento externo activo inmediato</strong>, con monitorización de temperatura central continua</li>
+          <li>Inmersión en agua helada o cobertura cutánea extensa con hielo son las técnicas de mayor tasa de enfriamiento</li>
+          <li><strong>Sedación profunda simultánea</strong>: sin abolir la producción de calor, el enfriamiento pierde la carrera</li>
+          <li>Reposición de volumen: la deshidratación limita la perfusión cutánea y por tanto la disipación</li>
+          <li>Suspender el enfriamiento activo antes de alcanzar normotermia estricta, para evitar sobrecorrección</li>
+        </ul></div>
+      </div>
+      <div class="box mito"><div class="lbl">Mito que conviene desarmar en la tutoría</div><p>Los antipiréticos no tienen rol: actúan reduciendo el punto de ajuste hipotalámico mediado por prostaglandinas, mecanismo que no está involucrado aquí. Prescribirlos consume tiempo y crea la falsa sensación de que se está tratando la hipertermia.</p></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.3 · Isquemia miocárdica y síndrome coronario agudo</b><span>el dolor torácico de mecanismo múltiple</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Desbalance aporte/demanda por β₁</li>
+          <li>Vasoespasmo coronario α₁, incluso sobre coronarias angiográficamente sanas</li>
+          <li>Aterogénesis acelerada y activación plaquetaria en el consumo crónico</li>
+          <li>Hipertrofia ventricular y miocardiopatía en el consumo sostenido</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Benzodiazepinas como primera línea antiisquémica</strong>: reducen frecuencia, presión y consumo de O₂ atacando el estímulo central</li>
+          <li>Nitratos y manejo antiisquémico estándar según hallazgos</li>
+          <li>ECG seriado: el patrón inicial puede ser anormal sin oclusión, y la repolarización mejora al controlar el estímulo adrenérgico</li>
+          <li>Elevación persistente del ST o inestabilidad: estrategia de reperfusión según protocolo local</li>
+          <li>Troponina elevada no implica necesariamente oclusión trombótica en este contexto; interpretar con el cuadro completo</li>
+        </ul></div>
+      </div>
+      <div class="box mito"><div class="lbl">La controversia del betabloqueo, en términos fisiológicos</div><p>El argumento clásico es que el bloqueo β sin bloqueo α deja la vasoconstricción α₁ sin oposición y puede agravar la hipertensión y el vasoespasmo coronario. La evidencia clínica sobre la magnitud real de este fenómeno es discutida y la práctica varía entre instituciones. El punto formativo no es memorizar una prohibición, sino que el residente pueda explicar el razonamiento, reconozca que es un área de controversia y conozca la política de su propio servicio. En cualquier caso, la primera línea para el control adrenérgico en urgencias es la sedación, no el antagonismo del receptor.</p></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.4 · Emergencia hipertensiva, disección aórtica y hemorragia intracraneal</b><span>cuando la presión daña el órgano blanco</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Vasoconstricción α₁ con pérdida del freno α₂ presináptico</li>
+          <li>El estrés de pared agudo sobre una aorta predispuesta genera disección</li>
+          <li>Pico hipertensivo sobre malformación o aneurisma, más vasculopatía del consumo crónico, generan hemorragia</li>
+          <li>Posible vasculitis y vasoespasmo cerebral con isquemia en territorio no aterosclerótico</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Sedación primero</strong>: en la mayoría de los casos la presión cede al abolir el estímulo adrenérgico central, y esto evita la hipotensión iatrogénica</li>
+          <li>Hipertensión con daño de órgano blanco pese a sedación: vasodilatadores de acción corta y titulable, preferentemente por infusión</li>
+          <li>Antagonismo α cuando se requiere control adrenérgico dirigido del componente vasoconstrictor</li>
+          <li>Cefalea súbita intensa, déficit focal o convulsión: neuroimagen antes de atribuir el cuadro a la intoxicación</li>
+          <li>Dolor torácico desgarrante, asimetría de pulsos o mediastino ensanchado: descartar disección activamente</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.5 · Arritmias y bloqueo de canales de sodio</b><span>el QRS que se ensancha</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Taquiarritmias por automatismo aumentado mediado por β₁ y por isquemia</li>
+          <li>Algunos agentes —notablemente la cocaína— bloquean canales rápidos de sodio: enlentecen la fase 0, ensanchan el QRS y predisponen a taquicardia ventricular</li>
+          <li>Bloqueo de canales de potasio con prolongación del QT en varios agentes</li>
+          <li>La acidosis y la hiperkalemia de la rabdomiólisis potencian el bloqueo de sodio</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>QRS ancho atribuible a bloqueo de sodio: bicarbonato de sodio en bolo</strong>, repetido según respuesta del QRS, con vigilancia de pH, sodio y potasio</li>
+          <li>Corregir acidosis, oxigenación, potasio, calcio y magnesio: son condiciones permisivas de la arritmia</li>
+          <li>Sedación para retirar el estímulo adrenérgico arritmogénico</li>
+          <li>Taquicardia supraventricular en este contexto: control del estímulo antes que bloqueo nodal agresivo</li>
+          <li>Evitar antiarrítmicos de clase IA/IC, que suman bloqueo de sodio al ya existente</li>
+        </ul></div>
+      </div>
+      <div class="box perla"><div class="lbl">Fundamento del bicarbonato</div><p>No se administra para corregir el pH como objetivo en sí. La carga de sodio aumenta el gradiente electroquímico que empuja el ion a través de los canales parcialmente bloqueados, y la alcalinización reduce la afinidad del tóxico por el canal. El marcador de respuesta, por tanto, es el angostamiento del QRS, no la cifra de bicarbonato en el gas.</p></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.6 · Rabdomiólisis y lesión renal aguda</b><span>la complicación silenciosa de las primeras horas</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Isquemia por vasoconstricción + contracción sostenida + hipertermia + efecto miotóxico directo</li>
+          <li>Falla energética del miocito, sobrecarga de calcio citosólico, activación de proteasas y lisis</li>
+          <li>Mioglobina: obstrucción tubular, citotoxicidad directa y vasoconstricción renal, agravadas por orina ácida e hipovolemia</li>
+          <li>Hiperkalemia, hiperfosfatemia e hipocalcemia por liberación del contenido muscular</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Reposición volémica precoz y abundante</strong>, guiada por diuresis y tolerancia: es la única intervención con impacto consistente</li>
+          <li>CK seriada, función renal, potasio, fosfato, calcio, ECG para hiperkalemia</li>
+          <li>Sedación y enfriamiento: cortan la producción de daño muscular en su origen</li>
+          <li>Buscar y descomprimir síndrome compartimental, sobre todo si hubo inmovilidad prolongada o contención</li>
+          <li>Reconocer precozmente la indicación de terapia de reemplazo renal por hiperkalemia, acidosis o sobrecarga refractarias</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.7 · Convulsiones</b><span>y por qué repetirlas cambia el pronóstico</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Descenso del umbral convulsivo por hiperexcitabilidad monoaminérgica y, en algunos agentes, por bloqueo de canales</li>
+          <li>Causas secundarias que deben buscarse: hipoglicemia, hiponatremia, hipertermia, hemorragia intracraneal, isquemia, hipoxia</li>
+          <li>Cada convulsión agrava hipertermia, acidosis y rabdomiólisis: es un acelerador de las tres espirales</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Benzodiazepinas como primera línea</strong>, en dosis adecuada y repetida</li>
+          <li>Glicemia y sodio de inmediato, siempre</li>
+          <li>Convulsión focal, déficit persistente o estado post-ictal prolongado: neuroimagen</li>
+          <li>Status refractario: escalar a anestésicos según protocolo, con vía aérea asegurada</li>
+          <li>Evitar fenitoína como agente de elección en convulsión de origen tóxico, donde es característicamente poco eficaz</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="hd"><b>4.8 · Hiponatremia y complicaciones metabólicas</b><span>la trampa del paciente joven con cefalea y vómitos</span></div>
+    <div class="bd">
+      <div class="cols">
+        <div><h5>Mecanismo</h5><ul>
+          <li>Secreción inadecuada de ADH inducida por el agente, de forma destacada con los agentes empatógenos tipo MDMA</li>
+          <li>Ingesta masiva de agua libre en contexto de actividad física prolongada y calor ambiental</li>
+          <li>Pérdida de sodio por sudoración abundante reemplazada con agua sin electrolitos</li>
+          <li>Resultado: edema cerebral en un cráneo sin espacio para acomodarlo</li>
+        </ul></div>
+        <div><h5>Conducta</h5><ul>
+          <li><strong>Medir sodio en todo paciente con cefalea, vómitos, confusión o convulsión en este contexto</strong>, aunque el cuadro parezca explicado por el tóxico</li>
+          <li>Hiponatremia sintomática con compromiso neurológico: solución salina hipertónica en bolos según protocolo</li>
+          <li>Evitar la reposición con soluciones hipotónicas mientras no se conozca el sodio</li>
+          <li>Vigilar hipokalemia por desplazamiento β₂, hipoglicemia o hiperglicemia, hipomagnesemia y acidosis láctica</li>
+        </ul></div>
+      </div>
+      <div class="box alerta"><div class="lbl">Patrón de alta letalidad</div><p>Paciente joven, evento social o deportivo prolongado, consumo de empatógenos, ingesta abundante de agua, cefalea y vómitos atribuidos al tóxico, deterioro de conciencia horas después. La hiponatremia aguda grave en este escenario es una causa de muerte evitable cuyo diagnóstico depende exclusivamente de haber pedido el sodio.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="ch" id="principios">
+  <div class="chn">CAPÍTULO 5</div>
+  <h2>Principios de manejo deducidos del mecanismo</h2>
+  <div class="prose">
+    <p>Esta es la arquitectura de decisiones, en orden de impacto. Cada paso lleva explícito el fundamento, porque es el fundamento —y no la secuencia— lo que el residente debe poder reconstruir frente a un caso que no calce con el protocolo. Las dosis concretas se toman del protocolo institucional y del formulario local.</p>
+  </div>
+
+  <div class="algo">
+    <div class="step"><div class="n">1</div><div class="b">
+      <h4>Reconocimiento y medición simultáneos</h4>
+      <p>ABCDE, monitorización continua, acceso vascular, glicemia capilar, <strong>temperatura central</strong>, ECG. Buscar activamente causas coexistentes y alternativas.</p>
+      <div class="why">La hipertermia y la hipoglicemia son letales y reversibles en minutos; ambas se pasan por alto cuando el equipo está ocupado conteniendo a un paciente agitado.</div>
+    </div></div>
+
+    <div class="step"><div class="n">2</div><div class="b">
+      <h4>Sedación con benzodiazepinas, titulada y sin techo artificial</h4>
+      <p>Es la intervención de mayor rendimiento del cuadro completo. Dosis repetidas y escaladas hasta sedación efectiva, con vía aérea preparada. El objetivo es un paciente quieto, no un paciente dormido por una dosis fija.</p>
+      <div class="why">Abolir la actividad motora corta simultáneamente la producción de calor, el consumo miocárdico de O₂, la lisis muscular y el estímulo adrenérgico central. Una sola intervención desactiva las tres espirales en su origen. El requerimiento puede ser muy superior al habitual, y subdosificar es el error más frecuente.</div>
+    </div></div>
+
+    <div class="step"><div class="n">3</div><div class="b">
+      <h4>Enfriamiento externo activo si hay hipertermia</h4>
+      <p>En paralelo con la sedación, nunca después. Técnica de alta tasa de transferencia, temperatura central monitorizada, suspensión antes de la normotermia estricta.</p>
+      <div class="why">La injuria térmica es tiempo-dependiente y estructural. Sin sedación el enfriamiento no alcanza; sin enfriamiento la sedación llega tarde al daño ya producido.</div>
+    </div></div>
+
+    <div class="step"><div class="n">4</div><div class="b">
+      <h4>Reposición volémica precoz</h4>
+      <p>Cristaloides guiados por diuresis, perfusión y tolerancia cardiopulmonar.</p>
+      <div class="why">Restaura la perfusión cutánea necesaria para disipar calor, protege al túbulo de la carga de mioglobina, corrige la hipovolemia por pérdidas insensibles y tercer espacio, y mejora la precarga en un corazón taquicárdico con diástole acortada.</div>
+    </div></div>
+
+    <div class="step"><div class="n">5</div><div class="b">
+      <h4>Control dirigido de la presión solo si persiste daño de órgano blanco</h4>
+      <p>Vasodilatadores de acción corta y titulable; antagonismo α cuando se requiere control del componente vasoconstrictor. Reevaluar después de lograr sedación efectiva.</p>
+      <div class="why">La mayoría de las cifras alarmantes ceden con sedación. Tratar la presión antes de sedar expone a hipotensión al momento en que el estímulo adrenérgico desaparece. El fundamento del abordaje α-dirigido es no dejar la vasoconstricción sin oposición.</div>
+    </div></div>
+
+    <div class="step"><div class="n">6</div><div class="b">
+      <h4>Corrección del medio interno y del QRS</h4>
+      <p>Bicarbonato de sodio ante QRS ancho atribuible a bloqueo de canales de sodio, titulado contra el QRS. Corregir potasio, calcio, magnesio, oxigenación y acidosis.</p>
+      <div class="why">Son condiciones permisivas de la arritmia maligna. La eficacia del bicarbonato depende de la carga de sodio y de la alcalinización sobre la afinidad del canal, de modo que el QRS —y no el gas— es el marcador de respuesta.</div>
+    </div></div>
+
+    <div class="step"><div class="n">7</div><div class="b">
+      <h4>Búsqueda activa de la complicación que aún no se manifestó</h4>
+      <p>Sodio, CK, función renal, troponina y ECG seriados, examen neurológico repetido, revisión de compartimentos musculares, reevaluación de la hipótesis diagnóstica.</p>
+      <div class="why">Las complicaciones de este cuadro son sucesivas, no simultáneas: la hiponatremia, la rabdomiólisis y la LRA aparecen cuando el paciente ya se ve mejor y la atención del equipo se ha desplazado a otro box.</div>
+    </div></div>
+
+    <div class="step"><div class="n">8</div><div class="b">
+      <h4>Destino, observación y continuidad</h4>
+      <p>Definir nivel de cuidado según temperatura alcanzada, requerimiento de sedación, compromiso de órgano y trayectoria. Consultar al centro de información toxicológica en casos graves o atípicos. Planificar la intervención sobre el consumo y la red de apoyo antes del alta.</p>
+      <div class="why">El episodio agudo es el punto de contacto con mayor disposición al cambio; omitir la derivación convierte el manejo técnicamente correcto en una puerta giratoria.</div>
+    </div></div>
+  </div>
+
+  <div class="box tx">
+    <div class="lbl">Marco para discutir fármacos en la tutoría</div>
+    <p>Antes de aceptar cualquier fármaco propuesto por el residente, exigir tres respuestas: <strong>qué mecanismo de la cascada interrumpe</strong>, <strong>qué efecto adverso predice su farmacología en este paciente concreto</strong>, y <strong>qué variable monitorizada dirá si está funcionando</strong>. El ejemplo canónico son los agentes antidopaminérgicos propuestos para la agitación: descienden el umbral convulsivo, interfieren la termorregulación en un paciente que ya no puede disipar calor y prolongan el QT en un corazón adrenérgicamente estimulado. No hace falta prohibirlos de memoria; basta que el residente pueda deducir por qué no son la primera línea aquí.</p>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="ch" id="errores">
+  <div class="chn">CAPÍTULO 6</div>
+  <h2>Errores recurrentes y su raíz conceptual</h2>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Error</th><th>Raíz conceptual</th><th>Corrección</th></tr></thead>
+      <tbody>
+        <tr><td class="k">Subdosificar la sedación</td><td>Se trata la agitación como un problema de conducta y no como el motor fisiopatológico del cuadro</td><td>Titular sin techo preestablecido, con vía aérea preparada, hasta un paciente quieto</td></tr>
+        <tr><td class="k">Contener sin sedar</td><td>Se confunde controlar al paciente con tratarlo</td><td>Contención solo como puente, con sedación simultánea y en el menor tiempo posible</td></tr>
+        <tr><td class="k">No medir temperatura central</td><td>Se asume que la medición periférica es equivalente</td><td>Medición central en todo paciente hipertérmico o con agitación grave</td></tr>
+        <tr><td class="k">Enfriar sin sedar</td><td>Se ataca la disipación sin tocar la producción de calor</td><td>Ambas acciones en paralelo, desde el primer minuto</td></tr>
+        <tr><td class="k">Usar antipiréticos</td><td>Se asume un punto de ajuste hipotalámico elevado que no existe aquí</td><td>Enfriamiento físico activo; el antipirético no tiene rol</td></tr>
+        <tr><td class="k">No pedir sodio</td><td>La cefalea, los vómitos y la confusión se atribuyen al tóxico</td><td>Sodio en todo paciente con síntomas neurológicos en este contexto</td></tr>
+        <tr><td class="k">Atribuir todo a la intoxicación</td><td>Cierre diagnóstico prematuro ante un toxidromo reconocible</td><td>Mantener abierto el diferencial estructural, metabólico e infeccioso</td></tr>
+        <tr><td class="k">Esperar el panel de orina</td><td>Se sobreestima el aporte del examen cualitativo</td><td>Tratar el síndrome clínico; el panel rara vez modifica la conducta inicial</td></tr>
+        <tr><td class="k">Alta precoz tras mejoría aparente</td><td>Se ignora que las complicaciones son sucesivas</td><td>Observación con reevaluación de CK, función renal, sodio y ECG antes del destino</td></tr>
+        <tr><td class="k">Omitir la intervención sobre el consumo</td><td>Se define el éxito como la estabilización fisiológica</td><td>Derivación y plan de seguimiento como parte del manejo, no como añadido</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="ch" id="revision">
+  <div class="chn">CAPÍTULO 7</div>
+  <h2>Revisión final</h2>
+  <div class="prose">
+    <p>Síntesis para repaso rápido. Si el residente puede reconstruir estos diez enunciados y justificar cada uno con su mecanismo, domina el tema a nivel operativo.</p>
+  </div>
+  <ol class="keys">
+    <li>La clínica completa es la suma de ocupación de receptores α y β; el balance entre ambos explica por qué dos pacientes con el mismo toxidromo tienen presiones arteriales opuestas.</li>
+    <li>La mortalidad no la produce la taquicardia, sino tres espirales autoamplificadas: térmico-muscular, isquémico-cardiovascular y metabólico-renal.</li>
+    <li>La hipertermia es el predictor de mortalidad más potente y el más modificable; por sobre 40–41 °C la injuria pasa de funcional a estructural y la ventana se mide en minutos.</li>
+    <li>La sedación con benzodiazepinas tituladas es tratamiento causal: desactiva las tres espirales en su origen. Subdosificar es el error más frecuente del cuadro.</li>
+    <li>Enfriamiento y sedación son simultáneos. Enfriar sin sedar es perder la carrera contra una fuente de calor que sigue encendida.</li>
+    <li>La reposición volémica precoz protege simultáneamente la disipación de calor, el túbulo renal y la precarga.</li>
+    <li>Casi toda cifra tensional alarmante cede con sedación; tratar la presión primero expone a hipotensión cuando el estímulo adrenérgico desaparece.</li>
+    <li>El QRS ancho por bloqueo de canales de sodio se trata con bicarbonato titulado contra el QRS, no contra el gas arterial.</li>
+    <li>El sodio debe medirse en todo paciente con cefalea, vómitos, confusión o convulsión: la hiponatremia aguda grave es una muerte evitable que depende de haber pedido el examen.</li>
+    <li>Las complicaciones son sucesivas, no simultáneas: aparecen cuando el paciente ya se ve mejor. La reevaluación estructurada antes del destino es parte del tratamiento.</li>
+  </ol>
+
+  <div class="box alerta">
+    <div class="lbl">Alcance de este documento</div>
+    <p>Material de estudio y docencia. Deliberadamente no contiene dosis numéricas, umbrales de toxicidad por sustancia ni catálogo de agentes: esos datos deben tomarse del protocolo institucional vigente, del formulario farmacológico local y de la consulta al centro de información toxicológica, que son las fuentes que corresponde citar junto a la cama del paciente. El valor formativo de este texto está en el razonamiento que conecta mecanismo y decisión.</p>
+  </div>
+</section>
+
+<!-- ============ 8 ============ -->
+<section class="ch" id="tutoria">
+  <div class="chn">CAPÍTULO 8</div>
+  <h2>Guía de tutoría clínica</h2>
+  <div class="prose">
+    <p>Diseñada para una sesión de 45 a 60 minutos junto a la cama o en sala, con ramas diferenciadas por nivel. El método es socrático: el tutor no entrega la cascada, la hace construir.</p>
+  </div>
+
+  <h3>Objetivos de aprendizaje</h3>
+  <div class="grid2">
+    <div class="card">
+      <div class="sub">RAMA R1–R2 · FUNDAMENTOS</div>
+      <h4>Al final de la sesión el residente debe poder</h4>
+      <ul class="tight" style="font-size:.93rem">
+        <li>Reconocer el toxidromo simpaticomimético y separarlo del anticolinérgico y del serotoninérgico usando piel, ruidos intestinales y tono neuromuscular</li>
+        <li>Nombrar las tres espirales y señalar cuál interviene cada acción terapéutica</li>
+        <li>Ejecutar las primeras seis acciones del manejo inicial en orden, sin consultar material</li>
+        <li>Justificar por qué la sedación es tratamiento causal y no sintomático</li>
+        <li>Enumerar los exámenes que cambian la conducta en la primera hora y los que no</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="sub">RAMA R3+ · COMPLEJIDAD</div>
+      <h4>Al final de la sesión el residente debe poder</h4>
+      <ul class="tight" style="font-size:.93rem">
+        <li>Deducir conducta en escenarios donde el protocolo no aplica directamente: refractariedad, comorbilidad, embarazo, trauma coexistente</li>
+        <li>Argumentar la controversia del betabloqueo en términos de fisiología de receptores y reconocer el estado de la evidencia</li>
+        <li>Decidir y defender el momento de la intubación para control térmico y metabólico</li>
+        <li>Liderar el box: asignar roles, verbalizar el modelo mental compartido y gestionar la contención con el equipo</li>
+        <li>Construir el plan de destino, observación e intervención sobre el consumo</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Estructura de la sesión</h3>
+  <div class="algo">
+    <div class="step"><div class="n">1</div><div class="b"><h4>Activación · 5 min</h4>
+      <p>Presentar solo los signos vitales y el aspecto del paciente, sin antecedente de consumo. Pregunta de apertura: «¿Qué ve usted, qué le preocupa primero, y qué va a pedir antes de hablar conmigo otra vez?»</p>
+      <div class="why">Obliga a razonar desde el síndrome y no desde la etiqueta diagnóstica, que es como se presentan los casos reales.</div></div></div>
+    <div class="step"><div class="n">2</div><div class="b"><h4>Construcción de la cascada · 15 min</h4>
+      <p>Con pizarra. El tutor aporta solo la primera flecha y pide al residente completar la cadena hasta el desenlace. Repetir para las tres espirales. Pregunta de cierre de cada una: «¿Dónde cortaría usted esta cadena, y con qué?»</p>
+      <div class="why">La cascada construida por el propio residente se retiene y se transfiere a casos nuevos; la cascada entregada se olvida.</div></div></div>
+    <div class="step"><div class="n">3</div><div class="b"><h4>Caso progresivo · 20 min</h4>
+      <p>Entregar el caso por etapas, pidiendo decisión en cada corte antes de revelar la siguiente. Rama según nivel (abajo).</p>
+      <div class="why">La toma de decisiones bajo información incompleta y progresiva es la competencia real de urgencias; el caso completo de entrada no la entrena.</div></div></div>
+    <div class="step"><div class="n">4</div><div class="b"><h4>Preguntas de profundización · 10 min</h4>
+      <p>Usar el banco de abajo, seleccionando según lo que el caso haya dejado al descubierto.</p>
+      <div class="why">Las preguntas dirigidas al punto débil demostrado rinden más que un recorrido completo del temario.</div></div></div>
+    <div class="step"><div class="n">5</div><div class="b"><h4>Cierre y compromiso · 5 min</h4>
+      <p>Pedir al residente tres enunciados de lo aprendido y un compromiso concreto para su próximo turno. El tutor cierra con un solo mensaje, no con un resumen.</p>
+      <div class="why">La autoexplicación consolida; el compromiso conductual único es más probable de cumplirse que una lista de propósitos.</div></div></div>
+  </div>
+
+  <h3>Caso progresivo — rama R1–R2</h3>
+  <div class="stage"><div class="bd">
+    <div><h5>Corte 1</h5><p>Hombre joven traído por personal de seguridad desde un evento masivo. Agitado, no colabora, diaforético, piel caliente. FC 150, PA 180/100, FR 30, saturación no medible por movimiento. ¿Qué hace en los primeros tres minutos y en qué orden?</p></div>
+    <div><h5>Corte 2</h5><p>Glicemia normal. Temperatura rectal 40,2 °C. ¿Cambia su prioridad? ¿Qué pide al equipo, con qué palabras exactas?</p></div>
+    <div><h5>Corte 3</h5><p>Recibió una dosis estándar de benzodiazepina y sigue luchando contra la contención. ¿Qué hace ahora, y cuál es su límite?</p></div>
+    <div><h5>Corte 4</h5><p>Dos horas después está sedado, afebril, FC 95. Orina escasa y oscura. ¿Qué pide y qué espera encontrar?</p></div>
+    <div class="box tx"><div class="lbl">Lo que debe emerger</div><p>Temperatura central y glicemia como mediciones iniciales; sedación y enfriamiento simultáneos; escalamiento de dosis sin techo fijo con vía aérea preparada; reconocimiento de la rabdomiólisis en la fase de aparente mejoría.</p></div>
+  </div></div>
+
+  <h3>Caso progresivo — rama R3+</h3>
+  <div class="stage"><div class="bd">
+    <div><h5>Corte 1</h5><p>Mujer de 34 años, dolor torácico opresivo de 40 minutos, diaforética, FC 130, PA 190/110. Consumo referido por acompañante. ECG con elevación del ST en dos derivaciones contiguas. ¿Cuál es su diferencial y qué hace primero?</p></div>
+    <div><h5>Corte 2</h5><p>Tras sedación efectiva la presión baja a 140/85, la frecuencia a 95 y el ST se normaliza parcialmente. ¿Qué significa esto para su hipótesis? ¿Mantiene la estrategia de reperfusión?</p></div>
+    <div><h5>Corte 3</h5><p>El residente de turno propone un betabloqueante para el control de frecuencia. Argumente su posición con fisiología de receptores, y diga qué tan sólida es la evidencia detrás de su argumento.</p></div>
+    <div><h5>Corte 4</h5><p>Aparece QRS de 130 ms con eje desviado. ¿Qué hace, contra qué variable titula, y qué suspende?</p></div>
+    <div><h5>Corte 5</h5><p>Ahora el equipo le informa que la paciente está embarazada de 22 semanas. ¿Qué cambia y qué no en su plan?</p></div>
+    <div class="box tx"><div class="lbl">Lo que debe emerger</div><p>Dolor torácico de mecanismo múltiple; sedación como primera línea antiisquémica; lectura del ECG seriado como prueba dinámica; argumentación de la controversia del betabloqueo reconociendo la incertidumbre; bicarbonato titulado contra el QRS y retiro de agentes que suman bloqueo de sodio; prioridad del tratamiento materno con ajuste de posición, oxigenación y elección de agentes.</p></div>
+  </div></div>
+
+  <h3>Banco de preguntas socráticas</h3>
+  <div class="qs">
+    <details class="q"><summary><span class="qn">P1</span>¿Por qué el antipirético no sirve aquí, si el paciente tiene 40 °C?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> porque no hay elevación del punto de ajuste hipotalámico mediado por prostaglandinas. El calor se produce por contracción muscular y termogénesis, y no se elimina porque la vasoconstricción α₁ cerró la vía cutánea. El tratamiento es físico y debe acompañarse de abolir la producción.</p><p><strong>Si no llega:</strong> preguntar qué hace exactamente un antipirético a nivel molecular, y luego si ese mecanismo está presente en este paciente.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P2</span>Dos pacientes, mismo toxidromo. Uno con PA 200/110, otro con 110/60. ¿Cómo lo explica?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> por el balance α/β del agente y del momento. Predominio α₁ da hipertensión con piel pálida; componente β₂ marcado vasodilata el lecho muscular y puede dejar la presión normal o baja pese a taquicardia extrema. También puede tratarse de depleción de catecolaminas endógenas tras agitación prolongada con un agente de acción indirecta.</p><p><strong>Extensión R3+:</strong> ¿cuál de los dos le preocupa más y por qué?</p></div></details>
+
+    <details class="q"><summary><span class="qn">P3</span>Usted sedó al paciente y la presión cayó bruscamente. ¿Qué pasó?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> la presión estaba sostenida por el estímulo adrenérgico central, no por volumen. Al retirarlo se desenmascara la hipovolemia por pérdidas insensibles, tercer espacio y vasodilatación. Esto justifica reponer volumen en paralelo a la sedación y no después.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P4</span>¿Por qué contener físicamente a un paciente que sigue luchando puede empeorar su pronóstico?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> sostiene la contracción isométrica, que es el motor de la producción de calor y de la rabdomiólisis, e impide la disipación. Más la asociación entre contención prona o con compresión torácica y muerte súbita. La contención sin sedación simultánea es una intervención que agrava la fisiopatología.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P5</span>El paciente mejoró y está pidiendo el alta. ¿Qué le falta a usted por hacer?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> reevaluar CK, función renal, potasio, sodio y ECG, porque las complicaciones son sucesivas y aparecen en la fase de mejoría aparente. Más examen neurológico, revisión de compartimentos, y el plan de intervención sobre el consumo y de seguimiento.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P6</span>¿Por qué el bicarbonato angosta el QRS, y contra qué variable lo titula?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> la carga de sodio aumenta el gradiente electroquímico a través de canales parcialmente bloqueados y la alcalinización reduce la afinidad del tóxico por el canal. Se titula contra el ancho del QRS, vigilando pH, sodio y potasio; no contra la cifra de bicarbonato del gas.</p><p><strong>Extensión R3+:</strong> ¿qué antiarrítmicos descarta y por qué?</p></div></details>
+
+    <details class="q"><summary><span class="qn">P7</span>Joven con cefalea y vómitos tras un evento de varias horas. Todo parece explicado por el tóxico. ¿Qué no puede dejar de pedir?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> sodio. Secreción inadecuada de ADH más ingesta de agua libre más pérdida de sodio por sudoración producen hiponatremia aguda con edema cerebral, que es una muerte evitable y cuyo diagnóstico depende enteramente de haber pedido el examen. También glicemia, y neuroimagen si hay déficit focal o cefalea súbita de máxima intensidad.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P8</span><span class="tag a">R3+</span> Defienda y luego refute el uso de betabloqueo en este paciente.</summary>
+      <div class="ans"><p><strong>Lo que se evalúa:</strong> que el residente articule el argumento fisiológico del α sin oposición, reconozca que la magnitud clínica real del fenómeno es discutida, sepa que la práctica varía entre instituciones, y concluya que en urgencias la primera línea para el control adrenérgico es la sedación. Capacidad de sostener incertidumbre sin convertirla en dogma.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P9</span><span class="tag a">R3+</span> ¿Cuándo intuba usted a este paciente, y cuál es la indicación que no aparece en los algoritmos?</summary>
+      <div class="ans"><p><strong>Respuesta esperada:</strong> además de las indicaciones habituales de vía aérea, la indicación específica es el control térmico y metabólico: abolir con bloqueo neuromuscular la producción de calor y la lisis muscular en la agitación o hipertermia refractarias a sedación. Debe mencionar que el bloqueo enmascara la actividad convulsiva y obliga a monitorización y sedación adecuadas.</p></div></details>
+
+    <details class="q"><summary><span class="qn">P10</span><span class="tag a">R3+</span> El box está desbordado y hay tres personas conteniendo al paciente. Usted lidera. ¿Qué dice en voz alta?</summary>
+      <div class="ans"><p><strong>Lo que se evalúa:</strong> asignación explícita de roles, verbalización del modelo mental compartido —hipertermia y agitación como amenaza vital, sedación y enfriamiento en paralelo—, orden concreta con fármaco, vía y reevaluación, límite temporal de la contención, y designación de quién mide la temperatura central y quién prepara la vía aérea.</p></div></details>
+  </div>
+
+  <h3>Pauta de observación del tutor</h3>
+  <div class="prose"><p>Para marcar durante el caso progresivo, no después. Lo no observado se deja en blanco en lugar de inferirse.</p></div>
+  <div class="grid2">
+    <div class="card"><div class="sub">RECONOCIMIENTO</div><ul class="check">
+      <li>Identifica el síndrome sin esperar antecedente de consumo</li>
+      <li>Pide temperatura central y glicemia en los primeros minutos</li>
+      <li>Mantiene abierto el diferencial estructural e infeccioso</li>
+      <li>Usa piel y ruidos intestinales para discriminar toxidromos</li>
+    </ul></div>
+    <div class="card"><div class="sub">RAZONAMIENTO</div><ul class="check">
+      <li>Nombra el mecanismo antes de nombrar el fármaco</li>
+      <li>Explica qué espiral interrumpe cada acción</li>
+      <li>Anticipa la complicación que aún no apareció</li>
+      <li>Reconoce y tolera la incertidumbre donde existe</li>
+    </ul></div>
+    <div class="card"><div class="sub">EJECUCIÓN</div><ul class="check">
+      <li>Sedación y enfriamiento en paralelo, no secuenciales</li>
+      <li>Escala la dosis sin techo fijo, con vía aérea preparada</li>
+      <li>Repone volumen precozmente</li>
+      <li>Reevalúa tras cada intervención contra una variable definida</li>
+    </ul></div>
+    <div class="card"><div class="sub">LIDERAZGO Y CIERRE</div><ul class="check">
+      <li>Asigna roles y verbaliza el modelo mental compartido</li>
+      <li>Limita la contención física en el tiempo</li>
+      <li>Define destino con criterios explícitos</li>
+      <li>Incluye intervención sobre el consumo y seguimiento</li>
+    </ul></div>
+  </div>
+
+  <div class="box perla">
+    <div class="lbl">Nota para el tutor</div>
+    <p>El punto de inflexión de esta sesión es el momento en que el residente deja de preguntar «¿qué fármaco le pongo?» y empieza a preguntar «¿qué parte de la cascada quiero cortar?». Cuando eso ocurre, la conducta correcta aparece sola y se transfiere a casos que ningún protocolo cubre. Si la sesión no alcanza para todo, es preferible sacrificar el banco de preguntas antes que la construcción de la cascada en pizarra.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Uso y límites.</strong> Material de estudio y de docencia para medicina de urgencia, organizado sobre razonamiento fisiopatológico. No reemplaza el protocolo institucional, el formulario farmacológico local ni la consulta al centro de información toxicológica, que son las fuentes de dosificación y de conducta vinculante junto al paciente.</p>
+  <p><strong>Para profundizar en fuentes primarias:</strong></p>
+  <ol>
+    <li>Texto de referencia de toxicología de emergencia de su biblioteca institucional, capítulos de cocaína, anfetaminas y agentes relacionados.</li>
+    <li>Protocolo local de agitación psicomotora y de hipertermia de la UEH.</li>
+    <li>Guías vigentes de manejo de rabdomiólisis e hiponatremia aguda.</li>
+    <li>Centro de información toxicológica de referencia nacional, para casos graves o atípicos.</li>
+  </ol>
+</footer>
+</div>
+
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+  if(!('IntersectionObserver' in window)||!secs.length)return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting)return;
+      links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id);});
+    });
+  },{rootMargin:'-70px 0px -70% 0px'});
+  secs.forEach(function(s){io.observe(s);});
+})();
+</script>
+</body>
+</html>

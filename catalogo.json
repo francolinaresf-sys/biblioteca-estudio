@@ -121,6 +121,17 @@
       "fecha": "2026-10-10"
     },
     {
+      "id": "intoxicacion-por-simpaticomimeticos",
+      "titulo": "Intoxicación por Simpaticomiméticos",
+      "tema": "toxicologia",
+      "archivo": "toxicologia/intoxicacion-por-simpaticomimeticos.html",
+      "descripcion": "Fisiología de receptores α/β, las tres espirales que matan (térmico-muscular, isquémica, metabólico-renal), ocho complicaciones con mecanismo y conducta, principios de manejo deducidos del mecanismo, errores recurrentes, revisión final y guía de tutoría clínica con ramas R1-R2 y R3+.",
+      "etiquetas": [
+        "intoxicación por simpaticomiméticos"
+      ],
+      "fecha": "2026-10-15"
+    },
+    {
       "id": "fisica-botonologia-pocus",
       "titulo": "Física y Botonología POCUS",
       "tema": "ultrasonido",
