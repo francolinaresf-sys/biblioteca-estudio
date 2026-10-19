@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Corticoides en el SU</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: guía de estudio de una columna con índice fijo. Color semántico tomado de la corteza suprarrenal: ámbar = glucocorticoide (zona fasciculada), azul = mineralocorticoide (zona glomerulosa, sal y agua). */
+:root{
+  --bg:#f1f0ec; --surface:#ffffff; --surface-2:#f7f6f2; --ink:#1d1a16; --muted:#625b51; --line:#dcd7cd;
+  --accent:#a3600b; --accent-soft:#f6e6cc; --accent-ink:#ffffff;
+  --gc:#a3600b; --gc-soft:#f6e6cc; --mc:#245d9c; --mc-soft:#dde8f5;
+  --corta:#245d9c; --inter:#7b5a1c; --larga:#7a2e5a;
+  --ok:#2c7a4b; --ok-bg:#e2f1e7; --info:#245d9c; --info-bg:#dde8f5; --warn:#94560a; --warn-bg:#fbefd9; --bad:#b3261e; --bad-bg:#fbe4e1; --neu:#5d5850; --neu-bg:#ebe8e2;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --radius:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#14120f; --surface:#1d1a16; --surface-2:#24201b; --ink:#ece7df; --muted:#a69d90; --line:#36302a;
+  --accent:#e9a54a; --accent-soft:#3a2a14; --accent-ink:#14120f;
+  --gc:#e9a54a; --gc-soft:#3a2a14; --mc:#7fb2ea; --mc-soft:#18283b;
+  --corta:#7fb2ea; --inter:#d9b672; --larga:#e08cbd;
+  --ok:#6cc58f; --ok-bg:#16301f; --info:#7fb2ea; --info-bg:#18283b; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714; --neu:#b5ada2; --neu-bg:#2b2722;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#14120f; --surface:#1d1a16; --surface-2:#24201b; --ink:#ece7df; --muted:#a69d90; --line:#36302a;
+  --accent:#e9a54a; --accent-soft:#3a2a14; --accent-ink:#14120f;
+  --gc:#e9a54a; --gc-soft:#3a2a14; --mc:#7fb2ea; --mc-soft:#18283b;
+  --corta:#7fb2ea; --inter:#d9b672; --larga:#e08cbd;
+  --ok:#6cc58f; --ok-bg:#16301f; --info:#7fb2ea; --info-bg:#18283b; --warn:#e3a94f; --warn-bg:#3a2a10; --bad:#f2867c; --bad-bg:#3b1714; --neu:#b5ada2; --neu-bg:#2b2722;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800;font-stretch:88%;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3.4vw,2rem);font-weight:750;font-stretch:92%}
+h3{font-size:1.15rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* Hero */
+.hero{background:var(--surface);border-bottom:1px solid var(--line)}
+.hero .wrap{padding-block:40px 32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.hero h1 .gc{color:var(--gc)}
+.lede{max-width:66ch;color:var(--muted);margin-top:14px;font-size:1.05rem}
+.nucleo{width:170px;height:auto}
+.nucleo path{fill:none;stroke:var(--gc);stroke-width:2.2;stroke-linejoin:round}
+.nucleo text{font-family:var(--f-mono);font-size:10px;fill:var(--muted)}
+.legend-row{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px;font-size:.85rem;color:var(--muted);align-items:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+@media (max-width:640px){.hero .wrap{grid-template-columns:1fr}.nucleo{width:120px;order:-1}}
+
+/* TOC */
+.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+.toc .wrap::-webkit-scrollbar{display:none}
+.toc a{flex:none;text-decoration:none;color:var(--ink);font-size:.86rem;padding:6px 10px;border-radius:999px;white-space:nowrap}
+.toc a:hover{background:var(--surface-2)}
+.toc .n{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);margin-right:6px}
+
+main{padding-block:12px 64px}
+section{padding-top:48px}
+.sec-head{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.sec-head .kicker{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sec-head p{color:var(--muted);max-width:70ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;min-width:0}
+.box h3{margin-bottom:8px}
+.box ul{margin:6px 0 0;padding-left:1.1em}
+.box li{margin:3px 0}
+.box p+p{margin-top:8px}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 var(--radius) var(--radius) 0;margin-top:16px}
+.callout.bad{border-color:var(--bad);background:var(--bad-bg)}
+.callout.info{border-color:var(--info);background:var(--info-bg)}
+.callout b{font-family:var(--f-display)}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-weight:700;font-size:.8rem;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);background:var(--surface-2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{display:inline-block;height:8px;border-radius:4px;vertical-align:middle;margin-right:6px}
+.bar.gc{background:var(--gc)}.bar.mc{background:var(--mc)}
+
+/* Chips */
+.chip{display:inline-flex;align-items:center;gap:4px;font-family:var(--f-mono);font-size:.72rem;padding:2px 8px;border-radius:999px;white-space:nowrap;font-weight:500}
+.t-corta{color:var(--corta);background:var(--mc-soft)}
+.t-inter{color:var(--inter);background:var(--gc-soft)}
+.t-larga{color:var(--larga);background:var(--neu-bg)}
+.ev-A{color:var(--ok);background:var(--ok-bg)}
+.ev-B{color:var(--info);background:var(--info-bg)}
+.ev-C{color:var(--neu);background:var(--neu-bg)}
+.ev-X{color:var(--bad);background:var(--bad-bg)}
+.lv-baja{color:var(--ok);background:var(--ok-bg)}
+.lv-media{color:var(--warn);background:var(--warn-bg)}
+.lv-alta{color:var(--bad);background:var(--bad-bg)}
+
+/* Diagram */
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-top:16px}
+.fig-scroll{overflow-x:auto}
+.fig svg{display:block;width:100%;min-width:560px;height:auto}
+.fig figcaption{font-size:.85rem;color:var(--muted);margin-top:8px}
+.ax{stroke:var(--line);stroke-width:1}
+.ax-t{font-family:var(--f-mono);font-size:10.5px;fill:var(--muted)}
+.band-l{font-family:var(--f-display);font-size:11px;font-weight:700;fill:var(--muted)}
+
+/* Calculators */
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.calc + .calc{margin-top:20px}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px;align-items:end}
+label{display:block;font-size:.78rem;font-family:var(--f-display);font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+input,select{width:100%;font:inherit;font-size:1rem;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink)}
+input{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.presets button,.chipbtn{font:inherit;font-size:.8rem;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer}
+.presets button:hover,.chipbtn:hover{border-color:var(--accent)}
+.chipbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.summary{display:flex;flex-wrap:wrap;gap:10px 28px;margin:18px 0 12px;padding:14px 16px;background:var(--surface-2);border-radius:8px;align-items:baseline}
+.summary .k{font-size:.74rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-family:var(--f-display);font-weight:600}
+.summary .v{font-family:var(--f-mono);font-size:1.25rem;font-variant-numeric:tabular-nums}
+.cat{font-family:var(--f-display);font-weight:700;padding:3px 10px;border-radius:999px;font-size:.85rem}
+tr.src td{background:var(--accent-soft)}
+.warns{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.warns div{font-size:.88rem;padding:8px 12px;border-radius:8px;background:var(--warn-bg);color:var(--ink);border-left:3px solid var(--warn)}
+.warns div.i{background:var(--info-bg);border-color:var(--info)}
+.big-out{font-family:var(--f-mono);font-size:2rem;font-variant-numeric:tabular-nums;color:var(--accent);line-height:1.1}
+
+/* Context cards */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px}
+.filters input{max-width:280px;font-family:var(--f-body)}
+.ctx-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:14px}
+.ctx{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.ctx .top{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ctx .sys{font-size:.74rem;color:var(--muted);font-family:var(--f-mono);margin-left:auto}
+.ctx h3{font-size:1.05rem}
+.ctx .drug{font-weight:700;color:var(--gc)}
+.ctx .dose{font-family:var(--f-mono);font-size:.86rem;background:var(--surface-2);padding:8px 10px;border-radius:6px;font-variant-numeric:tabular-nums}
+.ctx .note{font-size:.88rem;color:var(--muted)}
+.ctx .ref{font-size:.76rem;color:var(--muted);font-family:var(--f-mono)}
+.empty{padding:24px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius)}
+
+/* Flashcards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:14px}
+.card{perspective:1000px;min-height:180px;cursor:pointer;background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left}
+.card .in{position:relative;width:100%;height:100%;min-height:180px;transition:transform .45s;transform-style:preserve-3d}
+.card[aria-pressed="true"] .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);padding:16px;border:1px solid var(--line);display:flex;flex-direction:column;gap:8px;overflow:auto}
+.card .f{background:var(--surface)}
+.card .b{background:var(--gc-soft);transform:rotateY(180deg);font-size:.9rem}
+.card .q{font-family:var(--f-display);font-weight:700;font-size:1.02rem}
+.card .hint{margin-top:auto;font-size:.72rem;color:var(--muted);font-family:var(--f-mono)}
+@media (prefers-reduced-motion:reduce){.card .b{transform:none;display:none}.card[aria-pressed="true"] .b{display:flex}.card[aria-pressed="true"] .f{display:none}.card[aria-pressed="true"] .in{transform:none}}
+
+.refs{font-size:.85rem;color:var(--muted);padding-left:1.3em}
+.refs li{margin:4px 0}
+footer{border-top:1px solid var(--line);padding-block:24px;font-size:.82rem;color:var(--muted)}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Revisión farmacológica · Medicina de urgencia · Adulto y pediatría</div>
+      <h1>Corticoides en el <span class="gc">SU</span></h1>
+      <p class="lede">Cuatro anillos, diecisiete carbonos y una lista de indicaciones que va de la faringitis al shock séptico. Aquí está cómo actúan, qué presentación sacar del carro, cuánto dar en cada cuadro, cuándo un pulso de metilprednisolona tiene evidencia y cuándo es solo costumbre. Incluye calculadora de equivalencias y de dosis por peso.</p>
+      <div class="legend-row">
+        <span><i class="dot" style="background:var(--gc)"></i>Glucocorticoide</span>
+        <span><i class="dot" style="background:var(--mc)"></i>Mineralocorticoide</span>
+        <span><span class="chip ev-A">A</span> ECA/metaanálisis</span>
+        <span><span class="chip ev-B">B</span> ECA limitado / observacional</span>
+        <span><span class="chip ev-C">C</span> Consenso</span>
+        <span><span class="chip ev-X">✕</span> Sin beneficio o daño</span>
+      </div>
+    </div>
+    <svg class="nucleo" viewBox="0 0 150 90" role="img" aria-label="Núcleo ciclopentanoperhidrofenantreno, esqueleto común de los esteroides">
+      <path d="M30.0,38.0 L49.1,49.0 L49.1,71.0 L30.0,82.0 L10.9,71.0 L10.9,49.0 Z"/>
+      <path d="M68.1,38.0 L87.2,49.0 L87.2,71.0 L68.1,82.0 L49.1,71.0 L49.1,49.0 Z"/>
+      <path d="M87.2,5.0 L106.2,16.0 L106.2,38.0 L87.2,49.0 L68.1,38.0 L68.1,16.0 Z"/>
+      <path d="M106.2,16.0 L106.2,38.0 L127.1,44.8 L140.1,27.0 L127.1,9.2 Z"/>
+      <text x="26" y="64">A</text><text x="64" y="64">B</text><text x="83" y="31">C</text><text x="119" y="30">D</text>
+    </svg>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Secciones">
+  <div class="wrap">
+    <a href="#farmaco"><span class="n">1</span>Farmacología</a>
+    <a href="#equivalencias"><span class="n">2</span>Equivalencias</a>
+    <a href="#presentaciones"><span class="n">3</span>Presentaciones</a>
+    <a href="#calculadora"><span class="n">4</span>Calculadoras</a>
+    <a href="#contextos"><span class="n">5</span>Uso por contexto</a>
+    <a href="#pulsos"><span class="n">6</span>Pulsos</a>
+    <a href="#precauciones"><span class="n">7</span>Precauciones</a>
+    <a href="#nousar"><span class="n">8</span>Dónde no</a>
+    <a href="#repaso"><span class="n">9</span>Repaso</a>
+    <a href="#refs"><span class="n">10</span>Referencias</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- 1 · FARMACOLOGÍA -->
+<section id="farmaco">
+  <div class="sec-head">
+    <span class="kicker">1 · Farmacología</span>
+    <h2>La molécula que apaga incendios desde el núcleo</h2>
+    <p>Todo corticoide sintético es una variación del cortisol: un doble enlace en 1-2 (prednisona) multiplica la potencia antiinflamatoria; un flúor en 9α (dexametasona, betametasona) la dispara y alarga su vida media; un metilo en 16 borra casi toda la actividad mineralocorticoide.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <h3>Vía genómica (horas)</h3>
+      <p>El corticoide difunde a la célula y se une al <b>receptor glucocorticoide (GR)</b> citoplasmático, que se libera de sus chaperonas (HSP90) y entra al núcleo.</p>
+      <ul>
+        <li><b>Transrepresión:</b> el GR secuestra NF-κB y AP-1 → cae la síntesis de IL-1, IL-6, TNF-α, COX-2, iNOS y moléculas de adhesión. Es el efecto antiinflamatorio buscado.</li>
+        <li><b>Transactivación:</b> el GR se une a elementos de respuesta (GRE) → anexina-1 (inhibe fosfolipasa A2), MKP-1, IκB. También gluconeogénesis, catabolismo proteico: aquí viven muchos efectos adversos.</li>
+        <li>Latencia de <b>4–6 h</b>: por eso el corticoide en asma o anafilaxia no rescata; previene que la cosa empeore.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Vía no genómica (minutos)</h3>
+      <p>Con dosis muy altas (&gt;100 mg/día de prednisona equivalente) el GR ya está saturado y aparecen efectos rápidos e independientes de la transcripción:</p>
+      <ul>
+        <li>Interacción fisicoquímica con membranas celulares y mitocondriales (↓ flujo de Ca²⁺ y Na⁺, ↓ función de células inmunes activadas).</li>
+        <li>Receptores de membrana (mGR) y señalización citosólica del GR.</li>
+        <li>Es el fundamento teórico de los <b>pulsos</b> (≥250 mg/día): no hacen “más de lo mismo”, hacen algo distinto.</li>
+      </ul>
+    </div>
+  </div>
+
+  <figure class="fig">
+    <div class="fig-scroll"><svg id="fig-receptor" viewBox="0 0 660 270" role="img" aria-label="Ocupación del receptor glucocorticoide y efecto no genómico según dosis diaria de prednisona equivalente"></svg></div>
+    <figcaption>Esquema conceptual (Buttgereit 2002). La ocupación del GR crece hasta saturarse cerca de 100 mg/día de prednisona; sobre ese umbral solo aumentan los efectos no genómicos. Las bandas son la nomenclatura estandarizada de dosis.</figcaption>
+  </figure>
+
+  <div class="grid3" style="margin-top:16px">
+    <div class="box">
+      <h4>Absorción</h4>
+      <p class="small">Biodisponibilidad oral alta (prednisolona y dexametasona ~70–90 %). <b>VO = IV</b> si el paciente traga, no vomita y no está en shock. La IV no es “más fuerte”: es otra puerta.</p>
+    </div>
+    <div class="box">
+      <h4>Profármacos</h4>
+      <p class="small"><b>Prednisona → prednisolona</b> y <b>cortisona → cortisol</b> por la 11β-HSD1 hepática. En insuficiencia hepática grave, preferir prednisolona o metilprednisolona.</p>
+    </div>
+    <div class="box">
+      <h4>Distribución</h4>
+      <p class="small">El cortisol viaja unido a transcortina (CBG) y albúmina. Con hipoalbuminemia aumenta la fracción libre: más efecto y más toxicidad con la misma dosis.</p>
+    </div>
+    <div class="box">
+      <h4>Metabolismo</h4>
+      <p class="small">CYP3A4. <b>Inductores</b> (rifampicina, fenitoína, carbamazepina, fenobarbital) ↓ efecto hasta 50 % o más. <b>Inhibidores</b> (ritonavir, cobicistat, claritromicina, azoles) ↑ efecto; ritonavir + budesonida o fluticasona inhalada produce Cushing iatrogénico.</p>
+    </div>
+    <div class="box">
+      <h4>Vida media biológica</h4>
+      <p class="small">La que importa es la del efecto tisular, no la plasmática. <span class="chip t-corta">corta 8–12 h</span> <span class="chip t-inter">intermedia 12–36 h</span> <span class="chip t-larga">larga 36–72 h</span>. Define cada cuánto se dosifica y cuánto suprime el eje.</p>
+    </div>
+    <div class="box">
+      <h4>Placenta</h4>
+      <p class="small">La 11β-HSD2 placentaria inactiva ~90 % de prednisolona e hidrocortisona; dexametasona y betametasona cruzan casi intactas. Para tratar a la madre, prednisona; para madurar el pulmón fetal, betametasona o dexametasona.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · EQUIVALENCIAS -->
+<section id="equivalencias">
+  <div class="sec-head">
+    <span class="kicker">2 · Potencias y equivalencias</span>
+    <h2>Cinco miligramos de prednisona como moneda común</h2>
+    <p>Las equivalencias son aproximadas y se refieren a la potencia antiinflamatoria sistémica (VO o IV). No aplican a vías tópica, inhalada, intraarticular ni a formulaciones depot.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Fármaco</th><th>Dosis equivalente</th><th>Potencia GC</th><th>Potencia MC</th><th>Vida media biológica</th><th>Uso típico en SU</th></tr></thead>
+      <tbody id="eq-body"></tbody>
+    </table>
+  </div>
+  <div class="callout info"><b>Regla de bolsillo.</b> 20 mg de hidrocortisona = 5 mg de prednisona = 4 mg de metilprednisolona = 0,75 mg de dexametasona. Dicho de otro modo: 1 mg de dexametasona ≈ 6,7 mg de prednisona, y los 6 mg de dexametasona de RECOVERY equivalen a 40 mg de prednisona.</div>
+  <div class="callout"><b>Fludrocortisona</b> (0,1 mg comp) no entra en la calculadora: su potencia mineralocorticoide es ~125–150 veces la del cortisol y solo se usa para reemplazo mineralocorticoide (insuficiencia suprarrenal primaria, APROCCHSS 50 µg/día).</div>
+</section>
+
+<!-- 3 · PRESENTACIONES -->
+<section id="presentaciones">
+  <div class="sec-head">
+    <span class="kicker">3 · Presentaciones y vías</span>
+    <h2>Qué hay en el carro y para qué sirve cada frasco</h2>
+    <p>Presentaciones habituales en Chile. Concentraciones y marcas varían: verificar contra el arsenal farmacológico local.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Fármaco</th><th>Presentación</th><th>Vías</th><th>Preferir cuando…</th><th>Detalle práctico</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hidrocortisona</b> (succinato sódico)</td><td class="num">FA 100 mg · 500 mg</td><td>IV, IM</td><td>Shock séptico, crisis suprarrenal, NAC grave, tormenta tiroidea, coma mixedematoso</td><td class="small">Única con actividad MC relevante: con ≥50 mg/día no requiere fludrocortisona. Bolo IV o infusión continua.</td></tr>
+        <tr><td><b>Metilprednisolona</b> (succinato sódico)</td><td class="num">FA 40 · 125 · 500 · 1000 mg</td><td>IV, IM</td><td>Pulsos, broncoespasmo sin vía oral, colitis grave, vasculitis</td><td class="small">El frasco de 40 mg de algunas marcas contiene lactosa con trazas de proteína de leche: evitar en alergia a proteína de leche de vaca. Pulsos en infusión de ≥30–60 min.</td></tr>
+        <tr><td><b>Metilprednisolona</b> (acetato, depot)</td><td class="num">40 · 80 mg/mL suspensión</td><td>IM, intraarticular</td><td>Infiltraciones; no es para urgencias sistémicas</td><td class="small"><b>Nunca IV.</b> Absorción errática; suprime el eje por semanas.</td></tr>
+        <tr><td><b>Dexametasona</b> (fosfato sódico)</td><td class="num">Amp 4 mg/mL · comp 4 mg (otras según laboratorio)</td><td>IV, IM, VO</td><td>Crup, faringitis, meningitis, edema vasogénico, COVID-19 hipoxémico, migraña, asma pediátrica</td><td class="small">Sin efecto MC, larga duración: una dosis basta en muchos cuadros. La ampolla se puede dar VO (sabor amargo; mezclar con jugo). En bolo IV rápido produce prurito o ardor perineal: diluir y pasar en 1–2 min.</td></tr>
+        <tr><td><b>Betametasona</b> (fosfato + acetato)</td><td class="num">Amp combinada (fracción rápida + depot)</td><td>IM</td><td>Maduración pulmonar fetal (12 mg IM c/24 h × 2)</td><td class="small">La fracción acetato es depot: efecto de días. Poco útil como corticoide de urgencia general.</td></tr>
+        <tr><td><b>Prednisona</b></td><td class="num">Comp 5 · 20 mg (50 mg en algunos laboratorios)</td><td>VO</td><td>Cursos cortos al alta: asma, EPOC, gota, urticaria, Bell</td><td class="small">Profármaco. Una toma matinal imita el ritmo circadiano y reduce insomnio.</td></tr>
+        <tr><td><b>Prednisolona</b></td><td class="num">Solución oral (concentración según marca)</td><td>VO</td><td>Pediatría, insuficiencia hepática</td><td class="small">Ya activa. Sabor amargo: la dexametasona VO suele tolerarse mejor en niños.</td></tr>
+        <tr><td><b>Deflazacort</b></td><td class="num">Comp 6 · 30 mg</td><td>VO</td><td>Poco rol en SU</td><td class="small">6 mg ≈ 5 mg de prednisona (relación variable 1,2–1,5).</td></tr>
+        <tr><td><b>Triamcinolona</b> (acetónido)</td><td class="num">40 mg/mL suspensión</td><td>IM, intraarticular</td><td>Infiltraciones</td><td class="small">Depot; nunca IV. Asociada a atrofia cutánea en el sitio de punción.</td></tr>
+        <tr><td><b>Budesonida</b> nebulizada</td><td class="num">0,25 · 0,5 mg/mL</td><td>Inhalada</td><td>Crup con vómitos o sin vía oral (2 mg nebulizados)</td><td class="small">Alternativa a dexametasona en crup; no es mejor y es más cara.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="grid3" style="margin-top:16px">
+    <div class="box"><h4>¿VO o IV?</h4><p class="small">VO salvo shock, vómitos, íleo, compromiso de conciencia o vía aérea comprometida. En asma y EPOC la VO tiene eficacia equivalente (de Jong 2007).</p></div>
+    <div class="box"><h4>¿IM?</h4><p class="small">Útil en el niño que vomita (dexametasona IM en crup) o para asegurar adherencia en dosis única. Evitar depot como “inyección para todo”: suprime el eje y no se puede retirar.</p></div>
+    <div class="box"><h4>¿Una dosis o fraccionado?</h4><p class="small">Vida media corta (hidrocortisona) → c/6 h o infusión. Intermedia → 1 vez al día, matinal. Larga (dexametasona) → 1 vez al día o dosis única.</p></div>
+  </div>
+</section>
+
+<!-- 4 · CALCULADORAS -->
+<section id="calculadora">
+  <div class="sec-head">
+    <span class="kicker">4 · Calculadoras</span>
+    <h2>Convertir sin regla de tres mental a las 4 de la mañana</h2>
+    <p>Herramienta de apoyo docente. Verificar siempre la dosis final con el protocolo local y el contexto del paciente.</p>
+  </div>
+
+  <div class="calc" id="calc-eq">
+    <h3>Equivalencias entre corticoides</h3>
+    <div class="form-row" style="margin-top:12px">
+      <div><label for="eq-drug">Corticoide de origen</label><select id="eq-drug"></select></div>
+      <div><label for="eq-dose">Dosis por toma (mg)</label><input id="eq-dose" type="number" inputmode="decimal" min="0" step="any" value="6"></div>
+      <div><label for="eq-freq">Frecuencia</label>
+        <select id="eq-freq">
+          <option value="1">1 vez al día / dosis única</option>
+          <option value="2">c/12 h</option>
+          <option value="3">c/8 h</option>
+          <option value="4">c/6 h</option>
+        </select></div>
+      <div><label for="eq-wt">Peso (kg, opcional)</label><input id="eq-wt" type="number" inputmode="decimal" min="0" step="any" placeholder="—"></div>
+    </div>
+    <div class="presets" aria-label="Ejemplos rápidos">
+      <button type="button" data-p="dexa,6,1">Dexa 6 mg (COVID-19)</button>
+      <button type="button" data-p="hc,50,4">HC 50 mg c/6 h (shock)</button>
+      <button type="button" data-p="mp,1000,1">MP 1 g (pulso)</button>
+      <button type="button" data-p="pred,40,1">Prednisona 40 mg (EPOC)</button>
+      <button type="button" data-p="dexa,4,4">Dexa 4 mg c/6 h (edema)</button>
+      <button type="button" data-p="dexa,10,4">Dexa 10 mg c/6 h (meningitis)</button>
+    </div>
+    <div class="summary" id="eq-summary"></div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Corticoide</th><th>Dosis diaria equivalente</th><th>Esquema sugerido</th><th>Carga MC (mg de HC)</th><th>Duración</th></tr></thead>
+        <tbody id="eq-out"></tbody>
+      </table>
+    </div>
+    <div class="warns" id="eq-warns"></div>
+  </div>
+
+  <div class="calc" id="calc-kg">
+    <h3>Dosis por peso en escenarios frecuentes</h3>
+    <div class="form-row" style="margin-top:12px">
+      <div style="grid-column:span 2;min-width:0"><label for="kg-sc">Escenario</label><select id="kg-sc"></select></div>
+      <div><label for="kg-wt">Peso (kg)</label><input id="kg-wt" type="number" inputmode="decimal" min="0" step="any" value="18"></div>
+    </div>
+    <div class="summary" id="kg-out"></div>
+    <p class="small muted" id="kg-note"></p>
+  </div>
+</section>
+
+<!-- 5 · CONTEXTOS -->
+<section id="contextos">
+  <div class="sec-head">
+    <span class="kicker">5 · Uso por contexto clínico</span>
+    <h2>De la faringitis al shock: fármaco, dosis y evidencia</h2>
+    <p>Ordenado por complejidad del cuadro. Cada tarjeta indica el corticoide preferido, la dosis de adulto (y pediátrica cuando aplica), la duración y el nivel de evidencia.</p>
+  </div>
+  <div class="filters" role="group" aria-label="Filtros">
+    <button type="button" class="chipbtn" data-lv="todas" aria-pressed="true">Todas</button>
+    <button type="button" class="chipbtn" data-lv="baja" aria-pressed="false">Baja complejidad</button>
+    <button type="button" class="chipbtn" data-lv="media" aria-pressed="false">Complejidad media</button>
+    <button type="button" class="chipbtn" data-lv="alta" aria-pressed="false">Alta complejidad</button>
+    <label for="ctx-q" style="position:absolute;left:-9999px">Buscar</label>
+    <input id="ctx-q" type="search" placeholder="Buscar cuadro o fármaco…">
+  </div>
+  <div class="ctx-list" id="ctx-list"></div>
+</section>
+
+<!-- 6 · PULSOS -->
+<section id="pulsos">
+  <div class="sec-head">
+    <span class="kicker">6 · Pulsos</span>
+    <h2>Pulsos: artillería pesada con blancos precisos</h2>
+    <p>Un pulso es ≥250 mg/día de prednisona equivalente durante 1 a 5 días; en la práctica, metilprednisolona 500–1000 mg/día IV. Tiene fundamento en enfermedad inflamatoria autoinmune que amenaza un órgano. En sepsis, trauma y TEC los ensayos fueron negativos o mostraron daño.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Escenario</th><th>Esquema</th><th>Evidencia</th><th>Qué mostró</th></tr></thead>
+      <tbody id="pulse-body"></tbody>
+    </table>
+  </div>
+  <div class="grid2" style="margin-top:16px">
+    <div class="box">
+      <h3>Cómo administrar un pulso</h3>
+      <ul class="small">
+        <li>Metilprednisolona diluida en 100–250 mL de SF o SG5 %, en <b>30–60 min</b> (mínimo). El bolo rápido se asocia a arritmias, bradicardia y muerte súbita.</li>
+        <li>Pediatría: 30 mg/kg/día (máx 1 g).</li>
+        <li>Antes: glicemia, K⁺, PA, ECG si hay cardiopatía; descartar infección activa no tratada.</li>
+        <li>Pensar en <i>Strongyloides</i> si hay riesgo epidemiológico: ivermectina empírica 200 µg/kg si no hay tiempo para estudiar.</li>
+        <li>Profilaxis gástrica si hay AINE, anticoagulación o antecedente de úlcera.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Efectos adversos del pulso</h3>
+      <ul class="small">
+        <li>Hiperglicemia (casi constante), HTA, retención hídrica.</li>
+        <li>Alteraciones neuropsiquiátricas: insomnio, euforia, psicosis.</li>
+        <li>Arritmias y bradicardia sinusal; sabor metálico; rubor facial.</li>
+        <li>Infecciones oportunistas y reactivación de VHB o TBC si se continúa con dosis altas.</li>
+        <li>Necrosis avascular de cadera: describe incluso tras pocos pulsos.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · PRECAUCIONES -->
+<section id="precauciones">
+  <div class="sec-head">
+    <span class="kicker">7 · Precauciones</span>
+    <h2>Un curso corto no es gratis</h2>
+    <p>En una cohorte de 1,5 millones de adultos, cursos menores de 30 días se asociaron a más sepsis (IRR 5,3), tromboembolismo venoso (3,3) y fracturas (1,9) en los 30 días siguientes (Waljee, BMJ 2017). Que se den mucho no significa que sean inocuos.</p>
+  </div>
+  <div class="grid3">
+    <div class="box"><h4>Hiperglicemia</h4><p class="small">Con prednisona matinal la glicemia sube por la tarde (pico 4–8 h). En diabéticos: control capilar vespertino; una estrategia es NPH matinal ~0,1 U/kg por cada 10 mg de prednisona (hasta ~0,4 U/kg).</p></div>
+    <div class="box"><h4>Neuropsiquiátrico</h4><p class="small">Insomnio y euforia frecuentes; psicosis o manía dependiente de dosis (sobre todo &gt;40 mg/día). En el adulto mayor, delirium.</p></div>
+    <div class="box"><h4>Infección</h4><p class="small">Enmascaran fiebre y signos peritoneales. Reactivan TBC latente y VHB (dosis altas o prolongadas). Hiperinfección por <i>Strongyloides</i>, potencialmente fatal, en pacientes de zonas endémicas.</p></div>
+    <div class="box"><h4>Cardiovascular y renal</h4><p class="small">HTA, retención de sodio, hipokalemia (hidrocortisona y prednisona). Descompensación de insuficiencia cardíaca.</p></div>
+    <div class="box"><h4>Digestivo</h4><p class="small">El corticoide solo aumenta poco el riesgo de HDA; asociado a AINE el riesgo se multiplica. IBP si hay AINE, anticoagulante o antecedente de úlcera.</p></div>
+    <div class="box"><h4>Musculoesquelético</h4><p class="small">Miopatía aguda en UCI (con bloqueo neuromuscular), rotura tendinosa (sobre todo con fluoroquinolonas), osteoporosis, necrosis avascular.</p></div>
+  </div>
+
+  <div class="grid2" style="margin-top:16px">
+    <div class="box">
+      <h3>Eje hipotálamo-hipófisis-suprarrenal</h3>
+      <ul class="small">
+        <li><b>&lt;3 semanas</b>, cualquier dosis: supresión clínicamente irrelevante → <b>suspender sin descenso</b>.</li>
+        <li><b>≥20 mg/día de prednisona por &gt;3 semanas</b> o rasgos cushingoides: asumir eje suprimido → descenso gradual y dosis de estrés.</li>
+        <li>Entre ambos extremos: supresión posible, individualizar.</li>
+        <li>Corticoides depot, intraarticulares repetidos o inhalados en dosis altas también suprimen el eje.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Dosis de estrés en usuario crónico</h3>
+      <ul class="small">
+        <li>Enfermedad febril menor: duplicar o triplicar la dosis oral 2–3 días (“reglas de días de enfermedad”).</li>
+        <li>Vómitos, sepsis, trauma o cirugía mayor: hidrocortisona 100 mg IV y luego 200 mg/24 h (infusión o 50 mg c/6 h), descenso al resolver.</li>
+        <li>Hipotensión inexplicada en usuario de corticoides = crisis suprarrenal hasta demostrar lo contrario.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Poblaciones especiales</h3>
+      <ul class="small">
+        <li><b>Embarazo:</b> prednisona, prednisolona o hidrocortisona para patología materna. Maduración pulmonar (24–34 sem): betametasona 12 mg IM c/24 h × 2 o dexametasona 6 mg IM c/12 h × 4.</li>
+        <li><b>Lactancia:</b> compatibles; con dosis altas de prednisolona puede espaciarse 4 h la lactancia.</li>
+        <li><b>Pediatría:</b> cursos cortos seguros; precaución en exposición a varicela sin inmunidad.</li>
+        <li><b>Vacunas vivas:</b> contraindicadas con ≥20 mg/día de prednisona por ≥14 días.</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>Interacciones de relevancia en SU</h3>
+      <ul class="small">
+        <li><b>Inductores CYP3A4</b> (rifampicina, fenitoína, carbamazepina): duplicar dosis o elegir otra opción.</li>
+        <li><b>Ritonavir / cobicistat</b>: Cushing con budesonida o fluticasona; preferir beclometasona inhalada.</li>
+        <li><b>Warfarina</b>: puede subir el INR.</li>
+        <li><b>Fluoroquinolonas</b>: rotura tendinosa.</li>
+        <li><b>Diuréticos de asa / tiazidas, β2-agonistas</b>: hipokalemia aditiva.</li>
+        <li><b>Insulina e hipoglicemiantes</b>: ajustar.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · NO USAR -->
+<section id="nousar">
+  <div class="sec-head">
+    <span class="kicker">8 · Dónde no</span>
+    <h2>El corticoide que no se indicó también es buena medicina</h2>
+    <p>Cuadros donde la evidencia muestra ausencia de beneficio o daño. Están aquí porque en la práctica se siguen indicando.</p>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Cuadro</th><th>Qué dice la evidencia</th></tr></thead>
+      <tbody>
+        <tr><td><b>TEC</b></td><td>CRASH (Lancet 2004): metilprednisolona en altas dosis aumentó la mortalidad a 2 semanas (21,1 vs 17,9 %). Contraindicado.</td></tr>
+        <tr><td><b>ACV isquémico o hemorrágico</b></td><td>El edema es citotóxico, no vasogénico; sin beneficio y con más hiperglicemia e infección.</td></tr>
+        <tr><td><b>Shock séptico con dosis altas</b></td><td>Metilprednisolona 30 mg/kg (Sprung 1984, Bone 1987): sin beneficio y más infecciones secundarias. Solo dosis de estrés de hidrocortisona.</td></tr>
+        <tr><td><b>Guillain-Barré</b></td><td>Revisión Cochrane: los corticoides no aceleran la recuperación ni cambian el desenlace a largo plazo. Usar IgIV o plasmaféresis.</td></tr>
+        <tr><td><b>Angioedema por IECA o hereditario</b></td><td>Mediado por bradicinina: corticoides, antihistamínicos y adrenalina tienen efecto escaso. Icatibant, inhibidor de C1-esterasa o plasma fresco congelado; asegurar la vía aérea.</td></tr>
+        <tr><td><b>Bronquiolitis</b></td><td>Sin beneficio en hospitalización ni duración (Cochrane). No indicar.</td></tr>
+        <tr><td><b>Lumbago sin radiculopatía</b></td><td>Prednisona sin beneficio sobre placebo en dolor ni función (Balakrishnamoorthy, EMJ 2015).</td></tr>
+        <tr><td><b>Rinosinusitis aguda, otitis media, bronquitis aguda</b></td><td>Beneficio nulo o marginal; no justifican la exposición.</td></tr>
+        <tr><td><b>Trauma raquimedular</b></td><td>NASCIS II-III: beneficio motor en análisis secundarios; AANS/CNS 2013 desaconseja su uso de rutina. AO Spine 2017 lo deja como opción dentro de 8 h; no es estándar.</td></tr>
+        <tr><td><b>COVID-19 sin oxígeno</b></td><td>RECOVERY: sin beneficio y tendencia a daño. Dosis altas de dexametasona (20 mg) en hipoxemia sin VM aumentaron la mortalidad (RECOVERY, Lancet 2023).</td></tr>
+        <tr><td><b>Ojo rojo sin diagnóstico</b></td><td>Corticoide tópico ocular sin evaluación con lámpara de hendidura puede agravar una queratitis herpética. No indicar desde el SU.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 9 · REPASO -->
+<section id="repaso">
+  <div class="sec-head">
+    <span class="kicker">9 · Tarjetas de repaso</span>
+    <h2>Gira la tarjeta</h2>
+    <p>Toca cada tarjeta para ver la respuesta.</p>
+  </div>
+  <div class="cards" id="cards"></div>
+</section>
+
+<!-- 10 · REFERENCIAS -->
+<section id="refs">
+  <div class="sec-head">
+    <span class="kicker">10 · Referencias</span>
+    <h2>Fuentes</h2>
+  </div>
+  <ol class="refs">
+    <li>Buttgereit F, et al. Standardised nomenclature for glucocorticoid dosages and glucocorticoid treatment regimens. <i>Ann Rheum Dis</i> 2002;61:718–22.</li>
+    <li>Liu D, et al. A practical guide to the monitoring and management of the complications of systemic corticosteroid therapy. <i>Allergy Asthma Clin Immunol</i> 2013;9:30.</li>
+    <li>RECOVERY Collaborative Group. Dexamethasone in hospitalized patients with Covid-19. <i>N Engl J Med</i> 2021;384:693–704.</li>
+    <li>RECOVERY Collaborative Group. Higher dose corticosteroids in patients admitted to hospital with COVID-19 who are hypoxic but not requiring ventilatory support. <i>Lancet</i> 2023;401:1499–1507.</li>
+    <li>Dequin PF, et al. Hydrocortisone in severe community-acquired pneumonia (CAPE COD). <i>N Engl J Med</i> 2023;388:1931–41.</li>
+    <li>Venkatesh B, et al. Adjunctive glucocorticoid therapy in patients with septic shock (ADRENAL). <i>N Engl J Med</i> 2018;378:797–808.</li>
+    <li>Annane D, et al. Hydrocortisone plus fludrocortisone for adults with septic shock (APROCCHSS). <i>N Engl J Med</i> 2018;378:809–18.</li>
+    <li>Evans L, et al. Surviving Sepsis Campaign: international guidelines 2021. <i>Crit Care Med</i> 2021;49:e1063–e1143.</li>
+    <li>de Gans J, van de Beek D. Dexamethasone in adults with bacterial meningitis. <i>N Engl J Med</i> 2002;347:1549–56.</li>
+    <li>CRASH trial collaborators. Effect of intravenous corticosteroids on death within 14 days in 10 008 adults with clinically significant head injury. <i>Lancet</i> 2004;364:1321–28.</li>
+    <li>Leuppi JD, et al. Short-term vs conventional glucocorticoid therapy in acute exacerbations of COPD (REDUCE). <i>JAMA</i> 2013;309:2223–31.</li>
+    <li>de Jong YP, et al. Oral or IV prednisolone in the treatment of COPD exacerbations. <i>Chest</i> 2007;132:1741–7.</li>
+    <li>Hayward GN, et al. Effect of oral dexamethasone without immediate antibiotics vs placebo on acute sore throat in adults (TOAST). <i>JAMA</i> 2017;317:1535–43.</li>
+    <li>Bjornson CL, et al. A randomized trial of a single dose of oral dexamethasone for mild croup. <i>N Engl J Med</i> 2004;351:1306–13.</li>
+    <li>Keeney GE, et al. Dexamethasone for acute asthma exacerbations in children: a meta-analysis. <i>Pediatrics</i> 2014;133:493–9.</li>
+    <li>Rowe BH, et al. Early emergency department treatment of acute asthma with systemic corticosteroids. <i>Cochrane Database Syst Rev</i> 2001;CD002178.</li>
+    <li>Sullivan FM, et al. Early treatment with prednisolone or acyclovir in Bell's palsy. <i>N Engl J Med</i> 2007;357:1598–1607.</li>
+    <li>Engström M, et al. Prednisolone and valaciclovir in Bell's palsy. <i>Lancet Neurol</i> 2008;7:993–1000.</li>
+    <li>Janssens HJ, et al. Use of oral prednisolone or naproxen for the treatment of gout arthritis. <i>Lancet</i> 2008;371:1854–60.</li>
+    <li>Rainer TH, et al. Oral prednisolone in the treatment of acute gout: a pragmatic, multicenter, double-blind, randomized trial. <i>Ann Intern Med</i> 2016;164:464–71.</li>
+    <li>Colman I, et al. Parenteral dexamethasone for acute severe migraine headache: meta-analysis. <i>BMJ</i> 2008;336:1359–61.</li>
+    <li>Goldberg H, et al. Oral steroids for acute radiculopathy due to a herniated lumbar disk. <i>JAMA</i> 2015;313:1915–23.</li>
+    <li>Waljee AK, et al. Short term use of oral corticosteroids and related harms among adults in the United States. <i>BMJ</i> 2017;357:j1415.</li>
+    <li>Le Page E, et al. Oral versus intravenous high-dose methylprednisolone for treatment of relapses in multiple sclerosis (COPOUSEP). <i>Lancet</i> 2015;386:974–81.</li>
+    <li>Beck RW, et al. A randomized, controlled trial of corticosteroids in the treatment of acute optic neuritis (ONTT). <i>N Engl J Med</i> 1992;326:581–8.</li>
+    <li>Walsh M, et al. Plasma exchange and glucocorticoids in severe ANCA-associated vasculitis (PEXIVAS). <i>N Engl J Med</i> 2020;382:622–31.</li>
+    <li>Villar J, et al. Dexamethasone treatment for the acute respiratory distress syndrome (DEXA-ARDS). <i>Lancet Respir Med</i> 2020;8:267–76.</li>
+    <li>Francois B, et al. 12-h pretreatment with methylprednisolone versus placebo for prevention of postextubation laryngeal oedema. <i>Lancet</i> 2007;369:1083–9.</li>
+    <li>Shaker MS, et al. Anaphylaxis — a 2020 practice parameter update. <i>J Allergy Clin Immunol</i> 2020;145:1082–1123.</li>
+    <li>Bornstein SR, et al. Diagnosis and treatment of primary adrenal insufficiency: Endocrine Society guideline. <i>J Clin Endocrinol Metab</i> 2016;101:364–89.</li>
+    <li>Global Initiative for Asthma (GINA). Global Strategy for Asthma Management and Prevention, 2025.</li>
+    <li>Global Initiative for Chronic Obstructive Lung Disease (GOLD). Report 2025.</li>
+    <li>American College of Radiology. ACR Manual on Contrast Media, 2024.</li>
+    <li>Neunert C, et al. American Society of Hematology 2019 guidelines for immune thrombocytopenia. <i>Blood Adv</i> 2019;3:3829–66.</li>
+    <li>Fanouriakis A, et al. EULAR recommendations for the management of systemic lupus erythematosus: 2023 update. <i>Ann Rheum Dis</i> 2024;83:15–29.</li>
+    <li>Hellmich B, et al. 2018 update of the EULAR recommendations for the management of large vessel vasculitis. <i>Ann Rheum Dis</i> 2020;79:19–30.</li>
+  </ol>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">Material de estudio personal. No reemplaza protocolos institucionales ni el juicio clínico. Dosis de adulto salvo indicación; verificar contra fuentes primarias y arsenal local.</div>
+</footer>
+
+<script>
+(function(){
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- Datos de equivalencia ---------- */
+const ST = [
+  {id:'hc',   nombre:'Hidrocortisona',    eq:20,   gc:'1',     mc:1,   vm:'corta', vmt:'8–12 h',  uso:'Shock séptico, crisis suprarrenal, NAC grave', freq:'c/6 h o infusión'},
+  {id:'cort', nombre:'Cortisona',         eq:25,   gc:'0,8',   mc:0.8, vm:'corta', vmt:'8–12 h',  uso:'Sin rol en SU (reemplazo crónico)', freq:'c/8–12 h'},
+  {id:'pred', nombre:'Prednisona',        eq:5,    gc:'4',     mc:0.8, vm:'inter', vmt:'12–36 h', uso:'Cursos orales cortos al alta', freq:'1 vez al día (mañana)'},
+  {id:'prednl',nombre:'Prednisolona',     eq:5,    gc:'4',     mc:0.8, vm:'inter', vmt:'12–36 h', uso:'Pediatría, hepatopatía, Bell, gota', freq:'1 vez al día (mañana)'},
+  {id:'mp',   nombre:'Metilprednisolona', eq:4,    gc:'5',     mc:0.5, vm:'inter', vmt:'12–36 h', uso:'IV sin vía oral, pulsos', freq:'1 vez al día o c/12 h'},
+  {id:'tri',  nombre:'Triamcinolona',     eq:4,    gc:'5',     mc:0,   vm:'inter', vmt:'12–36 h', uso:'Infiltraciones (depot)', freq:'1 vez al día'},
+  {id:'defl', nombre:'Deflazacort',       eq:6,    gc:'≈3,3',  mc:0,   vm:'inter', vmt:'12–36 h', uso:'Escaso en SU', freq:'1 vez al día'},
+  {id:'dexa', nombre:'Dexametasona',      eq:0.75, gc:'25–30', mc:0,   vm:'larga', vmt:'36–72 h', uso:'Crup, meningitis, edema vasogénico, COVID-19', freq:'1 vez al día (o c/6 h en edema/meningitis)'},
+  {id:'beta', nombre:'Betametasona',      eq:0.6,  gc:'25–30', mc:0,   vm:'larga', vmt:'36–72 h', uso:'Maduración pulmonar fetal', freq:'1 vez al día'}
+];
+const VML = {corta:'corta', inter:'intermedia', larga:'larga'};
+const fmt = v => {
+  if (!isFinite(v)) return '—';
+  const a = Math.abs(v);
+  const d = a === 0 ? 0 : a < 1 ? 2 : a < 10 ? 1 : 0;
+  return v.toLocaleString('es-CL', {minimumFractionDigits:0, maximumFractionDigits:d});
+};
+
+/* tabla estática de equivalencias */
+$('eq-body').innerHTML = ST.map(s => {
+  const mcW = Math.round(s.mc*40);
+  return `<tr><td><b>${esc(s.nombre)}</b></td><td class="num">${fmt(s.eq)} mg</td>
+  <td class="num"><span class="bar gc" style="width:${Math.min(80, 2+parseFloat(String(s.gc).replace('≈','').replace(',', '.'))*2.6)}px"></span>${esc(s.gc)}</td>
+  <td class="num">${mcW ? `<span class="bar mc" style="width:${mcW}px"></span>` : ''}${fmt(s.mc)}</td>
+  <td><span class="chip t-${s.vm}">${VML[s.vm]} · ${s.vmt}</span></td><td class="small">${esc(s.uso)}</td></tr>`;
+}).join('');
+
+/* ---------- Calculadora de equivalencias ---------- */
+$('eq-drug').innerHTML = ST.map(s => `<option value="${s.id}">${esc(s.nombre)} (${fmt(s.eq)} mg)</option>`).join('');
+$('eq-drug').value = 'dexa';
+
+const CATS = [
+  {max:7.5,  t:'Dosis baja',     c:'lv-baja',  d:'≤7,5 mg/día de prednisona: ocupación del GR <50 %.'},
+  {max:30,   t:'Dosis media',    c:'lv-media', d:'>7,5–30 mg/día.'},
+  {max:100,  t:'Dosis alta',     c:'lv-media', d:'>30–100 mg/día: GR casi saturado.'},
+  {max:250,  t:'Dosis muy alta', c:'lv-alta',  d:'>100 mg/día: se suman efectos no genómicos.'},
+  {max:Infinity, t:'Pulso',      c:'lv-alta',  d:'≥250 mg/día de prednisona equivalente.'}
+];
+function catOf(p){ if (p >= 250) return CATS[4]; return CATS.find(c => p <= c.max); }
+
+function calcEq(){
+  const src = ST.find(s => s.id === $('eq-drug').value);
+  const dose = parseFloat($('eq-dose').value);
+  const n = parseInt($('eq-freq').value, 10);
+  const wt = parseFloat($('eq-wt').value);
+  if (!src || !(dose > 0)) {
+    $('eq-summary').innerHTML = '<span class="muted">Ingresa una dosis mayor que 0 para ver las equivalencias.</span>';
+    $('eq-out').innerHTML = ''; $('eq-warns').innerHTML = ''; return;
+  }
+  const daily = dose * n;
+  const pe = daily / src.eq * 5;          // prednisona equivalente/día
+  const cat = catOf(pe);
+  const mcLoad = daily * src.mc;          // mg de hidrocortisona en efecto MC
+  let sum = `<div><div class="k">Dosis diaria de ${esc(src.nombre.toLowerCase())}</div><div class="v">${fmt(daily)} mg</div></div>
+    <div><div class="k">Prednisona equivalente</div><div class="v">${fmt(pe)} mg/día</div></div>`;
+  if (wt > 0) sum += `<div><div class="k">Por kg (prednisona eq.)</div><div class="v">${fmt(pe/wt)} mg/kg/día</div></div>`;
+  sum += `<div><div class="k">Categoría</div><div><span class="cat ${cat.c}">${cat.t}</span> <span class="small muted">${cat.d}</span></div></div>`;
+  $('eq-summary').innerHTML = sum;
+
+  $('eq-out').innerHTML = ST.map(s => {
+    const d = daily / src.eq * s.eq;
+    let sched;
+    if (s.vm === 'corta') sched = `${fmt(d/4)} mg c/6 h <span class="muted small">o ${fmt(d/3)} mg c/8 h</span>`;
+    else if (s.id === src.id && n > 1) sched = `${fmt(dose)} mg × ${n} <span class="muted small">(esquema original)</span>`;
+    else sched = `${fmt(d)} mg 1 vez al día`;
+    const mcl = d * s.mc;
+    return `<tr class="${s.id === src.id ? 'src' : ''}"><td><b>${esc(s.nombre)}</b></td><td class="num">${fmt(d)} mg${wt>0 ? ` <span class="muted small">(${fmt(d/wt)} mg/kg)</span>` : ''}</td>
+      <td class="small">${sched}</td><td class="num">${mcl ? fmt(mcl) : '0'}</td><td><span class="chip t-${s.vm}">${s.vmt}</span></td></tr>`;
+  }).join('');
+
+  const w = [];
+  w.push(['i', 'Equivalencia antiinflamatoria aproximada (VO/IV). No aplica a vías depot, intraarticular, inhalada ni tópica.']);
+  if (pe >= 250) w.push(['w', 'Rango de pulso: infundir metilprednisolona en ≥30–60 min, monitorizar glicemia, PA y K⁺.']);
+  if (mcLoad >= 50 && src.mc > 0) w.push(['w', `Carga mineralocorticoide equivalente a ${fmt(mcLoad)} mg de hidrocortisona: vigilar retención hidrosalina, HTA e hipokalemia.`]);
+  if (src.id === 'hc') w.push(['i', 'Si cambias hidrocortisona por dexametasona, metilprednisolona o betametasona en una insuficiencia suprarrenal primaria, pierdes el efecto mineralocorticoide: agregar fludrocortisona 0,05–0,1 mg/día.']);
+  if (src.id === 'pred') w.push(['i', 'Prednisona es profármaco: en insuficiencia hepática grave, preferir prednisolona a igual dosis.']);
+  if (src.id === 'defl') w.push(['i', 'La relación deflazacort:prednisona es variable (1,2–1,5:1); la tabla usa 6 mg ≈ 5 mg.']);
+  $('eq-warns').innerHTML = w.map(([k, t]) => `<div class="${k === 'i' ? 'i' : ''}">${t}</div>`).join('');
+}
+['eq-drug','eq-dose','eq-freq','eq-wt'].forEach(id => $(id).addEventListener('input', calcEq));
+document.querySelectorAll('.presets button').forEach(b => b.addEventListener('click', () => {
+  const [d, v, f] = b.dataset.p.split(',');
+  $('eq-drug').value = d; $('eq-dose').value = v; $('eq-freq').value = f; calcEq();
+}));
+calcEq();
+
+/* ---------- Calculadora por peso ---------- */
+const SC = [
+  {id:'crup', n:'Crup (laringitis obstructiva) · dexametasona VO/IM', lo:0.15, hi:0.6, max:10, u:'dosis única', note:'0,15 mg/kg suele bastar (no inferior a 0,6 mg/kg). Máx 10 mg; algunas guías aceptan hasta 16 mg. Si vomita: IM o budesonida nebulizada 2 mg.'},
+  {id:'asma-p', n:'Crisis asmática pediátrica · prednisolona/prednisona VO', lo:1, hi:2, max:40, u:'por día, 3–5 días', note:'GINA: 1–2 mg/kg/día, máx 40 mg/día (algunos protocolos 60 mg en >40 kg). Sin descenso.'},
+  {id:'asma-d', n:'Crisis asmática pediátrica · dexametasona VO', lo:0.3, hi:0.6, max:16, u:'por dosis, 1–2 dosis (c/24 h)', note:'Equivalente a 5 días de prednisolona con menos vómitos y mejor adherencia (Keeney 2014).'},
+  {id:'faringe', n:'Faringitis intensa / absceso periamigdalino · dexametasona', lo:0.6, hi:0.6, max:10, u:'dosis única', note:'Adulto: 10 mg dosis única (TOAST). Es adyuvante: no reemplaza antibiótico ni drenaje cuando están indicados.'},
+  {id:'mening', n:'Meningitis bacteriana · dexametasona IV', lo:0.15, hi:0.15, max:10, u:'por dosis, c/6 h × 4 días', note:'Dar 10–20 min antes o junto con la primera dosis de antibiótico. Adulto: 10 mg c/6 h.'},
+  {id:'adrenal', n:'Crisis suprarrenal · hidrocortisona IV/IM (bolo)', lo:2, hi:2, max:100, u:'bolo inicial', note:'Alternativa por edad: lactante 25 mg, escolar 50 mg, adolescente/adulto 100 mg. Luego 50–100 mg/m²/día fraccionado c/6 h (adulto 200 mg/24 h).'},
+  {id:'anaf', n:'Anafilaxia o broncoespasmo grave (adyuvante) · metilprednisolona IV', lo:1, hi:2, max:125, u:'dosis', note:'Nunca antes ni en lugar de la adrenalina IM. Beneficio no demostrado en prevenir reacción bifásica.'},
+  {id:'pulso', n:'Pulso · metilprednisolona IV', lo:30, hi:30, max:1000, u:'por día, 3–5 días', note:'Infusión de ≥60 min en pediatría. Adulto: 500–1000 mg/día.'},
+  {id:'edema', n:'Edema vasogénico (tumor) · dexametasona IV', lo:0.25, hi:0.5, max:10, u:'carga; luego mantención fraccionada c/6 h', note:'Pediatría: carga 0,5–1 mg/kg descrita en algunos protocolos; mantención total ~0,25–0,5 mg/kg/día. Adulto: 10 mg carga, luego 4 mg c/6 h.'}
+];
+$('kg-sc').innerHTML = SC.map(s => `<option value="${s.id}">${esc(s.n)}</option>`).join('');
+function calcKg(){
+  const s = SC.find(x => x.id === $('kg-sc').value);
+  const w = parseFloat($('kg-wt').value);
+  if (!(w > 0)) { $('kg-out').innerHTML = '<span class="muted">Ingresa el peso en kg.</span>'; $('kg-note').textContent = s.note; return; }
+  const lo = Math.min(w*s.lo, s.max), hi = Math.min(w*s.hi, s.max);
+  const capped = w*s.hi > s.max;
+  const val = s.lo === s.hi ? `${fmt(lo)} mg` : `${fmt(lo)}–${fmt(hi)} mg`;
+  $('kg-out').innerHTML = `<div><div class="k">Dosis calculada</div><div class="big-out">${val}</div><div class="small muted">${esc(s.u)}</div></div>
+    <div><div class="k">Pauta</div><div class="v" style="font-size:1rem">${fmt(s.lo)}${s.lo!==s.hi ? '–'+fmt(s.hi) : ''} mg/kg · máx ${fmt(s.max)} mg</div>${capped ? '<div class="small" style="color:var(--warn)">Se alcanzó la dosis máxima.</div>' : ''}</div>`;
+  $('kg-note').textContent = s.note;
+}
+['kg-sc','kg-wt'].forEach(id => $(id).addEventListener('input', calcKg));
+calcKg();
+
+/* ---------- Figura dosis–receptor ---------- */
+(function(){
+  const svg = $('fig-receptor');
+  const X0 = 64, X1 = 640, Y0 = 34, Y1 = 214;
+  const x = d => X0 + Math.log10(d)/3 * (X1 - X0);
+  const y = f => Y1 - f * (Y1 - Y0);
+  const bands = [[1,7.5,'Baja'],[7.5,30,'Media'],[30,100,'Alta'],[100,250,'Muy alta'],[250,1000,'Pulso']];
+  const op = [0.04,0.08,0.12,0.17,0.24];
+  let h = '';
+  bands.forEach((b,i) => {
+    h += `<rect x="${x(b[0])}" y="${Y0}" width="${x(b[1])-x(b[0])}" height="${Y1-Y0}" style="fill:var(--gc);opacity:${op[i]}"/>`;
+    h += `<text class="band-l" x="${(x(b[0])+x(b[1]))/2}" y="${Y0-10}" text-anchor="middle">${b[2]}</text>`;
+  });
+  [0,0.25,0.5,0.75,1].forEach(f => {
+    h += `<line class="ax" x1="${X0}" x2="${X1}" y1="${y(f)}" y2="${y(f)}" style="stroke-dasharray:${f? '2 4':'0'}"/>`;
+    h += `<text class="ax-t" x="${X0-8}" y="${y(f)+3.5}" text-anchor="end">${f*100}%</text>`;
+  });
+  [1,7.5,30,100,250,1000].forEach(d => {
+    h += `<line class="ax" x1="${x(d)}" x2="${x(d)}" y1="${Y1}" y2="${Y1+5}"/>`;
+    h += `<text class="ax-t" x="${x(d)}" y="${Y1+18}" text-anchor="middle">${String(d).replace('.',',')}</text>`;
+  });
+  h += `<text class="ax-t" x="${(X0+X1)/2}" y="${Y1+36}" text-anchor="middle">mg/día de prednisona equivalente (escala logarítmica)</text>`;
+  let g = [], ng = [];
+  for (let i = 0; i <= 120; i++) {
+    const d = Math.pow(10, i/40);
+    g.push(`${x(d).toFixed(1)},${y(d/(d+10)).toFixed(1)}`);
+    const n = d <= 100 ? 0 : (Math.log10(d) - 2) * 0.8;
+    ng.push(`${x(d).toFixed(1)},${y(n).toFixed(1)}`);
+  }
+  h += `<polyline points="${g.join(' ')}" style="fill:none;stroke:var(--gc);stroke-width:2.5"/>`;
+  h += `<polyline points="${ng.join(' ')}" style="fill:none;stroke:var(--mc);stroke-width:2.5;stroke-dasharray:6 4"/>`;
+  h += `<circle cx="${x(1000)}" cy="${y(1000/1010)}" r="4" style="fill:var(--gc)"/>`;
+  h += `<text class="ax-t" x="${x(12)}" y="${y(0.62)}" style="fill:var(--gc);font-weight:500">Ocupación del GR (genómico)</text>`;
+  h += `<text class="ax-t" x="${x(1000)-6}" y="${y(0.8)-10}" text-anchor="end" style="fill:var(--mc);font-weight:500">Efecto no genómico</text>`;
+  svg.innerHTML = h;
+})();
+
+/* ---------- Contextos ---------- */
+const CTX = [
+  // Baja complejidad
+  {lv:'baja', sys:'ORL', t:'Faringoamigdalitis con odinofagia intensa', f:'Dexametasona', d:'10 mg VO dosis única · niños 0,6 mg/kg (máx 10 mg)', ev:'B', n:'Acelera la resolución del dolor a 48 h (TOAST). Adyuvante: no reemplaza antibiótico si está indicado.', r:'Hayward, JAMA 2017'},
+  {lv:'baja', sys:'Respiratorio · Pediatría', t:'Crup (laringitis aguda obstructiva)', f:'Dexametasona', d:'0,15–0,6 mg/kg VO/IM dosis única (máx 10 mg)', ev:'A', n:'Beneficio incluso en crup leve: menos reconsultas. Alternativas: budesonida nebulizada 2 mg o prednisolona 1 mg/kg.', r:'Bjornson, NEJM 2004'},
+  {lv:'baja', sys:'Respiratorio', t:'Crisis asmática del adulto', f:'Prednisona', d:'40–50 mg VO/día × 5–7 días · alt. dexametasona 12–16 mg VO × 1–2 dosis', ev:'A', n:'Dar en la primera hora: reduce hospitalización. VO = IV. Sin descenso. IV solo sin vía oral: metilprednisolona 40–80 mg/día.', r:'Rowe, Cochrane 2001 · GINA 2025'},
+  {lv:'baja', sys:'Respiratorio · Pediatría', t:'Crisis asmática pediátrica', f:'Prednisolona o dexametasona', d:'Prednisolona 1–2 mg/kg/día (máx 40 mg) × 3–5 días · dexametasona 0,3–0,6 mg/kg (máx 16 mg) × 1–2 días', ev:'A', n:'La dexametasona logra eficacia equivalente con menos vómitos y mejor adherencia.', r:'Keeney, Pediatrics 2014'},
+  {lv:'baja', sys:'Respiratorio', t:'Exacerbación de EPOC', f:'Prednisona', d:'40 mg VO/día × 5 días', ev:'A', n:'5 días no inferior a 14 (REDUCE). Menor beneficio con eosinófilos <100/µL (GOLD 2025). VO = IV.', r:'Leuppi, JAMA 2013'},
+  {lv:'baja', sys:'Piel · Alergia', t:'Urticaria aguda extensa', f:'Prednisona', d:'20–40 mg VO/día × 3–5 días, sumada a antihistamínico H1 de 2ª generación', ev:'B', n:'El pilar es el antihistamínico (hasta 4 veces la dosis estándar). Evidencia del corticoide contradictoria; reservar para casos extensos o refractarios.', r:'Barniol, JACI Pract 2018'},
+  {lv:'baja', sys:'Piel', t:'Dermatitis de contacto extensa (>20 % SC o cara)', f:'Prednisona', d:'0,5–1 mg/kg/día (máx 60 mg) con descenso en 2–3 semanas', ev:'C', n:'Cursos de 5 días producen rebote: es una de las pocas indicaciones de curso corto con descenso.', r:'Consenso dermatológico'},
+  {lv:'baja', sys:'Neurología', t:'Parálisis facial periférica (Bell)', f:'Prednisolona', d:'60 mg/día × 5 días y descenso 10 mg/día · o 50 mg/día × 10 días', ev:'A', n:'Iniciar dentro de 72 h. Aciclovir o valaciclovir solo como adyuvante en parálisis grave o completa.', r:'Sullivan, NEJM 2007 · Engström, Lancet Neurol 2008'},
+  {lv:'baja', sys:'Reumatología', t:'Gota aguda', f:'Prednisolona / prednisona', d:'30–35 mg VO/día × 5 días', ev:'A', n:'Equivalente a AINE (naproxeno, indometacina). De elección en ERC, anticoagulados o úlcera. Monoarticular: considerar infiltración.', r:'Janssens, Lancet 2008 · Rainer, Ann Intern Med 2016'},
+  {lv:'baja', sys:'Neurología', t:'Migraña en SU (prevención de recurrencia)', f:'Dexametasona', d:'10 mg IV/IM dosis única (rango 10–24 mg)', ev:'A', n:'No alivia la crisis; reduce la recurrencia a 24–72 h (RR ~0,74, NNT ~9). Asociar al tratamiento abortivo.', r:'Colman, BMJ 2008'},
+  {lv:'baja', sys:'Musculoesquelético', t:'Lumbociática (radiculopatía por hernia)', f:'Prednisona', d:'60 mg × 5 d → 40 mg × 5 d → 20 mg × 5 d', ev:'B', n:'Mejoría funcional modesta, sin efecto en el dolor. No indicar en lumbago sin radiculopatía.', r:'Goldberg, JAMA 2015'},
+  {lv:'baja', sys:'Alergia', t:'Reacción local extensa a picadura', f:'Prednisona', d:'40–50 mg VO/día × 3–5 días', ev:'C', n:'Con antihistamínico y frío local. No es anafilaxia: no requiere adrenalina si no hay compromiso sistémico.', r:'Consenso'},
+  {lv:'baja', sys:'Imagenología', t:'Premedicación por reacción previa a contraste yodado', f:'Prednisona o metilprednisolona', d:'Electiva: prednisona 50 mg VO 13, 7 y 1 h antes + difenhidramina 50 mg 1 h antes · Urgente: metilprednisolona 40 mg IV (o hidrocortisona 200 mg) c/4 h hasta el estudio + difenhidramina', ev:'C', n:'Reduce pero no elimina las reacciones. La premedicación IV necesita ≥4–5 h para tener efecto.', r:'ACR Manual on Contrast Media 2024'},
+  // Complejidad media
+  {lv:'media', sys:'Alergia', t:'Anafilaxia', f:'Metilprednisolona o hidrocortisona', d:'Metilprednisolona 1–2 mg/kg IV (máx 125 mg) · hidrocortisona 200 mg IV', ev:'X', n:'No es tratamiento de rescate: adrenalina IM primero. Sin beneficio demostrado en prevenir reacción bifásica; considerar si hay asma persistente o shock refractario.', r:'Shaker, JACI 2020'},
+  {lv:'media', sys:'ORL', t:'Absceso periamigdalino', f:'Dexametasona', d:'10 mg IV dosis única', ev:'B', n:'Junto a drenaje y antibiótico: menos dolor y fiebre en las primeras 24–48 h.', r:'ECA pequeños'},
+  {lv:'media', sys:'Infectología', t:'COVID-19 con requerimiento de oxígeno', f:'Dexametasona', d:'6 mg VO/IV/día × 10 días o hasta el alta', ev:'A', n:'↓ mortalidad a 28 días con O₂ o VM (RECOVERY). Sin O₂: sin beneficio. Dosis altas (20 mg) en hipoxemia sin VM aumentaron la mortalidad.', r:'RECOVERY, NEJM 2021 · Lancet 2023'},
+  {lv:'media', sys:'Infectología', t:'Neumonía por Pneumocystis en VIH (PaO₂ <70 mmHg o gradiente A-a ≥35)', f:'Prednisona', d:'40 mg c/12 h días 1–5 · 40 mg/día días 6–10 · 20 mg/día días 11–21', ev:'A', n:'Iniciar dentro de 72 h del cotrimoxazol. ↓ mortalidad e intubación.', r:'Guías IDSA/NIH'},
+  {lv:'media', sys:'Infectología · Neurología', t:'Meningitis bacteriana aguda', f:'Dexametasona', d:'10 mg IV c/6 h × 4 días · niños 0,15 mg/kg c/6 h', ev:'A', n:'Antes o junto con la primera dosis de antibiótico. Beneficio en neumococo (mortalidad y secuelas). Suspender si se confirma otro agente (excepto Hib en niños). TBC meníngea: esquema descendente de 6–8 semanas.', r:'de Gans, NEJM 2002'},
+  {lv:'media', sys:'Neurología · Oncología', t:'Edema cerebral vasogénico (tumor, absceso)', f:'Dexametasona', d:'10 mg IV carga, luego 4 mg c/6 h (16 mg/día)', ev:'B', n:'Mejora síntomas en horas. No sirve en edema citotóxico (ACV) ni en TEC.', r:'Consenso neurooncológico'},
+  {lv:'media', sys:'Oncología', t:'Compresión medular neoplásica', f:'Dexametasona', d:'10 mg IV carga, luego 16 mg/día fraccionado', ev:'B', n:'Dosis altas (96 mg) no superiores y con más toxicidad. Resonancia y oncología/radioterapia urgente.', r:'ECA y revisiones sistemáticas'},
+  {lv:'media', sys:'Cardiología', t:'Pericarditis aguda', f:'Prednisona', d:'0,2–0,5 mg/kg/día con descenso lento', ev:'C', n:'Solo si AINE y colchicina están contraindicados o hay causa autoinmune: el corticoide aumenta las recurrencias.', r:'ESC 2015'},
+  {lv:'media', sys:'Reumatología', t:'Arteritis de células gigantes sin compromiso visual', f:'Prednisona', d:'40–60 mg VO/día', ev:'B', n:'Iniciar en el SU, sin esperar la biopsia (se mantiene positiva por días a semanas). Con síntomas visuales: ver pulsos.', r:'EULAR 2018'},
+  {lv:'media', sys:'Digestivo', t:'Colitis ulcerosa grave (Truelove-Witts)', f:'Metilprednisolona o hidrocortisona', d:'Metilprednisolona 60 mg/día IV · hidrocortisona 100 mg IV c/6 h', ev:'A', n:'Evaluar respuesta al día 3 para rescate (infliximab, ciclosporina, cirugía). Descartar C. difficile y CMV.', r:'ECCO'},
+  {lv:'media', sys:'Hematología', t:'PTI con sangrado o plaquetas <20–30 mil/µL', f:'Dexametasona o prednisona', d:'Dexametasona 40 mg/día × 4 días · prednisona 1 mg/kg/día (máx 80 mg)', ev:'A', n:'Sangrado grave: sumar IgIV ± transfusión de plaquetas y considerar pulso de metilprednisolona.', r:'ASH 2019'},
+  {lv:'media', sys:'Endocrino', t:'Tormenta tiroidea', f:'Hidrocortisona', d:'100 mg IV c/8 h (o dexametasona 2 mg c/6 h)', ev:'C', n:'Inhibe la conversión periférica de T4 a T3 y cubre una insuficiencia suprarrenal relativa.', r:'ATA 2016'},
+  {lv:'media', sys:'Hematología · Oncología', t:'Hipercalcemia por mieloma, linfoma o granulomatosis', f:'Prednisona', d:'40–60 mg VO/día', ev:'B', n:'Actúa sobre la producción de calcitriol. Sin efecto en hipercalcemia por PTHrP de tumores sólidos.', r:'Revisiones'},
+  {lv:'media', sys:'Neurología', t:'Miastenia gravis (exacerbación)', f:'Prednisona', d:'Inicio con dosis bajas y aumento gradual', ev:'C', n:'Dosis altas de inicio empeoran transitoriamente al 40–50 % entre los días 5 y 10. En crisis: IgIV o plasmaféresis primero.', r:'Consenso internacional'},
+  // Alta complejidad
+  {lv:'alta', sys:'Crítico', t:'Shock séptico refractario', f:'Hidrocortisona ± fludrocortisona', d:'200 mg/día (50 mg IV c/6 h o infusión) ± fludrocortisona 50 µg VO/día × 7 días', ev:'A', n:'Indicar con noradrenalina o adrenalina ≥0,25 µg/kg/min por ≥4 h (SSC 2021). ADRENAL: resolución más rápida del shock; APROCCHSS (+ fludrocortisona): ↓ mortalidad a 90 días. No requiere test de ACTH ni cortisol.', r:'ADRENAL / APROCCHSS, NEJM 2018'},
+  {lv:'alta', sys:'Crítico · Respiratorio', t:'Neumonía adquirida en la comunidad grave (UCI)', f:'Hidrocortisona', d:'200 mg/día × 4 días, luego descenso (total 8 o 14 días según evolución)', ev:'A', n:'CAPE COD: ↓ mortalidad a 28 días (6,2 vs 11,9 %). Inicio en <24 h. No aplica a influenza ni a shock séptico de ingreso (excluidos).', r:'Dequin, NEJM 2023'},
+  {lv:'alta', sys:'Endocrino', t:'Crisis suprarrenal', f:'Hidrocortisona', d:'100 mg IV/IM bolo, luego 200 mg/24 h (infusión o 50 mg c/6 h) · niños 50–100 mg/m² (≈2 mg/kg, máx 100 mg)', ev:'A', n:'No esperar exámenes. Con ≥50 mg/día no requiere fludrocortisona. Si se va a hacer test de ACTH después, la dexametasona no interfiere con la medición de cortisol.', r:'Endocrine Society 2016'},
+  {lv:'alta', sys:'Endocrino · Crítico', t:'Usuario crónico de corticoides con sepsis, trauma o cirugía', f:'Hidrocortisona', d:'100 mg IV, luego 200 mg/24 h y descenso al resolver', ev:'C', n:'Hipotensión inexplicada en usuario de corticoides: tratar como crisis suprarrenal.', r:'Consenso'},
+  {lv:'alta', sys:'Crítico · Respiratorio', t:'SDRA moderado a grave', f:'Dexametasona', d:'20 mg IV/día × 5 días, luego 10 mg/día × 5 días', ev:'B', n:'DEXA-ARDS: ↓ mortalidad a 60 días y más días libres de VM. Evidencia heterogénea; recomendación condicional (ATS 2024). Inicio precoz.', r:'Villar, Lancet Respir Med 2020'},
+  {lv:'alta', sys:'Crítico · Vía aérea', t:'Prevención de estridor post-extubación (fuga del cuff ausente)', f:'Metilprednisolona', d:'20 mg IV 12 h antes y luego c/4 h hasta la extubación', ev:'A', n:'↓ edema laríngeo y reintubación en pacientes de riesgo. Requiere al menos 4–12 h de anticipación.', r:'Francois, Lancet 2007'},
+  {lv:'alta', sys:'Endocrino', t:'Coma mixedematoso', f:'Hidrocortisona', d:'100 mg IV c/8 h', ev:'C', n:'Antes de la levotiroxina IV: el aumento del metabolismo puede precipitar una crisis suprarrenal oculta.', r:'ATA 2014'},
+  {lv:'alta', sys:'Digestivo', t:'Hepatitis alcohólica grave (Maddrey ≥32)', f:'Prednisolona', d:'40 mg VO/día × 28 días', ev:'B', n:'Beneficio modesto a 28 días, no sostenido a 90 (STOPAH). Suspender si Lille >0,45 al día 7. Descartar infección y HDA activa.', r:'STOPAH, NEJM 2015'}
+];
+const EVL = {A:'A', B:'B', C:'C', X:'✕'};
+const LVL = {baja:'Baja', media:'Media', alta:'Alta'};
+let lvSel = 'todas';
+const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function renderCtx(){
+  const q = norm($('ctx-q').value.trim());
+  const list = CTX.filter(c => (lvSel === 'todas' || c.lv === lvSel) && (!q || norm([c.t,c.f,c.d,c.n,c.sys].join(' ')).includes(q)));
+  $('ctx-list').innerHTML = list.length ? list.map(c => `
+    <article class="ctx">
+      <div class="top"><span class="chip lv-${c.lv}">${LVL[c.lv]}</span><span class="chip ev-${c.ev}">Evidencia ${EVL[c.ev]}</span><span class="sys">${esc(c.sys)}</span></div>
+      <h3>${esc(c.t)}</h3>
+      <div class="drug">${esc(c.f)}</div>
+      <div class="dose">${esc(c.d)}</div>
+      <p class="note">${esc(c.n)}</p>
+      <div class="ref">${esc(c.r)}</div>
+    </article>`).join('') : '<div class="empty">Ningún cuadro coincide con la búsqueda.</div>';
+}
+document.querySelectorAll('[data-lv]').forEach(b => b.addEventListener('click', () => {
+  lvSel = b.dataset.lv;
+  document.querySelectorAll('[data-lv]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  renderCtx();
+}));
+$('ctx-q').addEventListener('input', renderCtx);
+renderCtx();
+
+/* ---------- Pulsos ---------- */
+const PUL = [
+  ['Brote de esclerosis múltiple', 'Metilprednisolona 1 g/día IV × 3–5 días (o 1 g VO)', 'A', 'Acelera la recuperación; no cambia la discapacidad a largo plazo. VO no inferior a IV (COPOUSEP).'],
+  ['Neuritis óptica', 'Metilprednisolona 250 mg IV c/6 h × 3 días → prednisona 1 mg/kg × 11 días', 'A', 'ONTT: recuperación visual más rápida, igual agudeza a 1 año. Prednisona oral sola a dosis bajas aumentó las recurrencias: evitarla.'],
+  ['Arteritis de células gigantes con pérdida visual', 'Metilprednisolona 500–1000 mg/día IV × 3 días', 'C', 'Busca proteger el ojo contralateral; la visión perdida rara vez se recupera. Iniciar de inmediato.'],
+  ['LES con compromiso grave (nefritis, SNC, hematológico)', 'Metilprednisolona 250–1000 mg/día IV × 1–3 días', 'B', 'EULAR 2023: pulsos para inducción y luego prednisona en dosis más bajas, con descenso rápido.'],
+  ['Vasculitis ANCA (GN rápidamente progresiva, hemorragia alveolar)', 'Metilprednisolona 0,5–1 g/día IV × 3 días → esquema oral reducido', 'A', 'PEXIVAS: el esquema reducido de corticoides fue no inferior y tuvo menos infecciones graves.'],
+  ['Hemorragia alveolar difusa autoinmune', 'Metilprednisolona 500–1000 mg/día IV × 3–5 días', 'C', 'Junto a inmunosupresión y plasmaféresis según la causa.'],
+  ['Encefalitis autoinmune', 'Metilprednisolona 1 g/día IV × 5 días ± IgIV o plasmaféresis', 'C', 'Primera línea por consenso; mejor pronóstico con tratamiento precoz.'],
+  ['Mielitis transversa / brote de NMOSD', 'Metilprednisolona 1 g/día IV × 5 días', 'B', 'Plasmaféresis precoz si no hay respuesta en pocos días.'],
+  ['PTI con sangrado grave', 'Metilprednisolona 1 g/día IV × 3 días + IgIV', 'C', 'Respuesta más rápida que la prednisona; puente hasta efecto de la IgIV.'],
+  ['Rechazo agudo de trasplante', 'Metilprednisolona 250–1000 mg/día IV × 3 días', 'B', 'Según protocolo del centro trasplantador; contactar al equipo tratante.'],
+  ['Shock séptico', 'Metilprednisolona 30 mg/kg (ensayos de los años 80)', 'X', 'Sin beneficio y con más infecciones secundarias. Usar solo hidrocortisona 200 mg/día.'],
+  ['TEC', 'Metilprednisolona 2 g bolo + 0,4 g/h × 48 h (CRASH)', 'X', 'Aumentó la mortalidad. Contraindicado.'],
+  ['Trauma raquimedular agudo', 'Metilprednisolona 30 mg/kg bolo + 5,4 mg/kg/h × 23 h (NASCIS II)', 'X', 'Beneficio solo en análisis secundarios, con más neumonía y sepsis. No es estándar.'],
+  ['COVID-19 grave', 'Pulsos de metilprednisolona 250–1000 mg', 'X', 'Sin ventaja sobre dexametasona 6 mg; las dosis altas no mejoran y pueden empeorar el desenlace.'],
+  ['Guillain-Barré', 'Metilprednisolona 500 mg/día × 5 días', 'X', 'Sin beneficio (Cochrane). IgIV o plasmaféresis.']
+];
+$('pulse-body').innerHTML = PUL.map(p => `<tr><td><b>${esc(p[0])}</b></td><td class="small">${esc(p[1])}</td><td><span class="chip ev-${p[2]}">${EVL[p[2]]}</span></td><td class="small">${esc(p[3])}</td></tr>`).join('');
+
+/* ---------- Tarjetas ---------- */
+const CARDS = [
+  ['¿Cuánta prednisona equivalen 6 mg de dexametasona?', '40 mg. Dexametasona 0,75 mg = prednisona 5 mg (factor ≈6,7).'],
+  ['¿Qué corticoide elegir en una insuficiencia suprarrenal primaria y por qué?', 'Hidrocortisona: es el único con actividad mineralocorticoide relevante. Con ≥50 mg/día no hace falta fludrocortisona.'],
+  ['¿Desde qué dosis se habla de pulso?', '≥250 mg/día de prednisona equivalente, por 1 a 5 días (Buttgereit 2002). En la práctica, metilprednisolona 500–1000 mg/día.'],
+  ['¿Por qué el corticoide no rescata un broncoespasmo o una anafilaxia?', 'Su acción genómica tarda 4–6 h. Previene la evolución, no revierte la crisis; por eso adrenalina o β2-agonista primero.'],
+  ['¿Cuándo indicar hidrocortisona en shock séptico?', 'Con noradrenalina o adrenalina ≥0,25 µg/kg/min por ≥4 h: 200 mg/día. Sin test de ACTH.'],
+  ['¿Qué mostró CRASH?', 'Metilprednisolona en altas dosis en TEC aumentó la mortalidad a 2 semanas. Contraindicado.'],
+  ['¿Hay que hacer descenso tras 5 días de prednisona 40 mg?', 'No. Con <3 semanas de uso la supresión del eje es irrelevante clínicamente.'],
+  ['Dexametasona en meningitis: ¿cuándo y cuánto?', '10 mg IV c/6 h × 4 días, antes o con la primera dosis de antibiótico. El beneficio se concentra en neumococo.'],
+  ['¿Qué corticoide usar en la embarazada con asma y cuál para madurar el pulmón fetal?', 'Prednisona para la madre (la placenta la inactiva). Betametasona o dexametasona para el feto (cruzan la placenta).'],
+  ['¿Por qué la NAC grave tiene ahora indicación de hidrocortisona?', 'CAPE COD (NEJM 2023): 200 mg/día iniciados en <24 h redujeron la mortalidad a 28 días (6,2 vs 11,9 %). Excluía influenza.'],
+  ['¿Qué interacción produce Cushing con un corticoide inhalado?', 'Ritonavir o cobicistat (inhiben CYP3A4) con budesonida o fluticasona.'],
+  ['¿Qué riesgo infeccioso buscar antes de dosis altas en un paciente de zona tropical?', 'Hiperinfección por Strongyloides. Ivermectina empírica si no se puede estudiar.']
+];
+$('cards').innerHTML = CARDS.map((c,i) => `<button type="button" class="card" aria-pressed="false" id="card-${i}"><div class="in"><div class="f"><span class="kicker" style="font-family:var(--f-mono);font-size:.7rem;color:var(--accent)">${String(i+1).padStart(2,'0')}</span><div class="q">${esc(c[0])}</div><div class="hint">Tocar para ver la respuesta</div></div><div class="b"><div>${esc(c[1])}</div></div></div></button>`).join('');
+document.querySelectorAll('.card').forEach(c => c.addEventListener('click', () => c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'))));
+})();
+</script>
+</body>
+</html>

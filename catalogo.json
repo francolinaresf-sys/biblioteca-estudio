@@ -164,6 +164,17 @@
         "dolor torácico"
       ],
       "fecha": "2026-10-15"
+    },
+    {
+      "id": "corticoides-en-el-su",
+      "titulo": "Corticoides en el SU",
+      "tema": "farmacologia",
+      "archivo": "farmacologia/corticoides-en-el-su.html",
+      "descripcion": "Mecanismo genómico y no genómico, tabla de potencias, presentaciones y vías, 36 escenarios de baja a alta complejidad con dosis y nivel de evidencia, pulsos según caso, precauciones, dónde no usarlos, calculadora de equivalencias y de dosis por peso, y tarjetas de repaso.",
+      "etiquetas": [
+        "Corticoides en el SU"
+      ],
+      "fecha": "2026-10-18"
     }
   ]
 }
