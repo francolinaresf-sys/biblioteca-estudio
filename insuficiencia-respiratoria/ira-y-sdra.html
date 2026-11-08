@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insuficiencia respiratoria aguda y SDRA — Guía de estudio</title>
+<style>
+:root{color-scheme:light;
+--ink:#1B2A30;--muted:#5C6B73;--bg:#F3F7F8;--card:#fff;--line:#DAE3E7;
+--petrol:#12343B;--teal:#1F7A80;--tealbg:#E6F2F3;--red:#C8443F;--redbg:#FBECEA;
+--amber:#B5791A;--amberbg:#F7EFDF;--green:#2E7D52;--greenbg:#E8F3EC;--slate:#3D6B8C;--slatebg:#E8EFF5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,sans-serif;line-height:1.5;font-size:15.5px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 90px}
+header.top{background:var(--petrol);color:#fff;padding:30px 0 22px}
+.kicker{color:#9FD0D6;font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase}
+header h1{font-family:Georgia,"Cambria",serif;font-size:31px;margin:6px 0 4px;line-height:1.15}
+header p{margin:0;color:#CFE3E6}
+header .meta{font-size:12.5px;color:#8FB6BC;margin-top:10px}
+nav.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(18,52,59,.06)}
+nav.tabs .inner{max-width:1000px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:8px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav.tabs .inner::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--petrol);padding:8px 12px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+nav.tabs button.on{background:var(--petrol);color:#fff;border-color:var(--petrol)}
+.panel{display:none}.panel.on{display:block}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0;box-shadow:0 2px 10px rgba(18,52,59,.04)}
+h2{font-family:Georgia,"Cambria",serif;font-size:23px;margin:0 0 6px;color:var(--petrol)}
+h3{font-size:16.5px;margin:18px 0 6px;color:var(--teal)}
+p{margin:6px 0}ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.src{display:block;color:var(--muted);font-size:12px;font-style:italic;margin-top:10px}
+.box{border-radius:10px;padding:12px 15px;margin:12px 0;border:1px solid}
+.perla{background:var(--greenbg);border-color:#BFDCCB}.perla b:first-child{color:var(--green)}
+.ojo{background:var(--amberbg);border-color:#E8D3A8}.ojo b:first-child{color:var(--amber)}
+.alerta{background:var(--redbg);border-color:#EFC4C1}.alerta b:first-child{color:var(--red)}
+.nota{background:var(--slatebg);border-color:#C9D8E6}.nota b:first-child{color:var(--slate)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.tile .big{font-family:Georgia,serif;font-size:26px;font-weight:700;color:var(--petrol);line-height:1.15}
+.tile .lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);font-weight:700}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14.5px}
+.tw{overflow-x:auto}
+th{background:var(--petrol);color:#fff;text-align:left;padding:8px 9px;font-weight:600}
+td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#F7FAFB}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin:0 4px 2px 0}
+.t-fuerte{background:var(--greenbg);color:var(--green)}.t-cond{background:var(--amberbg);color:var(--amber)}.t-contra{background:var(--redbg);color:var(--red)}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}
+summary{cursor:pointer;font-weight:700;color:var(--petrol)}
+/* calculadoras */
+.calc{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+.calc h3{margin-top:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.row label{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted);font-weight:600;gap:3px}
+input,select{font-size:16px;padding:8px 9px;border:1px solid #C5D3D8;border-radius:8px;width:120px;background:#fff;color:var(--ink)}
+select{width:auto;max-width:100%}
+.row label{max-width:100%}
+.out{margin-top:10px;font-size:15px;padding:10px 12px;border-radius:9px;background:#fff;border:1px dashed var(--teal)}
+.out b{color:var(--petrol)}
+.ok{color:var(--green);font-weight:700}.warn{color:var(--amber);font-weight:700}.bad{color:var(--red);font-weight:700}
+/* escalera */
+.ladder{display:flex;flex-direction:column-reverse;gap:7px;margin:12px 0}
+.step{color:#fff;border-radius:9px;padding:9px 13px;font-weight:600}
+/* caso y quiz */
+.opt{display:block;width:100%;text-align:left;border:1px solid #C5D3D8;background:#fff;border-radius:9px;padding:10px 12px;margin:7px 0;font-size:15px;cursor:pointer;color:var(--ink)}
+.opt:hover{background:var(--tealbg)}
+.opt.right{background:var(--greenbg);border-color:var(--green)}
+.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.fb{display:none;margin-top:8px}
+.fb.show{display:block}
+.btn{border:0;background:var(--teal);color:#fff;font-weight:700;padding:9px 15px;border-radius:9px;cursor:pointer;font-size:14px}
+.btn.alt{background:var(--bg);color:var(--petrol);border:1px solid var(--line)}
+.score{font-size:18px;font-weight:700;color:var(--petrol)}
+.vitals{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.vitals span{background:var(--petrol);color:#fff;border-radius:7px;padding:4px 9px;font-size:13px;font-weight:600}
+.mnemo{font-family:Georgia,serif;font-size:19px;color:var(--petrol)}
+@media (max-width:600px){header h1{font-size:25px}section{padding:16px}input{width:100px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" style="padding-bottom:0">
+  <div class="kicker">Insuficiencia respiratoria · SDRA</div>
+  <h1>Insuficiencia respiratoria aguda y SDRA en Urgencia</h1>
+  <p>Del mecanismo de la hipoxemia a la guía ATS 2023, con calculadoras, caso ramificado y quiz.</p>
+  <div class="meta">Base: definición global de SDRA (Matthay 2024), guía ATS (Qadir 2024), BMJ 2024 (Wick, Ware, Matthay), Lagina &amp; Valley (Crit Care Clin 2024), Vasques et al. (Medicine 2023). Material de estudio; las dosis deben confirmarse con el protocolo local.</div>
+</div></header>
+
+<nav class="tabs"><div class="inner" id="tabs">
+  <button data-p="p0" class="on">Mapa</button>
+  <button data-p="p1">Fisiopatología</button>
+  <button data-p="p2">Evaluación</button>
+  <button data-p="p3">Calculadoras</button>
+  <button data-p="p4">Soporte</button>
+  <button data-p="p5">Definición SDRA</button>
+  <button data-p="p6">Manejo ATS 2023</button>
+  <button data-p="p7">Fármacos</button>
+  <button data-p="p8">Caso ramificado</button>
+  <button data-p="p9">Quiz</button>
+  <button data-p="p10">Perlas</button>
+</div></nav>
+
+<div class="wrap">
+
+<!-- MAPA -->
+<div class="panel on" id="p0">
+<section>
+  <h2>Mapa del tema en 60 segundos</h2>
+  <div class="grid">
+    <div class="tile"><div class="lbl">1 · Reconocer</div><p>Tipo 1 (PaO₂ &lt; 60) vs tipo 2 (PaCO₂ ≥ 45 con pH &lt; 7,35). Mecanismo por gradiente A-a y respuesta al O₂.</p></div>
+    <div class="tile"><div class="lbl">2 · Soportar</div><p>SpO₂ 90-98 %. CNAF en hipoxémico; VMNI en EPOC hipercápnico y EPA. Vigilar fracaso (ROX, pH).</p></div>
+    <div class="tile"><div class="lbl">3 · Diagnosticar SDRA</div><p>Definición global 2023: incluye CNAF ≥ 30 L/min, S/F ≤ 315 y ultrasonido.</p></div>
+    <div class="tile"><div class="lbl">4 · Proteger y rescatar</div><p>Vt 6 mL/kg de peso ideal, Pplat &lt; 30, PEEP alta, prono, BNM, corticoides, ECMO.</p></div>
+  </div>
+  <div class="box perla"><b>Analogía.</b> Piensa el pulmón como un conjunto de tuberías. En la alteración V/Q algunas tuberías tienen poco aire: dar más O₂ ayuda. En el shunt la tubería está cerrada: dar más O₂ casi no cambia nada. El SDRA es, sobre todo, un problema de tuberías cerradas.</div>
+  <div class="box nota"><b>Contexto nacional.</b> No se identificó una norma MINSAL específica para SDRA; el manejo se rige por guías internacionales (ATS 2023, ESICM 2023). El acceso a ECMO depende de la red de centros de referencia: conoce el flujo de derivación de tu hospital.</div>
+</section>
+</div>
+
+<!-- FISIOPATOLOGÍA -->
+<div class="panel" id="p1">
+<section>
+  <h2>Definiciones</h2>
+  <div class="grid">
+    <div class="tile"><div class="lbl">Tipo 1 · hipoxémica</div><div class="big">PaO₂ &lt; 60 mmHg</div><p>o SaO₂ &lt; 88 %</p></div>
+    <div class="tile"><div class="lbl">Tipo 2 · hipercápnica aguda</div><div class="big">PaCO₂ ≥ 45 mmHg</div><p>con pH &lt; 7,35</p></div>
+  </div>
+  <p>La hipercápnica crónica tiene PaCO₂ ≥ 45 con pH normal o casi normal, y no es compensación de una alcalosis metabólica.</p>
+  <span class="src">Lagina &amp; Valley 2024; Vasques et al. 2023</span>
+</section>
+<section>
+  <h2>Mecanismos de hipoxemia</h2>
+  <div class="tw"><table>
+    <tr><th>Mecanismo</th><th>A-a</th><th>¿Mejora con O₂?</th><th>Ejemplos</th></tr>
+    <tr><td><b>Alteración V/Q</b> (el más frecuente)</td><td>↑</td><td>Sí</td><td>Neumonía, edema, atelectasia, asma/EPOC</td></tr>
+    <tr><td><b>Shunt</b></td><td>↑</td><td>Poco o nada</td><td>SDRA, neumonía extensa, FOP, MAV, síndrome hepatopulmonar</td></tr>
+    <tr><td><b>Difusión</b></td><td>↑</td><td>Sí</td><td>Intersticial, hipertensión pulmonar, alto gasto</td></tr>
+    <tr><td><b>Hipoventilación</b></td><td>Normal</td><td>Sí (no corrige CO₂)</td><td>Opioides, sedantes, neuromuscular, ACV</td></tr>
+    <tr><td><b>PiO₂ baja</b></td><td>Normal</td><td>Sí</td><td>Altura, aviones</td></tr>
+    <tr><td><b>Entrega/consumo de O₂</b></td><td>↑</td><td>Parcial</td><td>Anemia, bajo gasto, hipermetabolismo (SvcO₂ baja)</td></tr>
+  </table></div>
+  <div class="box ojo"><b>Ojo en la prueba.</b> Con shunt &gt; 50 % la PaO₂ se vuelve casi independiente de la FiO₂. Si con FiO₂ 100 % la SaO₂ no supera 95 %, el shunt es &gt; 30 %. Shunt y V/Q empeoran cuando sube el gasto cardíaco.</div>
+  <span class="src">Lagina &amp; Valley, tabla 1; Vasques et al., tabla 1</span>
+</section>
+<section>
+  <h2>Hipercapnia: «no quiere, no puede o no le alcanza»</h2>
+  <p class="mnemo">Won't breathe · Can't breathe · Can't breathe enough</p>
+  <ul>
+    <li><b>No quiere respirar</b> (impulso central bajo): opioides, sedantes, ACV, hipotiroidismo, hipoventilación-obesidad. A-a normal.</li>
+    <li><b>No puede respirar</b> (falla de bomba): EPOC avanzado, pared torácica, neuromuscular.</li>
+    <li><b>No le alcanza</b> (espacio muerto o VCO₂ alta): embolia masiva, hiperinsuflación, fiebre, sepsis.</li>
+  </ul>
+  <div class="tw"><table>
+    <tr><th>Por cada 10 mmHg de PaCO₂</th><th>HCO₃⁻</th><th>pH</th></tr>
+    <tr><td>Aguda</td><td>+1 mEq/L</td><td>−0,08</td></tr>
+    <tr><td>Crónica</td><td>+3,5 mEq/L</td><td>−0,03</td></tr>
+  </table></div>
+  <div class="box alerta"><b>Bandera roja.</b> En el eucápnico, la depresión de conciencia aparece típicamente sobre PaCO₂ 75 mmHg. La hipercapnia también reduce la contractilidad cardíaca y diafragmática y aumenta el flujo cerebral.</div>
+  <span class="src">Lagina &amp; Valley, tablas 3-4</span>
+</section>
+</div>
+
+<!-- EVALUACIÓN -->
+<div class="panel" id="p2">
+<section>
+  <h2>Secuencia en el SU</h2>
+  <ol>
+    <li><b>Vía aérea y respiración en paralelo:</b> conciencia, orofaringe, patrón, FR, trabajo respiratorio.</li>
+    <li><b>SpO₂</b> y, si es anormal o la clínica no calza, <b>gas arterial</b> (PaO₂, PaCO₂, pH, lactato) y Hb.</li>
+    <li><b>Gradiente A-a:</b> normal ≈ 2,5 + 0,21 × edad (aire ambiental). Si está aumentado: V/Q, shunt o difusión.</li>
+    <li><b>Imagen:</b> Rx de tórax; POCUS (líneas B, consolidaciones, derrame, función ventricular); TC de entrada en inmunocomprometidos o sospecha de TEP, intersticial u hongos.</li>
+    <li>Si no responde al O₂: buscar shunt (angio-TC, ecocardiograma con burbujas).</li>
+  </ol>
+  <div class="box nota"><b>Gas venoso.</b> El pH venoso periférico se correlaciona razonablemente con el arterial, también en hipotensos; la PvO₂ no sirve para diagnosticar hipoxemia y la PvCO₂ tiene amplia variación. En sospecha de IRA hipoxémica: gas arterial.</div>
+  <div class="box alerta"><b>La oximetría también se equivoca.</b> Hipoxemia oculta (SpO₂ 92-96 % con SaO₂ &lt; 88 %) en 11,4 % de pacientes de piel oscura vs 3,6 % en blancos. No usarla si se sospecha metahemoglobina o CO.</div>
+  <span class="src">Lagina &amp; Valley 2024</span>
+</section>
+<section>
+  <h2>Índices de oxigenación</h2>
+  <div class="tw"><table>
+    <tr><th>Índice</th><th>Fórmula</th><th>Para qué</th></tr>
+    <tr><td><b>P/F</b></td><td>PaO₂ / FiO₂</td><td>Normal &gt; 400. SDRA ≤ 300. Estima shunt; varía con PEEP y FiO₂.</td></tr>
+    <tr><td><b>S/F</b></td><td>SpO₂ / FiO₂</td><td>Solo con SpO₂ ≤ 97 %. SDRA ≤ 315.</td></tr>
+    <tr><td><b>IO</b></td><td>FiO₂ × Pmedia × 100 / PaO₂</td><td>Costo en presión de la oxigenación.</td></tr>
+    <tr><td><b>ROX</b></td><td>(SpO₂/FiO₂) / FR</td><td>Predice éxito o fracaso de la CNAF.</td></tr>
+    <tr><td><b>Vd/Vt</b></td><td>(PaCO₂ − PECO₂) / PaCO₂</td><td>Espacio muerto; asociado a mortalidad en SDRA.</td></tr>
+  </table></div>
+  <div class="box ojo"><b>Ojo.</b> Sobre 1.000 m de altura se corrige: P/F × (Pb/760). Santiago (≈ 550 m) no lo requiere. Mide P/F o S/F en reposo y ≥ 30 min después de cambiar el soporte.</div>
+  <span class="src">Vasques et al. 2023; Matthay et al. 2024; Roca et al. AJRCCM 2019</span>
+</section>
+</div>
+
+<!-- CALCULADORAS -->
+<div class="panel" id="p3">
+<section>
+  <h2>Calculadoras de cabecera</h2>
+  <p style="color:var(--muted);font-size:13.5px">Herramientas docentes. No reemplazan el juicio clínico ni el protocolo local.</p>
+
+  <div class="calc">
+    <h3>P/F y S/F con clasificación según la definición global</h3>
+    <div class="row">
+      <label>PaO₂ (mmHg)<input id="c_pao2" type="number" inputmode="decimal" placeholder="opcional"></label>
+      <label>SpO₂ (%)<input id="c_spo2" type="number" inputmode="decimal" placeholder="opcional"></label>
+      <label>FiO₂ (%)<input id="c_fio2" type="number" inputmode="decimal" value="60"></label>
+      <label>Situación<select id="c_sit"><option value="int">Intubado (PEEP ≥ 5)</option><option value="noint">No intubado (CNAF ≥ 30 L/min o VMNI ≥ 5)</option></select></label>
+      <label>Pb (mmHg)<input id="c_pb" type="number" inputmode="decimal" value="760"></label>
+    </div>
+    <div class="out" id="o_pf">Ingresa PaO₂ o SpO₂ y FiO₂.</div>
+  </div>
+
+  <div class="calc">
+    <h3>Peso ideal y volumen corriente</h3>
+    <div class="row">
+      <label>Sexo<select id="v_sex"><option value="m">Hombre</option><option value="f">Mujer</option></select></label>
+      <label>Talla (cm)<input id="v_h" type="number" inputmode="decimal" value="170"></label>
+    </div>
+    <div class="out" id="o_vt"></div>
+  </div>
+
+  <div class="calc">
+    <h3>Índice ROX (CNAF)</h3>
+    <div class="row">
+      <label>SpO₂ (%)<input id="r_s" type="number" inputmode="decimal" value="91"></label>
+      <label>FiO₂ (%)<input id="r_f" type="number" inputmode="decimal" value="70"></label>
+      <label>FR (rpm)<input id="r_fr" type="number" inputmode="decimal" value="30"></label>
+      <label>Horas de CNAF<select id="r_h"><option value="2">2 h</option><option value="6">6 h</option><option value="12">12 h</option></select></label>
+    </div>
+    <div class="out" id="o_rox"></div>
+  </div>
+
+  <div class="calc">
+    <h3>Gradiente alvéolo-arterial</h3>
+    <div class="row">
+      <label>Edad<input id="a_age" type="number" inputmode="decimal" value="60"></label>
+      <label>FiO₂ (%)<input id="a_f" type="number" inputmode="decimal" value="21"></label>
+      <label>PaO₂<input id="a_po" type="number" inputmode="decimal" value="58"></label>
+      <label>PaCO₂<input id="a_pc" type="number" inputmode="decimal" value="32"></label>
+      <label>Pb (mmHg)<input id="a_pb" type="number" inputmode="decimal" value="715"></label>
+    </div>
+    <div class="out" id="o_aa"></div>
+  </div>
+
+  <div class="calc">
+    <h3>Mecánica: presión de distensión y compliance</h3>
+    <div class="row">
+      <label>Vt (mL)<input id="m_vt" type="number" inputmode="decimal" value="420"></label>
+      <label>Pplat (cmH₂O)<input id="m_pp" type="number" inputmode="decimal" value="27"></label>
+      <label>PEEP (cmH₂O)<input id="m_peep" type="number" inputmode="decimal" value="14"></label>
+    </div>
+    <div class="out" id="o_mec"></div>
+  </div>
+</section>
+</div>
+
+<!-- SOPORTE -->
+<div class="panel" id="p4">
+<section>
+  <h2>Dispositivos y metas</h2>
+  <div class="tw"><table>
+    <tr><th>Dispositivo</th><th>Flujo (L/min)</th><th>FiO₂ estimada</th></tr>
+    <tr><td>Naricera</td><td>1-6</td><td>≈ +4 % por L (24-44 %)</td></tr>
+    <tr><td>Mascarilla simple</td><td>5-10</td><td>35-55 %</td></tr>
+    <tr><td>Venturi</td><td>5-15</td><td>24-50 %</td></tr>
+    <tr><td>No reinhalación</td><td>10-15</td><td>80-95 %</td></tr>
+    <tr><td>CNAF</td><td>hasta 60</td><td>30-100 %</td></tr>
+  </table></div>
+  <div class="grid">
+    <div class="tile"><div class="lbl">Meta SpO₂</div><div class="big">90-98 %</div><p>92-98 % en piel oscura si no hay gas arterial.</p></div>
+    <div class="tile"><div class="lbl">No ser conservador de más</div><p>LOCO₂ (PaO₂ 55-70) se detuvo por mayor mortalidad e isquemia mesentérica. HOT-ICU (60 vs 90) sin diferencias.</p></div>
+  </div>
+  <span class="src">Lagina &amp; Valley, tabla 2; BMJ 2024, tabla 1</span>
+</section>
+<section>
+  <h2>CNAF o VMNI</h2>
+  <div class="grid">
+    <div class="tile"><div class="lbl">CNAF primero</div><ul>
+      <li>IRA hipoxémica normocápnica con disnea o trabajo respiratorio</li>
+      <li>&gt; 6 L/min (≈ 40 %) con naricera</li>
+      <li>FLORALI 2015: mortalidad 12,4 % vs 28,2 % frente a VMNI</li>
+      <li>PEEP ≈ 0,5-0,7 cmH₂O por 10 L/min con boca cerrada; lava el espacio muerto</li>
+    </ul></div>
+    <div class="tile"><div class="lbl">VMNI primero</div><ul>
+      <li>EPOC con acidosis hipercápnica</li>
+      <li>Edema pulmonar cardiogénico (CPAP/VMNI)</li>
+      <li>Inmunocomprometido con IRA leve-moderada</li>
+      <li>COVID-19: CPAP redujo intubación vs O₂ convencional</li>
+    </ul></div>
+  </div>
+  <div class="box ojo"><b>Controversia.</b> El ACP 2021 recomendó CNAF sobre VMNI en IRA hipoxémica, pero metaanálisis sugieren beneficio de VMNI o CPAP con casco frente a O₂ convencional. La evidencia depende de la etiología y del interfaz.</div>
+</section>
+<section>
+  <h2>Fracaso y contraindicaciones</h2>
+  <details open><summary>Criterios de fracaso de VMNI</summary><ul>
+    <li>Sin mejoría del pH a las 4-6 h (≈ 25 % de los casos)</li>
+    <li>pH &lt; 7,20, o 7,20-7,25 en dos controles separados por 1 h</li>
+    <li>PaO₂ &lt; 45 mmHg (6 kPa) con FiO₂ máxima</li>
+    <li>Contraindicación nueva (neumotórax, inestabilidad, vómitos) o intolerancia</li>
+  </ul></details>
+  <details><summary>Fracaso de CNAF (ROX)</summary><ul>
+    <li>ROX ≥ 4,88 a las 2, 6 o 12 h: menor riesgo de intubación</li>
+    <li>ROX &lt; 2,85 (2 h), &lt; 3,47 (6 h) o &lt; 3,85 (12 h): alto riesgo de fracaso</li>
+    <li>CNAF &gt; 48 h antes de intubar se asoció a mayor mortalidad en estudios observacionales (COVID-19)</li>
+  </ul></details>
+  <details><summary>Contraindicaciones absolutas de soporte no invasivo</summary><ul>
+    <li>Necesidad inmediata de intubación · inestabilidad hemodinámica grave · trauma facial extenso u obstrucción alta · hipoxemia que amenaza la vida · debilidad bulbar grave</li>
+  </ul></details>
+  <span class="src">Vasques et al., tablas 3-4; Roca et al. 2019; Lagina &amp; Valley</span>
+</section>
+<section>
+  <h2>Intubar al hipoxémico</h2>
+  <ul>
+    <li><b>Preoxigenar ≥ 3 min</b> con CNAF o VMNI.</li>
+    <li><b>Ventilación con bolsa-válvula-mascarilla</b> durante la apnea (menos desaturación, sin más aspiración). La oxigenación apneica pasiva tiene datos mixtos.</li>
+    <li><b>Videolaringoscopio</b> de primera línea.</li>
+    <li><b>Vasopresor listo:</b> un bolo de 500 mL de cristaloide no previno la hipotensión.</li>
+    <li>Hipoxemia refractaria: vasodilatador inhalado o intubación vigil con fibroscopio.</li>
+  </ul>
+  <div class="box nota"><b>Dosis de referencia (adulto, IV; no provienen del material base).</b> Ketamina 1-2 mg/kg (0,5-1 mg/kg en shock) · rocuronio 1,2 mg/kg · norepinefrina 0,05-0,1 µg/kg/min. Sin ajuste renal en dosis única. Confirmar con el protocolo local.</div>
+</section>
+</div>
+
+<!-- DEFINICIÓN SDRA -->
+<div class="panel" id="p5">
+<section>
+  <h2>Definición global de SDRA (2023)</h2>
+  <p><b>Modelo conceptual:</b> lesión pulmonar inflamatoria, aguda y difusa, gatillada por un factor de riesgo. Aumenta la permeabilidad vascular y epitelial, produce edema y atelectasia dependiente, con pérdida de pulmón aireado. Resultado: hipoxemia, opacidades difusas, más shunt, más espacio muerto y menor compliance.</p>
+  <h3>Criterios para todas las categorías</h3>
+  <ul>
+    <li><b>Factor de riesgo:</b> neumonía, infección extrapulmonar, trauma, transfusión, aspiración, shock. El edema no se explica exclusiva ni principalmente por causa cardiogénica o sobrecarga; la hipoxemia no se explica principalmente por atelectasia.</li>
+    <li><b>Tiempo:</b> inicio o empeoramiento dentro de 1 semana del factor de riesgo o de síntomas respiratorios.</li>
+    <li><b>Imagen:</b> opacidades bilaterales en Rx o TC, o líneas B y/o consolidaciones bilaterales en ultrasonido (operador entrenado), no explicadas por derrame, atelectasia o nódulos.</li>
+  </ul>
+  <div class="tw"><table>
+    <tr><th>Categoría</th><th>Oxigenación (S/F válido con SpO₂ ≤ 97 %)</th></tr>
+    <tr><td>No intubado</td><td>P/F ≤ 300 o S/F ≤ 315 con CNAF ≥ 30 L/min o VMNI/CPAP ≥ 5 cmH₂O</td></tr>
+    <tr><td>Intubado leve</td><td>200 &lt; P/F ≤ 300 o 235 &lt; S/F ≤ 315</td></tr>
+    <tr><td>Intubado moderado</td><td>100 &lt; P/F ≤ 200 o 148 &lt; S/F ≤ 235</td></tr>
+    <tr><td>Intubado severo</td><td>P/F ≤ 100 o S/F ≤ 148</td></tr>
+    <tr><td>Recursos limitados</td><td>S/F ≤ 315; no exige PEEP, flujo mínimo ni dispositivo</td></tr>
+  </table></div>
+  <p style="font-size:13.5px;color:var(--muted)">Intubado: PEEP ≥ 5 cmH₂O en todas las categorías. Puede coexistir con EPOC, intersticial, hipertensión pulmonar, sobrecarga o atelectasia si estas no explican principalmente la hipoxemia.</p>
+  <span class="src">Matthay et al. AJRCCM 2024;209:37-47, tabla 1</span>
+</section>
+<section>
+  <h2>Qué cambió desde Berlín 2012</h2>
+  <div class="grid">
+    <div class="tile"><div class="lbl">1</div><p>Se acepta <b>CNAF ≥ 30 L/min</b>: el SDRA se diagnostica antes de intubar.</p></div>
+    <div class="tile"><div class="lbl">2</div><p><b>S/F ≤ 315</b> con SpO₂ ≤ 97 % reemplaza al gas arterial.</p></div>
+    <div class="tile"><div class="lbl">3</div><p><b>Ultrasonido</b> como imagen válida.</p></div>
+    <div class="tile"><div class="lbl">4</div><p><b>Recursos limitados</b> (Kigali): sin exigencia de PEEP ni dispositivo.</p></div>
+  </div>
+  <div class="box perla"><b>Por qué importa en Urgencia.</b> Al incluir CNAF, en COVID-19 la incidencia subió de 22 % a 29 % sin perder validez pronóstica. Reconocerlo en el box activa la protección pulmonar desde la intubación.</div>
+  <h3>Epidemiología (LUNG SAFE, Berlín)</h3>
+  <div class="grid">
+    <div class="tile"><div class="big">10,4 %</div><p>de ingresos a UCI · 23,4 % de los ventilados</p></div>
+    <div class="tile"><div class="big">35 / 40 / 46 %</div><p>mortalidad leve / moderado / severo</p></div>
+  </div>
+  <div class="box nota"><b>Fenotipos.</b> El hiperinflamatorio (IL-6, IL-8, sTNFR-1 altos) tiene más mortalidad y responde distinto a fluidos, PEEP y corticoides en análisis secundarios. Aún no se usan en la práctica.</div>
+  <span class="src">BMJ 2024</span>
+</section>
+<section>
+  <h2>Clasificador rápido</h2>
+  <p style="font-size:13.5px;color:var(--muted)">Marca los criterios del paciente.</p>
+  <div id="clf">
+    <label style="display:block;margin:5px 0"><input type="checkbox" id="k1" style="width:auto"> Factor de riesgo identificado</label>
+    <label style="display:block;margin:5px 0"><input type="checkbox" id="k2" style="width:auto"> Inicio o empeoramiento ≤ 1 semana</label>
+    <label style="display:block;margin:5px 0"><input type="checkbox" id="k3" style="width:auto"> Imagen bilateral (Rx, TC o ultrasonido)</label>
+    <label style="display:block;margin:5px 0"><input type="checkbox" id="k4" style="width:auto"> Edema no explicado principalmente por causa cardiogénica o sobrecarga</label>
+    <label style="display:block;margin:5px 0"><input type="checkbox" id="k5" style="width:auto"> Criterio de oxigenación de su categoría (usa la calculadora P/F)</label>
+  </div>
+  <div class="out" id="o_clf">Marca los cinco para diagnosticar SDRA.</div>
+</section>
+</div>
+
+<!-- MANEJO -->
+<div class="panel" id="p6">
+<section>
+  <h2>Recomendaciones ATS 2023</h2>
+  <div class="tw"><table>
+    <tr><th>Intervención</th><th>Recomendación</th><th>Detalle</th></tr>
+    <tr><td>Vt 4-8 mL/kg peso predicho + Pplat &lt; 30</td><td><span class="tag t-fuerte">Fuerte · moderada</span></td><td>Vigente desde 2017</td></tr>
+    <tr><td>Prono &gt; 12 h/día</td><td><span class="tag t-fuerte">Fuerte · moderada</span></td><td>SDRA severo</td></tr>
+    <tr><td>VAFO de rutina</td><td><span class="tag t-contra">Fuerte en contra · alta</span></td><td>Moderado o severo</td></tr>
+    <tr><td>Corticoides</td><td><span class="tag t-cond">Condicional · moderada</span></td><td>RR mortalidad 0,84</td></tr>
+    <tr><td>ECMO VV</td><td><span class="tag t-cond">Condicional · baja</span></td><td>Severo seleccionado; RR 0,76</td></tr>
+    <tr><td>Bloqueo neuromuscular</td><td><span class="tag t-cond">Condicional · baja</span></td><td>Precoz (&lt; 48 h) y severo (P/F &lt; 100)</td></tr>
+    <tr><td>PEEP alta sin reclutamiento</td><td><span class="tag t-cond">Condicional · baja-moderada</span></td><td>Moderado-severo; RR 0,77</td></tr>
+    <tr><td>Reclutamiento prolongado (&gt; 35 cmH₂O por &gt; 60 s)</td><td><span class="tag t-contra">Fuerte en contra · moderada</span></td><td>RR 1,37 de mortalidad</td></tr>
+  </table></div>
+  <span class="src">Qadir et al. AJRCCM 2024;209:24-36</span>
+</section>
+<section>
+  <h2>Ventilación protectora</h2>
+  <div class="grid">
+    <div class="tile"><div class="lbl">Vt</div><div class="big">6 mL/kg</div><p>de peso ideal (rango 4-8)</p></div>
+    <div class="tile"><div class="lbl">Pplat</div><div class="big">&lt; 30 cmH₂O</div><p>pausa inspiratoria</p></div>
+    <div class="tile"><div class="lbl">ΔP</div><div class="big">&lt; 14 cmH₂O</div><p>objetivo fisiológico, no recomendación formal</p></div>
+  </div>
+  <h3>PEEP inicial pragmática (Vasques)</h3>
+  <div class="tw"><table><tr><th>Leve</th><th>Moderado</th><th>Severo</th></tr><tr><td>5-10 cmH₂O</td><td>10-15 cmH₂O</td><td>&gt; 15-20 cmH₂O</td></tr></table></div>
+  <p>La guía no fija un número: sugiere una estrategia de PEEP alta probada (tabla PEEP/FiO₂ alta, PEEP hasta Pplat máxima segura o titulación por mejor compliance) con monitoreo hemodinámico. En SDRA leve la PEEP alta podría dañar (RR ajustado 1,29).</p>
+  <div class="box alerta"><b>Vigila al subir PEEP.</b> Sobredistensión, más poscarga del VD y menos retorno venoso. Sube de a 2 cmH₂O mirando la presión arterial.</div>
+  <div class="box ojo"><b>Ojo en la prueba.</b> El peso ideal se calcula con talla y sexo, nunca con el peso real. ECCO₂R para Vt ultrabajo (REST): sin beneficio y con más eventos adversos.</div>
+</section>
+<section>
+  <h2>Escalera de rescate</h2>
+  <div class="ladder">
+    <div class="step" style="background:var(--teal)">1. Vt 6 mL/kg + Pplat &lt; 30 + fluidos conservadores tras el shock</div>
+    <div class="step" style="background:var(--teal)">2. PEEP alta sin reclutamiento</div>
+    <div class="step" style="background:var(--slate)">3. Prono &gt; 12 h/día (PROSEVA ≥ 16 h con P/F &lt; 150)</div>
+    <div class="step" style="background:var(--slate)">4. Bloqueo neuromuscular ≤ 48 h</div>
+    <div class="step" style="background:var(--red)">5. ECMO VV en centro de alto volumen</div>
+  </div>
+  <h3>Candidato a ECMO VV</h3>
+  <ul>
+    <li>Causa reversible y &lt; 7 días de ventilación</li>
+    <li>P/F &lt; 80 mmHg, o pH &lt; 7,25 con PaCO₂ ≥ 60, pese a manejo óptimo</li>
+    <li>Pocos factores de futilidad. EOLIA: P/F &lt; 50 por 3 h, &lt; 80 por 6 h o hipercapnia con acidemia por 6 h</li>
+  </ul>
+  <div class="box nota"><b>Riesgos.</b> Más hemorragia (RR 1,64). Resultados ligados al volumen del centro: derivar temprano, no al día 10.</div>
+  <span class="src">Qadir et al. 2024; Vasques et al. 2023; BMJ 2024</span>
+</section>
+</div>
+
+<!-- FÁRMACOS -->
+<div class="panel" id="p7">
+<section>
+  <h2>Corticoides</h2>
+  <p><span class="tag t-cond">Condicional · moderada</span> 19 ECA, 2.790 pacientes: RR de mortalidad 0,84; más hiperglicemia grave (RR 1,11). La ATS no fija fármaco ni dosis.</p>
+  <div class="tw"><table>
+    <tr><th>Escenario</th><th>Esquema de ensayo (adulto, IV)</th><th>Ajuste</th></tr>
+    <tr><td>SDRA moderado-severo (DEXA-ARDS)</td><td>Dexametasona 20 mg/día días 1-5 → 10 mg/día días 6-10</td><td>Sin ajuste renal ni hepático</td></tr>
+    <tr><td>NAC grave sin shock (CAPE COD)</td><td>Hidrocortisona 200 mg/día por 4 días, luego descenso hasta completar 8-14 días</td><td>Sin ajuste renal ni hepático</td></tr>
+    <tr><td>COVID-19 con O₂ (RECOVERY)</td><td>Dexametasona 6 mg/día por 10 días</td><td>Sin ajuste renal ni hepático</td></tr>
+    <tr><td>Pneumocystis en VIH</td><td>Esquema establecido de prednisona: revisar guía de VIH del servicio</td><td>—</td></tr>
+  </table></div>
+  <div class="box alerta"><b>Precauciones.</b> No iniciar &gt; 2 semanas después del inicio del SDRA (posible daño). Cuidado en inmunocomprometidos, síndrome metabólico, zonas endémicas de TBC o Strongyloides. En no intubados, solo en etiologías con beneficio probado (COVID-19, NAC grave).</div>
+  <div class="box ojo"><b>Controversia.</b> En NAC grave, un ECA con metilprednisolona fue negativo (incluía shock séptico, hasta 96 h, 96 % hombres) y CAPE COD fue positivo (&lt; 24 h, sin shock). ESICM 2023 no se pronuncia sobre corticoides en SDRA.</div>
+  <span class="src">Qadir et al. 2024; BMJ 2024, tabla 2. Dosis de DEXA-ARDS y RECOVERY de los ensayos originales.</span>
+</section>
+<section>
+  <h2>Bloqueo neuromuscular</h2>
+  <ul>
+    <li><b>Indicación ATS:</b> SDRA precoz (&lt; 48 h) y severo (P/F &lt; 100), ya en sedación profunda, o con asincronía relevante que no cede con ajustes.</li>
+    <li><b>Cisatracurio</b> (ACURASYS): bolo 15 mg IV y luego 37,5 mg/h por 48 h. Eliminación de Hofmann: sin ajuste renal ni hepático.</li>
+    <li>Beneficio solo frente a sedación profunda; ROSE (sedación ligera) fue neutro. Menos barotrauma (RR 0,55); más debilidad adquirida en UCI.</li>
+    <li>ESICM 2023 recomienda en contra del uso rutinario en SDRA no COVID: las guías difieren.</li>
+  </ul>
+  <div class="box alerta"><b>Nunca bloquear sin sedación profunda asegurada.</b></div>
+  <span class="src">Qadir et al. 2024; BMJ 2024. Dosis de cisatracurio del ensayo ACURASYS.</span>
+</section>
+<section>
+  <h2>Lo que no funciona o es experimental</h2>
+  <ul>
+    <li>Óxido nítrico inhalado: mejora transitoria de oxigenación, sin beneficio en mortalidad.</li>
+    <li>Estatinas, β-agonistas, células madre: sin beneficio demostrado en SDRA no seleccionado.</li>
+    <li>Paracetamol (ASTER) redujo SDRA como desenlace secundario: requiere validación.</li>
+  </ul>
+  <span class="src">BMJ 2024</span>
+</section>
+</div>
+
+<!-- CASO RAMIFICADO -->
+<div class="panel" id="p8">
+<section>
+  <h2>Caso ramificado</h2>
+  <p style="font-size:13.5px;color:var(--muted)">Caso ficticio con fines docentes.</p>
+  <div id="caso"></div>
+  <button class="btn alt" onclick="caso(0)" style="margin-top:10px">Reiniciar caso</button>
+</section>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="p9">
+<section>
+  <h2>Quiz</h2>
+  <div id="quiz"></div>
+  <div class="score" id="qscore"></div>
+  <button class="btn alt" onclick="quiz()" style="margin-top:10px">Reiniciar quiz</button>
+</section>
+</div>
+
+<!-- PERLAS -->
+<div class="panel" id="p10">
+<section>
+  <h2>Perlas</h2>
+  <ul>
+    <li>Poca respuesta al O₂ = shunt: piensa en SDRA.</li>
+    <li>Con CNAF ≥ 30 L/min ya puedes diagnosticar SDRA.</li>
+    <li>S/F solo vale con SpO₂ ≤ 97 %.</li>
+    <li>La FiO₂ de la mascarilla de no reinhalación es incierta: el P/F calculado con ella es poco confiable.</li>
+    <li>Vt por talla y sexo; nunca por peso real.</li>
+    <li>PEEP alta en moderado-severo; nunca reclutamientos prolongados.</li>
+    <li>El prono temprano en severo es, después del Vt bajo, la intervención con más impacto en mortalidad.</li>
+  </ul>
+</section>
+<section>
+  <h2>Banderas rojas</h2>
+  <ul>
+    <li>ROX bajo o trabajo respiratorio que no cede con CNAF.</li>
+    <li>pH sin mejoría a las 4-6 h de VMNI.</li>
+    <li>Desaturación o hipotensión en la secuencia de intubación.</li>
+    <li>Pplat &gt; 30 o ΔP &gt; 14 después de intubar.</li>
+    <li>Hipotensión al subir PEEP: piensa en el VD.</li>
+    <li>P/F &lt; 80 pese a manejo óptimo: llama al centro ECMO.</li>
+  </ul>
+</section>
+<section>
+  <h2>Mnemotecnia «PROTEGE»</h2>
+  <ul>
+    <li><b>P</b>eso ideal para el Vt</li>
+    <li><b>R</b>evisa Pplat y ΔP</li>
+    <li><b>O</b>xigenación 90-98 %</li>
+    <li><b>T</b>itula PEEP según severidad</li>
+    <li><b>E</b>n severo: prono</li>
+    <li><b>G</b>lucocorticoides según etiología</li>
+    <li><b>E</b>CMO: deriva temprano</li>
+  </ul>
+</section>
+<section>
+  <h2>Referencias</h2>
+  <ol style="font-size:13.5px">
+    <li>Matthay MA, et al. A new global definition of acute respiratory distress syndrome. Am J Respir Crit Care Med. 2024;209(1):37-47. doi:10.1164/rccm.202303-0558WS</li>
+    <li>Qadir N, et al. An update on management of adult patients with ARDS: an official ATS clinical practice guideline. Am J Respir Crit Care Med. 2024;209(1):24-36. doi:10.1164/rccm.202311-2011ST</li>
+    <li>Wick KD, Ware LB, Matthay MA. Acute respiratory distress syndrome. BMJ. 2024;369:e076612. doi:10.1136/bmj-2023-076612</li>
+    <li>Lagina M, Valley TS. Diagnosis and management of acute respiratory failure. Crit Care Clin. 2024. doi:10.1016/j.ccc.2024.01.002</li>
+    <li>Vasques F, et al. Management of acute respiratory failure. Medicine. 2023. doi:10.1016/j.mpmed.2023.08.009</li>
+    <li>Complementarias: Roca O et al. AJRCCM 2019 (ROX); Papazian L et al. NEJM 2010 (ACURASYS); Guérin C et al. NEJM 2013 (PROSEVA); Villar J et al. Lancet Respir Med 2020 (DEXA-ARDS); Dequin PF et al. NEJM 2023 (CAPE COD).</li>
+  </ol>
+</section>
+</div>
+
+</div>
+
+<script>
+// pestañas
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(($(id).value||'').replace(',','.'));return isNaN(v)?null:v};
+const f1=x=>x.toFixed(1).replace('.',',');const f0=x=>Math.round(x).toString();
+
+// P/F y S/F
+function calcPF(){
+  const pao2=num('c_pao2'),spo2=num('c_spo2'),fio2p=num('c_fio2'),pb=num('c_pb')||760,sit=$('c_sit').value;
+  if(!fio2p||(!pao2&&!spo2)){$('o_pf').textContent='Ingresa PaO₂ o SpO₂ y FiO₂.';return}
+  const fio2=fio2p/100,corr=pb<760?pb/760:1;let out=[];
+  let cat=null;
+  if(pao2){const pf=pao2/fio2*corr;out.push(`P/F = <b>${f0(pf)}</b> mmHg${corr<1?' (corregido por altura)':''}`);
+    if(sit==='noint')cat=pf<=300?'SDRA no intubado (cumple oxigenación)':'No cumple oxigenación de SDRA';
+    else cat=pf<=100?'Intubado severo':pf<=200?'Intubado moderado':pf<=300?'Intubado leve':'No cumple oxigenación de SDRA';}
+  if(spo2){
+    if(spo2>97){out.push('<span class="warn">SpO₂ &gt; 97 %: el S/F no es válido (zona plana de la curva). Baja la FiO₂ o usa gas arterial.</span>')}
+    else{const sf=spo2/fio2*corr;out.push(`S/F = <b>${f0(sf)}</b>`);
+      if(!pao2){if(sit==='noint')cat=sf<=315?'SDRA no intubado (cumple oxigenación)':'No cumple oxigenación de SDRA';
+      else cat=sf<=148?'Intubado severo':sf<=235?'Intubado moderado':sf<=315?'Intubado leve':'No cumple oxigenación de SDRA';}}}
+  if(cat)out.push(`Categoría por oxigenación: <b class="${/No cumple/.test(cat)?'ok':'bad'}">${cat}</b>`);
+  out.push('<span style="color:var(--muted);font-size:13px">Recuerda: además se requieren factor de riesgo, ≤ 1 semana, imagen bilateral y edema no cardiogénico principal.</span>');
+  $('o_pf').innerHTML=out.join('<br>');
+}
+// Vt
+function calcVt(){const h=num('v_h'),s=$('v_sex').value;if(!h){$('o_vt').textContent='Ingresa la talla.';return}
+  const pbw=(s==='m'?50:45.5)+0.91*(h-152.4);
+  $('o_vt').innerHTML=`Peso ideal: <b>${f1(pbw)} kg</b><br>Vt 4 mL/kg: ${f0(pbw*4)} mL · <b>Vt 6 mL/kg: ${f0(pbw*6)} mL</b> · Vt 8 mL/kg: ${f0(pbw*8)} mL`;}
+// ROX
+function calcRox(){const s=num('r_s'),f=num('r_f'),fr=num('r_fr'),h=$('r_h').value;if(!s||!f||!fr){$('o_rox').textContent='Completa los datos.';return}
+  const rox=(s/(f/100))/fr;const lo={2:2.85,6:3.47,12:3.85}[h];
+  let msg;
+  if(rox>=4.88) msg='<span class="ok">≥ 4,88: menor riesgo de intubación. Seguir vigilando.</span>';
+  else if(rox<lo) msg=`<span class="bad">Bajo el umbral de ${h} h (${String(lo).replace('.',',')}): alto riesgo de fracaso. Prepara la intubación.</span>`;
+  else msg='<span class="warn">Zona gris: reevaluar en 1-2 h con el box preparado.</span>';
+  $('o_rox').innerHTML=`ROX = <b>${f1(rox)}</b><br>${msg}`;}
+// A-a
+function calcAa(){const age=num('a_age'),f=num('a_f'),po=num('a_po'),pc=num('a_pc'),pb=num('a_pb');if(age==null||!f||!po||!pc||!pb){$('o_aa').textContent='Completa los datos.';return}
+  const PA=(f/100)*(pb-47)-pc/0.8,aa=PA-po,nl=2.5+0.21*age;
+  $('o_aa').innerHTML=`PAO₂ = <b>${f0(PA)}</b> mmHg · Gradiente A-a = <b>${f0(aa)}</b> mmHg · Normal esperado ≈ ${f0(nl)} mmHg (aire ambiental)<br>${aa>nl+5?'<span class="bad">Aumentado: V/Q, shunt o difusión.</span>':'<span class="ok">Normal: hipoventilación o PiO₂ baja.</span>'}${f>21?'<br><span class="warn">Con FiO₂ alta el gradiente crece y pierde utilidad; prefiere P/F.</span>':''}`;}
+// mecánica
+function calcMec(){const vt=num('m_vt'),pp=num('m_pp'),pe=num('m_peep');if(!vt||!pp||pe==null){$('o_mec').textContent='Completa los datos.';return}
+  const dp=pp-pe,c=vt/dp;
+  $('o_mec').innerHTML=`ΔP = <b>${f0(dp)}</b> cmH₂O ${dp<14?'<span class="ok">(&lt; 14)</span>':'<span class="bad">(≥ 14: reduce Vt o reevalúa PEEP)</span>'} · Compliance estática ≈ <b>${f0(c)}</b> mL/cmH₂O<br>Pplat ${pp<30?'<span class="ok">&lt; 30</span>':'<span class="bad">≥ 30: reduce Vt (mínimo 4 mL/kg) y acepta hipercapnia permisiva</span>'}`;}
+['c_pao2','c_spo2','c_fio2','c_sit','c_pb'].forEach(i=>$(i).addEventListener('input',calcPF));
+['v_h','v_sex'].forEach(i=>$(i).addEventListener('input',calcVt));
+['r_s','r_f','r_fr','r_h'].forEach(i=>$(i).addEventListener('input',calcRox));
+['a_age','a_f','a_po','a_pc','a_pb'].forEach(i=>$(i).addEventListener('input',calcAa));
+['m_vt','m_pp','m_peep'].forEach(i=>$(i).addEventListener('input',calcMec));
+calcVt();calcRox();calcAa();calcMec();
+// clasificador
+function clf(){const n=[1,2,3,4,5].filter(i=>$('k'+i).checked).length;
+  $('o_clf').innerHTML=n===5?'<b class="bad">Cumple la definición global de SDRA.</b> Activa la estrategia de protección pulmonar y busca cama crítica.':`Cumple ${n} de 5 criterios. ${n>=3?'Si falta el criterio de oxigenación, reevalúa tras 30 min con el soporte estable.':''}`;}
+[1,2,3,4,5].forEach(i=>$('k'+i).addEventListener('change',clf));
+
+// caso ramificado
+const C=[
+ {t:'<div class="vitals"><span>62 años · 175 cm</span><span>FR 34</span><span>FC 118</span><span>PA 104/62</span><span>T 38,9 °C</span></div><p>4 días de tos y fiebre. SpO₂ 85 % con naricera 5 L/min; 89 % con mascarilla de no reinhalación 15 L/min. Gas con MNR: pH 7,46, PaCO₂ 32, PaO₂ 58. Rx: opacidades bilaterales. POCUS: líneas B bilaterales, consolidación basal derecha, FEVI conservada.</p><p><b>¿Qué tipo de insuficiencia respiratoria y qué mecanismo predomina?</b></p>',
+  o:[['Tipo 1 por shunt',1,'Correcto. PaCO₂ baja y poca respuesta al aumentar el O₂: hay shunt, típico del SDRA.'],['Tipo 2 por hipoventilación',0,'No: la PaCO₂ es 32 mmHg. Hay hipocapnia por taquipnea.'],['Tipo 1 por hipoventilación',0,'No: la hipoventilación tiene A-a normal y responde bien al O₂.']]},
+ {t:'<p>Calculas P/F con la MNR asumiendo FiO₂ 0,8: 58/0,8 ≈ 72.</p><p><b>¿Qué tan confiable es ese P/F?</b></p>',
+  o:[['Poco confiable: la FiO₂ real de la MNR es incierta',1,'Correcto. La FiO₂ de la MNR (80-95 %) se diluye con FR alta. Conviene un sistema de FiO₂ conocida (CNAF).'],['Confiable: confirma SDRA severo',0,'No. Además, en no intubados la definición global no gradúa la severidad.']]},
+ {t:'<p><b>¿Qué soporte le indicas ahora?</b></p>',
+  o:[['CNAF 60 L/min, FiO₂ titulada a SpO₂ ≥ 92 %',1,'Bien. IRA hipoxémica normocápnica con trabajo respiratorio: CNAF de primera línea.'],['VMNI con presiones altas',0,'No es la primera opción en hipoxémico normocápnico: riesgo de volúmenes corrientes altos y lesión autoinfligida, y peor resultado frente a CNAF en FLORALI.'],['Intubación inmediata',0,'Está vigil, sin shock y sin contraindicación para un ensayo corto vigilado de CNAF. Puede ser razonable si falla.']]},
+ {t:'<div class="vitals"><span>CNAF 60 L/min</span><span>FiO₂ 0,7</span><span>SpO₂ 91 %</span><span>FR 30</span></div><p><b>¿Tiene SDRA según la definición global?</b></p>',
+  o:[['Sí: SDRA no intubado',1,'Correcto. S/F = 91/0,7 = 130 (≤ 315) con CNAF ≥ 30 L/min, factor de riesgo, ≤ 1 semana, imagen bilateral y FEVI conservada.'],['No, porque no está intubado',0,'Eso era Berlín 2012. La definición global 2023 acepta CNAF ≥ 30 L/min.']]},
+ {t:'<p>ROX a la hora = 130/30 = 4,3. A las 2 h: SpO₂ 88 %, FiO₂ 0,9, FR 36 → ROX 2,7; tiraje marcado.</p><p><b>¿Qué haces?</b></p>',
+  o:[['Intubar ahora, con preoxigenación con VMNI, videolaringoscopio y vasopresor listo',1,'Correcto. ROX &lt; 2,85 a las 2 h predice fracaso. Retrasar la intubación aumenta el riesgo.'],['Esperar 6 h más con CNAF',0,'El ROX ya está bajo el umbral de 2 h y el trabajo respiratorio aumenta. Retrasar empeora el pronóstico.']]},
+ {t:'<p>Intubado. Peso ideal 70,6 kg.</p><p><b>¿Volumen corriente inicial?</b></p>',
+  o:[['≈ 420 mL (6 mL/kg de peso ideal)',1,'Correcto.'],['≈ 640 mL (8 mL/kg de su peso real de 80 kg)',0,'Error frecuente: el Vt se calcula con el peso ideal, no con el real.']]},
+ {t:'<div class="vitals"><span>Vt 420</span><span>PEEP 14</span><span>FiO₂ 0,8</span><span>PaO₂ 76</span><span>Pplat 27</span></div><p><b>¿Categoría y siguiente paso?</b></p>',
+  o:[['P/F 95: SDRA severo → prono precoz y considerar BNM, corticoide y contacto ECMO',1,'Correcto. ΔP 13 está dentro de meta. Prono &gt; 12 h/día (fuerte); BNM si asincronía con sedación profunda; hidrocortisona por NAC grave; avisar al centro ECMO si P/F &lt; 80 pese a todo.'],['P/F 95: moderado → mantener y reevaluar mañana',0,'P/F ≤ 100 es severo. Esperar retrasa intervenciones que reducen mortalidad.'],['Reclutamiento a 40 cmH₂O por 2 minutos',0,'Recomendación fuerte en contra de reclutamientos prolongados (&gt; 35 cmH₂O por &gt; 60 s): más mortalidad.']]},
+ {t:'<div class="box perla"><b>Caso cerrado.</b> Repasaste: mecanismo de hipoxemia, límites del P/F con MNR, CNAF y ROX, definición global, Vt por peso ideal y escalera de rescate.</div>',o:[]}
+];
+function caso(i){const n=C[i];let h=`<p style="font-size:12.5px;color:var(--teal);font-weight:700">PASO ${i+1} DE ${C.length}</p>${n.t}`;
+  const ord=n.o.map((_,k)=>k).sort(()=>Math.random()-.5);
+  ord.forEach(k=>{h+=`<button class="opt" data-k="${k}">${n.o[k][0]}</button>`});h+='<div class="fb" id="cfb"></div>';
+  $('caso').innerHTML=h;
+  $('caso').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=n.o[b.dataset.k];
+    b.classList.add(o[1]?'right':'wrong');const fb=$('cfb');fb.className='fb show box '+(o[1]?'perla':'alerta');
+    fb.innerHTML=`<b>${o[1]?'Bien.':'Revisa.'}</b> ${o[2]}`+(o[1]&&i<C.length-1?`<div style="margin-top:8px"><button class="btn" onclick="caso(${i+1})">Siguiente →</button></div>`:'');});}
+caso(0);
+
+// quiz
+const Q=[
+ ['¿Cuál es el flujo mínimo de CNAF que acepta la definición global para SDRA no intubado?',['15 L/min','30 L/min','40 L/min','60 L/min'],1,'La definición global acepta CNAF con flujo ≥ 30 L/min o VMNI/CPAP con ≥ 5 cmH₂O.'],
+ ['El S/F solo es válido para diagnosticar SDRA si la SpO₂ es:',['≤ 92 %','≤ 95 %','≤ 97 %','≤ 100 %'],2,'Sobre 97 % la curva de disociación es plana y la SpO₂ deja de reflejar la PaO₂.'],
+ ['Intubado con PEEP 10, P/F 150. Según la definición global es:',['Leve','Moderado','Severo','No es SDRA'],1,'100 &lt; P/F ≤ 200 = moderado.'],
+ ['Mujer de 160 cm. ¿Vt a 6 mL/kg de peso ideal?',['≈ 315 mL','≈ 400 mL','≈ 450 mL','≈ 520 mL'],0,'45,5 + 0,91 × (160 − 152,4) = 52,4 kg × 6 ≈ 315 mL.'],
+ ['¿Qué recomendación de la ATS 2023 es FUERTE en contra?',['Bloqueo neuromuscular','PEEP alta','Reclutamiento prolongado','Corticoides'],2,'Reclutamientos > 35 cmH₂O por > 60 s: recomendación fuerte en contra (RR mortalidad 1,37).'],
+ ['El bloqueo neuromuscular se sugiere en:',['Todo SDRA moderado','SDRA precoz (< 48 h) y severo (P/F < 100)','SDRA leve con asincronía','Solo en ECMO'],1,'Condicional, certeza baja; máximo 48 h y con sedación profunda.'],
+ ['ROX a las 2 h de CNAF = 2,6. Esto indica:',['Bajo riesgo de fracaso','Zona gris','Alto riesgo de fracaso','No es interpretable'],2,'< 2,85 a las 2 h predice fracaso de CNAF.'],
+ ['Hipercapnia aguda pura: PaCO₂ sube de 40 a 60 mmHg. pH esperado:',['7,40','7,34','7,24','7,10'],2,'−0,08 por cada 10 mmHg en lo agudo: 7,40 − 0,16 = 7,24.'],
+ ['¿Criterio de ECMO VV según la ATS 2023?',['P/F < 150 al ingreso','P/F < 80 pese a manejo óptimo, < 7 días de VM','Cualquier SDRA severo','pH < 7,35'],1,'También pH < 7,25 con PaCO₂ ≥ 60, causa reversible y pocos factores de futilidad.'],
+ ['Corticoides en SDRA: ¿cuándo podrían dañar?',['Inicio < 48 h','Inicio > 2 semanas después del inicio del SDRA','En NAC grave','En COVID-19 con O₂'],1,'El inicio tardío (> 2 semanas) se asoció a daño.']
+];
+let qs=0,qa=0;
+function quiz(){qs=0;qa=0;let h='';Q.forEach((q,i)=>{h+=`<div style="margin:14px 0"><b>${i+1}. ${q[0]}</b>`;q[1].forEach((o,k)=>h+=`<button class="opt" data-q="${i}" data-k="${k}">${o}</button>`);h+=`<div class="fb" id="qf${i}"></div></div>`});
+  $('quiz').innerHTML=h;$('qscore').textContent='';
+  $('quiz').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.q,k=+b.dataset.k,q=Q[i];const f=$('qf'+i);if(f.classList.contains('show'))return;
+    qa++;if(k===q[2])qs++;b.classList.add(k===q[2]?'right':'wrong');
+    $('quiz').querySelector(`.opt[data-q="${i}"][data-k="${q[2]}"]`).classList.add('right');
+    f.className='fb show box '+(k===q[2]?'perla':'alerta');f.innerHTML=`<b>${k===q[2]?'Correcto.':'Incorrecto.'}</b> ${q[3]}`;
+    $('qscore').textContent=`Puntaje: ${qs} / ${qa}`+(qa===Q.length?(qs>=8?' · ¡Listo para el turno!':' · Repasa las pestañas de definición y manejo'):'');});}
+quiz();
+</script>
+</body>
+</html>

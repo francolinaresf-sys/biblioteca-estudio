@@ -49,6 +49,12 @@
       "nombre": "Neurología",
       "icono": "🧠",
       "color": "#4338ca"
+    },
+    {
+      "id": "insuficiencia-respiratoria",
+      "nombre": "Insuficiencia respiratoria",
+      "icono": "🫁",
+      "color": "#1F7A80"
     }
   ],
   "artefactos": [
@@ -175,6 +181,21 @@
         "Corticoides en el SU"
       ],
       "fecha": "2026-10-18"
+    },
+    {
+      "id": "ira-y-sdra",
+      "titulo": "Insuficiencia respiratoria aguda y SDRA",
+      "tema": "insuficiencia-respiratoria",
+      "archivo": "insuficiencia-respiratoria/ira-y-sdra.html",
+      "descripcion": "Mecanismos de hipoxemia e hipercapnia, evaluación en el SU, CNAF vs VMNI y criterios de fracaso, definición global de SDRA 2023, guía ATS 2023 (Vt, PEEP, prono, BNM, corticoides, ECMO), calculadoras (P/F, S/F, ROX, A-a, peso ideal, ΔP), caso ramificado y quiz.",
+      "etiquetas": [
+        "SDRA",
+        "insuficiencia respiratoria",
+        "ventilación mecánica",
+        "CNAF",
+        "ATS 2023"
+      ],
+      "fecha": "2026-11-08"
     }
   ]
 }
