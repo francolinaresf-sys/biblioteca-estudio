@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Broncodilatadores y corticoides inhalados — Guía de estudio</title>
+<style>
+:root{color-scheme:light;
+--ink:#1B2A30;--muted:#5C6B73;--bg:#F3F7F8;--card:#fff;--line:#DAE3E7;
+--petrol:#12343B;--teal:#1F7A80;--tealbg:#E6F2F3;--red:#C8443F;--redbg:#FBECEA;
+--amber:#B5791A;--amberbg:#F7EFDF;--green:#2E7D52;--greenbg:#E8F3EC;--slate:#3D6B8C;--slatebg:#E8EFF5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,sans-serif;line-height:1.5;font-size:15.5px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 90px}
+header.top{background:var(--petrol);color:#fff;padding:30px 0 22px}
+.kicker{color:#9FD0D6;font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase}
+header h1{font-family:Georgia,"Cambria",serif;font-size:31px;margin:6px 0 4px;line-height:1.15}
+header p{margin:0;color:#CFE3E6}
+header .meta{font-size:12.5px;color:#8FB6BC;margin-top:10px}
+nav.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(18,52,59,.06)}
+nav.tabs .inner{max-width:1000px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:8px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav.tabs .inner::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--petrol);padding:8px 12px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+nav.tabs button.on{background:var(--petrol);color:#fff;border-color:var(--petrol)}
+.panel{display:none}.panel.on{display:block}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0;box-shadow:0 2px 10px rgba(18,52,59,.04)}
+h2{font-family:Georgia,"Cambria",serif;font-size:23px;margin:0 0 6px;color:var(--petrol)}
+h3{font-size:16.5px;margin:18px 0 6px;color:var(--teal)}
+p{margin:6px 0}ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.src{display:block;color:var(--muted);font-size:12px;font-style:italic;margin-top:10px}
+.box{border-radius:10px;padding:12px 15px;margin:12px 0;border:1px solid}
+.perla{background:var(--greenbg);border-color:#BFDCCB}.perla b:first-child{color:var(--green)}
+.ojo{background:var(--amberbg);border-color:#E8D3A8}.ojo b:first-child{color:var(--amber)}
+.alerta{background:var(--redbg);border-color:#EFC4C1}.alerta b:first-child{color:var(--red)}
+.nota{background:var(--slatebg);border-color:#C9D8E6}.nota b:first-child{color:var(--slate)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.tile .big{font-family:Georgia,serif;font-size:26px;font-weight:700;color:var(--petrol);line-height:1.15}
+.tile .lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);font-weight:700}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14.5px}
+.tw{overflow-x:auto}
+th{background:var(--petrol);color:#fff;text-align:left;padding:8px 9px;font-weight:600}
+td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#F7FAFB}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin:0 4px 2px 0}
+.t-fuerte{background:var(--greenbg);color:var(--green)}.t-cond{background:var(--amberbg);color:var(--amber)}.t-contra{background:var(--redbg);color:var(--red)}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}
+summary{cursor:pointer;font-weight:700;color:var(--petrol)}
+/* calculadoras */
+.calc{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+.calc h3{margin-top:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.row label{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted);font-weight:600;gap:3px}
+input,select{font-size:16px;padding:8px 9px;border:1px solid #C5D3D8;border-radius:8px;width:120px;background:#fff;color:var(--ink)}
+select{width:auto;max-width:100%}
+.row label{max-width:100%}
+.out{margin-top:10px;font-size:15px;padding:10px 12px;border-radius:9px;background:#fff;border:1px dashed var(--teal)}
+.out b{color:var(--petrol)}
+.ok{color:var(--green);font-weight:700}.warn{color:var(--amber);font-weight:700}.bad{color:var(--red);font-weight:700}
+/* escalera */
+.ladder{display:flex;flex-direction:column-reverse;gap:7px;margin:12px 0}
+.step{color:#fff;border-radius:9px;padding:9px 13px;font-weight:600}
+/* caso y quiz */
+.opt{display:block;width:100%;text-align:left;border:1px solid #C5D3D8;background:#fff;border-radius:9px;padding:10px 12px;margin:7px 0;font-size:15px;cursor:pointer;color:var(--ink)}
+.opt:hover{background:var(--tealbg)}
+.opt.right{background:var(--greenbg);border-color:var(--green)}
+.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.fb{display:none;margin-top:8px}
+.fb.show{display:block}
+.btn{border:0;background:var(--teal);color:#fff;font-weight:700;padding:9px 15px;border-radius:9px;cursor:pointer;font-size:14px}
+.btn.alt{background:var(--bg);color:var(--petrol);border:1px solid var(--line)}
+.score{font-size:18px;font-weight:700;color:var(--petrol)}
+.vitals{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.vitals span{background:var(--petrol);color:#fff;border-radius:7px;padding:4px 9px;font-size:13px;font-weight:600}
+.mnemo{font-family:Georgia,serif;font-size:19px;color:var(--petrol)}
+@media (max-width:600px){header h1{font-size:25px}section{padding:16px}input{width:100px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" style="padding-bottom:0">
+  <div class="kicker">Revisiones farmacológicas · Broncodilatadores</div>
+  <h1>Broncodilatadores y corticoides inhalados</h1>
+  <p>Clases, ejemplos, inicio y duración de acción, dosis detalladas, combinaciones, asma vs EPOC, y crisis grave: corticoide sistémico, magnesio y otros broncodilatadores.</p>
+  <div class="meta">Base: GINA 2026, GOLD 2027 (v1.0), BTS/SIGN asma, NAEPP/EPR-3, fichas técnicas. Las dosis son de adulto salvo que se indique otra cosa. Las presentaciones comerciales varían en Chile: confirma con el arsenal del HUAP o APS. Material de estudio.</div>
+</div></header>
+
+<nav class="tabs"><div class="inner" id="tabs">
+  <button data-p="p0" class="on">Mapa</button>
+  <button data-p="p1">Clases y tiempos</button>
+  <button data-p="p2">Dosis mantención</button>
+  <button data-p="p3">Combinaciones</button>
+  <button data-p="p4">ICS: equivalencias</button>
+  <button data-p="p5">Asma vs EPOC</button>
+  <button data-p="p6">Crisis: dosis SU</button>
+  <button data-p="p7">Comentario: grave</button>
+  <button data-p="p8">Quiz</button>
+  <button data-p="p9">Perlas</button>
+</div></nav>
+
+<div class="wrap">
+
+<!-- MAPA -->
+<div class="panel on" id="p0">
+<section>
+  <h2>El mapa en 60 segundos</h2>
+  <p>Hay dos formas de abrir el bronquio y una de apagar la inflamación:</p>
+  <div class="grid">
+    <div class="tile"><div class="lbl">β₂-agonistas</div><div class="big">"Acelerador"</div>Estimulan β₂ → ↑AMPc → relajan el músculo liso. SABA (salbutamol) y LABA (formoterol, salmeterol, indacaterol…).</div>
+    <div class="tile"><div class="lbl">Antimuscarínicos</div><div class="big">"Quitar el freno"</div>Bloquean M₃ → frenan el tono colinérgico vagal, clave en el EPOC. SAMA (ipratropio) y LAMA (tiotropio…).</div>
+    <div class="tile"><div class="lbl">Corticoide inhalado</div><div class="big">"Apagar el fuego"</div>No broncodilata de forma aguda: reduce la inflamación eosinofílica. Pilar del asma; en el EPOC solo si hay eosinófilos.</div>
+  </div>
+  <div class="box perla"><b>Analogía:</b> el bronquio es un auto frenado. El β₂ pisa el acelerador y el antimuscarínico suelta el freno de mano (el vago). En el EPOC el freno vagal pesa mucho; en el asma manda la inflamación.</div>
+  <h3>Reglas de oro</h3>
+  <ul>
+    <li><b>Asma:</b> nunca LABA sin ICS. De preferencia, ICS-formoterol como mantención y rescate (MART).</li>
+    <li><b>EPOC:</b> la base es el broncodilatador de acción larga (LAMA o LABA + LAMA). El ICS nunca va solo y se agrega según eosinófilos y exacerbaciones.</li>
+    <li><b>Crisis:</b> SABA repetido ± ipratropio + corticoide sistémico VO. Magnesio IV en el asma grave.</li>
+  </ul>
+</section>
+</div>
+
+<!-- CLASES -->
+<div class="panel" id="p1">
+<section>
+  <h2>Clases, ejemplos y tiempos de acción</h2>
+  <p>Los tiempos son aproximados (fichas técnicas) y varían según dispositivo y paciente.</p>
+  <div class="tw"><table>
+    <tr><th>Clase</th><th>Fármaco</th><th>Inicio</th><th>Pico</th><th>Duración</th></tr>
+    <tr><td rowspan="2"><b>SABA</b></td><td>Salbutamol</td><td>≈ 5 min</td><td>30-60 min</td><td>4-6 h</td></tr>
+    <tr><td>Terbutalina</td><td>≈ 5 min (inh); 15 min (SC)</td><td>30-60 min</td><td>4-6 h</td></tr>
+    <tr><td><b>SAMA</b></td><td>Ipratropio</td><td>≈ 15 min</td><td>1-2 h</td><td>6-8 h</td></tr>
+    <tr><td rowspan="2"><b>LABA 12 h</b></td><td>Formoterol</td><td><b>1-3 min</b></td><td>≈ 2 h</td><td>12 h</td></tr>
+    <tr><td>Salmeterol</td><td>15-30 min</td><td>2-4 h</td><td>12 h</td></tr>
+    <tr><td rowspan="3"><b>LABA 24 h</b> ("ultra-LABA")</td><td>Indacaterol</td><td>≈ 5 min</td><td>≈ 1-4 h</td><td>24 h</td></tr>
+    <tr><td>Olodaterol</td><td>≈ 5 min</td><td>≈ 1-3 h</td><td>24 h</td></tr>
+    <tr><td>Vilanterol</td><td>≈ 15 min</td><td>≈ 1-3 h</td><td>24 h</td></tr>
+    <tr><td rowspan="4"><b>LAMA</b></td><td>Tiotropio</td><td>≈ 30 min</td><td>1-3 h (máximo efecto en días)</td><td>&gt; 24 h</td></tr>
+    <tr><td>Umeclidinio</td><td>≈ 15 min</td><td>≈ 1-3 h</td><td>24 h</td></tr>
+    <tr><td>Glicopirronio</td><td>≈ 5 min</td><td>≈ 1-3 h</td><td>24 h</td></tr>
+    <tr><td>Aclidinio</td><td>≈ 30 min</td><td>1-3 h</td><td>12 h</td></tr>
+    <tr><td><b>Metilxantinas</b></td><td>Teofilina / aminofilina</td><td>Variable</td><td>—</td><td>Variable (niveles)</td></tr>
+  </table></div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> el formoterol es el único LABA que sirve como rescate, porque actúa en 1-3 min. El salmeterol no: tarda 15-30 min y es agonista parcial.</div>
+  <div class="box nota"><b>Mecanismo de los antimuscarínicos:</b> bloquean M₃ (broncoconstricción y secreción de moco). El tiotropio se disocia lentamente de M₃ y rápido de M₂ (autorreceptor), y por eso dura más de 24 h.</div>
+  <h3>Efectos adversos por clase</h3>
+  <ul>
+    <li><b>β₂-agonistas:</b> temblor, taquicardia, hipokalemia, hiperglicemia, hiperlactatemia (salbutamol en dosis altas), prolongación del QT.</li>
+    <li><b>Antimuscarínicos:</b> boca seca, retención urinaria (ojo en HPB), glaucoma agudo de ángulo cerrado si el nebulizado cae en el ojo (usar boquilla).</li>
+    <li><b>ICS:</b> candidiasis oral, disfonía (enjuagar la boca), neumonía en EPOC, menor velocidad de crecimiento en niños (pequeña).</li>
+  </ul>
+</section>
+</div>
+
+<!-- DOSIS MANTENCIÓN -->
+<div class="panel" id="p2">
+<section>
+  <h2>Dosis de mantención (monocomponentes)</h2>
+  <p>Dosis de adulto según ficha técnica. "Dosis medida" es lo que carga el dispositivo; la "liberada" puede ser menor y figurar distinta en el envase.</p>
+  <div class="tw"><table>
+    <tr><th>Fármaco</th><th>Presentación habitual</th><th>Dosis</th><th>Máximo / nota</th></tr>
+    <tr><td><b>Salbutamol</b></td><td>IDM 100 µg/puff; NBZ 5 mg/mL</td><td>Rescate: 100-200 µg (1-2 puff) a demanda</td><td>Si usa &gt; 2 veces por semana (asma), no está controlado</td></tr>
+    <tr><td><b>Ipratropio</b></td><td>IDM 20 µg/puff; NBZ 0,25 mg/mL</td><td>2-4 puff cada 6-8 h</td><td>En mantención fue desplazado por los LAMA</td></tr>
+    <tr><td><b>Formoterol</b></td><td>IPS 12 µg</td><td>12 µg cada 12 h</td><td>Máx 24 µg c/12 h (48 µg/día). En asma, solo con ICS</td></tr>
+    <tr><td><b>Salmeterol</b></td><td>IPS/IDM 25-50 µg</td><td>50 µg cada 12 h</td><td>No subir dosis: más efectos adversos, no más efecto</td></tr>
+    <tr><td><b>Indacaterol</b></td><td>IPS 150 / 300 µg</td><td>150 µg 1 vez al día</td><td>Máx 300 µg/día (EPOC)</td></tr>
+    <tr><td><b>Olodaterol</b></td><td>Respimat 2,5 µg/puff</td><td>2 puff (5 µg) 1 vez al día</td><td>EPOC</td></tr>
+    <tr><td><b>Tiotropio</b></td><td>Respimat 2,5 µg/puff; HandiHaler 18 µg</td><td>Respimat 2 puff (5 µg)/día · HandiHaler 1 cápsula (18 µg)/día</td><td>EPOC y asma (Respimat, desde los 6 años como add-on)</td></tr>
+    <tr><td><b>Umeclidinio</b></td><td>IPS 62,5 µg</td><td>62,5 µg 1 vez al día</td><td>EPOC</td></tr>
+    <tr><td><b>Glicopirronio</b></td><td>IPS 50 µg (medida) / 44 µg (liberada)</td><td>1 cápsula al día</td><td>EPOC. Ajustar si TFG &lt; 30</td></tr>
+    <tr><td><b>Aclidinio</b></td><td>IPS 400 µg (medida) / 322 µg (liberada)</td><td>1 inhalación cada 12 h</td><td>EPOC</td></tr>
+  </table></div>
+  <div class="box nota"><b>Dispositivos:</b> IDM = inhalador de dosis medida (con aerocámara si no coordina); IPS = inhalador de polvo seco (requiere flujo inspiratorio vigoroso: mal en el anciano frágil o en la crisis); Respimat = niebla suave (sirve con poco flujo).</div>
+  <div class="box ojo"><b>Ojo:</b> elegir el dispositivo que el paciente sabe usar importa tanto como la molécula. Hasta 2/3 de los pacientes usan mal su inhalador.</div>
+</section>
+</div>
+
+<!-- COMBINACIONES -->
+<div class="panel" id="p3">
+<section>
+  <h2>Combinaciones: ejemplos y posología</h2>
+  <p>Nombres comerciales de referencia; la disponibilidad y concentración en Chile cambian. Revisa siempre el envase.</p>
+  <h3>LABA + LAMA (EPOC)</h3>
+  <div class="tw"><table>
+    <tr><th>Combinación</th><th>Ejemplo</th><th>Posología</th></tr>
+    <tr><td>Indacaterol/glicopirronio 110/50 µg</td><td>Ultibro Breezhaler</td><td>1 cápsula al día</td></tr>
+    <tr><td>Vilanterol/umeclidinio 25/62,5 µg</td><td>Anoro Ellipta</td><td>1 inhalación al día</td></tr>
+    <tr><td>Olodaterol/tiotropio 2,5/2,5 µg por puff</td><td>Spiolto Respimat</td><td>2 puff al día</td></tr>
+    <tr><td>Formoterol/aclidinio 12/340 µg</td><td>Duaklir Genuair</td><td>1 inhalación cada 12 h</td></tr>
+  </table></div>
+  <h3>ICS + LABA (asma; en EPOC no como esquema de inicio)</h3>
+  <div class="tw"><table>
+    <tr><th>Combinación</th><th>Ejemplo</th><th>Posología</th><th>¿Sirve como MART?</th></tr>
+    <tr><td>Budesonida/formoterol 160/4,5 µg (también 80/4,5 y 320/9)</td><td>Symbicort Turbuhaler</td><td>1-2 inh cada 12 h · MART: 1 inh a demanda</td><td><span class="tag t-fuerte">Sí</span> Máx 12 inh/día (160/4,5)</td></tr>
+    <tr><td>Beclometasona/formoterol 100/6 µg (IDM partícula fina)</td><td>Foster</td><td>1-2 inh cada 12 h · MART: 1 inh a demanda</td><td><span class="tag t-fuerte">Sí</span> Máx 8 inh/día</td></tr>
+    <tr><td>Fluticasona propionato/salmeterol 100-250-500/50 µg</td><td>Seretide</td><td>1 inh cada 12 h</td><td><span class="tag t-contra">No</span> (salmeterol)</td></tr>
+    <tr><td>Fluticasona furoato/vilanterol 100/25 o 200/25 µg</td><td>Relvar Ellipta</td><td>1 inh al día</td><td><span class="tag t-contra">No</span></td></tr>
+    <tr><td>Mometasona/formoterol 100-200/5 µg</td><td>Dulera / Zenhale</td><td>2 inh cada 12 h</td><td>No aprobado como MART</td></tr>
+  </table></div>
+  <h3>Triple (ICS + LABA + LAMA)</h3>
+  <div class="tw"><table>
+    <tr><th>Combinación</th><th>Ejemplo</th><th>Posología</th><th>Indicación</th></tr>
+    <tr><td>Fluticasona furoato/umeclidinio/vilanterol 100/62,5/25 µg</td><td>Trelegy Ellipta</td><td>1 inh al día</td><td>EPOC (y asma en algunos países, 100 o 200)</td></tr>
+    <tr><td>Beclometasona/formoterol/glicopirronio 87/5/9 µg (liberada)</td><td>Trimbow</td><td>2 inh cada 12 h</td><td>EPOC y asma</td></tr>
+    <tr><td>Budesonida/glicopirronio/formoterol 160/7,2/5 µg (liberada)</td><td>Trixeo / Breztri</td><td>2 inh cada 12 h</td><td>EPOC</td></tr>
+    <tr><td>Mometasona/indacaterol/glicopirronio 136/114/46 µg (liberada)</td><td>Enerzair Breezhaler</td><td>1 cápsula al día</td><td>Asma</td></tr>
+  </table></div>
+  <div class="box perla"><b>Perla:</b> en el EPOC con indicación de ICS, la triple en <b>un solo inhalador</b> mejora la adherencia y la técnica frente a varios dispositivos (GOLD 2027).</div>
+  <div class="box nota"><b>Contexto MINSAL:</b> la GPC EPOC (GES N°38) sugiere triple terapia en exacerbadores, pero advertía que no estaba en la canasta GES ni disponible habitualmente en los centros. Antes de indicar al alta, verifica qué puede retirar el paciente en su CESFAM.</div>
+</section>
+</div>
+
+<!-- ICS EQUIVALENCIAS -->
+<div class="panel" id="p4">
+<section>
+  <h2>Corticoides inhalados: dosis baja, media y alta</h2>
+  <p>Dosis diarias totales (µg) en adultos y adolescentes ≥ 12 años, según la tabla de GINA. No son equivalencias exactas: son rangos clínicos.</p>
+  <div class="tw"><table>
+    <tr><th>ICS</th><th>Baja</th><th>Media</th><th>Alta</th></tr>
+    <tr><td>Beclometasona (IDM partícula fina, HFA)</td><td>100-200</td><td>&gt; 200-400</td><td>&gt; 400</td></tr>
+    <tr><td>Beclometasona (partícula estándar)</td><td>200-500</td><td>&gt; 500-1000</td><td>&gt; 1000</td></tr>
+    <tr><td>Budesonida (IPS o IDM)</td><td>200-400</td><td>&gt; 400-800</td><td>&gt; 800</td></tr>
+    <tr><td>Ciclesonida (IDM)</td><td>80-160</td><td>&gt; 160-320</td><td>&gt; 320</td></tr>
+    <tr><td>Fluticasona furoato (IPS)</td><td>100</td><td>—</td><td>200</td></tr>
+    <tr><td>Fluticasona propionato</td><td>100-250</td><td>&gt; 250-500</td><td>&gt; 500</td></tr>
+    <tr><td>Mometasona furoato</td><td colspan="3">Depende del dispositivo: revisa la ficha (IPS: 200 baja · 400 alta)</td></tr>
+  </table></div>
+  <div class="calc">
+    <h3>Clasificador de dosis</h3>
+    <div class="row">
+      <label>ICS<select id="ics_f">
+        <option value="bdpf">Beclometasona partícula fina</option>
+        <option value="bdp">Beclometasona estándar</option>
+        <option value="bud" selected>Budesonida</option>
+        <option value="cic">Ciclesonida</option>
+        <option value="ff">Fluticasona furoato</option>
+        <option value="fp">Fluticasona propionato</option>
+      </select></label>
+      <label>µg por inhalación<input id="ics_d" inputmode="decimal" value="160"></label>
+      <label>Inhalaciones al día<input id="ics_n" inputmode="decimal" value="4"></label>
+    </div>
+    <div class="out" id="o_ics"></div>
+  </div>
+  <h3>¿Hay un ICS "mejor"?</h3>
+  <ul>
+    <li>A dosis equivalentes, <b>no</b> hay superioridad clínica clara entre moléculas.</li>
+    <li>La curva dosis-respuesta es plana: la mayor parte del beneficio se logra con dosis bajas. Subir a dosis alta suma poco efecto y bastantes efectos adversos.</li>
+    <li>Lo que decide: el dispositivo, la frecuencia (1 vez al día con fluticasona furoato), el costo, la disponibilidad y si se combina con formoterol (MART).</li>
+    <li><b>Asma:</b> budesonida o beclometasona con formoterol, porque permiten MART (GINA 2026).</li>
+    <li><b>EPOC:</b> la señal de neumonía es mayor con fluticasona que con budesonida (evidencia observacional, débil). Sirve como desempate si hay neumonías previas.</li>
+  </ul>
+  <div class="box ojo"><b>Ojo:</b> el ICS no rescata la crisis. La budesonida nebulizada en dosis altas es una alternativa al corticoide sistémico en algunas exacerbaciones de EPOC, pero no lo reemplaza en el asma grave.</div>
+</section>
+</div>
+
+<!-- ASMA VS EPOC -->
+<div class="panel" id="p5">
+<section>
+  <h2>Asma vs EPOC: cómo se usan</h2>
+  <div class="tw"><table>
+    <tr><th></th><th>Asma (GINA 2026)</th><th>EPOC (GOLD 2027)</th></tr>
+    <tr><td>Pilar</td><td>ICS (antiinflamatorio)</td><td>Broncodilatador de acción larga</td></tr>
+    <tr><td>Rescate preferido</td><td>ICS-formoterol a demanda (vía 1)</td><td>SABA ± SAMA</td></tr>
+    <tr><td>Inicio</td><td>ICS-formoterol a demanda (leve) o MART (moderado)</td><td>Grupo A: LAMA (nuevo) · B y E: LABA + LAMA</td></tr>
+    <tr><td>LABA sin ICS</td><td><span class="tag t-contra">Prohibido</span> (más muertes por asma)</td><td>Correcto</td></tr>
+    <tr><td>ICS</td><td>Siempre</td><td>Solo si eos ≥ 300, o ≥ 100 con exacerbaciones pese a LABA + LAMA; o asma asociada</td></tr>
+    <tr><td>Evitar ICS</td><td>—</td><td>Eos &lt; 100, neumonías repetidas, micobacterias</td></tr>
+    <tr><td>Triple</td><td>Asma no controlada con ICS-LABA a dosis media o alta</td><td>Exacerbador con eosinófilos</td></tr>
+    <tr><td>SABA solo</td><td><span class="tag t-contra">No</span> como única terapia (ni en niños desde GINA 2026)</td><td>Rescate a demanda</td></tr>
+  </table></div>
+  <div class="box perla"><b>Mnemotecnia: "Asma Arde, EPOC Estrecha".</b> En el asma manda la inflamación (apaga el fuego con ICS); en el EPOC manda la vía aérea estrecha (ábrela con LAMA + LABA).</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> el paciente con rasgos de asma y EPOC (eosinofilia, atopia, reversibilidad marcada) debe recibir ICS. Nunca LABA o LAMA solos.</div>
+</section>
+</div>
+
+<!-- CRISIS SU -->
+<div class="panel" id="p6">
+<section>
+  <h2>Crisis en el SU: dosis</h2>
+  <h3>Asma (adulto)</h3>
+  <div class="tw"><table>
+    <tr><th>Fármaco</th><th>Dosis</th><th>Nota</th></tr>
+    <tr><td><b>Salbutamol</b></td><td>IDM 4-10 puff con aerocámara cada 20 min en la primera hora, o NBZ 2,5-5 mg cada 20 min × 3</td><td>Grave: NBZ continuo 10-15 mg/h. Nebulizar con O₂ (meta SpO₂ 93-95 %)</td></tr>
+    <tr><td><b>Ipratropio</b></td><td>NBZ 0,5 mg cada 20 min × 3 (con el salbutamol), o IDM 4-8 puff</td><td>Reduce ingresos en la crisis moderada a grave. No sirve en la hospitalización.</td></tr>
+    <tr><td><b>Prednisona</b></td><td>40-50 mg VO al día × 5-7 días</td><td>Dentro de la primera hora. Sin descenso gradual.</td></tr>
+    <tr><td><b>Sulfato de magnesio</b></td><td>2 g IV en 20 min, dosis única</td><td>Ver comentario.</td></tr>
+  </table></div>
+  <h3>Asma (pediatría)</h3>
+  <ul>
+    <li>Salbutamol IDM con aerocámara: 2-6 puff (&lt; 6 años) o 4-10 puff, cada 20 min en la primera hora.</li>
+    <li>Ipratropio NBZ 0,25 mg (&lt; 20 kg) o 0,5 mg, cada 20 min × 3.</li>
+    <li>Prednisolona 1-2 mg/kg/día (máx 40 mg) × 3-5 días, o dexametasona 0,3-0,6 mg/kg (máx 16 mg) 1-2 dosis.</li>
+    <li>Sulfato de magnesio 40-50 mg/kg IV (máx 2 g) en 20 min.</li>
+  </ul>
+  <div class="calc">
+    <h3>Calculadora pediátrica de magnesio</h3>
+    <div class="row"><label>Peso (kg)<input id="mg_w" inputmode="decimal" value="20"></label>
+    <label>mg/kg<select id="mg_d"><option>40</option><option selected>50</option></select></label></div>
+    <div class="out" id="o_mg"></div>
+  </div>
+  <h3>EPOC</h3>
+  <ul>
+    <li>Salbutamol NBZ 2,5-5 mg o IDM 4-8 puff, cada 1 h × 2-3, luego cada 2-4 h; ± ipratropio 0,5 mg. <b>Nebulizar con aire</b> (meta SpO₂ 88-92 %).</li>
+    <li>Prednisona 40 mg VO × 5 días.</li>
+  </ul>
+  <span class="src">GINA 2026; GOLD 2027; BTS/SIGN asma; NAEPP/EPR-3. Dosis pediátricas: verifícalas con el protocolo local.</span>
+</section>
+</div>
+
+<!-- COMENTARIO GRAVE -->
+<div class="panel" id="p7">
+<section>
+  <h2>Comentario: el paciente grave</h2>
+
+  <h3>1 · Corticoide sistémico: prednisona vs metilprednisolona</h3>
+  <div class="box perla"><b>Conclusión operativa:</b> si el paciente traga, <b>prednisona VO</b>. La vía IV no es más eficaz ni más rápida en la práctica; el corticoide demora 4-6 h en actuar por cualquier vía. Pasa a <b>metilprednisolona IV</b> solo si no puede usar la VO: VMNI con mascarilla, intubado, vómitos, compromiso de conciencia o íleo.</div>
+  <div class="tw"><table>
+    <tr><th>Escenario</th><th>Elección</th><th>Dosis</th></tr>
+    <tr><td>Asma, traga</td><td>Prednisona VO</td><td>40-50 mg/día × 5-7 días</td></tr>
+    <tr><td>Asma grave, no traga o en VMNI/VMI</td><td>Metilprednisolona IV</td><td>40-80 mg/día en 1-2 dosis (EPR-3); p. ej. 40 mg cada 12-24 h</td></tr>
+    <tr><td>Asma, alternativa (BTS)</td><td>Hidrocortisona IV</td><td>100 mg cada 6 h</td></tr>
+    <tr><td>EPOC, traga</td><td>Prednisona VO</td><td>40 mg/día × 5 días</td></tr>
+    <tr><td>EPOC en VMNI o intubado</td><td>Metilprednisolona IV</td><td>40 mg/día (equivalente). Pasar a VO apenas se pueda</td></tr>
+  </table></div>
+  <h3>¿Por qué no subir la dosis en el más grave?</h3>
+  <ul>
+    <li>Equivalencia: prednisona 40 mg ≈ metilprednisolona 32 mg ≈ hidrocortisona 160 mg ≈ dexametasona 6 mg.</li>
+    <li><b>EPOC en UCI:</b> en una cohorte de &gt; 17 000 pacientes (Kiser, AJRCCM 2014), las dosis altas de metilprednisolona (&gt; 240 mg/día) no redujeron la mortalidad frente a dosis bajas (≤ 240 mg/día), y sí aumentaron la estadía, el costo, la hiperglicemia y las infecciones fúngicas.</li>
+    <li><b>Asma:</b> sobre 50-80 mg/día de prednisona equivalente no hay más beneficio; con dosis mayores el receptor ya está saturado.</li>
+    <li><b>Metilprednisolona vs hidrocortisona:</b> se prefiere la metilprednisolona porque casi no tiene efecto mineralocorticoide (menos retención de sodio e hipokalemia, que el salbutamol ya favorece). La ventaja de "mejor penetración pulmonar" es teórica.</li>
+  </ul>
+  <div class="box ojo"><b>Ojo:</b> en el EPOC, el beneficio del corticoide es menor con eosinófilos &lt; 2 %, pero en el paciente grave hospitalizado igual se indica (el STARR2 solo validó evitarlo en atención primaria).</div>
+
+  <h3>2 · Sulfato de magnesio</h3>
+  <ul>
+    <li><b>Mecanismo:</b> bloquea canales de calcio en el músculo liso bronquial, reduce la liberación de acetilcolina y estabiliza los mastocitos.</li>
+    <li><b>Asma adulto:</b> 2 g IV en 20 min, dosis única, en la crisis grave o con mala respuesta a la broncodilatación inicial (VEF₁ &lt; 25-30 %). Reduce los ingresos hospitalarios (GINA).</li>
+    <li><b>Asma pediátrica:</b> 40-50 mg/kg IV (máx 2 g) en 20 min.</li>
+    <li><b>Nebulizado:</b> no se recomienda de rutina (beneficio marginal).</li>
+    <li><b>EPOC:</b> evidencia débil (ensayos pequeños, resultados mixtos). GOLD 2027 <b>no</b> lo incluye. Puede considerarse caso a caso en el refractario.</li>
+    <li><b>Precauciones:</b> rubor, hipotensión si se infunde rápido, bradicardia. Con falla renal, vigila los reflejos y la magnesemia si repites dosis.</li>
+  </ul>
+
+  <h3>3 · Otros fármacos con efecto broncodilatador</h3>
+  <div class="tw"><table>
+    <tr><th>Fármaco</th><th>Dosis</th><th>Lugar y evidencia</th></tr>
+    <tr><td><b>Adrenalina IM</b></td><td>0,3-0,5 mg (1 mg/mL) en la cara lateral del muslo; repetir cada 5-15 min</td><td>Asma con anafilaxia o angioedema, o asma casi fatal sin vía. Primera línea si hay anafilaxia.</td></tr>
+    <tr><td><b>Adrenalina IV</b></td><td>Infusión 1-10 µg/min, titulada; bolos de 10-20 µg solo en peri-paro</td><td>Asma refractaria en UCI o con monitoreo. Son <b>microgramos</b>, no miligramos.</td></tr>
+    <tr><td><b>Terbutalina SC</b></td><td>0,25 mg cada 20 min × 3</td><td>Si no puede inhalar (raro en adultos). Ojo en cardiópatas.</td></tr>
+    <tr><td><b>Ketamina</b></td><td>Inducción 1-2 mg/kg IV; infusión 0,5-1 (hasta 2) mg/kg/h</td><td>Inductor de elección para intubar al broncoespástico. Como infusión de rescate: evidencia débil (series y ensayos pequeños). Hipersalivación, emergencia, broncorrea.</td></tr>
+    <tr><td><b>Aminofilina</b></td><td>Carga 5 mg/kg en 30 min (omitir si ya toma teofilina) → 0,5 mg/kg/h; niveles 10-15 µg/mL</td><td><span class="tag t-contra">No recomendada</span> en GINA ni GOLD: poco beneficio y arritmias, convulsiones, vómitos. Solo como último recurso en UCI con niveles.</td></tr>
+    <tr><td><b>Heliox (70:30 u 80:20)</b></td><td>Como vehículo de la nebulización o en VMNI</td><td>Reduce la resistencia por flujo turbulento. Evidencia débil; limitado porque admite FiO₂ ≤ 30 %.</td></tr>
+    <tr><td><b>Anestésicos inhalados</b> (sevoflurano, isoflurano)</td><td>Concentración titulada por anestesia o UCI</td><td>Rescate del asma casi fatal ventilada. Requiere equipo y personal específicos.</td></tr>
+    <tr><td><b>ECMO / remoción extracorpórea de CO₂</b></td><td>—</td><td>Asma o EPOC refractarios con acidosis grave pese a ventilación óptima.</td></tr>
+    <tr><td><b>Montelukast</b></td><td>10 mg VO</td><td>Sin rol en la crisis.</td></tr>
+  </table></div>
+  <div class="box alerta"><b>Banderas rojas en el asma grave:</b> tórax silente, cianosis, confusión o somnolencia, bradicardia, PaCO₂ normal o alta (un asmático en crisis debería tener hipocapnia), agotamiento. Avisa a UCI y prepara la intubación con ketamina.</div>
+  <span class="src">GINA 2026; GOLD 2027; NAEPP/EPR-3; BTS/SIGN; Kiser KE et al., Am J Respir Crit Care Med 2014;189:1052-64.</span>
+</section>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="p8">
+<section>
+  <h2>Quiz</h2>
+  <div id="quiz"></div>
+  <div class="score" id="qscore"></div>
+  <button class="btn alt" onclick="quiz()" style="margin-top:10px">Reiniciar quiz</button>
+</section>
+</div>
+
+<!-- PERLAS -->
+<div class="panel" id="p9">
+<section>
+  <h2>Perlas y trampas</h2>
+  <div class="box perla"><b>Perla:</b> el salbutamol en dosis altas produce hiperlactatemia (efecto β₂ en la glicólisis), no hipoperfusión. Una acidosis láctica en el asmático que mejora no siempre es shock.</div>
+  <div class="box perla"><b>Perla:</b> el salbutamol baja el potasio 0,5-1 mEq/L. En la crisis grave pide electrolitos y monitoriza.</div>
+  <div class="box perla"><b>Perla:</b> el MART reduce las exacerbaciones graves frente a ICS-LABA de dosis fija + SABA, porque cada rescate aporta ICS justo cuando la inflamación empeora.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> el formoterol rescata; el salmeterol no.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> la triple terapia en el EPOC redujo la mortalidad en ETHOS e IMPACT, en exacerbadores.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> el ipratropio nebulizado en la boca o los ojos puede precipitar un glaucoma agudo de ángulo cerrado: usa boquilla.</div>
+  <div class="box alerta"><b>Trampa:</b> adrenalina "5-20 mg IV" (error del artículo de Long &amp; Rezaie 2022). Las dosis IV son en <b>microgramos</b>.</div>
+  <h3>Banderas rojas</h3>
+  <ul>
+    <li>Más de 2 canisters de SABA al año en el asma: riesgo de crisis fatal.</li>
+    <li>Taquiarritmias, hipokalemia o hiperglicemia con dosis altas de β₂.</li>
+    <li>Retención urinaria en el adulto mayor que inicia un LAMA.</li>
+    <li>Neumonías recurrentes en EPOC con ICS: reevalúa el retiro según eosinófilos.</li>
+  </ul>
+  <h3>Fuentes</h3>
+  <ul style="font-size:13.5px">
+    <li>Global Initiative for Asthma. Global Strategy for Asthma Management and Prevention, 2026.</li>
+    <li>Global Initiative for Chronic Obstructive Lung Disease. GOLD 2027 Report v1.0.</li>
+    <li>NAEPP Expert Panel Report 3 (2007) y actualización focal 2020.</li>
+    <li>BTS/SIGN/NICE. Asthma: diagnosis, monitoring and chronic asthma management.</li>
+    <li>Kiser KE et al. Am J Respir Crit Care Med 2014;189:1052-64.</li>
+    <li>MINSAL. GPC EPOC de tratamiento ambulatorio (GES N°38).</li>
+  </ul>
+</section>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(($(id).value||'').replace(',','.'));return isNaN(v)?null:v};
+const fmt=x=>(Math.round(x*10)/10).toString().replace('.',',');
+// ICS
+const R={bdpf:[200,400],bdp:[500,1000],bud:[400,800],cic:[160,320],ff:[100,100],fp:[250,500]};
+function ics(){const f=$('ics_f').value,d=num('ics_d'),n=num('ics_n');if(!d||!n){$('o_ics').textContent='Completa los datos.';return}
+  const t=d*n,[lo,hi]=R[f];let c,cl;
+  if(f==='ff'){c=t<=100?'BAJA':'ALTA';cl=t<=100?'ok':'bad';}
+  else if(t<=lo){c='BAJA';cl='ok'}else if(t<=hi){c='MEDIA';cl='warn'}else{c='ALTA';cl='bad'}
+  $('o_ics').innerHTML=`Dosis diaria total: <b>${fmt(t)} µg</b> → dosis <b class="${cl}">${c}</b>${c==='ALTA'?'<br><span class="warn">Dosis alta: usa el mínimo período posible y reevalúa técnica, adherencia y comorbilidad antes de subir más.</span>':''}`;}
+['ics_f','ics_d','ics_n'].forEach(i=>$(i).addEventListener('input',ics));ics();
+// Mg
+function mg(){const w=num('mg_w'),d=+$('mg_d').value;if(!w){$('o_mg').textContent='Ingresa el peso.';return}
+  const dose=Math.min(w*d,2000);
+  $('o_mg').innerHTML=`Dosis: <b>${fmt(dose)} mg</b> (${fmt(dose/1000)} g) IV en 20 min${w*d>2000?' <span class="warn">(tope 2 g)</span>':''}<br><span style="font-size:13px;color:var(--muted)">Con MgSO₄ al 25 % (250 mg/mL): ${fmt(dose/250)} mL, diluidos.</span>`;}
+['mg_w','mg_d'].forEach(i=>$(i).addEventListener('input',mg));mg();
+// quiz
+const Q=[
+ ['¿Qué LABA puede usarse como rescate?',['Salmeterol','Formoterol','Indacaterol','Vilanterol'],1,'Inicio en 1-3 min y agonista completo. Base del MART con budesonida o beclometasona.'],
+ ['¿Cuál de estos es un LAMA de 12 horas?',['Tiotropio','Umeclidinio','Aclidinio','Glicopirronio'],2,'El aclidinio se usa cada 12 h; los otros, cada 24 h.'],
+ ['Asmático con salmeterol solo como mantención. ¿Qué haces?',['Lo mantienes si está controlado','Agregas o cambias a ICS-LABA','Agregas tiotropio','Agregas montelukast'],1,'LABA sin ICS en el asma aumenta las muertes. Siempre con ICS.'],
+ ['Budesonida/formoterol 160/4,5, 2 inh c/12 h. ¿Dosis de ICS?',['Baja','Media','Alta','No se puede saber'],1,'640 µg/día de budesonida: dosis media (> 400-800).'],
+ ['EPOC con eosinófilos 70/µL y 2 neumonías el último año. ¿ICS?',['Sí, triple','No: evitarlo','Sí, ICS + LABA','Solo budesonida'],1,'Eos < 100 y neumonías repetidas: GOLD recomienda evitar el ICS.'],
+ ['Asma grave en VMNI con mascarilla oronasal. Corticoide:',['Prednisona 50 mg VO','Metilprednisolona 40-80 mg/día IV','Metilprednisolona 125 mg IV c/6 h','Dexametasona inhalada'],1,'No puede tragar; dosis altas no aportan beneficio y suman efectos adversos.'],
+ ['Dosis de sulfato de magnesio en el asma grave del adulto:',['1 g IV en 2 min','2 g IV en 20 min','4 g IV en 1 h','2 g nebulizados'],1,'Dosis única, infundida en 20 min para evitar hipotensión.'],
+ ['Adrenalina IM en asma con anafilaxia:',['0,05 mg','0,3-0,5 mg (1 mg/mL)','1 mg (1 mg/mL)','5-20 mg'],1,'En la cara lateral del muslo, repetible cada 5-15 min.'],
+ ['¿Qué dice GOLD 2027 sobre las metilxantinas en la exacerbación?',['Primera línea','Segunda línea tras SABA','No se recomiendan','Solo en ventilados'],2,'Efectos adversos significativos con poco beneficio.'],
+ ['Equivalencia: prednisona 40 mg ≈',['Metilprednisolona 32 mg','Metilprednisolona 80 mg','Hidrocortisona 40 mg','Dexametasona 40 mg'],0,'También ≈ hidrocortisona 160 mg y dexametasona 6 mg.']
+];
+let qs=0,qa=0;
+function quiz(){qs=0;qa=0;let h='';Q.forEach((q,i)=>{h+=`<div style="margin:14px 0"><b>${i+1}. ${q[0]}</b>`;q[1].forEach((o,k)=>h+=`<button class="opt" data-q="${i}" data-k="${k}">${o}</button>`);h+=`<div class="fb" id="qf${i}"></div></div>`});
+  $('quiz').innerHTML=h;$('qscore').textContent='';
+  $('quiz').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.q,k=+b.dataset.k,q=Q[i];const f=$('qf'+i);if(f.classList.contains('show'))return;
+    qa++;if(k===q[2])qs++;b.classList.add(k===q[2]?'right':'wrong');
+    $('quiz').querySelector(`.opt[data-q="${i}"][data-k="${q[2]}"]`).classList.add('right');
+    f.className='fb show box '+(k===q[2]?'perla':'alerta');f.innerHTML=`<b>${k===q[2]?'Correcto.':'Incorrecto.'}</b> ${q[3]}`;
+    $('qscore').textContent=`Puntaje: ${qs} / ${qa}`+(qa===Q.length?(qs>=8?' · ¡Listo para el turno!':' · Repasa clases, ICS y el paciente grave'):'');});}
+quiz();
+</script>
+</body>
+</html>

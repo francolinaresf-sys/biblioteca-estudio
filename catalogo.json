@@ -213,6 +213,17 @@
         "EPOC"
       ],
       "fecha": "2026-11-19"
+    },
+    {
+      "id": "broncodilatadores-y-corticoides-inhalados",
+      "titulo": "Broncodilatadores y corticoides inhalados",
+      "tema": "farmacologia",
+      "archivo": "farmacologia/broncodilatadores-y-corticoides-inhalados.html",
+      "descripcion": "SABA, SAMA, LABA, LAMA e ICS: tiempos de acción, dosis de mantención, combinaciones y triples, equivalencias de ICS, asma vs EPOC, dosis en crisis y comentario del paciente grave (prednisona vs metilprednisolona, magnesio, adrenalina, ketamina, aminofilina, heliox); calculadoras y quiz.",
+      "etiquetas": [
+        "fármacos broncodilatadores"
+      ],
+      "fecha": "2026-11-19"
     }
   ]
 }
