@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exacerbación de EPOC en Urgencia — Guía de estudio</title>
+<style>
+:root{color-scheme:light;
+--ink:#1B2A30;--muted:#5C6B73;--bg:#F3F7F8;--card:#fff;--line:#DAE3E7;
+--petrol:#12343B;--teal:#1F7A80;--tealbg:#E6F2F3;--red:#C8443F;--redbg:#FBECEA;
+--amber:#B5791A;--amberbg:#F7EFDF;--green:#2E7D52;--greenbg:#E8F3EC;--slate:#3D6B8C;--slatebg:#E8EFF5}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,sans-serif;line-height:1.5;font-size:15.5px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 90px}
+header.top{background:var(--petrol);color:#fff;padding:30px 0 22px}
+.kicker{color:#9FD0D6;font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase}
+header h1{font-family:Georgia,"Cambria",serif;font-size:31px;margin:6px 0 4px;line-height:1.15}
+header p{margin:0;color:#CFE3E6}
+header .meta{font-size:12.5px;color:#8FB6BC;margin-top:10px}
+nav.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(18,52,59,.06)}
+nav.tabs .inner{max-width:1000px;margin:0 auto;display:flex;gap:4px;overflow-x:auto;padding:8px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav.tabs .inner::-webkit-scrollbar{display:none}
+nav.tabs button{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);color:var(--petrol);padding:8px 12px;border-radius:9px;font-size:13.5px;font-weight:600;cursor:pointer}
+nav.tabs button.on{background:var(--petrol);color:#fff;border-color:var(--petrol)}
+.panel{display:none}.panel.on{display:block}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0;box-shadow:0 2px 10px rgba(18,52,59,.04)}
+h2{font-family:Georgia,"Cambria",serif;font-size:23px;margin:0 0 6px;color:var(--petrol)}
+h3{font-size:16.5px;margin:18px 0 6px;color:var(--teal)}
+p{margin:6px 0}ul{margin:6px 0;padding-left:20px}li{margin:3px 0}
+.src{display:block;color:var(--muted);font-size:12px;font-style:italic;margin-top:10px}
+.box{border-radius:10px;padding:12px 15px;margin:12px 0;border:1px solid}
+.perla{background:var(--greenbg);border-color:#BFDCCB}.perla b:first-child{color:var(--green)}
+.ojo{background:var(--amberbg);border-color:#E8D3A8}.ojo b:first-child{color:var(--amber)}
+.alerta{background:var(--redbg);border-color:#EFC4C1}.alerta b:first-child{color:var(--red)}
+.nota{background:var(--slatebg);border-color:#C9D8E6}.nota b:first-child{color:var(--slate)}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:13px 14px}
+.tile .big{font-family:Georgia,serif;font-size:26px;font-weight:700;color:var(--petrol);line-height:1.15}
+.tile .lbl{font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);font-weight:700}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14.5px}
+.tw{overflow-x:auto}
+th{background:var(--petrol);color:#fff;text-align:left;padding:8px 9px;font-weight:600}
+td{padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(even) td{background:#F7FAFB}
+.tag{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:20px;margin:0 4px 2px 0}
+.t-fuerte{background:var(--greenbg);color:var(--green)}.t-cond{background:var(--amberbg);color:var(--amber)}.t-contra{background:var(--redbg);color:var(--red)}
+details{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0;background:#fff}
+summary{cursor:pointer;font-weight:700;color:var(--petrol)}
+/* calculadoras */
+.calc{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0}
+.calc h3{margin-top:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end}
+.row label{display:flex;flex-direction:column;font-size:12.5px;color:var(--muted);font-weight:600;gap:3px}
+input,select{font-size:16px;padding:8px 9px;border:1px solid #C5D3D8;border-radius:8px;width:120px;background:#fff;color:var(--ink)}
+select{width:auto;max-width:100%}
+.row label{max-width:100%}
+.out{margin-top:10px;font-size:15px;padding:10px 12px;border-radius:9px;background:#fff;border:1px dashed var(--teal)}
+.out b{color:var(--petrol)}
+.ok{color:var(--green);font-weight:700}.warn{color:var(--amber);font-weight:700}.bad{color:var(--red);font-weight:700}
+/* escalera */
+.ladder{display:flex;flex-direction:column-reverse;gap:7px;margin:12px 0}
+.step{color:#fff;border-radius:9px;padding:9px 13px;font-weight:600}
+/* caso y quiz */
+.opt{display:block;width:100%;text-align:left;border:1px solid #C5D3D8;background:#fff;border-radius:9px;padding:10px 12px;margin:7px 0;font-size:15px;cursor:pointer;color:var(--ink)}
+.opt:hover{background:var(--tealbg)}
+.opt.right{background:var(--greenbg);border-color:var(--green)}
+.opt.wrong{background:var(--redbg);border-color:var(--red)}
+.fb{display:none;margin-top:8px}
+.fb.show{display:block}
+.btn{border:0;background:var(--teal);color:#fff;font-weight:700;padding:9px 15px;border-radius:9px;cursor:pointer;font-size:14px}
+.btn.alt{background:var(--bg);color:var(--petrol);border:1px solid var(--line)}
+.score{font-size:18px;font-weight:700;color:var(--petrol)}
+.vitals{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.vitals span{background:var(--petrol);color:#fff;border-radius:7px;padding:4px 9px;font-size:13px;font-weight:600}
+.mnemo{font-family:Georgia,serif;font-size:19px;color:var(--petrol)}
+@media (max-width:600px){header h1{font-size:25px}section{padding:16px}input{width:100px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap" style="padding-bottom:0">
+  <div class="kicker">Respiratorio · EPOC</div>
+  <h1>Exacerbación de EPOC en Urgencia</h1>
+  <p>GOLD 2027 aplicado al box: clasificación de Roma, destino, fármacos con dosis, CNAF vs VMNI, intubación, alta segura, caso ramificado y quiz.</p>
+  <div class="meta">Base: GOLD Report 2027 v1.0 (15-nov-2026), cap. 4; Long &amp; Rezaie, Emerg Med Clin N Am 2022;40:539-63. Contexto nacional: GPC MINSAL EPOC (GES N°38, 2019-2020). Material de estudio; confirma dosis con el protocolo local.</div>
+</div></header>
+
+<nav class="tabs"><div class="inner" id="tabs">
+  <button data-p="p0" class="on">Mapa</button>
+  <button data-p="p1">Novedades 2027</button>
+  <button data-p="p2">Evaluación</button>
+  <button data-p="p3">Roma y destino</button>
+  <button data-p="p4">Fármacos</button>
+  <button data-p="p5">Soporte ventilatorio</button>
+  <button data-p="p6">Alta</button>
+  <button data-p="p7">Caso ramificado</button>
+  <button data-p="p8">Quiz</button>
+  <button data-p="p9">Perlas</button>
+</div></nav>
+
+<div class="wrap">
+
+<!-- MAPA -->
+<div class="panel on" id="p0">
+<section>
+  <h2>La exacerbación en 60 segundos</h2>
+  <p>Empeoramiento agudo de disnea, tos o expectoración que se instala en <b>≤ 14 días</b>, a menudo con taquipnea o taquicardia. Es un diagnóstico de <b>exclusión activa</b>: primero descarta lo que la imita.</p>
+  <div class="grid">
+    <div class="tile"><div class="lbl">Meta SpO₂</div><div class="big">88-92 %</div>O₂ controlado; nebulizar con aire comprimido.</div>
+    <div class="tile"><div class="lbl">Broncodilatador</div><div class="big">SABA ± SAMA</div>Cada 1 h × 2-3 dosis, luego cada 2-4 h.</div>
+    <div class="tile"><div class="lbl">Corticoide</div><div class="big">40 mg × 5 d</div>Prednisona VO (equivalente). VO = IV.</div>
+    <div class="tile"><div class="lbl">Antibiótico</div><div class="big">5 días</div>Si esputo purulento + otro síntoma, cultivo previo positivo o ventilación.</div>
+    <div class="tile"><div class="lbl">Acidosis hipercápnica</div><div class="big">VMNI</div>pH ≤ 7,35 y PaCO₂ ≥ 45 mmHg.</div>
+    <div class="tile"><div class="lbl">No usar</div><div class="big">Teofilina</div>Ni estimulantes respiratorios.</div>
+  </div>
+  <h3>Secuencia en el box</h3>
+  <div class="ladder">
+    <div class="step" style="background:#2E7D52">6 · Alta con LABA+LAMA (± ICS), control ≤ 1 mes, plan de acción</div>
+    <div class="step" style="background:#1F7A80">5 · Destino: domicilio, sala, intermedio o UCI</div>
+    <div class="step" style="background:#3D6B8C">4 · Soporte: O₂ controlado → CNAF / VMNI → IOT</div>
+    <div class="step" style="background:#B5791A">3 · Tratar: SABA+SAMA, corticoide, antibiótico si cumple criterios</div>
+    <div class="step" style="background:#C8443F">2 · Gravedad (Roma) + gas venoso o arterial</div>
+    <div class="step" style="background:#12343B">1 · ¿Es EPOC o es otra cosa? Rx, ECG, POCUS, troponina/BNP</div>
+  </div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> GOLD ya no clasifica la gravedad por lo que hiciste (ambulatorio, hospitalizado), sino por cómo llega el paciente: la propuesta de Roma.</div>
+</section>
+</div>
+
+<!-- NOVEDADES -->
+<div class="panel" id="p1">
+<section>
+  <h2>¿Qué cambió en GOLD 2027 que importe en Urgencia?</h2>
+  <p>El capítulo de exacerbaciones mantiene los pilares. Los cambios de esta edición que tocan el SU son pocos pero concretos.</p>
+  <h3>1 · Riesgo cardiovascular post-exacerbación (figura nueva 4.5)</h3>
+  <p>Meta-análisis de cohortes (Nordon et al., ERJ Open Res 2025): el riesgo de evento CV grave o muerte se dispara tras una exacerbación <b>de cualquier gravedad</b>, incluso las moderadas.</p>
+  <div class="tw"><table>
+    <tr><th>Tiempo desde la exacerbación</th><th>HR combinado (IC 95 %)</th></tr>
+    <tr><td>Días 1-7</td><td><b>10,22</b> (5,34-19,57)</td></tr>
+    <tr><td>Días 8-14</td><td>4,00 (2,58-6,18)</td></tr>
+    <tr><td>Días 15-30</td><td>2,93 (2,13-4,02)</td></tr>
+    <tr><td>Días 31-180</td><td>1,70 (1,45-2,00)</td></tr>
+    <tr><td>Días 181-365</td><td>1,24 (1,08-1,40)</td></tr>
+    <tr><td>&gt; 365 días</td><td>1,18 (0,93-1,50), no significativo</td></tr>
+  </table></div>
+  <div class="box nota"><b>Implicancia práctica:</b> GOLD sugiere considerar troponina y BNP/NT-proBNP de rutina en la exacerbación. La evidencia es débil (lo dice el propio informe). No recomienda aspirina preventiva; betabloqueadores y estatinas solo según su indicación CV.</div>
+  <h3>2 · Sección cardiovascular ampliada (caps. 2, 4 y 5)</h3>
+  <p>Refuerza que IAM, arritmias (FA/flutter), insuficiencia cardíaca y TEP pueden imitar o agravar la exacerbación, y que el ecocardiograma muestra alteraciones derechas e izquierdas en exacerbaciones graves aun sin cardiopatía conocida.</p>
+  <h3>3 · Lo que no cambió (y conviene saber)</h3>
+  <ul>
+    <li>Clasificación de Roma (introducida en GOLD 2024) para gravedad en el punto de atención.</li>
+    <li>Corticoide 40 mg/día × 5 días; antibiótico ≤ 5 días.</li>
+    <li>Procalcitonina: <b>no</b> se recomienda para decidir antibióticos (resultados contradictorios; en UCI se asoció a más mortalidad).</li>
+    <li>Escalas DECAF, mDECAF, SCOPEX: GOLD <b>no</b> recomienda su uso rutinario.</li>
+  </ul>
+  <h3>4 · Fuera del SU, pero útil al dar el alta</h3>
+  <ul>
+    <li>Grupo A: ahora se ofrece <b>LAMA</b> de inicio (antes "un broncodilatador").</li>
+    <li>Nuevos biológicos: dupilumab (eosinófilos ≥ 300 + bronquitis crónica) y mepolizumab (eosinófilos ≥ 300).</li>
+    <li>Propelentes de inhaladores con menor huella de carbono; vacunación actualizada (influenza, neumococo, VRS, COVID-19).</li>
+  </ul>
+  <span class="src">GOLD 2027, Report Highlights y cap. 4.</span>
+</section>
+</div>
+
+<!-- EVALUACION -->
+<div class="panel" id="p2">
+<section>
+  <h2>Evaluación: ¿es exacerbación o es otra cosa?</h2>
+  <p>Si el paciente empeora la disnea <b>sin</b> tos ni esputo, piensa primero en otra causa.</p>
+  <div class="tw"><table>
+    <tr><th>Imitador / agravante</th><th>Herramienta</th></tr>
+    <tr><td><b>Neumonía</b> (frecuente)</td><td>Rx o TC de tórax, ecografía pulmonar, estudio microbiológico</td></tr>
+    <tr><td><b>Insuficiencia cardíaca</b> (frecuente)</td><td>Rx/TC, NT-proBNP o BNP, ecocardiograma</td></tr>
+    <tr><td><b>IAM o arritmia</b> (FA, flutter, TAM)</td><td>ECG, troponina</td></tr>
+    <tr><td><b>TEP</b> (≈ 6 % de hospitalizados)</td><td>Probabilidad clínica, dímero D, angio-TC</td></tr>
+    <tr><td><b>Neumotórax</b> (menos frecuente)</td><td>Rx/TC, ecografía (deslizamiento pleural)</td></tr>
+  </table></div>
+  <h3>Exámenes en el SU</h3>
+  <ul>
+    <li><b>Gas venoso</b> para tamizar hipercapnia: PCO₂ venosa &lt; 45 mmHg prácticamente la descarta. Gas arterial si vas a ventilar o si está grave.</li>
+    <li><b>Rx de tórax</b> en toda exacerbación que consulta al SU: cambia el manejo en más de 1 de cada 5 casos.</li>
+    <li><b>ECG</b>: FA, flutter y taquicardia auricular multifocal son las arritmias típicas.</li>
+    <li><b>POCUS</b>: líneas B (edema), VD dilatado (TEP o HTP), derrame pericárdico, ausencia de deslizamiento (neumotórax).</li>
+    <li><b>PCR</b>: entra en la clasificación de Roma (≥ 10 mg/L) y ayuda a decidir antibióticos.</li>
+    <li><b>Capnografía</b>: onda en "aleta de tiburón" = obstrucción; EtCO₂ creciente = fatiga.</li>
+    <li>Espirometría y flujo espiratorio máximo: <b>no</b> en la exacerbación aguda.</li>
+    <li>Cultivo de esputo: no rutinario en el SU; sí en exacerbaciones frecuentes, obstrucción grave o ventilación (Pseudomonas, resistentes).</li>
+  </ul>
+  <div class="box alerta"><b>Señales de paro inminente:</b> bradicardia, cianosis, compromiso de conciencia, incapacidad de mantener el esfuerzo respiratorio, tórax silente.</div>
+  <div class="box ojo"><b>Ojo:</b> la SpO₂ es menos precisa en piel oscura (sobrestima). Si la clínica no calza, mide gases.</div>
+  <span class="src">GOLD 2027, fig. 4.3; Long &amp; Rezaie 2022.</span>
+</section>
+</div>
+
+<!-- ROMA -->
+<div class="panel" id="p3">
+<section>
+  <h2>Clasificación de Roma (calculadora)</h2>
+  <p>Marca lo que cumple tu paciente. Para ser <b>moderada</b> necesita al menos 3 de 5 criterios. La <b>grave</b> se define por el gas.</p>
+  <div class="calc">
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="r1" style="width:auto"> Disnea EVA ≥ 5 (escala 0-10)</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="r2" style="width:auto"> FR ≥ 24/min</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="r3" style="width:auto"> FC ≥ 95 lpm</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="r4" style="width:auto"> SatO₂ &lt; 92 % (aire ambiental u O₂ habitual) y/o caída &gt; 3 %</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="r5" style="width:auto"> PCR ≥ 10 mg/L</label>
+    <div class="row" style="margin-top:10px">
+      <label>pH<input id="r_ph" inputmode="decimal" placeholder="7,30"></label>
+      <label>PaCO₂ (mmHg)<input id="r_pc" inputmode="decimal" placeholder="58"></label>
+      <label>PaO₂ (mmHg)<input id="r_po" inputmode="decimal" placeholder="55"></label>
+    </div>
+    <div class="out" id="o_roma">Marca los criterios.</div>
+  </div>
+  <div class="tw"><table>
+    <tr><th>Gravedad</th><th>Criterios</th></tr>
+    <tr><td><span class="tag t-fuerte">Leve</span></td><td>EVA &lt; 5, FR &lt; 24, FC &lt; 95, SatO₂ ≥ 92 % con caída ≤ 3 %, PCR &lt; 10</td></tr>
+    <tr><td><span class="tag t-cond">Moderada</span></td><td>≥ 3 de 5 umbrales; si hay gas, PaO₂ 70-80 mmHg</td></tr>
+    <tr><td><span class="tag t-contra">Grave</span></td><td>Lo anterior + gas con PaO₂ ≤ 60 y/o PaCO₂ &gt; 45 con pH &lt; 7,35</td></tr>
+  </table></div>
+  <div class="box nota"><b>Dato:</b> con Roma, el 15-30 % de los hospitalizados resulta leve, ≈ 50 % moderado y ≈ 10 % grave. La gravedad por Roma se correlaciona con UCI y mortalidad, pero la validación prospectiva aún está en curso.</div>
+
+  <h3>En el hospitalizado: tres escalones clínicos</h3>
+  <div class="tw"><table>
+    <tr><th></th><th>Sin insuficiencia respiratoria</th><th>Con IR, sin riesgo vital</th><th>Falla ventilatoria (riesgo vital)</th></tr>
+    <tr><td>FR / FC</td><td>≤ 24 / ≤ 95</td><td>&gt; 24 / &gt; 95</td><td>&gt; 24 / &gt; 95</td></tr>
+    <tr><td>Musculatura accesoria</td><td>No</td><td>Sí</td><td>Sí</td></tr>
+    <tr><td>Conciencia</td><td>Normal</td><td>Normal</td><td><b>Alterada</b></td></tr>
+    <tr><td>Oxígeno</td><td>Corrige con Venturi 24-35 %</td><td>Corrige con Venturi &gt; 35 %</td><td>No corrige o FiO₂ &gt; 40 %</td></tr>
+    <tr><td>PaCO₂ / pH</td><td>Sin alza</td><td>Alza o 50-60 mmHg</td><td>&gt; 60 mmHg y pH ≤ 7,25</td></tr>
+  </table></div>
+
+  <h3>¿Dónde lo manejo? (fig. 4.4)</h3>
+  <div class="grid">
+    <div class="tile"><div class="lbl">Ambulatorio</div>Exacerbación leve, poca comorbilidad, paciente que coopera y buen apoyo en casa.</div>
+    <div class="tile"><div class="lbl">Hospitalizar</div>Signos de IR (FR alta, musculatura accesoria, hipoxemia o hipercapnia que empeora, cambio de conciencia), falta de respuesta al tratamiento inicial, comorbilidad grave (IC, arritmia), apoyo domiciliario insuficiente.</div>
+    <div class="tile"><div class="lbl">Intermedio / UCI</div>Hipoxemia o hipercapnia persistente pese a soporte, deterioro de conciencia (confusión, letargia, coma), necesidad de VMI, inestabilidad hemodinámica (vasopresores, arritmias).</div>
+  </div>
+  <div class="box perla"><b>Perla:</b> incluso una exacerbación leve puede necesitar hospitalización si el problema es social o la comorbilidad. Roma mide la exacerbación; el destino depende del paciente completo.</div>
+  <span class="src">GOLD 2027, figs. 4.2 y 4.4.</span>
+</section>
+</div>
+
+<!-- FARMACOS -->
+<div class="panel" id="p4">
+<section>
+  <h2>Fármacos con dosis</h2>
+  <p>Las filas marcadas con <span class="tag t-cond">práctica habitual</span> no traen dosis exactas en GOLD; corresponden a dosis estándar de adultos y deben confirmarse con el arsenal y los protocolos del HUAP.</p>
+  <div class="tw"><table>
+    <tr><th>Fármaco</th><th>Dosis y vía</th><th>Notas</th></tr>
+    <tr><td><b>Salbutamol</b></td><td>Nebulizado 2,5-5 mg, o IDM 100 µg/puff 4-8 puff con aerocámara; cada 1 h × 2-3 dosis, luego cada 2-4 h <span class="tag t-cond">práctica habitual</span></td><td>GOLD: evitar dosis altas. IDM con aerocámara = nebulizador en VEF₁; NBZ más fácil en el paciente grave. <b>Nebulizar con aire</b>, no con O₂.</td></tr>
+    <tr><td><b>Ipratropio</b></td><td>Nebulizado 0,5 mg (con salbutamol), cada 4-6 h; o IDM 20 µg/puff 4-8 puff <span class="tag t-cond">práctica habitual</span></td><td>GOLD lo deja como "± SAMA"; la combinación broncodilata más que el SABA solo.</td></tr>
+    <tr><td><b>Prednisona</b></td><td>40 mg VO al día × 5 días</td><td>Evidencia A. VO igual de eficaz que IV. Cursos más largos: más neumonía y mortalidad.</td></tr>
+    <tr><td><b>Metilprednisolona</b></td><td>40 mg IV al día si no tolera VO <span class="tag t-cond">práctica habitual</span></td><td>Equivalencia: 40 mg de prednisona ≈ 32 mg de metilprednisolona.</td></tr>
+    <tr><td><b>Budesonida nebulizada</b></td><td>Alternativa en algunos pacientes; dosis variable según estudio</td><td>Beneficio similar a metilprednisolona IV; decisión por costo y disponibilidad.</td></tr>
+    <tr><td><b>Amoxicilina/clavulánico</b></td><td>875/125 mg VO cada 12 h × 5 días</td><td>ClCr &lt; 30: no usar 875; 500/125 mg cada 12 h (ClCr 10-30) o cada 24 h (&lt; 10).</td></tr>
+    <tr><td><b>Doxiciclina</b></td><td>100 mg VO cada 12 h × 5 días</td><td>Sin ajuste renal.</td></tr>
+    <tr><td><b>Azitromicina</b></td><td>500 mg VO día 1, luego 250 mg/día (o 500 mg/día × 3 días)</td><td>Sin ajuste renal. Ojo con QT.</td></tr>
+    <tr><td><b>Levofloxacino</b></td><td>750 mg VO/IV cada 24 h × 5 días</td><td>Solo en pacientes seleccionados. ClCr 20-49: 750 mg cada 48 h; ClCr &lt; 20: 750 mg y luego 500 mg cada 48 h.</td></tr>
+    <tr><td><b>Riesgo de Pseudomonas</b></td><td>Cefepime 2 g IV cada 8 h, o piperacilina/tazobactam 4,5 g IV cada 6 h</td><td>Ajuste renal obligatorio. Toma cultivo antes. Indicado si exacerbaciones frecuentes, VEF₁ muy bajo, ATB reciente o ventilación.</td></tr>
+    <tr><td><b>Sulfato de magnesio</b></td><td>2 g IV en 20 min</td><td><span class="tag t-contra">evidencia débil en EPOC</span> El artículo de 2022 dice que GOLD lo recomienda, pero el informe GOLD 2027 no lo menciona. Su respaldo viene sobre todo del asma.</td></tr>
+    <tr><td><b>N-acetilcisteína</b></td><td>Adyuvante si hay secreciones difíciles de movilizar</td><td>No mejora la recuperación del VEF₁, pero alivia tos y expectoración.</td></tr>
+    <tr><td><b>Teofilina / aminofilina</b></td><td><span class="tag t-contra">No recomendadas</span></td><td>Efectos adversos significativos.</td></tr>
+  </table></div>
+
+  <h3>¿Antibiótico sí o no? (criterios GOLD)</h3>
+  <div class="calc">
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a1" style="width:auto"> Más disnea</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a2" style="width:auto"> Fiebre</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a3" style="width:auto"> Más volumen de esputo</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a4" style="width:auto"> <b>Esputo purulento</b></label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a5" style="width:auto"> Cultivo de esputo positivo en una exacerbación previa</label>
+    <label style="display:block;margin:6px 0"><input type="checkbox" id="a6" style="width:auto"> Requiere VMNI o VMI</label>
+    <div class="out" id="o_atb">Marca los criterios.</div>
+  </div>
+  <div class="box nota"><b>PCR:</b> en atención primaria, la PCR en el punto de atención redujo antibióticos sin peores resultados. Esputo purulento + PCR elevada identifican a quienes fracasan sin antibiótico. <b>Procalcitonina:</b> no recomendada.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> STARR2 (corticoide guiado por eosinófilos) mostró que se podía evitar la prednisona con eosinófilos bajos, pero solo en atención primaria. No está validado en hospitalizados.</div>
+  <div class="box nota"><b>Chile:</b> elige el antibiótico según la susceptibilidad local (H. influenzae productor de β-lactamasa, neumococo). Si recibió antibiótico en los últimos 3 meses, cambia de familia.</div>
+  <span class="src">GOLD 2027, cap. 4 y figs. 4.6-4.7; Long &amp; Rezaie 2022. Ajustes renales según fichas técnicas habituales: verifícalos en tu fuente local.</span>
+</section>
+</div>
+
+<!-- SOPORTE -->
+<div class="panel" id="p5">
+<section>
+  <h2>Soporte respiratorio</h2>
+  <h3>Oxígeno controlado</h3>
+  <ul>
+    <li>Meta SpO₂ <b>88-92 %</b> (en el hipercápnico o con riesgo de serlo). Por encima de 92 % no necesita más O₂.</li>
+    <li>SpO₂ 85-92 %: naricera 2-3 L/min. SpO₂ &lt; 85 %: Venturi (24-28 % para partir y titular).</li>
+    <li>Gas de control 30-60 min después de iniciar o cambiar el O₂ si hay riesgo de hipercapnia.</li>
+  </ul>
+  <div class="box alerta"><b>Por qué importa:</b> el O₂ sin control en el EPOC empeora la hipercapnia (V/Q, efecto Haldane, menor estímulo). La titulación hacia 88-92 % se asoció a menos mortalidad prehospitalaria.</div>
+
+  <h3>CNAF vs VMNI: la regla simple</h3>
+  <div class="grid">
+    <div class="tile"><div class="lbl">IR hipoxémica, sin acidosis</div><div class="big">CNAF</div>GOLD 2027 la sitúa como primera opción de soporte en la hipoxemia aguda. 10-60 L/min, FiO₂ titulada.</div>
+    <div class="tile"><div class="lbl">Acidosis hipercápnica</div><div class="big">VMNI</div>Primera línea (evidencia A). Si no tolera la mascarilla o tiene contraindicación: CNAF como alternativa vigilada.</div>
+  </div>
+  <div class="box ojo"><b>La evidencia de CNAF en hipercápnicos:</b> en ensayos fue no inferior a VMNI para bajar la PaCO₂ y para intubación o muerte a 7 días, y es más cómoda. Pero ≈ 30 % de los aleatorizados a CNAF pasó a VMNI a las 6 h por falta de respuesta, y en otro ensayo hubo más intubación con CNAF. La guía ERS prefiere VMNI sobre CNAF en la exacerbación hipercápnica.</div>
+
+  <h3>Indicaciones de VMNI (al menos una)</h3>
+  <ul>
+    <li>Acidosis respiratoria: PaCO₂ ≥ 45 mmHg <b>y</b> pH ≤ 7,35.</li>
+    <li>Disnea grave con fatiga muscular: musculatura accesoria, respiración paradojal, tiraje.</li>
+    <li>Hipoxemia persistente pese a O₂.</li>
+  </ul>
+  <p>Éxito del 80-85 %: reduce intubación, neumonía asociada, estadía y <b>mortalidad</b>. Con conciencia alterada o pH &lt; 7,25 puede intentarse si hay vigilancia estrecha y equipo para intubar al lado.</p>
+
+  <div class="calc">
+    <h3>Ajustes iniciales de VMNI (BiPAP)</h3>
+    <ul>
+      <li>Mascarilla oronasal. EPAP 4-5 cmH₂O.</li>
+      <li>IPAP 10-12 cmH₂O de partida; subir 2 cmH₂O cada pocos minutos según tolerancia hasta 20 cmH₂O (rara vez más de 25-30).</li>
+      <li>FiO₂ para SpO₂ 88-92 %. Broncodilatador en línea.</li>
+      <li><b>Gas a la 1-2 h</b> (y a las 4-6 h): si el pH y la FR no mejoran, piensa en IOT.</li>
+    </ul>
+    <span class="src">Práctica habitual (BTS/ICS 2016, ERS/ATS 2017). Ojo: el artículo de 2022 escribe "5-10 mmHg" de presión de soporte; las unidades correctas son cmH₂O.</span>
+  </div>
+
+  <h3>Indicaciones de intubación (fig. 4.10)</h3>
+  <ul>
+    <li>Hipoxemia que amenaza la vida pese a CNAF o VMNI; no tolera CNAF ni VMNI.</li>
+    <li>Paro respiratorio o cardíaco; compromiso de conciencia o agitación no controlable.</li>
+    <li>Aspiración masiva o vómitos persistentes; incapacidad de manejar secreciones.</li>
+    <li>Inestabilidad hemodinámica grave o arritmias graves.</li>
+  </ul>
+  <div class="box nota"><b>Pronóstico:</b> la mortalidad del EPOC ventilado es <b>menor</b> que la de otras causas de IR. Negar la UCI por "pesimismo pronóstico" no se justifica. Conversa las directrices anticipadas cuando sea posible.</div>
+
+  <h3>Intubación y ventilador</h3>
+  <ul>
+    <li>Vía aérea difícil fisiológica: el operador con más experiencia, preoxigenación máxima (con VMNI).</li>
+    <li>Inducción: ketamina 1-2 mg/kg IV (broncodilata). Bloqueo: rocuronio 1,2 mg/kg IV.</li>
+    <li>Optimiza la precarga antes (bolo) y ten noradrenalina lista.</li>
+    <li>Modo volumen control: Vt 6-8 mL/kg de peso ideal, FR 8-12/min, flujo 60-100 L/min, relación I:E ≥ 1:3 a 1:4.</li>
+    <li>Mide el auto-PEEP (pausa espiratoria) y la Pplat (&lt; 30 cmH₂O). Hipercapnia permisiva.</li>
+    <li>No normalices la PaCO₂ de un retenedor crónico: apunta al pH, no al número (riesgo de alcalosis posthipercápnica).</li>
+  </ul>
+  <div class="box alerta"><b>Hipotensión post-IOT en EPOC:</b> piensa en auto-PEEP. Desconecta el circuito 10-30 s, comprime el tórax suavemente y baja la FR. Si no responde: neumotórax a tensión (POCUS).</div>
+  <span class="src">GOLD 2027, figs. 4.7, 4.9 y 4.10; Long &amp; Rezaie 2022.</span>
+</section>
+</div>
+
+<!-- ALTA -->
+<div class="panel" id="p6">
+<section>
+  <h2>Alta segura desde el SU</h2>
+  <p>El 30-50 % de los hospitalizados reingresa a los 30 días. Solo el 17,5 % de los pacientes de un gran estudio salió con terapia triple, y más de un cuarto salió solo con SABA o sin inhalador.</p>
+  <h3>Checklist antes de que se vaya</h3>
+  <ul>
+    <li>Respuesta clínica clara; SpO₂ estable con su O₂ basal; camina y come.</li>
+    <li>Prednisona 40 mg × 5 días ± antibiótico 5 días si cumplía criterios.</li>
+    <li><b>Mantención:</b> iniciar o continuar LABA+LAMA lo antes posible. Con ≥ 1 exacerbación moderada o grave y eosinófilos elevados, considerar agregar ICS (triple).</li>
+    <li>Revisar la técnica inhalatoria y entregar un plan de acción escrito.</li>
+    <li>Control ≤ 1 mes (menos reingresos) y luego a los 3 meses con espirometría.</li>
+    <li>Derivar a rehabilitación pulmonar precoz (&lt; 4 semanas).</li>
+    <li>Vacunas: influenza, neumococo, VRS, COVID-19. Cesación tabáquica en cada contacto.</li>
+    <li>Si estuvo hospitalizado: medir vitamina D y suplementar si &lt; 10 ng/mL.</li>
+    <li>Riesgo CV: el primer mes es la ventana de mayor riesgo. Educa sobre dolor torácico y palpitaciones.</li>
+  </ul>
+  <h3>Hospitalizado: no olvidar</h3>
+  <ul>
+    <li>Tromboprofilaxis con heparina (TEP hasta 5,9 % en hospitalizados).</li>
+    <li>Balance hídrico, diuréticos si hay sobrecarga, nutrición.</li>
+    <li>TC de tórax si hay exacerbaciones u hospitalizaciones recurrentes (bronquiectasias, enfisema).</li>
+  </ul>
+  <div class="box nota"><b>Contexto MINSAL:</b> la EPOC de tratamiento ambulatorio es el problema GES N°38 (GPC 2019, publicada 2020), con seguimiento en el Programa ERA de APS. La GPC sugiere LAMA y triple terapia en quien corresponde, pero advierte que en ese momento no estaban en la canasta GES ni disponibles en la mayoría de los centros. Esto <b>difiere en la práctica</b> de GOLD: al alta, verifica qué puede retirar el paciente en su CESFAM. También sugiere rehabilitación pulmonar tras la exacerbación.</div>
+  <span class="src">GOLD 2027, cap. 4 y figs. 4.11-4.12; GPC MINSAL EPOC (diprece.minsal.cl).</span>
+</section>
+</div>
+
+<!-- CASO -->
+<div class="panel" id="p7">
+<section>
+  <h2>Caso ramificado</h2>
+  <p style="font-size:13.5px;color:var(--muted)">Caso ficticio con fines docentes.</p>
+  <div id="caso"></div>
+  <button class="btn alt" onclick="caso(0)" style="margin-top:10px">Reiniciar caso</button>
+</section>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="p8">
+<section>
+  <h2>Quiz</h2>
+  <div id="quiz"></div>
+  <div class="score" id="qscore"></div>
+  <button class="btn alt" onclick="quiz()" style="margin-top:10px">Reiniciar quiz</button>
+</section>
+</div>
+
+<!-- PERLAS -->
+<div class="panel" id="p9">
+<section>
+  <h2>Perlas, mnemotecnias y trampas</h2>
+  <p class="mnemo">"BOCA-V" para el box</p>
+  <ul>
+    <li><b>B</b>roncodilatador: SABA + SAMA, nebulizado con aire.</li>
+    <li><b>O</b>xígeno controlado: 88-92 %.</li>
+    <li><b>C</b>orticoide: 40 mg × 5 días.</li>
+    <li><b>A</b>ntibiótico: solo si cumple criterios, 5 días.</li>
+    <li><b>V</b>entilación: VMNI si pH ≤ 7,35 con PaCO₂ ≥ 45.</li>
+  </ul>
+  <div class="box perla"><b>Analogía:</b> el pulmón del EPOC es un globo con la salida estrecha. Si inflas rápido (FR alta, Vt grande), no alcanza a vaciarse y se queda atrapado aire: auto-PEEP. Por eso en el ventilador ganas más alargando la espiración que subiendo la FR.</div>
+  <div class="box perla"><b>Perla:</b> la VMNI puede hacer que despierte un paciente somnoliento por hipercapnia. La somnolencia no es contraindicación absoluta si lo vigilas de cerca.</div>
+  <div class="box perla"><b>Perla:</b> una vez que tolera ≥ 4 h sin VMNI, se puede suspender directamente, sin "destete".</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> en la clasificación de Roma, moderada = <b>3 de 5</b>, no 2 de 5.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> la mortalidad a 5 años tras una hospitalización por exacerbación ronda el 50 %.</div>
+  <div class="box ojo"><b>Ojo en la prueba:</b> el riesgo de evento CV es 10 veces mayor la primera semana tras la exacerbación.</div>
+  <div class="box alerta"><b>Trampas del artículo de 2022 (Long &amp; Rezaie):</b>
+    <ul>
+      <li>Escribe adrenalina IV "5-20 mg" en bolo; la dosis plausible es en <b>microgramos</b> (y es una indicación del asma grave, no del EPOC).</li>
+      <li>Presiones de VMNI en "mmHg": deben ser cmH₂O.</li>
+      <li>Atribuye a GOLD el sulfato de magnesio en la exacerbación grave; el informe 2027 no lo incluye.</li>
+      <li>Es anterior a la adopción de Roma (GOLD 2024) y mezcla asma con EPOC en varias secciones.</li>
+    </ul>
+  </div>
+  <h3>Banderas rojas y qué vigilar</h3>
+  <ul>
+    <li>Conciencia que empeora, pH que cae o PaCO₂ que sube pese a VMNI → IOT.</li>
+    <li>Hipotensión tras iniciar VMNI o VMI → auto-PEEP, neumotórax, hipovolemia.</li>
+    <li>Dolor torácico, troponina elevada o FA nueva → no es "solo EPOC".</li>
+    <li>Disnea desproporcionada sin tos ni esputo → busca TEP o IC.</li>
+    <li>Hiperglicemia, hipokalemia (SABA + corticoide), taquiarritmias.</li>
+  </ul>
+  <h3>Fuentes</h3>
+  <ul style="font-size:13.5px">
+    <li>Global Initiative for Chronic Obstructive Lung Disease. GOLD 2027 Report, v1.0, 15-nov-2026. Capítulo 4.</li>
+    <li>Long B, Rezaie SR. Evaluation and Management of Asthma and COPD Exacerbation in the ED. Emerg Med Clin N Am 2022;40:539-63.</li>
+    <li>MINSAL. GPC Enfermedad Pulmonar Obstructiva Crónica de tratamiento ambulatorio (GES N°38), 2019-2020.</li>
+  </ul>
+</section>
+</div>
+
+</div>
+
+<script>
+document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');document.getElementById(b.dataset.p).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}));
+const $=id=>document.getElementById(id);
+const num=id=>{const v=parseFloat(($(id).value||'').replace(',','.'));return isNaN(v)?null:v};
+// Roma
+function roma(){
+  const n=[1,2,3,4,5].filter(i=>$('r'+i).checked).length;
+  const ph=num('r_ph'),pc=num('r_pc'),po=num('r_po');
+  let cat,cls,extra='';
+  const grave=(po!=null&&po<=60)||(pc!=null&&ph!=null&&pc>45&&ph<7.35);
+  if(n>=3&&grave){cat='GRAVE';cls='bad';}
+  else if(n>=3){cat='MODERADA';cls='warn';}
+  else {cat='LEVE';cls='ok';}
+  if(grave&&n<3)extra='<br><span class="warn">El gas muestra hipoxemia o acidosis hipercápnica aunque cumple menos de 3 criterios clínicos: trátalo según el gas y reevalúa.</span>';
+  if(ph!=null&&pc!=null&&pc>=45&&ph<=7.35)extra+='<br><b class="bad">Cumple indicación de VMNI</b> (pH ≤ 7,35 con PaCO₂ ≥ 45).';
+  if(ph!=null&&ph<=7.25)extra+='<br><span class="bad">pH ≤ 7,25: falla ventilatoria. VMNI solo con vigilancia estrecha y equipo de IOT al lado; considera UCI.</span>';
+  $('o_roma').innerHTML=`Criterios clínicos: <b>${n} de 5</b> → Exacerbación <b class="${cls}">${cat}</b>${extra}`;
+}
+[1,2,3,4,5].forEach(i=>$('r'+i).addEventListener('change',roma));
+['r_ph','r_pc','r_po'].forEach(i=>$(i).addEventListener('input',roma));
+// antibiótico
+function atb(){
+  const s=[1,2,3,4].filter(i=>$('a'+i).checked).length,pur=$('a4').checked,cult=$('a5').checked,vent=$('a6').checked;
+  let r=[];
+  if(s>=2&&pur)r.push('≥ 2 síntomas con esputo purulento');
+  if(cult)r.push('cultivo previo positivo');
+  if(vent)r.push('requiere ventilación');
+  $('o_atb').innerHTML=r.length?`<b class="bad">Antibiótico indicado</b> (${r.join('; ')}). Duración: 5 días.${vent?' En ventilado: toma cultivo y cubre Pseudomonas si hay factores de riesgo.':''}`:`<b class="ok">Sin indicación clara de antibiótico.</b> ${s>=2&&!pur?'Hay síntomas, pero sin purulencia: probablemente viral.':''}`;
+}
+[1,2,3,4,5,6].forEach(i=>$('a'+i).addEventListener('change',atb));
+// caso
+const C=[
+ {t:'<div class="vitals"><span>71 años</span><span>EPOC con O₂ domiciliario 1 L/min</span><span>FR 30</span><span>FC 112</span><span>PA 148/86</span><span>T 37,9 °C</span><span>SpO₂ 84 % con 1 L/min</span></div><p>4 días de más disnea y esputo verde abundante. Habla en frases cortas, usa musculatura accesoria, está orientado. EVA de disnea 8/10. PCR 46 mg/L.</p><p><b>¿Qué haces primero con el oxígeno?</b></p>',
+  o:[['Venturi 28 % y titular a SpO₂ 88-92 %',1,'Correcto. O₂ controlado y gas en 30-60 min.'],['Mascarilla de no reinhalación 15 L/min hasta SpO₂ &gt; 96 %',0,'El O₂ sin control en el EPOC empeora la hipercapnia y aumenta la mortalidad. La meta es 88-92 %.'],['No dar O₂ hasta tener el gas',0,'Con SpO₂ 84 % hay que oxigenar ya, pero de forma controlada.']]},
+ {t:'<p>Gas venoso: pH 7,29, PCO₂ 66 mmHg, HCO₃⁻ 31. Cumple FR, FC, SatO₂, EVA y PCR.</p><p><b>¿Gravedad según Roma?</b></p>',
+  o:[['Grave: ≥ 3 criterios + acidosis hipercápnica',1,'Correcto. 5 de 5 criterios y pH &lt; 7,35 con PCO₂ &gt; 45. El HCO₃⁻ alto sugiere retención crónica previa con descompensación aguda.'],['Moderada: solo cuentan los 5 criterios clínicos',0,'La gravedad se define por el gas: hipercapnia con acidosis = grave.'],['Leve: está orientado',0,'La conciencia conservada no baja la gravedad.']]},
+ {t:'<p>Rx: hiperinsuflación sin consolidación. ECG: taquicardia sinusal. POCUS: perfil A bilateral, deslizamiento presente, VD no dilatado.</p><p><b>¿Qué tratamiento farmacológico indicas?</b></p>',
+  o:[['Salbutamol + ipratropio nebulizados con aire, prednisona 40 mg VO y amoxicilina/clavulánico 5 días',1,'Correcto. Cumple criterios de antibiótico (disnea + volumen + purulencia; además va a ventilación).'],['Salbutamol + ipratropio, metilprednisolona 125 mg IV cada 6 h y aminofilina',0,'Las dosis altas de corticoide no suman beneficio y la aminofilina no se recomienda.'],['Solo broncodilatadores: el antibiótico es controversial',0,'Con esputo purulento y necesidad de VMNI, el antibiótico está indicado.']]},
+ {t:'<p>Persiste FR 30 y tiraje tras la primera hora de tratamiento.</p><p><b>¿Qué soporte indicas?</b></p>',
+  o:[['VMNI con mascarilla oronasal: EPAP 5, IPAP 12 y subir según tolerancia',1,'Correcto. pH ≤ 7,35 con PaCO₂ ≥ 45 y fatiga: VMNI de primera línea (evidencia A).'],['CNAF 60 L/min como primera línea',0,'Podría ser alternativa si no tolera la mascarilla, pero en acidosis hipercápnica la VMNI es la primera opción (ERS, GOLD).'],['Intubación inmediata',0,'Está orientado y sin contraindicaciones: la VMNI tiene un 80-85 % de éxito y reduce mortalidad.']]},
+ {t:'<div class="vitals"><span>VMNI IPAP 18 / EPAP 5</span><span>2 h</span><span>FR 24</span><span>pH 7,34</span><span>PCO₂ 58</span></div><p><b>¿Cómo sigues?</b></p>',
+  o:[['Mantener VMNI, gas a las 4-6 h, completar el estudio y buscar cama en intermedio',1,'Correcto. Va respondiendo: el pH y la FR mejoran.'],['Retirar la VMNI: el pH ya es casi normal',0,'Se suspende cuando tolera ≥ 4 h sin VMNI y está estable; es pronto.'],['Subir la IPAP a 30 para normalizar la PCO₂',0,'No buscas una PCO₂ de 40 en un retenedor crónico: apuntas al pH.']]},
+ {t:'<p>Al día siguiente la troponina de control sale elevada (sobre el p99), sin dolor y con ECG sin cambios agudos.</p><p><b>¿Qué haces?</b></p>',
+  o:[['Curva de troponina, ECG seriado, ecocardiograma y manejo según las guías CV',1,'Correcto. GOLD 2027 destaca el riesgo CV 10 veces mayor la primera semana: un marcador alterado exige estudio.'],['Atribuirla a la hipoxemia y no seguirla',0,'Puede ser injuria por demanda, pero hay que estudiarla: el riesgo de IAM, IC y arritmias está muy elevado.'],['Iniciar aspirina preventiva a todo EPOC exacerbado',0,'GOLD no recomienda aspirina preventiva rutinaria; solo según la indicación CV.']]},
+ {t:'<div class="box perla"><b>Caso cerrado.</b> Repasaste: O₂ controlado, Roma, criterios de antibiótico, VMNI en acidosis hipercápnica, metas en el retenedor crónico y riesgo CV post-exacerbación. Al alta: LABA+LAMA (± ICS), control ≤ 1 mes, rehabilitación, vacunas y plan de acción.</div>',o:[]}
+];
+function caso(i){const n=C[i];let h=`<p style="font-size:12.5px;color:var(--teal);font-weight:700">PASO ${i+1} DE ${C.length}</p>${n.t}`;
+  const ord=n.o.map((_,k)=>k).sort(()=>Math.random()-.5);
+  ord.forEach(k=>{h+=`<button class="opt" data-k="${k}">${n.o[k][0]}</button>`});h+='<div class="fb" id="cfb"></div>';
+  $('caso').innerHTML=h;
+  $('caso').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const o=n.o[b.dataset.k];
+    b.classList.add(o[1]?'right':'wrong');const fb=$('cfb');fb.className='fb show box '+(o[1]?'perla':'alerta');
+    fb.innerHTML=`<b>${o[1]?'Bien.':'Revisa.'}</b> ${o[2]}`+(o[1]&&i<C.length-1?`<div style="margin-top:8px"><button class="btn" onclick="caso(${i+1})">Siguiente →</button></div>`:'');});}
+caso(0);
+// quiz
+const Q=[
+ ['Según Roma, una exacerbación es moderada si cumple al menos:',['2 de 5 criterios','3 de 5 criterios','4 de 5 criterios','Los 5 criterios'],1,'Moderada = ≥ 3 de 5 (EVA ≥ 5, FR ≥ 24, FC ≥ 95, SatO₂ &lt; 92 % o caída &gt; 3 %, PCR ≥ 10).'],
+ ['¿Qué define a la exacerbación grave en Roma?',['FR &gt; 30','Necesidad de hospitalización','Gas con hipercapnia y acidosis (o PaO₂ ≤ 60)','PCR &gt; 100'],2,'Grave = criterios de moderada + PaO₂ ≤ 60 y/o PaCO₂ &gt; 45 con pH &lt; 7,35.'],
+ ['Dosis y duración del corticoide sistémico recomendadas:',['Prednisona 1 mg/kg × 10 días','Prednisona 40 mg/día × 5 días','Metilprednisolona 125 mg cada 6 h × 3 días','Prednisona 60 mg con descenso en 14 días'],1,'40 mg/día × 5 días (evidencia A, ensayo REDUCE). Cursos largos: más neumonía y mortalidad.'],
+ ['¿Cuál de estos pacientes NO tiene indicación de antibiótico según GOLD?',['Más disnea + esputo purulento','En VMNI','Más disnea + fiebre, esputo blanco','Cultivo previo con Pseudomonas'],2,'Sin purulencia no se cumple el criterio de síntomas, salvo cultivo previo positivo o ventilación.'],
+ ['¿Qué biomarcador NO se recomienda para decidir antibióticos?',['PCR','Procalcitonina','Purulencia del esputo','Ninguno'],1,'La procalcitonina dio resultados contradictorios y en UCI se asoció a más mortalidad.'],
+ ['Indicación de VMNI:',['pH 7,38 con PaCO₂ 52','pH ≤ 7,35 con PaCO₂ ≥ 45','Solo pH &lt; 7,25','SpO₂ &lt; 88 %'],1,'Acidosis respiratoria (pH ≤ 7,35 y PaCO₂ ≥ 45), fatiga muscular o hipoxemia persistente.'],
+ ['El riesgo de evento CV grave tras una exacerbación es máximo en:',['Días 1-7','Días 15-30','Meses 2-6','Después del año'],0,'HR ≈ 10 la primera semana; persiste elevado hasta un año.'],
+ ['Nebulización en el EPOC exacerbado:',['Con O₂ a 8 L/min siempre','Con aire comprimido, O₂ aparte por naricera','No nebulizar: solo IDM','Con heliox'],1,'Nebulizar con O₂ puede elevar la PaCO₂; usa aire y aporta O₂ controlado por separado.'],
+ ['Hipotensión inmediatamente después de intubar a un EPOC. Primera maniobra:',['Bolo de 2 L','Subir la FR a 30','Desconectar del ventilador y comprimir el tórax','Subir la PEEP a 15'],2,'Sospecha de auto-PEEP: desconecta, deja vaciar y luego baja la FR y alarga la espiración.'],
+ ['¿Qué cambió en GOLD 2027 para el grupo A?',['Nada','Se inicia con LAMA','Se inicia con LABA+ICS','Se inicia con triple'],1,'Ahora se ofrece LAMA de inicio por su efecto sobre la disnea; SABA si no hay LAMA disponible.']
+];
+let qs=0,qa=0;
+function quiz(){qs=0;qa=0;let h='';Q.forEach((q,i)=>{h+=`<div style="margin:14px 0"><b>${i+1}. ${q[0]}</b>`;q[1].forEach((o,k)=>h+=`<button class="opt" data-q="${i}" data-k="${k}">${o}</button>`);h+=`<div class="fb" id="qf${i}"></div></div>`});
+  $('quiz').innerHTML=h;$('qscore').textContent='';
+  $('quiz').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.q,k=+b.dataset.k,q=Q[i];const f=$('qf'+i);if(f.classList.contains('show'))return;
+    qa++;if(k===q[2])qs++;b.classList.add(k===q[2]?'right':'wrong');
+    $('quiz').querySelector(`.opt[data-q="${i}"][data-k="${q[2]}"]`).classList.add('right');
+    f.className='fb show box '+(k===q[2]?'perla':'alerta');f.innerHTML=`<b>${k===q[2]?'Correcto.':'Incorrecto.'}</b> ${q[3]}`;
+    $('qscore').textContent=`Puntaje: ${qs} / ${qa}`+(qa===Q.length?(qs>=8?' · ¡Listo para el turno!':' · Repasa Roma, fármacos y soporte'):'');});}
+quiz();
+</script>
+</body>
+</html>

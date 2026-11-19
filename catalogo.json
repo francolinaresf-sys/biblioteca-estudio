@@ -55,6 +55,12 @@
       "nombre": "Insuficiencia respiratoria",
       "icono": "🫁",
       "color": "#1F7A80"
+    },
+    {
+      "id": "respiratorio",
+      "nombre": "Respiratorio",
+      "icono": "🌬️",
+      "color": "#0369a1"
     }
   ],
   "artefactos": [
@@ -196,6 +202,17 @@
         "ATS 2023"
       ],
       "fecha": "2026-11-08"
+    },
+    {
+      "id": "epoc-exacerbacion-urgencia",
+      "titulo": "Exacerbación de EPOC en Urgencia (GOLD 2027)",
+      "tema": "respiratorio",
+      "archivo": "respiratorio/epoc-exacerbacion-urgencia.html",
+      "descripcion": "GOLD 2027 aplicado al SU: novedades (riesgo CV post-exacerbación), clasificación de Roma con calculadora, destino, fármacos con dosis y ajuste renal, CNAF vs VMNI, intubación, alta segura y contexto MINSAL; caso ramificado y quiz.",
+      "etiquetas": [
+        "EPOC"
+      ],
+      "fecha": "2026-11-19"
     }
   ]
 }
